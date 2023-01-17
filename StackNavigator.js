@@ -2,7 +2,8 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './screens/HomeScreen'
 import RelationshipsHomeScreen from './screens/RelationshipsHomeScreen'
-import AddRelationship from './screens/AddRelationship'
+import AddRelationShipScreen from './screens/AddRelationshipScreen'
+import Relationship from './screens/Relationship'
 
 const Stack = createNativeStackNavigator()
 
@@ -17,12 +18,13 @@ const StackNavigator = () => {
     >
       {user ? (
         <>
+        <Stack.Screen name="Relationship" component={Relationship} />
+          <Stack.Screen name="Add" component={AddRelationShipScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
             name="Relationships"
             component={RelationshipsHomeScreen}
           />
-          <Stack.Screen name="Add" component={AddRelationship} />
         </>
       ) : (
         ''
