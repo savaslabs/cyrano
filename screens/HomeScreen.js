@@ -48,17 +48,21 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#FED9B7', '#F07167']} style={styles.background}>
-        <Image
-          source={require('../assets/logo.svg')}
-          style={{ width: 80, height: 60 }}
-        />
-        <View>
-          <Text>Welcome to Cyrano</Text>
-          <Text>Please fill your details below to create your account</Text>
+        <View style={styles.imgContainer}>
+          <Image
+            source={require('../assets/logo.svg')}
+            style={{ width: 80, height: 60 }}
+          />
         </View>
-        <SafeAreaView>
+        <View style={styles.heading}>
+          <Text style={styles.h1}>Welcome to Cyrano</Text>
+          <Text style={styles.h2}>
+            Please fill your details below to create your account
+          </Text>
+        </View>
+        <SafeAreaView style={styles.form}>
           <View>
-            <Text>First Name</Text>
+            <Text style={styles.label}>First Name</Text>
             <TextInput
               style={styles.input}
               value={name}
@@ -66,7 +70,7 @@ const HomeScreen = () => {
             />
           </View>
           <View>
-            <Text>Last Name</Text>
+            <Text style={styles.label}>Last Name</Text>
             <TextInput
               style={styles.input}
               value={lastName}
@@ -74,17 +78,18 @@ const HomeScreen = () => {
             />
           </View>
           <View>
-            <Text>Phone Number</Text>
+            <Text style={styles.label}>Phone Number</Text>
             <TextInput
               style={styles.input}
               placeholder="1 (555) 123-4567"
               value={phone}
               onChangeText={(newPhone) => setPhone(newPhone)}
               keyboardType="numeric"
+              placeholderTextColor="rgba(255,255,255, 0.5)"
             />
           </View>
           <Pressable
-            style={styles.button}
+            style={[styles.button, isDisabled ? styles.disabled : '']}
             onPress={handlePress}
             disabled={isDisabled}
           >
@@ -99,37 +104,78 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
   },
   background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100vh',
+    height: '100%',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  heading: {
+    textAlign: 'center',
+  },
+  h1: {
+    color: '#FFFFFF',
+    fontSize: '32px',
+    fontWeight: '600',
+    paddingBottom: '10px',
+  },
+  h2: {
+    color: '#FFFFFF',
+    fontSize: '16px',
+    fontWeight: '400',
+    paddingBottom: '20px',
+    width: '70%',
+    alignSelf: 'center',
+  },
+  label: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: '16px',
+    paddingLeft: '10px',
+  },
+  imgContainer: {
+    alignSelf: 'center',
+    paddingBottom: '10px',
+  },
+  form: {
+    width: '80%',
+    alignSelf: 'center',
   },
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderColor: '#FFFFFF',
+    borderRadius: '5px',
+    color: '#FFFFFF'
   },
   button: {
     backgroundColor: '#FFFFFF',
-    padding: '10px',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingRight: '20px',
+    paddingLeft: '20px',
     borderRadius: '65px',
     textAlign: 'center',
+    margin: 'auto',
+    marginTop: '20px',
+    shadowColor: '#ed6358',
+    shadowOffset: {
+      width: '0',
+      height: '4',
+    },
+    shadowOpacity: '0.19',
+    shadowRadius: '5.62',
+    elevation: '6',
+    opacity: '1',
+  },
+  disabled: {
+    opacity: '0.5',
   },
   text: {
     color: '#EF6E62',
-  },
-  inputs: {
-    borderWidth: 2,
-    borderColor: 'lightgrey',
-    margin: 10,
-    height: 75,
-    paddingLeft: 10,
   },
 })
 

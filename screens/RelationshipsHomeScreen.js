@@ -46,7 +46,7 @@ const RelationshipsHomeScreen = () => {
             : <Text style={{color: '#F17369'}}>There's no relationships. Start by adding one!</Text>}
         </View>
 
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onHoverIn={styles.hover}>
           <Text style={styles.text} onPress={handlePress}>Add Relationship</Text>
         </Pressable>
       </View>
@@ -76,10 +76,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#F17369',
-    padding: '10px',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
     borderRadius: '65px',
     textAlign: 'center',
     margin: 'auto',
+  },
+  hover:{
+    backgroundColor: 'green'
   },
   text: {
     color: '#FFFFFF',
