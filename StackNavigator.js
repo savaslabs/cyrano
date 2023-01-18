@@ -19,12 +19,11 @@ const StackNavigator = () => {
     >
       {user ? (
         <>
-         <Stack.Screen
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
             name="Relationships"
             component={RelationshipsHomeScreen}
           />
-          <Stack.Screen name="Home" component={HomeScreen} />
-         
           <Stack.Screen name="Add" component={AddRelationShipScreen} />
           <Stack.Screen name="Relationship" component={Relationship} />
           <Stack.Screen name="Send" component={SendMessageScreen} />

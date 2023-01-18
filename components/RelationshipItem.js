@@ -1,14 +1,28 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const RelationshipItem = ({ item }) => {
+  const navigation = useNavigation()
+
+  const handlePress = (e) => {
+    navigation.navigate('Relationship', {
+      itemId: e,
+    })
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.item}>
-        <Image source="https://picsum.photos/200" style={styles.img} />
-        <Text style={styles.heading}>
-          {item.name} {item.lastName}
-        </Text>
+        <Image
+          source="https://picsum.photos/200"
+          style={styles.img}
+          nativeID={item.id}
+        />
+        <Pressable onPress={(e) => handlePress(e.target.id)}>
+          <Text style={styles.heading} nativeID={item.id}>
+            {item.name} {item.lastName}
+          </Text>
+        </Pressable>
       </View>
     </View>
   )
