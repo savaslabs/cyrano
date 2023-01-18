@@ -8,9 +8,17 @@ const Card = ({ children }) => {
 const styles = StyleSheet.create({
   card: {
     borderRadius: '8px',
-    borderWidth: '1px',
-    borderColor: 'rgba(237, 99, 88, 0.4)',
     padding: '20px',
+    marginBottom: '10px',
+    backgroundColor: '#FFFFFF',
+    shadowColor: 'rgba(237, 99, 88, 0.4);',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 16,
+    elevation: 7,
   },
 })
 

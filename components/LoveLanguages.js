@@ -17,7 +17,7 @@ const LoveLanguages = ({ name }) => {
           <Image source={Clock} style={{ width: '32px', height: '32px' }} />
           <Text style={styles.text}>Quality Time</Text>
         </View>
-        <View style={styles.iconData}>
+        <View style={styles.iconDataTwo}>
           <Image source={Gift} style={{ width: '32px', height: '32px' }} />
           <Text style={styles.text}>Receiving Gifts</Text>
         </View>
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: '30px',
-    paddingBottom: '30px',
   },
   text: {
     color: '#EF6E62',
@@ -43,6 +42,9 @@ const styles = StyleSheet.create({
   iconData: {
     alignItems: 'center',
     marginRight: '40px',
+  },
+  iconDataTwo: {
+    alignItems: 'center',
   },
 })
 

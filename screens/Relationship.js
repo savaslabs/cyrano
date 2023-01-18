@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
 import Shape from '../assets/shape.svg'
 import Birthday from '../assets/birthday.svg'
+import Arrow from '../assets/arrow-back.svg'
 import { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
@@ -31,10 +32,6 @@ const Relationship = () => {
   }, [])
 
   const { name, lastName, birthday, restaurant } = relationship
-
-  const handlePress = () => {
-    navigation.navigate('Send')
-  }
 
   return (
     <View style={styles.container}>
@@ -71,9 +68,9 @@ const Relationship = () => {
       </View>
 
       <View style={styles.body}>
-        <Card>
+        {/* <Card>
           <Recommendations />
-        </Card>
+        </Card> */}
         <Card>
           <LoveLanguages name={name} />
         </Card>
@@ -85,9 +82,17 @@ const Relationship = () => {
         </Card>
       </View>
 
-      <Pressable style={styles.pressable} onPress={handlePress}>
-        <Text style={styles.next}>Next</Text>
-      </Pressable>
+      <View style={styles.navigation}>
+        <Pressable style={styles.pressable} onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.next}>Back</Text>
+        </Pressable>
+        <Pressable style={styles.pressable} onPress={() => navigation.navigate('Relationship')}>
+          <Text style={styles.edit}>Edit</Text>
+        </Pressable>
+        <Pressable style={styles.pressable} onPress={() => navigation.navigate('Send')}>
+          <Text style={styles.next}>Next</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -95,9 +100,10 @@ const Relationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    paddingTop: '120px',
+    marginTop: '20px',
   },
   img: {
     width: '100%',
@@ -106,9 +112,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '0',
     zIndex: '0',
-    width: '100%',
-    height: '100%',
-    top: '-535px',
+    top: '-400px',
   },
   profileImg: {
     width: '70px',
@@ -120,6 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingBottom: '20px'
   },
   ranking: {
     flex: 1,
@@ -152,12 +157,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     cursor: 'pointer',
   },
+  navigation: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center'
+  },
   next: {
     color: '#EF6E62',
     fontSize: '16px',
     fontWeight: '400',
     paddingTop: '20px',
     paddingBottom: '20px',
+    marginLeft: '10px'
+  },
+  edit: {
+    color: '#EF6E62',
+    fontSize: '18px',
+    fontWeight: '700',
+    paddingTop: '20px',
+    paddingBottom: '20px',
+    marginLeft: '10px'
   },
 })
 
