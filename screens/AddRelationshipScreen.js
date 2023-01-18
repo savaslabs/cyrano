@@ -10,9 +10,10 @@ import {
 import React from 'react'
 import Shape from '../assets/shape.svg'
 import Camera from '../assets/camera.svg'
-import { useState, useEffect } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useState, useEffect, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import RelationshipContext from '../context/RelationshipContext'
+import uuid from 'react-native-uuid'
 
 const AddRelationship = () => {
   const [name, setName] = useState('')
@@ -21,23 +22,29 @@ const AddRelationship = () => {
   const [restaurant, setRestaurant] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
+  const { addRelationship } = useContext(RelationshipContext)
 
   const handlePress = async () => {
     if (name && lastName && birthday && restaurant) {
-      try {
-        const json = JSON.stringify({ name, lastName, birthday, restaurant })
-        await AsyncStorage.setItem('relationship', json)
-      } catch (error) {
-        console.log(error)
+      const newRelationship = {
+        id: uuid.v4(),
+        name,
+        lastName,
+        birthday,
+        restaurant,
       }
+
+      await addRelationship(newRelationship)
+
+      navigation.navigate('Relationship', {
+        itemId: newRelationship.id,
+      })
+
+      setName('')
+      setLastName('')
+      setBirthday('')
+      setRestaurant('')
     }
-
-    setName('')
-    setLastName('')
-    setBirthday('')
-    setRestaurant('')
-
-    navigation.navigate('Relationship')
   }
 
   useEffect(() => {
@@ -132,20 +139,24 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: '-535px',
+    top: '-425px',
   },
   cameraContainer: {
-    backgroundColor: '#FFFFFF',
     width: '68px',
     height: '68px',
     borderRadius: '50%',
     position: 'relative',
     cursor: 'pointer',
     alignSelf: 'center',
-    shadowOffset: { width: 0, height: 3 },
-    shadowColor: '#EF6E62',
-    shadowOpacity: 0.4,
-    elevation: 3,
+    backgroundColor: '#FFFFFF',
+    shadowColor: 'rgba(237, 99, 88, 0.4);',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 2,
+    shadowRadius: 16,
+    elevation: 7,
   },
   camera: {
     width: '15px',
@@ -177,10 +188,10 @@ const styles = StyleSheet.create({
     paddingTop: '40px',
   },
   input: {
-    height: "40px",
-    margin: "12px",
-    borderWidth: "1px",
-    padding: "10px",
+    height: '40px',
+    margin: '12px',
+    borderWidth: '1px',
+    padding: '10px',
     borderColor: '#ED5244',
     borderRadius: '5px',
     color: '#ED5244',

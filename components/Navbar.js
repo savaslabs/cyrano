@@ -18,9 +18,9 @@ const Navbar = ({ name, lastName }) => {
           <Image source={Config} style={styles.img} />
         </View>
       </View>
-      <Text style={styles.text}>
+      {/* <Text style={styles.text}>
         Welcome back, {name} {lastName}!
-      </Text>
+      </Text> */}
     </View>
   )
 }

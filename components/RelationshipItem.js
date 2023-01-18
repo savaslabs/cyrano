@@ -5,8 +5,10 @@ const RelationshipItem = ({ item }) => {
   return (
     <View style={styles.container}>
       <View style={styles.item}>
-        <Image source={item.img} style={styles.img} />
-        <Text style={styles.heading}>{item.name}</Text>
+        <Image source="https://picsum.photos/200" style={styles.img} />
+        <Text style={styles.heading}>
+          {item.name} {item.lastName}
+        </Text>
       </View>
     </View>
   )
@@ -15,9 +17,11 @@ const RelationshipItem = ({ item }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     height: '100vh',
+    marginTop: '10px',
+    marginBottom: '10px',
   },
   heading: {
     color: '#F1776C',

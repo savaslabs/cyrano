@@ -8,9 +8,9 @@ import {
   Pressable,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import RelationshipContext from '../context/RelationshipContext'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
@@ -18,15 +18,17 @@ const HomeScreen = () => {
   const [phone, setPhone] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
+  const { logInUser } = useContext(RelationshipContext)
 
   const handlePress = async () => {
     if (name && lastName && phone) {
-      try {
-        const json = JSON.stringify({ name, lastName, phone })
-        await AsyncStorage.setItem('userData', json)
-      } catch (error) {
-        console.log(error)
+      const newUser = {
+        name,
+        lastName,
+        phone,
       }
+
+      await logInUser(newUser)
     }
 
     setName('')
@@ -143,13 +145,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   input: {
-    height: "40px",
-    margin: "12px",
-    borderWidth: "1px",
+    height: '40px',
+    margin: '12px',
+    borderWidth: '1px',
     padding: '10px',
     borderColor: '#FFFFFF',
     borderRadius: '5px',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
   button: {
     backgroundColor: '#FFFFFF',

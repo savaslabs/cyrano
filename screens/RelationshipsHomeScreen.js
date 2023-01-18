@@ -1,35 +1,14 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import RelationshipsData from '../relationships.json'
+import React, { useEffect, useState, useContext } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 import Navbar from '../components/Navbar'
 import { useNavigation } from '@react-navigation/native'
+import RelationshipContext from '../context/RelationshipContext'
 
 const RelationshipsHomeScreen = () => {
-  const [user, setUser] = useState('')
-  const [relationships, setRelationships] = useState('')
   const navigation = useNavigation()
+  const { relationship } = useContext(RelationshipContext)
 
-  useEffect(() => {
-    const getItem = async () => {
-      try {
-        const json = await AsyncStorage.getItem('userData')
-        setUser(JSON.parse(json))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    getItem()
-  }, [])
-
-  useEffect(() => {
-    // setRelationships(RelationshipsData)
-    setRelationships(null)
-  }, [relationships])
-
-  const { name, lastName, phone } = user
 
   const handlePress = () => {
     navigation.navigate('Add')
@@ -40,19 +19,19 @@ const RelationshipsHomeScreen = () => {
       <View style={styles.data}>
         <Text style={styles.heading}>Relationships</Text>
         <View style={{ alignSelf: 'flex-start' }}>
-          {relationships
-            ? relationships.map((item) => (
+          {relationship.length !== 0
+            ? relationship.map((item) => (
                 <RelationshipItem item={item} key={item.id} />
               ))
             : <Text style={{color: '#F17369'}}>There's no relationships. Start by adding one!</Text>}
         </View>
 
-        <Pressable style={styles.button} onHoverIn={styles.hover}>
+        <Pressable style={styles.button}>
           <Text style={styles.text} onPress={handlePress}>Add Relationship</Text>
         </Pressable>
       </View>
 
-      <Navbar style={{ height: '10%' }} name={name} lastName={lastName} />
+      <Navbar style={{ height: '10%' }} />
     </View>
   )
 }

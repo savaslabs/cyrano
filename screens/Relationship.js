@@ -3,9 +3,9 @@ import React from 'react'
 import Shape from '../assets/shape.svg'
 import Birthday from '../assets/birthday.svg'
 import Arrow from '../assets/arrow-back.svg'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import WhiteStar from '../components/WhiteStar'
 import BorderStar from '../components/BorderStar'
 import Card from '../shared/Card'
@@ -13,34 +13,28 @@ import Recommendations from '../components/Recommendations'
 import LoveLanguages from '../components/LoveLanguages'
 import Restaurants from '../components/Restaurants'
 import LifeEvents from '../components/LifeEvents'
+import RelationshipContext from '../context/RelationshipContext'
 
 const Relationship = () => {
-  const [relationship, setRelationships] = useState('')
+  const [singleRelationship, setSingleRelationship] = useState('')
   const navigation = useNavigation()
+  const route = useRoute()
+  const { relationship } = useContext(RelationshipContext)
+  const { itemId } = route.params
 
   useEffect(() => {
-    const getItem = async () => {
-      try {
-        const json = await AsyncStorage.getItem('relationship')
-        setRelationships(JSON.parse(json))
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    const getRelationship = relationship.filter((item) => item.id === itemId)
 
-    getItem()
+    setSingleRelationship(getRelationship[0])
   }, [])
 
-  const { name, lastName, birthday, restaurant } = relationship
+  const { name, lastName, birthday, restaurant } = singleRelationship
 
   return (
     <View style={styles.container}>
       <Image source={Shape} style={styles.img} />
       <View style={styles.heading}>
-        <Image
-          source="https://as2.ftcdn.net/v2/jpg/02/15/12/55/1000_F_215125569_htz8VQaSVCbf4LNBgmbUFPunYOQDwCSU.jpg"
-          style={styles.profileImg}
-        />
+        <Image source="https://picsum.photos/200" style={styles.profileImg} />
         <View style={styles.personInfo}>
           <View>
             <Text style={styles.name}>
@@ -83,13 +77,22 @@ const Relationship = () => {
       </View>
 
       <View style={styles.navigation}>
-        <Pressable style={styles.pressable} onPress={() => navigation.navigate('Home')}>
+        <Pressable
+          style={styles.pressable}
+          onPress={() => navigation.navigate('Relationships')}
+        >
           <Text style={styles.next}>Back</Text>
         </Pressable>
-        <Pressable style={styles.pressable} onPress={() => navigation.navigate('Relationship')}>
+        <Pressable
+          style={styles.pressable}
+          onPress={() => navigation.navigate('Add')}
+        >
           <Text style={styles.edit}>Edit</Text>
         </Pressable>
-        <Pressable style={styles.pressable} onPress={() => navigation.navigate('Send')}>
+        <Pressable
+          style={styles.pressable}
+          onPress={() => navigation.navigate('Send')}
+        >
           <Text style={styles.next}>Next</Text>
         </Pressable>
       </View>
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    marginTop: '20px',
+    paddingTop: '20px',
   },
   img: {
     width: '100%',
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingBottom: '20px'
+    paddingBottom: '20px',
   },
   ranking: {
     flex: 1,
@@ -162,23 +165,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
   next: {
     color: '#EF6E62',
     fontSize: '16px',
     fontWeight: '400',
-    paddingTop: '20px',
-    paddingBottom: '20px',
-    marginLeft: '10px'
   },
   edit: {
     color: '#EF6E62',
     fontSize: '18px',
     fontWeight: '700',
-    paddingTop: '20px',
-    paddingBottom: '20px',
-    marginLeft: '10px'
+    marginLeft: '10px',
+    marginRight: '10px',
   },
 })
 
