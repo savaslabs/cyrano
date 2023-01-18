@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: '-635px',
+    top: '-535px',
   },
   cameraContainer: {
     backgroundColor: '#FFFFFF',
@@ -177,10 +177,10 @@ const styles = StyleSheet.create({
     paddingTop: '40px',
   },
   input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+    height: "40px",
+    margin: "12px",
+    borderWidth: "1px",
+    padding: "10px",
     borderColor: '#ED5244',
     borderRadius: '5px',
     color: '#ED5244',

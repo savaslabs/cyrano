@@ -25,7 +25,8 @@ const RelationshipsHomeScreen = () => {
   }, [])
 
   useEffect(() => {
-    setRelationships(RelationshipsData)
+    // setRelationships(RelationshipsData)
+    setRelationships(null)
   }, [relationships])
 
   const { name, lastName, phone } = user

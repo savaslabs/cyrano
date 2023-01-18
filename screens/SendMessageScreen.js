@@ -9,35 +9,14 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from '@react-navigation/native'
 
-const HomeScreen = () => {
+const SendMessageScreen = () => {
   const [name, setName] = useState('')
-  const [lastName, setLastName] = useState('')
   const [phone, setPhone] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
-  const navigation = useNavigation()
-
-  const handlePress = async () => {
-    if (name && lastName && phone) {
-      try {
-        const json = JSON.stringify({ name, lastName, phone })
-        await AsyncStorage.setItem('userData', json)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    setName('')
-    setLastName('')
-    setPhone('')
-
-    navigation.navigate('Relationships')
-  }
 
   useEffect(() => {
-    if (name && lastName && phone) {
+    if (name && phone) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
@@ -55,26 +34,18 @@ const HomeScreen = () => {
           />
         </View>
         <View style={styles.heading}>
-          <Text style={styles.h1}>Welcome to Cyrano</Text>
+          <Text style={styles.h1}>Text Cyrano</Text>
           <Text style={styles.h2}>
-            Please fill your details below to create your account
+            Please fill out the form to continue the demo
           </Text>
         </View>
         <SafeAreaView style={styles.form}>
           <View>
-            <Text style={styles.label}>First Name</Text>
+            <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={(newName) => setName(newName)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Last Name</Text>
-            <TextInput
-              style={styles.input}
-              value={lastName}
-              onChangeText={(newLastName) => setLastName(newLastName)}
             />
           </View>
           <View>
@@ -90,10 +61,9 @@ const HomeScreen = () => {
           </View>
           <Pressable
             style={[styles.button, isDisabled ? styles.disabled : '']}
-            onPress={handlePress}
             disabled={isDisabled}
           >
-            <Text style={styles.text}>Create Account</Text>
+            <Text style={styles.text}>Send Message</Text>
           </Pressable>
         </SafeAreaView>
       </LinearGradient>
@@ -143,13 +113,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   input: {
-    height: "40px",
-    margin: "12px",
-    borderWidth: "1px",
+    height: '40px',
+    margin: '12px',
+    borderWidth: '1px',
     padding: '10px',
     borderColor: '#FFFFFF',
     borderRadius: '5px',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
   button: {
     backgroundColor: '#FFFFFF',
@@ -179,4 +149,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default HomeScreen
+export default SendMessageScreen
