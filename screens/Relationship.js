@@ -4,7 +4,6 @@ import Shape from '../assets/shape.svg'
 import Birthday from '../assets/birthday.svg'
 import Arrow from '../assets/arrow-back.svg'
 import { useState, useEffect, useContext } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import WhiteStar from '../components/WhiteStar'
 import BorderStar from '../components/BorderStar'
@@ -23,12 +22,14 @@ const Relationship = () => {
   const { itemId } = route.params
 
   useEffect(() => {
-    const getRelationship = relationship.filter((item) => item.id === itemId)
+    const getRelationship = relationship.find((item) => item.id === itemId)
 
-    setSingleRelationship(getRelationship[0])
+    if (getRelationship) {
+      setSingleRelationship(getRelationship)
+    }
   }, [])
 
-  const { name, lastName, birthday, restaurant } = singleRelationship
+  const { name, lastName, birthday, restaurant, value } = singleRelationship
 
   return (
     <View style={styles.container}>
@@ -66,7 +67,7 @@ const Relationship = () => {
           <Recommendations />
         </Card> */}
         <Card>
-          <LoveLanguages name={name} />
+          <LoveLanguages name={name} value={value}/>
         </Card>
         <Card>
           <Restaurants name={name} restaurant={restaurant} />
@@ -85,7 +86,7 @@ const Relationship = () => {
         </Pressable>
         <Pressable
           style={styles.pressable}
-          onPress={() => navigation.navigate('Add')}
+          // onPress={() => navigation.navigate('Add')}
         >
           <Text style={styles.edit}>Edit</Text>
         </Pressable>
@@ -96,6 +97,13 @@ const Relationship = () => {
           <Text style={styles.next}>Next</Text>
         </Pressable>
       </View>
+
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate('Add')}
+      >
+        <Text style={styles.text}>Add More Relationships</Text>
+      </Pressable>
     </View>
   )
 }
@@ -178,6 +186,22 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginLeft: '10px',
     marginRight: '10px',
+  },
+  text: {
+    color: '#FFFFFF',
+  },
+  button: {
+    backgroundColor: '#EF6E62',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingRight: '50px',
+    paddingLeft: '50px',
+    borderRadius: '65px',
+    textAlign: 'center',
+    margin: 'auto',
+    marginTop: '20px',
+    marginBottom: '20px',
+    opacity: '1',
   },
 })
 

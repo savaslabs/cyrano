@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import Clock from '../assets/clock.svg'
 import Gift from '../assets/gift.svg'
 
-const LoveLanguages = ({ name }) => {
+const LoveLanguages = ({ name, value }) => {
   return (
     <View
       style={{
@@ -12,16 +12,46 @@ const LoveLanguages = ({ name }) => {
       <Text style={{ color: '#EF6E62', fontSize: '16px', fontWeight: '400' }}>
         {name}'s Love Languages
       </Text>
-      <View style={styles.iconContainer}>
-        <View style={styles.iconData}>
-          <Image source={Clock} style={{ width: '32px', height: '32px' }} />
-          <Text style={styles.text}>Quality Time</Text>
+      {value === 'Acts of Service' && (
+        <View style={styles.iconContainer}>
+          <View style={styles.iconData}>
+            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Text style={styles.text}>{value}</Text>
+          </View>
         </View>
-        <View style={styles.iconDataTwo}>
-          <Image source={Gift} style={{ width: '32px', height: '32px' }} />
-          <Text style={styles.text}>Receiving Gifts</Text>
+      )}
+      {value === 'Receiving Gifts' && (
+        <View style={styles.iconContainer}>
+          <View style={styles.iconData}>
+            <Image source={Gift} style={{ width: '32px', height: '32px' }} />
+            <Text style={styles.text}>{value}</Text>
+          </View>
         </View>
-      </View>
+      )}
+      {value === 'Quality Time' && (
+        <View style={styles.iconContainer}>
+          <View style={styles.iconData}>
+            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Text style={styles.text}>{value}</Text>
+          </View>
+        </View>
+      )}
+      {value === 'Words of Affirmation' && (
+        <View style={styles.iconContainer}>
+          <View style={styles.iconData}>
+            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Text style={styles.text}>{value}</Text>
+          </View>
+        </View>
+      )}
+      {value === 'Physical Touch' && (
+        <View style={styles.iconContainer}>
+          <View style={styles.iconData}>
+            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Text style={styles.text}>{value}</Text>
+          </View>
+        </View>
+      )}
     </View>
   )
 }
@@ -41,7 +71,6 @@ const styles = StyleSheet.create({
   },
   iconData: {
     alignItems: 'center',
-    marginRight: '40px',
   },
   iconDataTwo: {
     alignItems: 'center',

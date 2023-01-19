@@ -14,6 +14,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import uuid from 'react-native-uuid'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const AddRelationship = () => {
   const [name, setName] = useState('')
@@ -21,20 +22,31 @@ const AddRelationship = () => {
   const [birthday, setBirthday] = useState('')
   const [restaurant, setRestaurant] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState(null)
+  const [items, setItems] = useState([
+    { label: 'Acts of Service', value: 'Acts of Service' },
+    { label: 'Receiving Gifts', value: 'Receiving Gifts' },
+    { label: 'Quality Time', value: 'Quality Time' },
+    { label: 'Words of Affirmation', value: 'Words of Affirmation' },
+    { label: 'Physical Touch', value: 'Physical Touch' },
+  ])
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
 
   const handlePress = async () => {
-    if (name && lastName && birthday && restaurant) {
+    if (name && lastName && birthday && restaurant && value) {
       const newRelationship = {
         id: uuid.v4(),
         name,
         lastName,
         birthday,
         restaurant,
+        value
       }
 
       await addRelationship(newRelationship)
+      console.log(newRelationship)
 
       navigation.navigate('Relationship', {
         itemId: newRelationship.id,
@@ -44,11 +56,12 @@ const AddRelationship = () => {
       setLastName('')
       setBirthday('')
       setRestaurant('')
+      setValue('')
     }
   }
 
   useEffect(() => {
-    if (name && lastName && birthday && restaurant) {
+    if (name && lastName && birthday && restaurant && value) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
@@ -106,6 +119,27 @@ const AddRelationship = () => {
             placeholderTextColor="rgba(237,82,68,0.5)"
             value={restaurant}
             onChangeText={(newRestaurant) => setRestaurant(newRestaurant)}
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>Love Languages</Text>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            style={styles.dropdown}
+            placeholder="Select a love language"
+            placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+            dropDownContainerStyle={{
+              top: '52px',
+              left: '12px',
+              margin: 'auto',
+              color: '#EF6E62',
+              borderColor: '#ED5244',
+            }}
           />
         </View>
         <Pressable
@@ -195,6 +229,17 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: '5px',
     color: '#ED5244',
+  },
+  dropdown: {
+    height: '40px',
+    margin: '12px',
+    borderWidth: '1px',
+    padding: '10px',
+    borderColor: '#ED5244',
+    borderRadius: '5px',
+    color: '#ED5244',
+    minHeight: 'initial',
+    width: 'initial',
   },
   text: {
     color: '#FFFFFF',
