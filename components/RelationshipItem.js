@@ -14,7 +14,7 @@ const RelationshipItem = ({ item }) => {
     <View style={styles.container}>
       <View style={styles.item}>
         <Image
-          source="https://picsum.photos/200"
+          source={item.profileImage}
           style={styles.img}
           nativeID={item.id}
         />

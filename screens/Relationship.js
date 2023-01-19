@@ -29,13 +29,22 @@ const Relationship = () => {
     }
   }, [])
 
-  const { name, lastName, birthday, restaurant, value } = singleRelationship
+  const { name, lastName, birthday, restaurant, value, profileImage } =
+    singleRelationship
 
   return (
     <View style={styles.container}>
       <Image source={Shape} style={styles.img} />
       <View style={styles.heading}>
-        <Image source="https://picsum.photos/200" style={styles.profileImg} />
+        {profileImage ? (
+          <Image source={profileImage} style={styles.profileImg} />
+        ) : (
+          <Image
+            source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+            style={styles.profileImg}
+          />
+        )}
+
         <View style={styles.personInfo}>
           <View>
             <Text style={styles.name}>
@@ -67,7 +76,7 @@ const Relationship = () => {
           <Recommendations />
         </Card> */}
         <Card>
-          <LoveLanguages name={name} value={value}/>
+          <LoveLanguages name={name} value={value} />
         </Card>
         <Card>
           <Restaurants name={name} restaurant={restaurant} />

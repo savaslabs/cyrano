@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import uuid from 'react-native-uuid'
 import DropDownPicker from 'react-native-dropdown-picker'
+import * as ImagePicker from 'expo-image-picker'
 
 const AddRelationship = () => {
   const [name, setName] = useState('')
@@ -22,6 +23,7 @@ const AddRelationship = () => {
   const [birthday, setBirthday] = useState('')
   const [restaurant, setRestaurant] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
+  const [profileImage, setProfileImage] = useState(null)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(null)
   const [items, setItems] = useState([
@@ -42,7 +44,8 @@ const AddRelationship = () => {
         lastName,
         birthday,
         restaurant,
-        value
+        value,
+        profileImage
       }
 
       await addRelationship(newRelationship)
@@ -57,6 +60,7 @@ const AddRelationship = () => {
       setBirthday('')
       setRestaurant('')
       setValue('')
+      setProfileImage('')
     }
   }
 
@@ -69,14 +73,36 @@ const AddRelationship = () => {
     //eslint-disable-next-line
   })
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Image source={Shape} style={styles.img} />
       <View style={styles.block}>
         <Text style={styles.h1}>Add Relationship</Text>
-        <View style={styles.cameraContainer}>
-          <Image source={Camera} style={styles.camera} />
-        </View>
+        <Pressable onPress={pickImage}>
+          <View style={styles.cameraContainer}>
+            {profileImage ? (
+              <Image
+                source={{ uri: profileImage }}
+                style={styles.profileImage}
+              />
+            ) : (
+              <Image source={Camera} style={styles.camera} />
+            )}
+          </View>
+        </Pressable>
       </View>
       <SafeAreaView style={styles.form}>
         <View>
@@ -142,6 +168,7 @@ const AddRelationship = () => {
             }}
           />
         </View>
+
         <Pressable
           style={[styles.button, isDisabled ? styles.disabled : '']}
           onPress={handlePress}
@@ -202,6 +229,11 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     margin: 'auto',
+  },
+  profileImage: {
+    width: '68px',
+    height: '68px',
+    borderRadius: '50%',
   },
   h1: {
     color: '#FFFFFF',
