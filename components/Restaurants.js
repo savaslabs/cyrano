@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 
-const Restaurants = ({ name, restaurant }) => {
+const Restaurants = ({ name, restaurantArray }) => {
   return (
     <View
       style={{
@@ -11,7 +11,12 @@ const Restaurants = ({ name, restaurant }) => {
         {name}'s Favorite Restaurants
       </Text>
       <View>
-        <Text style={styles.restaurantTitle}>{restaurant}</Text>
+        {restaurantArray &&
+          restaurantArray.map((item) => (
+            <Text key={item.id} style={styles.restaurantTitle}>
+              {item.restaurant}
+            </Text>
+          ))}
       </View>
     </View>
   )

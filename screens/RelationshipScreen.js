@@ -29,7 +29,7 @@ const Relationship = () => {
     }
   }, [])
 
-  const { name, lastName, birthday, restaurant, value, profileImage } =
+  const { name, lastName, birthday, restaurantArray, value, profileImage } =
     singleRelationship
 
   return (
@@ -79,7 +79,7 @@ const Relationship = () => {
           <LoveLanguages name={name} value={value} />
         </Card>
         <Card>
-          <Restaurants name={name} restaurant={restaurant} />
+          <Restaurants name={name} restaurantArray={restaurantArray} />
         </Card>
         <Card>
           <LifeEvents birthday={birthday} />
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '0',
     zIndex: '0',
-    top: '-400px',
+    top: '-635px',
   },
   profileImg: {
     width: '70px',

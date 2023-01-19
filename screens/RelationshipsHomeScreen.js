@@ -9,7 +9,6 @@ const RelationshipsHomeScreen = () => {
   const navigation = useNavigation()
   const { relationship } = useContext(RelationshipContext)
 
-
   const handlePress = () => {
     navigation.navigate('Add')
   }

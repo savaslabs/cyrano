@@ -22,34 +22,34 @@ const AddRelationship = () => {
   const [lastName, setLastName] = useState('')
   const [birthday, setBirthday] = useState('')
   const [restaurant, setRestaurant] = useState('')
+  const [restaurantArray, setRestaurantArray] = useState([])
   const [isDisabled, setIsDisabled] = useState(true)
   const [profileImage, setProfileImage] = useState(null)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(null)
   const [items, setItems] = useState([
-    { label: 'Acts of Service', value: 'Acts of Service' },
+    // { label: 'Acts of Service', value: 'Acts of Service' },
     { label: 'Receiving Gifts', value: 'Receiving Gifts' },
     { label: 'Quality Time', value: 'Quality Time' },
-    { label: 'Words of Affirmation', value: 'Words of Affirmation' },
-    { label: 'Physical Touch', value: 'Physical Touch' },
+    // { label: 'Words of Affirmation', value: 'Words of Affirmation' },
+    // { label: 'Physical Touch', value: 'Physical Touch' },
   ])
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
 
   const handlePress = async () => {
-    if (name && lastName && birthday && restaurant && value) {
+    if (name && lastName && birthday && restaurantArray && value) {
       const newRelationship = {
         id: uuid.v4(),
         name,
         lastName,
         birthday,
-        restaurant,
+        restaurantArray,
         value,
-        profileImage
+        profileImage,
       }
 
       await addRelationship(newRelationship)
-      console.log(newRelationship)
 
       navigation.navigate('Relationship', {
         itemId: newRelationship.id,
@@ -59,13 +59,14 @@ const AddRelationship = () => {
       setLastName('')
       setBirthday('')
       setRestaurant('')
+      setRestaurantArray([])
       setValue('')
       setProfileImage('')
     }
   }
 
   useEffect(() => {
-    if (name && lastName && birthday && restaurant && value) {
+    if (name && lastName && birthday && restaurantArray && value) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
@@ -84,6 +85,20 @@ const AddRelationship = () => {
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri)
     }
+  }
+
+  const handleAddRestaurant = () => {
+    const newRestaurantArr = {
+      id: uuid.v4(),
+      restaurant,
+    }
+    setRestaurantArray((prevState) => [...prevState, newRestaurantArr])
+
+    setRestaurant('')
+  }
+
+  const handleDeleteRestaurant = (id) => {
+    setRestaurantArray(restaurantArray.filter((item) => item.id !== id))
   }
 
   return (
@@ -138,14 +153,29 @@ const AddRelationship = () => {
         </View>
         <View>
           <Text style={styles.label}>Favorite Restaurant</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Search"
-            keyboardType="numeric"
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            value={restaurant}
-            onChangeText={(newRestaurant) => setRestaurant(newRestaurant)}
-          />
+          <View style={styles.addRestaurant}>
+            <TextInput
+              style={[styles.input, styles.restaurant]}
+              placeholder="Search"
+              keyboardType="numeric"
+              placeholderTextColor="rgba(237,82,68,0.5)"
+              value={restaurant}
+              onChangeText={(newRestaurant) => setRestaurant(newRestaurant)}
+            />
+            <Pressable onPress={handleAddRestaurant}>
+              <Text style={styles.add}>+</Text>
+            </Pressable>
+          </View>
+          <View>
+            {restaurantArray.map((item) => (
+              <View key={item.id} style={styles.deleteRestaurant}>
+                <Text style={styles.restaurantItem}>{item.restaurant}</Text>
+                <Pressable onPress={() => handleDeleteRestaurant(item.id)}>
+                  <Text style={styles.delete}>x</Text>
+                </Pressable>
+              </View>
+            ))}
+          </View>
         </View>
         <View>
           <Text style={styles.label}>Love Languages</Text>
@@ -168,7 +198,6 @@ const AddRelationship = () => {
             }}
           />
         </View>
-
         <Pressable
           style={[styles.button, isDisabled ? styles.disabled : '']}
           onPress={handlePress}
@@ -200,7 +229,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: '-425px',
+    top: '-635px',
   },
   cameraContainer: {
     width: '68px',
@@ -290,6 +319,38 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: '0.5',
+  },
+  addRestaurant: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  restaurant: {
+    width: '87%',
+  },
+  add: {
+    fontSize: '24px',
+    color: '#EF6E62',
+    fontWeight: '700',
+    cursor: 'pointer',
+  },
+  delete: {
+    fontSize: '24px',
+    color: '#EF6E62',
+    fontWeight: '700',
+    cursor: 'pointer',
+    marginLeft: '15px',
+  },
+  restaurantItem: {
+    color: '#EF6E62',
+    fontSize: '14px',
+  },
+  deleteRestaurant: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: '15px',
+    marginBottom: '5px',
   },
 })
 

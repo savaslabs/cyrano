@@ -13,11 +13,20 @@ const RelationshipItem = ({ item }) => {
   return (
     <View style={styles.container}>
       <View style={styles.item}>
-        <Image
-          source={item.profileImage}
-          style={styles.img}
-          nativeID={item.id}
-        />
+        {item.profileImage ? (
+          <Image
+            source={item.profileImage}
+            style={styles.img}
+            nativeID={item.id}
+          />
+        ) : (
+          <Image
+            source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+            style={styles.img}
+            nativeID={item.id}
+          />
+        )}
+
         <Pressable onPress={(e) => handlePress(e.target.id)}>
           <Text style={styles.heading} nativeID={item.id}>
             {item.name} {item.lastName}
