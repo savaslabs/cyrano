@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
+    aspectRatio: '10/3',
   },
   background: {
     height: '100%',

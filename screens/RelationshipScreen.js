@@ -13,6 +13,7 @@ import LoveLanguages from '../components/LoveLanguages'
 import Restaurants from '../components/Restaurants'
 import LifeEvents from '../components/LifeEvents'
 import RelationshipContext from '../context/RelationshipContext'
+import Gifts from '../components/Gifts'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -29,8 +30,15 @@ const Relationship = () => {
     }
   }, [])
 
-  const { name, lastName, birthday, restaurantArray, value, profileImage } =
-    singleRelationship
+  const {
+    name,
+    lastName,
+    birthday,
+    restaurantArray,
+    value,
+    valueGifts,
+    profileImage,
+  } = singleRelationship
 
   return (
     <View style={styles.container}>
@@ -78,9 +86,17 @@ const Relationship = () => {
         <Card>
           <LoveLanguages name={name} value={value} />
         </Card>
-        <Card>
-          <Restaurants name={name} restaurantArray={restaurantArray} />
-        </Card>
+        {value === 'Receiving Gifts' && (
+          <Card>
+            <Gifts name={name} valueGifts={valueGifts} />
+          </Card>
+        )}
+        {value === 'Quality Time' && (
+          <Card>
+            <Restaurants name={name} restaurantArray={restaurantArray} />
+          </Card>
+        )}
+
         <Card>
           <LifeEvents birthday={birthday} />
         </Card>
@@ -120,6 +136,8 @@ const Relationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    aspectRatio: '10/3',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',

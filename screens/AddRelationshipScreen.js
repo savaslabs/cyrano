@@ -28,17 +28,26 @@ const AddRelationship = () => {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(null)
   const [items, setItems] = useState([
-    // { label: 'Acts of Service', value: 'Acts of Service' },
     { label: 'Receiving Gifts', value: 'Receiving Gifts' },
     { label: 'Quality Time', value: 'Quality Time' },
-    // { label: 'Words of Affirmation', value: 'Words of Affirmation' },
-    // { label: 'Physical Touch', value: 'Physical Touch' },
   ])
+  const [openGifts, setOpenGifts] = useState(false)
+  const [valueGifts, setValueGifts] = useState(null)
+  const [gifts, setGifts] = useState([
+    { label: 'Chocolates', value: 'Chocolates' },
+    { label: 'Flowers', value: 'Flowers' },
+    { label: 'Cinema Tickets', value: 'Cinema Tickets' },
+  ])
+  const [showRestaurants, setShowRestaurants] = useState(false)
+  const [showGifts, setShowGifts] = useState(false)
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
 
   const handlePress = async () => {
-    if (name && lastName && birthday && restaurantArray && value) {
+    if (
+      (name && lastName && birthday && value && restaurantArray) ||
+      (name && lastName && birthday && value && valueGifts)
+    ) {
       const newRelationship = {
         id: uuid.v4(),
         name,
@@ -46,6 +55,7 @@ const AddRelationship = () => {
         birthday,
         restaurantArray,
         value,
+        valueGifts,
         profileImage,
       }
 
@@ -62,11 +72,15 @@ const AddRelationship = () => {
       setRestaurantArray([])
       setValue('')
       setProfileImage('')
+      setValueGifts('')
     }
   }
 
   useEffect(() => {
-    if (name && lastName && birthday && restaurantArray && value) {
+    if (
+      (name && lastName && birthday && restaurantArray && value) ||
+      (name && lastName && birthday && valueGifts && value)
+    ) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
@@ -100,6 +114,20 @@ const AddRelationship = () => {
   const handleDeleteRestaurant = (id) => {
     setRestaurantArray(restaurantArray.filter((item) => item.id !== id))
   }
+
+  useEffect(() => {
+    if (value === 'Receiving Gifts') {
+      setShowGifts(true)
+    } else {
+      setShowGifts(false)
+    }
+
+    if (value === 'Quality Time') {
+      setShowRestaurants(true)
+    } else {
+      setShowRestaurants(false)
+    }
+  }, [value])
 
   return (
     <View style={styles.container}>
@@ -152,32 +180,6 @@ const AddRelationship = () => {
           />
         </View>
         <View>
-          <Text style={styles.label}>Favorite Restaurant</Text>
-          <View style={styles.addRestaurant}>
-            <TextInput
-              style={[styles.input, styles.restaurant]}
-              placeholder="Search"
-              keyboardType="numeric"
-              placeholderTextColor="rgba(237,82,68,0.5)"
-              value={restaurant}
-              onChangeText={(newRestaurant) => setRestaurant(newRestaurant)}
-            />
-            <Pressable onPress={handleAddRestaurant}>
-              <Text style={styles.add}>+</Text>
-            </Pressable>
-          </View>
-          <View>
-            {restaurantArray.map((item) => (
-              <View key={item.id} style={styles.deleteRestaurant}>
-                <Text style={styles.restaurantItem}>{item.restaurant}</Text>
-                <Pressable onPress={() => handleDeleteRestaurant(item.id)}>
-                  <Text style={styles.delete}>x</Text>
-                </Pressable>
-              </View>
-            ))}
-          </View>
-        </View>
-        <View>
           <Text style={styles.label}>Love Languages</Text>
           <DropDownPicker
             open={open}
@@ -198,6 +200,58 @@ const AddRelationship = () => {
             }}
           />
         </View>
+        {showRestaurants && (
+          <View>
+            <Text style={styles.label}>Favorite Restaurant</Text>
+            <View style={styles.addRestaurant}>
+              <TextInput
+                style={[styles.input, styles.restaurant]}
+                placeholder="Search"
+                keyboardType="numeric"
+                placeholderTextColor="rgba(237,82,68,0.5)"
+                value={restaurant}
+                onChangeText={(newRestaurant) => setRestaurant(newRestaurant)}
+              />
+              <Pressable onPress={handleAddRestaurant}>
+                <Text style={styles.add}>+</Text>
+              </Pressable>
+            </View>
+            <View>
+              {restaurantArray.map((item) => (
+                <View key={item.id} style={styles.deleteRestaurant}>
+                  <Text style={styles.restaurantItem}>{item.restaurant}</Text>
+                  <Pressable onPress={() => handleDeleteRestaurant(item.id)}>
+                    <Text style={styles.delete}>x</Text>
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+        {showGifts && (
+          <View>
+            <Text style={styles.label}>Gift's Ideas</Text>
+            <DropDownPicker
+              open={openGifts}
+              value={valueGifts}
+              items={gifts}
+              setOpen={setOpenGifts}
+              setValue={setValueGifts}
+              setItems={setGifts}
+              style={styles.dropdown}
+              placeholder="Select a Gift"
+              placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+              dropDownContainerStyle={{
+                top: '52px',
+                left: '12px',
+                margin: 'auto',
+                color: '#EF6E62',
+                borderColor: '#ED5244',
+              }}
+            />
+          </View>
+        )}
+
         <Pressable
           style={[styles.button, isDisabled ? styles.disabled : '']}
           onPress={handlePress}
@@ -215,6 +269,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     backgroundColor: '#FFFFFF',
+    width: '100%',
     paddingTop: '120px',
   },
   block: {

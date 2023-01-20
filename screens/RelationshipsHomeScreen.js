@@ -18,15 +18,21 @@ const RelationshipsHomeScreen = () => {
       <View style={styles.data}>
         <Text style={styles.heading}>Relationships</Text>
         <View style={{ alignSelf: 'flex-start' }}>
-          {relationship.length !== 0
-            ? relationship.map((item) => (
-                <RelationshipItem item={item} key={item.id} />
-              ))
-            : <Text style={{color: '#F17369'}}>There's no relationships. Start by adding one!</Text>}
+          {relationship.length !== 0 ? (
+            relationship.map((item) => (
+              <RelationshipItem item={item} key={item.id} />
+            ))
+          ) : (
+            <Text style={{ color: '#F17369' }}>
+              There's no relationships. Start by adding one!
+            </Text>
+          )}
         </View>
 
         <Pressable style={styles.button}>
-          <Text style={styles.text} onPress={handlePress}>Add Relationship</Text>
+          <Text style={styles.text} onPress={handlePress}>
+            Add Relationship
+          </Text>
         </Pressable>
       </View>
 
@@ -40,6 +46,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
+    width: '100%',
+    aspectRatio: '10/3',
   },
   data: {
     height: '90%',
@@ -51,7 +59,7 @@ const styles = StyleSheet.create({
     fontSize: '20px',
     paddingTop: '40px',
     paddingBottom: '40px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   button: {
     backgroundColor: '#F17369',
@@ -63,8 +71,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 'auto',
   },
-  hover:{
-    backgroundColor: 'green'
+  hover: {
+    backgroundColor: 'green',
   },
   text: {
     color: '#FFFFFF',
