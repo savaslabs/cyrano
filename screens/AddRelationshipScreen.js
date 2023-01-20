@@ -179,7 +179,7 @@ const AddRelationship = () => {
             onChangeText={(newBirthday) => setBirthday(newBirthday)}
           />
         </View>
-        <View>
+        <>
           <Text style={styles.label}>Love Languages</Text>
           <DropDownPicker
             open={open}
@@ -197,9 +197,17 @@ const AddRelationship = () => {
               margin: 'auto',
               color: '#EF6E62',
               borderColor: '#ED5244',
+              zIndex: '10000',
+              width: '94%',
+            }}
+            labelStyle={{
+              color: '#ED5244',
+            }}
+            listItemLabelStyle={{
+              color: '#ED5244',
             }}
           />
-        </View>
+        </>
         {showRestaurants && (
           <View>
             <Text style={styles.label}>Favorite Restaurant</Text>
@@ -229,7 +237,7 @@ const AddRelationship = () => {
           </View>
         )}
         {showGifts && (
-          <View>
+          <>
             <Text style={styles.label}>Gift's Ideas</Text>
             <DropDownPicker
               open={openGifts}
@@ -247,9 +255,17 @@ const AddRelationship = () => {
                 margin: 'auto',
                 color: '#EF6E62',
                 borderColor: '#ED5244',
+                zIndex: '9000',
+                width: '94%',
+              }}
+              labelStyle={{
+                color: '#ED5244',
+              }}
+              listItemLabelStyle={{
+                color: '#ED5244',
               }}
             />
-          </View>
+          </>
         )}
 
         <Pressable
