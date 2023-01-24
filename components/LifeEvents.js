@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 
-const LifeEvents = ({ birthday }) => {
+const LifeEvents = ({ birthday, anniversary }) => {
   return (
     <View
       style={{
@@ -17,7 +17,7 @@ const LifeEvents = ({ birthday }) => {
         </View>
         <View>
           <Text style={styles.title}>Anniversary</Text>
-          <Text style={styles.text}>8-19-1967</Text>
+          <Text style={styles.text}>{anniversary}</Text>
         </View>
       </View>
     </View>

@@ -14,6 +14,7 @@ import Restaurants from '../components/Restaurants'
 import LifeEvents from '../components/LifeEvents'
 import RelationshipContext from '../context/RelationshipContext'
 import Gifts from '../components/Gifts'
+import RelationshipRating from '../components/RelationshipRating'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -34,10 +35,10 @@ const Relationship = () => {
     name,
     lastName,
     birthday,
-    restaurantArray,
+    anniversary,
     value,
-    valueGifts,
     profileImage,
+    relRatingValue
   } = singleRelationship
 
   return (
@@ -67,13 +68,7 @@ const Relationship = () => {
             </View>
           </View>
           <View style={styles.rankingContainer}>
-            <View style={styles.ranking}>
-              <WhiteStar />
-              <WhiteStar />
-              <WhiteStar />
-              <WhiteStar />
-              <BorderStar />
-            </View>
+             <RelationshipRating relRatingValue={relRatingValue} />
             <Text style={styles.relationshipText}>Relationship Strength</Text>
           </View>
         </View>
@@ -86,23 +81,15 @@ const Relationship = () => {
         <Card>
           <LoveLanguages name={name} value={value} />
         </Card>
-        {value === 'Receiving Gifts' && (
-          <Card>
-            <Gifts name={name} valueGifts={valueGifts} />
-          </Card>
-        )}
-        {value === 'Quality Time' && (
-          <Card>
-            <Restaurants name={name} restaurantArray={restaurantArray} />
-          </Card>
-        )}
-
         <Card>
-          <LifeEvents birthday={birthday} />
+          <LifeEvents birthday={birthday} anniversary={anniversary}/>
+        </Card>
+        <Card>
+          <Text>DATE LOG</Text>
         </Card>
       </View>
 
-      <View style={styles.navigation}>
+      {/* <View style={styles.navigation}>
         <Pressable
           style={styles.pressable}
           onPress={() => navigation.navigate('Relationships')}
@@ -121,13 +108,15 @@ const Relationship = () => {
         >
           <Text style={styles.next}>Next</Text>
         </Pressable>
-      </View>
+      </View> */}
+
+
 
       <Pressable
         style={styles.button}
         onPress={() => navigation.navigate('Add')}
       >
-        <Text style={styles.text}>Add More Relationships</Text>
+        <Text style={styles.text}>Schedule Your Next Date</Text>
       </Pressable>
     </View>
   )
@@ -150,7 +139,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '0',
     zIndex: '0',
-    top: '-635px',
+    top: '-335px',
   },
   profileImg: {
     width: '70px',
@@ -163,10 +152,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingBottom: '20px',
-  },
-  ranking: {
-    flex: 1,
-    flexDirection: 'row',
   },
   birthday: {
     flex: 1,

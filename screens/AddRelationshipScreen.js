@@ -14,49 +14,93 @@ import { useState, useEffect, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import uuid from 'react-native-uuid'
-import DropDownPicker from 'react-native-dropdown-picker'
 import * as ImagePicker from 'expo-image-picker'
+import First from '../components/form/First'
+import Second from '../components/form/Second'
+import Third from '../components/form/Third'
+import Fourth from '../components/form/Fourth'
 
 const AddRelationship = () => {
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
   const [birthday, setBirthday] = useState('')
+  const [anniversary, setAnniversary] = useState('')
   const [restaurant, setRestaurant] = useState('')
+  const [phone, setPhone] = useState('')
   const [restaurantArray, setRestaurantArray] = useState([])
   const [isDisabled, setIsDisabled] = useState(true)
   const [profileImage, setProfileImage] = useState(null)
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(null)
-  const [items, setItems] = useState([
-    { label: 'Receiving Gifts', value: 'Receiving Gifts' },
-    { label: 'Quality Time', value: 'Quality Time' },
+  const [openRelationship, setOpenRelationship] = useState(false)
+  const [relationshipValue, setRelationshipValue] = useState(null)
+  const [relationshipItems, setRelationshipItems] = useState([
+    { label: 'Romantic', value: 'Romantic' },
+    { label: 'Friend', value: 'Friend', disabled: true },
+    { label: 'Family', value: 'Family', disabled: true },
+    { label: 'Business', value: 'Business', disabled: true },
   ])
-  const [openGifts, setOpenGifts] = useState(false)
-  const [valueGifts, setValueGifts] = useState(null)
-  const [gifts, setGifts] = useState([
-    { label: 'Chocolates', value: 'Chocolates' },
-    { label: 'Flowers', value: 'Flowers' },
-    { label: 'Cinema Tickets', value: 'Cinema Tickets' },
+  const [openRelRating, setOpenRelRating] = useState(false)
+  const [relRatingValue, setRelRatingValue] = useState(null)
+  const [relRatingItems, setRelRatingItems] = useState([
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+  ])
+  const [openDateRating, setOpenDateRating] = useState(false)
+  const [dateRatingValue, setDateRatingValue] = useState(null)
+  const [dateRatingItems, setDateRatingItems] = useState([
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+  ])
+  const [openTruty, setOpenTruty] = useState(false)
+  const [trutyValue, setTrutyValue] = useState(null)
+  const [trutyItems, setTrutyItems] = useState([
+    { label: 'Yes', value: 'Yes' },
+    { label: 'No', value: 'No' },
+  ])
+  const [openLoveStyle, setOpenLoveStyle] = useState(false)
+  const [loveStyleValue, setloveStyleValues] = useState(null)
+  const [loveStyleItems, setloveStyleItems] = useState([
+    { label: 'Activities', value: 'Activities' },
+    { label: 'Appreciation', value: 'Appreciation', disabled: true },
+    { label: 'Emotional', value: 'Emotional' },
+    { label: 'Financial', value: 'Financial' },
+    { label: 'Intellectual', value: 'Intellectual', disabled: true },
+    { label: 'Physical', value: 'Physical', disabled: true },
+    { label: 'Practical', value: 'Practical', disabled: true },
   ])
   const [showRestaurants, setShowRestaurants] = useState(false)
-  const [showGifts, setShowGifts] = useState(false)
+  const [lastTimeDate, setLastTimeDate] = useState('')
+  const [datePlace, setDatePlace] = useState('')
+  const [pageCounter, setPageCounter] = useState(1)
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
 
+  const handleNext = () => {
+    setPageCounter((count) => count + 1)
+  }
+
   const handlePress = async () => {
-    if (
-      (name && lastName && birthday && value && restaurantArray) ||
-      (name && lastName && birthday && value && valueGifts)
-    ) {
+    if ((name && lastName && birthday) || (name && lastName && birthday)) {
       const newRelationship = {
         id: uuid.v4(),
+        profileImage,
         name,
         lastName,
         birthday,
-        restaurantArray,
-        value,
-        valueGifts,
-        profileImage,
+        anniversary,
+        phone,
+        relationshipValue,
+        relRatingValue,
+        dateRatingValue,
+        trutyValue,
+        loveStyleValue,
+        lastTimeDate,
+        datePlace,
       }
 
       await addRelationship(newRelationship)
@@ -64,22 +108,26 @@ const AddRelationship = () => {
       navigation.navigate('Relationship', {
         itemId: newRelationship.id,
       })
-
       setName('')
       setLastName('')
       setBirthday('')
-      setRestaurant('')
-      setRestaurantArray([])
-      setValue('')
       setProfileImage('')
-      setValueGifts('')
+      setAnniversary('')
+      setPhone('')
+      setRelationshipValue('')
+      setRelRatingValue('')
+      setDateRatingValue('')
+      setTrutyValue('')
+      setloveStyleValues('')
+      setLastTimeDate('')
+      setDatePlace('')
     }
   }
 
   useEffect(() => {
     if (
-      (name && lastName && birthday && restaurantArray && value) ||
-      (name && lastName && birthday && valueGifts && value)
+      (name && lastName && birthday && restaurantArray) ||
+      (name && lastName && birthday)
     ) {
       setIsDisabled(false)
     } else {
@@ -101,33 +149,19 @@ const AddRelationship = () => {
     }
   }
 
-  const handleAddRestaurant = () => {
-    const newRestaurantArr = {
-      id: uuid.v4(),
-      restaurant,
-    }
-    setRestaurantArray((prevState) => [...prevState, newRestaurantArr])
+  // const handleAddRestaurant = () => {
+  //   const newRestaurantArr = {
+  //     id: uuid.v4(),
+  //     restaurant,
+  //   }
+  //   setRestaurantArray((prevState) => [...prevState, newRestaurantArr])
 
-    setRestaurant('')
-  }
+  //   setRestaurant('')
+  // }
 
-  const handleDeleteRestaurant = (id) => {
-    setRestaurantArray(restaurantArray.filter((item) => item.id !== id))
-  }
-
-  useEffect(() => {
-    if (value === 'Receiving Gifts') {
-      setShowGifts(true)
-    } else {
-      setShowGifts(false)
-    }
-
-    if (value === 'Quality Time') {
-      setShowRestaurants(true)
-    } else {
-      setShowRestaurants(false)
-    }
-  }, [value])
+  // const handleDeleteRestaurant = (id) => {
+  //   setRestaurantArray(restaurantArray.filter((item) => item.id !== id))
+  // }
 
   return (
     <View style={styles.container}>
@@ -148,67 +182,69 @@ const AddRelationship = () => {
         </Pressable>
       </View>
       <SafeAreaView style={styles.form}>
-        <View>
-          <Text style={styles.label}>First Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            placeholder="Carol"
-            value={name}
-            onChangeText={(newName) => setName(newName)}
+        {pageCounter === 1 && (
+          <First
+            name={name}
+            setName={setName}
+            lastName={lastName}
+            setLastName={setLastName}
+            birthday={birthday}
+            setBirthday={setBirthday}
           />
-        </View>
-        <View>
-          <Text style={styles.label}>Last Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            placeholder="Burnett"
-            value={lastName}
-            onChangeText={(newLastName) => setLastName(newLastName)}
+        )}
+        {pageCounter === 2 && (
+          <Second
+            openRelationship={openRelationship}
+            setOpenRelationship={setOpenRelationship}
+            relationshipItems={relationshipItems}
+            setRelationshipItems={setRelationshipItems}
+            relationshipValue={relationshipValue}
+            setRelationshipValue={setRelationshipValue}
+            anniversary={anniversary}
+            setAnniversary={setAnniversary}
+            openRelRating={openRelRating}
+            setOpenRelRating={setOpenRelRating}
+            relRatingItems={relRatingItems}
+            setRelRatingItems={setRelRatingItems}
+            relRatingValue={relRatingValue}
+            setRelRatingValue={setRelRatingValue}
           />
-        </View>
-        <View>
-          <Text style={styles.label}>Birthday</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="4 - 26 - 1933"
-            keyboardType="numeric"
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            value={birthday}
-            onChangeText={(newBirthday) => setBirthday(newBirthday)}
+        )}
+        {pageCounter === 3 && (
+          <Third
+            openTruty={openTruty}
+            setOpenTruty={setOpenTruty}
+            trutyValue={trutyValue}
+            setTrutyValue={setTrutyValue}
+            trutyItems={trutyItems}
+            setTrutyItems={setTrutyItems}
+            openLoveStyle={openLoveStyle}
+            setOpenLoveStyle={setOpenLoveStyle}
+            loveStyleValue={loveStyleValue}
+            setloveStyleValues={setloveStyleValues}
+            loveStyleItems={loveStyleItems}
+            setloveStyleItems={setloveStyleItems}
+            phone={phone}
+            setPhone={setPhone}
           />
-        </View>
-        <>
-          <Text style={styles.label}>Love Languages</Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            style={styles.dropdown}
-            placeholder="Select a love language"
-            placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-            dropDownContainerStyle={{
-              top: '52px',
-              left: '12px',
-              margin: 'auto',
-              color: '#EF6E62',
-              borderColor: '#ED5244',
-              zIndex: '10000',
-              width: '94%',
-            }}
-            labelStyle={{
-              color: '#ED5244',
-            }}
-            listItemLabelStyle={{
-              color: '#ED5244',
-            }}
+        )}
+        {pageCounter === 4 && (
+          <Fourth
+            openDateRating={openDateRating}
+            setOpenDateRating={setOpenDateRating}
+            dateRatingValue={dateRatingValue}
+            setDateRatingValue={setDateRatingValue}
+            dateRatingItems={dateRatingItems}
+            setDateRatingItems={setDateRatingItems}
+            lastTimeDate={lastTimeDate}
+            setLastTimeDate={setLastTimeDate}
+            datePlace={datePlace}
+            setDatePlace={setDatePlace}
+            name={name}
           />
-        </>
-        {showRestaurants && (
+        )}
+
+        {/* {showRestaurants && (
           <View>
             <Text style={styles.label}>Favorite Restaurant</Text>
             <View style={styles.addRestaurant}>
@@ -235,39 +271,15 @@ const AddRelationship = () => {
               ))}
             </View>
           </View>
-        )}
-        {showGifts && (
-          <>
-            <Text style={styles.label}>Gift's Ideas</Text>
-            <DropDownPicker
-              open={openGifts}
-              value={valueGifts}
-              items={gifts}
-              setOpen={setOpenGifts}
-              setValue={setValueGifts}
-              setItems={setGifts}
-              style={styles.dropdown}
-              placeholder="Select a Gift"
-              placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-              dropDownContainerStyle={{
-                top: '52px',
-                left: '12px',
-                margin: 'auto',
-                color: '#EF6E62',
-                borderColor: '#ED5244',
-                zIndex: '9000',
-                width: '94%',
-              }}
-              labelStyle={{
-                color: '#ED5244',
-              }}
-              listItemLabelStyle={{
-                color: '#ED5244',
-              }}
-            />
-          </>
-        )}
+        )} */}
+      </SafeAreaView>
+      {pageCounter !== 4 && (
+        <Pressable style={styles.button} onPress={handleNext}>
+          <Text style={styles.text}>Next</Text>
+        </Pressable>
+      )}
 
+      {pageCounter === 4 && (
         <Pressable
           style={[styles.button, isDisabled ? styles.disabled : '']}
           onPress={handlePress}
@@ -275,7 +287,7 @@ const AddRelationship = () => {
         >
           <Text style={styles.text}>Save</Text>
         </Pressable>
-      </SafeAreaView>
+      )}
     </View>
   )
 }
@@ -283,10 +295,11 @@ const AddRelationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-evenly',
     backgroundColor: '#FFFFFF',
     width: '100%',
-    paddingTop: '120px',
+    alignItems: 'center',
+    // paddingTop: '120px',
   },
   block: {
     textAlign: 'center',
@@ -300,7 +313,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: '-635px',
+    top: '-500px',
   },
   cameraContainer: {
     width: '68px',
@@ -384,9 +397,10 @@ const styles = StyleSheet.create({
     paddingLeft: '50px',
     borderRadius: '65px',
     textAlign: 'center',
-    margin: 'auto',
+    // margin: 'auto',
     marginTop: '20px',
     opacity: '1',
+    width: '50%',
   },
   disabled: {
     opacity: '0.5',
@@ -422,6 +436,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: '15px',
     marginBottom: '5px',
+  },
+  hideButton: {
+    display: 'none',
+  },
+  showButton: {
+    display: 'block',
   },
 })
 

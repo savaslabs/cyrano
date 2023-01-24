@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
-import Navbar from '../components/Navbar'
+// import Navbar from '../components/Navbar'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 
@@ -36,7 +36,7 @@ const RelationshipsHomeScreen = () => {
         </Pressable>
       </View>
 
-      <Navbar style={{ height: '10%' }} />
+      {/* <Navbar style={{ height: '10%' }} /> */}
     </View>
   )
 }
