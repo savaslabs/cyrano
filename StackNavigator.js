@@ -1,15 +1,18 @@
-import React from 'react'
+import { useState, useContext } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './screens/HomeScreen'
 import RelationshipsHomeScreen from './screens/RelationshipsHomeScreen'
 import AddRelationShipScreen from './screens/AddRelationshipScreen'
 import RelationshipScreen from './screens/RelationshipScreen'
 import SendMessageScreen from './screens/SendMessageScreen'
+import RelationshipContext from './context/RelationshipContext'
 
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
-  const user = true
+  const { user } = useContext(RelationshipContext)
+
+  const { isLoggedIn } = user
 
   return (
     <Stack.Navigator
@@ -17,9 +20,8 @@ const StackNavigator = () => {
         headerShown: false,
       }}
     >
-      {user ? (
+      {isLoggedIn ? (
         <>
-          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
             name="Relationships"
             component={RelationshipsHomeScreen}
@@ -29,7 +31,7 @@ const StackNavigator = () => {
           <Stack.Screen name="Send" component={SendMessageScreen} />
         </>
       ) : (
-        ''
+        <Stack.Screen name="Home" component={HomeScreen} />
       )}
     </Stack.Navigator>
   )
