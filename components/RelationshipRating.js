@@ -1,9 +1,10 @@
 import { View, StyleSheet } from 'react-native'
 import WhiteStar from './WhiteStar'
 import BorderStar from './BorderStar'
+// import WhiteStar from '../svg/WhiteStar'
+// import BorderStar from '../svg/BorderStar'
 
 const RelationshipRating = ({ relRatingValue }) => {
-  console.log(relRatingValue)
   return (
     <>
       {relRatingValue && relRatingValue === 1 && (

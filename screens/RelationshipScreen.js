@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
-import Shape from '../assets/shape.svg'
+import ShapeSVG from '../assets/shape.svg'
 import Birthday from '../assets/birthday.svg'
 import Arrow from '../assets/arrow-back.svg'
 import { useState, useEffect, useContext } from 'react'
@@ -8,13 +8,11 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import WhiteStar from '../components/WhiteStar'
 import BorderStar from '../components/BorderStar'
 import Card from '../shared/Card'
-import Recommendations from '../components/Recommendations'
 import LoveLanguages from '../components/LoveLanguages'
-import Restaurants from '../components/Restaurants'
 import LifeEvents from '../components/LifeEvents'
 import RelationshipContext from '../context/RelationshipContext'
-import Gifts from '../components/Gifts'
 import RelationshipRating from '../components/RelationshipRating'
+import Shape from '../svg/Shape'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -38,12 +36,13 @@ const Relationship = () => {
     anniversary,
     value,
     profileImage,
-    relRatingValue
+    relRatingValue,
   } = singleRelationship
 
   return (
     <View style={styles.container}>
-      <Image source={Shape} style={styles.img} />
+      {/* <Shape /> */}
+      <Image source={ShapeSVG} style={styles.img} />
       <View style={styles.heading}>
         {profileImage ? (
           <Image source={profileImage} style={styles.profileImg} />
@@ -55,20 +54,19 @@ const Relationship = () => {
         )}
 
         <View style={styles.personInfo}>
-          <View>
-            <Text style={styles.name}>
-              {name} {lastName}
-            </Text>
-            <View style={styles.birthday}>
-              <Image
-                source={Birthday}
-                style={{ width: 18, height: 18, marginRight: 7 }}
-              />
-              <Text style={styles.birthdayDate}>{birthday}</Text>
-            </View>
+          <Text style={styles.name}>
+            {name} {lastName}
+          </Text>
+          <View style={styles.birthday}>
+            <Image
+              source={Birthday}
+              style={{ width: 18, height: 18, marginRight: 7 }}
+            />
+            <Text style={styles.birthdayDate}>{birthday}</Text>
           </View>
+
           <View style={styles.rankingContainer}>
-             <RelationshipRating relRatingValue={relRatingValue} />
+            <RelationshipRating relRatingValue={relRatingValue} />
             <Text style={styles.relationshipText}>Relationship Strength</Text>
           </View>
         </View>
@@ -82,7 +80,7 @@ const Relationship = () => {
           <LoveLanguages name={name} value={value} />
         </Card>
         <Card>
-          <LifeEvents birthday={birthday} anniversary={anniversary}/>
+          <LifeEvents birthday={birthday} anniversary={anniversary} />
         </Card>
         <Card>
           <Text>DATE LOG</Text>
@@ -110,11 +108,14 @@ const Relationship = () => {
         </Pressable>
       </View> */}
 
-
+      <Text style={styles.message}>
+        It's been over two weeks since your last date with {name}, it's time to
+        schedule another one.
+      </Text>
 
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('Add')}
+        onPress={() => navigation.navigate('Book')}
       >
         <Text style={styles.text}>Schedule Your Next Date</Text>
       </Pressable>
@@ -125,12 +126,8 @@ const Relationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    aspectRatio: '10/3',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    paddingTop: 20,
   },
   img: {
     width: '100%',
@@ -198,6 +195,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginLeft: 10,
     marginRight: 10,
+  },
+  message: {
+    color: '#EF6E62',
+    fontSize: 10,
+    marginBottom: 10,
+    textAlign: 'center'
   },
   text: {
     color: '#FFFFFF',

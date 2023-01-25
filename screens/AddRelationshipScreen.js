@@ -7,8 +7,10 @@ import {
   Pressable,
 } from 'react-native'
 import React from 'react'
-import Shape from '../assets/shape.svg'
-import Camera from '../assets/camera.svg'
+import ShapeSVG from '../assets/shape.svg'
+import Shape from '../svg/Shape'
+import CameraSVG from '../assets/camera.svg'
+import Camera from '../svg/Camera'
 import { useState, useEffect, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
@@ -164,8 +166,10 @@ const AddRelationship = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={Shape} style={styles.img} />
+      <Image source={ShapeSVG} style={styles.img} />
+      {/* <Shape/> */}
       <View style={styles.block}>
+   
         <Text style={styles.h1}>Add Relationship</Text>
         <Pressable onPress={pickImage}>
           <View style={styles.cameraContainer}>
@@ -175,7 +179,7 @@ const AddRelationship = () => {
                 style={styles.profileImage}
               />
             ) : (
-              <Image source={Camera} style={styles.camera} />
+              <Image source={CameraSVG} style={styles.camera} />
             )}
           </View>
         </Pressable>
@@ -295,12 +299,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-evenly',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
     width: '100%',
-    alignItems: 'center',
   },
   block: {
     textAlign: 'center',
+    position: 'relative',
+    width: '100%'
   },
   img: {
     width: '100%',
@@ -352,6 +358,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingBottom: 10,
     zIndex: 2,
+    alignSelf: 'center'
   },
   label: {
     color: '#ED5244',

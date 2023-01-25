@@ -83,7 +83,6 @@ const HomeScreen = () => {
               placeholder="1 (555) 123-4567"
               value={phone}
               onChangeText={(newPhone) => setPhone(newPhone)}
-              keyboardType="numeric"
               placeholderTextColor="rgba(255,255,255, 0.5)"
             />
           </View>
@@ -112,6 +111,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 80,
+    alignSelf: 'center'
   },
   h1: {
     color: '#FFFFFF',

@@ -46,7 +46,6 @@ const First = ({
         <TextInput
           style={styles.input}
           placeholder="4 - 26 - 1933"
-          keyboardType="numeric"
           placeholderTextColor="rgba(237,82,68,0.5)"
           value={birthday}
           onChangeText={(newBirthday) => setBirthday(newBirthday)}

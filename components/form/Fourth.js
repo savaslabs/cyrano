@@ -20,7 +20,7 @@ const Fourth = ({
   setLastTimeDate,
   datePlace,
   setDatePlace,
-  name
+  name,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -69,13 +69,14 @@ const Fourth = ({
           placeholder="Rate your date"
           placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
           dropDownContainerStyle={{
-            top: 52,
+            top: 160,
             left: 12,
             margin: 'auto',
             color: '#EF6E62',
             borderColor: '#ED5244',
             zIndex: '10000',
             width: '94%',
+            height: 200,
           }}
           labelStyle={{
             color: '#ED5244',
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
-
   },
   text: {
     color: '#FFFFFF',

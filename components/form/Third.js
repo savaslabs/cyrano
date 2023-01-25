@@ -106,7 +106,7 @@ const Third = ({
               margin: 'auto',
               color: '#EF6E62',
               borderColor: '#ED5244',
-              zIndex: '1000',
+              zIndex: '100000',
               width: '94%',
             }}
             labelStyle={{
@@ -127,15 +127,14 @@ const Third = ({
       )}
       {trutyValue === 'No' && (
         <>
-          <View>
+    
             <Text style={styles.label}>Enter phone Number</Text>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{position:'relative'}}>
               <TextInput
                 style={styles.input}
                 placeholder="1 (555) 123-4567"
                 value={phone}
                 onChangeText={(newPhone) => setPhone(newPhone)}
-                keyboardType="numeric"
                 placeholderTextColor="rgba(255,255,255, 0.5)"
               />
               <Pressable
@@ -146,7 +145,7 @@ const Third = ({
                 <Text style={styles.text}>Text the link</Text>
               </Pressable>
             </View>
-          </View>
+
 
           <View style={{ display: showLoveStyles }}>
             <Text style={styles.label}>Select your Love Styles</Text>
@@ -161,13 +160,14 @@ const Third = ({
               placeholder="Choose up to three"
               placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
               dropDownContainerStyle={{
-                top: 52,
+                top: 160,
                 left: 12,
                 margin: 'auto',
                 color: '#EF6E62',
                 borderColor: '#ED5244',
-                zIndex: '1000',
+                zIndex: '10000',
                 width: '94%',
+                height: 200
               }}
               labelStyle={{
                 color: '#ED5244',
@@ -198,14 +198,16 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   input: {
-    height: 0,
-    margin: 12,
+    marginTop: 30,
+    marginBottom:20,
+    marginLeft: 10,
+    marginRight: 10,
     borderWidth: 1,
-    padding: 10,
+    padding: 15,
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
-    width: '70%',
+    width: '100%'
   },
   dropdown: {
     height: 0,
@@ -218,18 +220,18 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
+    textAlign: 'center'
   },
   button: {
     backgroundColor: '#EF6E62',
     paddingTop: 10,
     paddingBottom: 10,
     borderRadius: 65,
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
     opacity: '1',
-    width: '30%',
-    alignSelf: 'center',
+    width: '35%',
+    position: 'absolute',
+    right: 0,
+    bottom:25
   },
   disabled: {
     opacity: '0.5',

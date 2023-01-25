@@ -6,6 +6,7 @@ import AddRelationShipScreen from './screens/AddRelationshipScreen'
 import RelationshipScreen from './screens/RelationshipScreen'
 import SendMessageScreen from './screens/SendMessageScreen'
 import RelationshipContext from './context/RelationshipContext'
+import BookCyrano from './screens/BookCyrano'
 
 const Stack = createNativeStackNavigator()
 
@@ -29,6 +30,7 @@ const StackNavigator = () => {
           <Stack.Screen name="Add" component={AddRelationShipScreen} />
           <Stack.Screen name="Relationship" component={RelationshipScreen} />
           <Stack.Screen name="Send" component={SendMessageScreen} />
+          <Stack.Screen name="Book" component={BookCyrano} />
         </>
       ) : (
         <Stack.Screen name="Home" component={HomeScreen} />
