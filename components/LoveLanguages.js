@@ -9,13 +9,13 @@ const LoveLanguages = ({ name, value }) => {
         flex: 1,
       }}
     >
-      <Text style={{ color: '#EF6E62', fontSize: '16px', fontWeight: '400' }}>
+      <Text style={{ color: '#EF6E62', fontSize: 16, fontWeight: '400' }}>
         {name}'s Love Languages
       </Text>
       {value === 'Acts of Service' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Image source={Clock} style={{ width: 32, height: 32 }} />
             <Text style={styles.text}>{value}</Text>
           </View>
         </View>
@@ -23,7 +23,7 @@ const LoveLanguages = ({ name, value }) => {
       {value === 'Receiving Gifts' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
-            <Image source={Gift} style={{ width: '32px', height: '32px' }} />
+            <Image source={Gift} style={{ width: 32, height: 32 }} />
             <Text style={styles.text}>{value}</Text>
           </View>
         </View>
@@ -31,7 +31,7 @@ const LoveLanguages = ({ name, value }) => {
       {value === 'Quality Time' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Image source={Clock} style={{ width: 32, height: 32 }} />
             <Text style={styles.text}>{value}</Text>
           </View>
         </View>
@@ -39,7 +39,7 @@ const LoveLanguages = ({ name, value }) => {
       {value === 'Words of Affirmation' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Image source={Clock} style={{ width: 32, height: 32 }} />
             <Text style={styles.text}>{value}</Text>
           </View>
         </View>
@@ -47,7 +47,7 @@ const LoveLanguages = ({ name, value }) => {
       {value === 'Physical Touch' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: '32px', height: '32px' }} />
+            <Image source={Clock} style={{ width: 32, height: 32 }} />
             <Text style={styles.text}>{value}</Text>
           </View>
         </View>
@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: '30px',
+    paddingTop: 30,
   },
   text: {
     color: '#EF6E62',
-    fontSize: '12px',
+    fontSize: 12,
     fontWeight: '400',
-    paddingTop: '10px',
+    paddingTop: 10,
   },
   iconData: {
     alignItems: 'center',

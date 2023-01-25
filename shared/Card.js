@@ -7,10 +7,10 @@ const Card = ({ children }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: '8px',
-    padding: '20px',
-    marginTop: '7px',
-    marginBottom: '7px',
+    borderRadius: 8,
+    padding: 20,
+    marginTop: 7,
+    marginBottom: 7,
     backgroundColor: '#FFFFFF',
     shadowColor: 'rgba(237, 99, 88, 0.4);',
     shadowOffset: {

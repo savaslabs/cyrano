@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     backgroundColor: '#F59784',
-    paddingTop: '10px',
-    paddingBottom: '20px',
+    paddingTop: 10,
+    paddingBottom: 20,
   },
   iconsContainer: {
     flex: 1,
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   img: {
-    width: '20px',
-    height: '20px',
+    width: 20,
+    height: 20,
     cursor: 'pointer',
   },
   text: {

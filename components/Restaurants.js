@@ -7,7 +7,7 @@ const Restaurants = ({ name, restaurantArray }) => {
         flex: 1,
       }}
     >
-      <Text style={{ color: '#EF6E62', fontSize: '16px', fontWeight: '400' }}>
+      <Text style={{ color: '#EF6E62', fontSize: 16, fontWeight: '400' }}>
         {name}'s Favorite Restaurants
       </Text>
       <View>
@@ -25,9 +25,9 @@ const Restaurants = ({ name, restaurantArray }) => {
 const styles = StyleSheet.create({
   restaurantTitle: {
     color: '#EF6E62',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '700',
-    paddingTop: '10px',
+    paddingTop: 10,
   },
 })
 

@@ -67,8 +67,8 @@ const Third = ({
           placeholder="Rate your relationship"
           placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
           dropDownContainerStyle={{
-            top: '52px',
-            left: '12px',
+            top: 52,
+            left: 12,
             margin: 'auto',
             color: '#EF6E62',
             borderColor: '#ED5244',
@@ -101,8 +101,8 @@ const Third = ({
             placeholder="Choose up to three"
             placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
             dropDownContainerStyle={{
-              top: '52px',
-              left: '12px',
+              top: 52,
+              left: 12,
               margin: 'auto',
               color: '#EF6E62',
               borderColor: '#ED5244',
@@ -129,7 +129,7 @@ const Third = ({
         <>
           <View>
             <Text style={styles.label}>Enter phone Number</Text>
-            <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
               <TextInput
                 style={styles.input}
                 placeholder="1 (555) 123-4567"
@@ -161,8 +161,8 @@ const Third = ({
               placeholder="Choose up to three"
               placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
               dropDownContainerStyle={{
-                top: '52px',
-                left: '12px',
+                top: 52,
+                left: 12,
                 margin: 'auto',
                 color: '#EF6E62',
                 borderColor: '#ED5244',
@@ -194,41 +194,39 @@ const styles = StyleSheet.create({
   label: {
     color: '#ED5244',
     fontWeight: '700',
-    fontSize: '16px',
-    paddingLeft: '10px',
+    fontSize: 16,
+    paddingLeft: 10,
   },
   input: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 0,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#ED5244',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#ED5244',
-    width: '70%'
+    width: '70%',
   },
   dropdown: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 0,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#ED5244',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#ED5244',
-    minHeight: 'initial',
-    width: 'initial',
   },
   text: {
     color: '#FFFFFF',
   },
   button: {
     backgroundColor: '#EF6E62',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    borderRadius: '65px',
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 65,
     textAlign: 'center',
-    marginTop: '10px',
-    marginBottom: '10px',
+    marginTop: 10,
+    marginBottom: 10,
     opacity: '1',
     width: '30%',
     alignSelf: 'center',

@@ -15,26 +15,24 @@ const RelationshipsHomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.data}>
+      <View style={{paddingLeft: 20}}>
         <Text style={styles.heading}>Relationships</Text>
-        <View style={{ alignSelf: 'flex-start' }}>
-          {relationship.length !== 0 ? (
-            relationship.map((item) => (
-              <RelationshipItem item={item} key={item.id} />
-            ))
-          ) : (
-            <Text style={{ color: '#F17369' }}>
-              There's no relationships. Start by adding one!
-            </Text>
-          )}
-        </View>
-
-        <Pressable style={styles.button}>
-          <Text style={styles.text} onPress={handlePress}>
-            Add Relationship
+        {relationship.length !== 0 ? (
+          relationship.map((item) => (
+            <RelationshipItem item={item} key={item.id} />
+          ))
+        ) : (
+          <Text style={{ color: '#F17369' }}>
+            There's no relationships. Start by adding one!
           </Text>
-        </Pressable>
+        )}
       </View>
+
+      <Pressable style={styles.button}>
+        <Text style={styles.text} onPress={handlePress}>
+          Add Relationship
+        </Text>
+      </Pressable>
 
       {/* <Navbar style={{ height: '10%' }} /> */}
     </View>
@@ -44,38 +42,40 @@ const RelationshipsHomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
-    width: '100%',
-    aspectRatio: '10/3',
+    height: '100%',
+    justifyContent: 'space-between',
+    paddingTop: 50,
+    paddingBottom: 50
   },
   data: {
     height: '90%',
-    paddingLeft: '2em',
-    paddingRight: '2rem',
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   heading: {
     color: '#F17369',
-    fontSize: '20px',
-    paddingTop: '40px',
-    paddingBottom: '40px',
+    fontSize: 20,
+    paddingTop: 40,
+    paddingBottom: 40,
     fontWeight: 'bold',
   },
   button: {
     backgroundColor: '#F17369',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingLeft: '20px',
-    paddingRight: '20px',
-    borderRadius: '65px',
-    textAlign: 'center',
-    margin: 'auto',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 65,
+    width: '50%',
+    alignSelf: 'center'
   },
   hover: {
     backgroundColor: 'green',
   },
   text: {
     color: '#FFFFFF',
+    textAlign: 'center',
   },
 })
 

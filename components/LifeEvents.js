@@ -7,7 +7,7 @@ const LifeEvents = ({ birthday, anniversary }) => {
         flex: 1,
       }}
     >
-      <Text style={{ color: '#EF6E62', fontSize: '16px', fontWeight: '400' }}>
+      <Text style={{ color: '#EF6E62', fontSize: 16, fontWeight: '400' }}>
         Important Life Events
       </Text>
       <View style={styles.eventsContainer}>
@@ -29,20 +29,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: '20px',
-    paddingBottom: '20px',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   text: {
     color: '#EF6E62',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '700',
-    paddingTop: '10px',
+    paddingTop: 10,
   },
   title: {
     color: '#EF6E62',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '400',
-    paddingTop: '10px',
+    paddingTop: 10,
   },
 })
 

@@ -43,8 +43,8 @@ const Second = ({
         placeholder="Select a relationship type"
         placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
         dropDownContainerStyle={{
-          top: '52px',
-          left: '12px',
+          top: 52,
+          left: 12,
           margin: 'auto',
           color: '#EF6E62',
           borderColor: '#ED5244',
@@ -89,8 +89,8 @@ const Second = ({
               placeholder="Rate your relationship"
               placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
               dropDownContainerStyle={{
-                top: '52px',
-                left: '12px',
+                top: 52,
+                left: 12,
                 margin: 'auto',
                 color: '#EF6E62',
                 borderColor: '#ED5244',
@@ -118,28 +118,26 @@ const styles = StyleSheet.create({
   label: {
     color: '#ED5244',
     fontWeight: '700',
-    fontSize: '16px',
-    paddingLeft: '10px',
+    fontSize: 16,
+    paddingLeft: 10,
   },
   input: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#ED5244',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#ED5244',
   },
   dropdown: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#ED5244',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#ED5244',
-    minHeight: 'initial',
-    width: 'initial',
   },
 })
 

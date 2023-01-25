@@ -3,7 +3,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   Pressable,
 } from 'react-native'
@@ -11,6 +10,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
+import Logo from '../svg/Logo'
+import LogoIMG from '../assets/logo.svg'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
@@ -51,18 +52,14 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <LinearGradient colors={['#FED9B7', '#F07167']} style={styles.background}>
         <View style={styles.imgContainer}>
-          <Image
-            source={require('../assets/logo.svg')}
-            style={{ width: 80, height: 60 }}
-          />
+          <Image source={LogoIMG} style={styles.logo} />
+          {/* <Logo /> */}
         </View>
-        <View style={styles.heading}>
           <Text style={styles.h1}>Welcome to Cyrano</Text>
           <Text style={styles.h2}>
             Please fill your details below to create your account
           </Text>
-        </View>
-        <SafeAreaView style={styles.form}>
+        <View style={styles.form}>
           <View>
             <Text style={styles.label}>First Name</Text>
             <TextInput
@@ -97,7 +94,7 @@ const HomeScreen = () => {
           >
             <Text style={styles.text}>Create Account</Text>
           </Pressable>
-        </SafeAreaView>
+        </View>
       </LinearGradient>
     </View>
   )
@@ -106,64 +103,61 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    aspectRatio: '10/3',
   },
   background: {
     height: '100%',
     flex: 1,
     justifyContent: 'center',
   },
-  heading: {
-    textAlign: 'center',
+  logo: {
+    width: 100,
+    height: 80,
   },
   h1: {
     color: '#FFFFFF',
-    fontSize: '32px',
+    fontSize: 32,
     fontWeight: '600',
-    paddingBottom: '10px',
+    paddingBottom: 10,
+    alignSelf: 'center'
   },
   h2: {
     color: '#FFFFFF',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '400',
-    paddingBottom: '20px',
+    paddingBottom: 20,
     width: '70%',
-    alignSelf: 'center',
+    textAlign: 'center',
+    alignSelf: 'center'
   },
   label: {
     color: '#FFFFFF',
     fontWeight: '700',
-    fontSize: '16px',
-    paddingLeft: '10px',
+    fontSize: 16,
+    paddingLeft: 10,
   },
   imgContainer: {
-    alignSelf: 'center',
-    paddingBottom: '10px',
-  },
-  form: {
-    width: '80%',
-    alignSelf: 'center',
+    paddingBottom: 10,
+    alignSelf: 'center'
   },
   input: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#FFFFFF',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#FFFFFF',
   },
   button: {
     backgroundColor: '#FFFFFF',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingRight: '20px',
-    paddingLeft: '20px',
-    borderRadius: '65px',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
+    borderRadius: 65,
     textAlign: 'center',
     margin: 'auto',
-    marginTop: '20px',
+    marginTop: 20,
     shadowColor: '#ed6358',
     shadowOffset: {
       width: '0',
@@ -173,12 +167,15 @@ const styles = StyleSheet.create({
     shadowRadius: '5.62',
     elevation: '6',
     opacity: '1',
+    width: '50%',
+    alignSelf: 'center'
   },
   disabled: {
     opacity: '0.5',
   },
   text: {
     color: '#EF6E62',
+    textAlign: 'center'
   },
 })
 

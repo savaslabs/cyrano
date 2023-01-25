@@ -7,7 +7,7 @@ const Gifts = ({ name, valueGifts }) => {
         flex: 1,
       }}
     >
-      <Text style={{ color: '#EF6E62', fontSize: '16px', fontWeight: '400' }}>
+      <Text style={{ color: '#EF6E62', fontSize: 16, fontWeight: '400' }}>
         Gift ideas for {name}
       </Text>
       <View>
@@ -20,9 +20,9 @@ const Gifts = ({ name, valueGifts }) => {
 const styles = StyleSheet.create({
   restaurantTitle: {
     color: '#EF6E62',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '700',
-    paddingTop: '10px',
+    paddingTop: 10,
   },
 })
 

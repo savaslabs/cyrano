@@ -13,9 +13,9 @@ const Recommendations = () => {
     >
       <Image
         source={Hand}
-        style={{ width: '18px', height: '24px', marginRight: '15px' }}
+        style={{ width: 18, height: 24, marginRight: 15 }}
       />
-      <Text style={{ color: '#EF6E62', fontSize: '16px', fontWeight: '400' }}>
+      <Text style={{ color: '#EF6E62', fontSize: 16, fontWeight: '400' }}>
         Recommendations
       </Text>
     </View>

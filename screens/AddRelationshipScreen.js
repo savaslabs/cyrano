@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  SafeAreaView,
   TextInput,
   Pressable,
 } from 'react-native'
@@ -181,7 +180,7 @@ const AddRelationship = () => {
           </View>
         </Pressable>
       </View>
-      <SafeAreaView style={styles.form}>
+      <View style={styles.form}>
         {pageCounter === 1 && (
           <First
             name={name}
@@ -272,7 +271,7 @@ const AddRelationship = () => {
             </View>
           </View>
         )} */}
-      </SafeAreaView>
+      </View>
       {pageCounter !== 4 && (
         <Pressable style={styles.button} onPress={handleNext}>
           <Text style={styles.text}>Next</Text>
@@ -299,7 +298,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     width: '100%',
     alignItems: 'center',
-    // paddingTop: '120px',
   },
   block: {
     textAlign: 'center',
@@ -313,11 +311,11 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: '-500px',
+    top: -500,
   },
   cameraContainer: {
-    width: '68px',
-    height: '68px',
+    width: 68,
+    height: 68,
     borderRadius: '50%',
     position: 'relative',
     cursor: 'pointer',
@@ -333,8 +331,8 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   camera: {
-    width: '15px',
-    height: '15px',
+    width: 15,
+    height: 15,
     color: '#EF6E62',
     position: 'absolute',
     top: 0,
@@ -344,61 +342,60 @@ const styles = StyleSheet.create({
     margin: 'auto',
   },
   profileImage: {
-    width: '68px',
-    height: '68px',
+    width: 68,
+    height: 68,
     borderRadius: '50%',
   },
   h1: {
     color: '#FFFFFF',
-    fontSize: '24px',
+    fontSize: 24,
     fontWeight: '600',
-    paddingBottom: '10px',
+    paddingBottom: 10,
     zIndex: 2,
   },
   label: {
     color: '#ED5244',
     fontWeight: '700',
-    fontSize: '16px',
-    paddingLeft: '10px',
+    fontSize: 16,
+    paddingLeft: 10,
   },
   form: {
     width: '80%',
     alignSelf: 'center',
-    paddingTop: '40px',
+    paddingTop: 40,
   },
   input: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#ED5244',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#ED5244',
   },
   dropdown: {
-    height: '40px',
-    margin: '12px',
-    borderWidth: '1px',
-    padding: '10px',
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
     borderColor: '#ED5244',
-    borderRadius: '5px',
+    borderRadius: 5,
     color: '#ED5244',
-    minHeight: 'initial',
-    width: 'initial',
   },
   text: {
     color: '#FFFFFF',
+    textAlign: 'center'
   },
   button: {
     backgroundColor: '#EF6E62',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingRight: '50px',
-    paddingLeft: '50px',
-    borderRadius: '65px',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 50,
+    paddingLeft: 50,
+    borderRadius: 65,
     textAlign: 'center',
     // margin: 'auto',
-    marginTop: '20px',
+    marginTop: 20,
     opacity: '1',
     width: '50%',
   },
@@ -414,28 +411,28 @@ const styles = StyleSheet.create({
     width: '87%',
   },
   add: {
-    fontSize: '24px',
+    fontSize: 24,
     color: '#EF6E62',
     fontWeight: '700',
     cursor: 'pointer',
   },
   delete: {
-    fontSize: '24px',
+    fontSize: 24,
     color: '#EF6E62',
     fontWeight: '700',
     cursor: 'pointer',
-    marginLeft: '15px',
+    marginLeft: 15,
   },
   restaurantItem: {
     color: '#EF6E62',
-    fontSize: '14px',
+    fontSize: 14,
   },
   deleteRestaurant: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: '15px',
-    marginBottom: '5px',
+    marginLeft: 15,
+    marginBottom: 5,
   },
   hideButton: {
     display: 'none',

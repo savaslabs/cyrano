@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
-    height: '100vh',
-    marginTop: '10px',
-    marginBottom: '10px',
+    height: '100%',
+    marginTop: 10,
+    marginBottom: 10,
   },
   heading: {
     color: '#F1776C',
-    fontWeight: 800,
+    fontWeight: '800',
   },
   item: {
     flex: 1,
@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   img: {
-    width: '40px',
-    height: '40px',
+    width: 40,
+    height: 40,
     borderRadius: '50%',
-    marginRight: '10px',
+    marginRight: 10,
   },
 })
 

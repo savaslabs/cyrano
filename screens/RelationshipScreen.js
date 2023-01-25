@@ -62,7 +62,7 @@ const Relationship = () => {
             <View style={styles.birthday}>
               <Image
                 source={Birthday}
-                style={{ width: '18px', height: '18px', marginRight: '7px' }}
+                style={{ width: 18, height: 18, marginRight: 7 }}
               />
               <Text style={styles.birthdayDate}>{birthday}</Text>
             </View>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    paddingTop: '20px',
+    paddingTop: 20,
   },
   img: {
     width: '100%',
@@ -139,19 +139,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '0',
     zIndex: '0',
-    top: '-335px',
+    top: -335,
   },
   profileImg: {
-    width: '70px',
-    height: '70px',
+    width: 70,
+    height: 70,
     borderRadius: '50%',
-    marginRight: '20px',
+    marginRight: 20,
   },
   heading: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingBottom: '20px',
+    paddingBottom: 20,
   },
   birthday: {
     flex: 1,
@@ -159,22 +159,22 @@ const styles = StyleSheet.create({
   },
   birthdayDate: {
     color: '#FFFFFF',
-    fontSize: '16px',
+    fontSize: 16,
   },
   name: {
     color: '#FFFFFF',
-    fontSize: '24px',
+    fontSize: 24,
     fontWeight: '600',
-    paddingBottom: '10px',
+    paddingBottom: 10,
   },
   relationshipText: {
     color: '#FFFFFF',
-    fontSize: '12px',
-    paddingTop: '10px',
-    paddingLeft: '10px',
+    fontSize: 12,
+    paddingTop: 10,
+    paddingLeft: 10,
   },
   rankingContainer: {
-    paddingTop: '20px',
+    paddingTop: 20,
   },
   pressable: {
     alignItems: 'center',
@@ -189,30 +189,30 @@ const styles = StyleSheet.create({
   },
   next: {
     color: '#EF6E62',
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '400',
   },
   edit: {
     color: '#EF6E62',
-    fontSize: '18px',
+    fontSize: 18,
     fontWeight: '700',
-    marginLeft: '10px',
-    marginRight: '10px',
+    marginLeft: 10,
+    marginRight: 10,
   },
   text: {
     color: '#FFFFFF',
   },
   button: {
     backgroundColor: '#EF6E62',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingRight: '50px',
-    paddingLeft: '50px',
-    borderRadius: '65px',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 50,
+    paddingLeft: 50,
+    borderRadius: 65,
     textAlign: 'center',
     margin: 'auto',
-    marginTop: '20px',
-    marginBottom: '20px',
+    marginTop: 20,
+    marginBottom: 20,
     opacity: '1',
   },
 })

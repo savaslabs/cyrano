@@ -12,8 +12,8 @@ const Spinner = () => {
 const styles = StyleSheet.create({
   spinner: {},
   img: {
-    width: '60px',
-    height: '60px',
+    width: 60,
+    height: 60,
   },
 })
 
