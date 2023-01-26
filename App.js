@@ -1,21 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import StackNavigator from './StackNavigator'
+import { NavigationContainer } from '@react-navigation/native'
+import { RelationshipProvider } from './context/RelationshipContext'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Cyrano</Text>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <RelationshipProvider>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+    </RelationshipProvider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
