@@ -23,7 +23,7 @@ const RelationshipsHomeScreen = () => {
           ))
         ) : (
           <Text style={{ color: '#F17369' }}>
-            There's no relationships. Start by adding one!
+            There are no relationships yet. Start by adding one!
           </Text>
         )}
       </View>

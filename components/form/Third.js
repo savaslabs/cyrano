@@ -55,7 +55,7 @@ const Third = ({
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <>
-        <Text style={styles.label}>Have you taken the truty love test?</Text>
+        <Text style={styles.label}>Have you taken the Truity Love Styles Test?</Text>
         <DropDownPicker
           open={openTruty}
           value={trutyValue}
@@ -64,7 +64,6 @@ const Third = ({
           setValue={setTrutyValue}
           setItems={setTrutyItems}
           style={styles.dropdown}
-          placeholder="Rate your relationship"
           placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
           dropDownContainerStyle={{
             top: 52,

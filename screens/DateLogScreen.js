@@ -27,14 +27,12 @@ const DateLog = () => {
   const { name, lastTimeDate, datePlace, dateRatingValue, upcomingDate } =
     singleRelationship
 
-  console.log(singleRelationship)
-
   return (
     <View style={styles.container}>
       {/* <Shape /> */}
       <Image source={ShapeSVG} style={styles.img} />
       <View style={styles.block}>
-        <Text style={styles.h1}>DATE LOG</Text>
+        <Text style={styles.h1}>Date Log</Text>
       </View>
 
       <View style={styles.body}>
@@ -43,7 +41,7 @@ const DateLog = () => {
           <Text style={styles.next}>Was on {lastTimeDate}</Text>
           <Text style={styles.next}>You went to {datePlace}</Text>
           <Text style={styles.next}>
-            You rate this date with {dateRatingValue} stars
+            You rate this date {dateRatingValue} stars
           </Text>
         </Card>
 
@@ -115,7 +113,7 @@ const styles = StyleSheet.create({
   },
   message: {
     color: '#EF6E62',
-    fontSize: 10,
+    fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',
   },

@@ -27,8 +27,17 @@ const Relationship = () => {
     }
   }, [])
 
-  const { id, name, lastName, birthday, profileImage, relRatingValue } =
-    singleRelationship
+  const {
+    id,
+    name,
+    lastName,
+    birthday,
+    anniversary,
+    profileImage,
+    relRatingValue,
+    loveStyleValue,
+    upcomingDate,
+  } = singleRelationship
 
   return (
     <View style={styles.container}>
@@ -76,19 +85,29 @@ const Relationship = () => {
         >
           <Card>
             <Text style={styles.title}>{name}'s Love Styles</Text>
+            <View style={styles.row}>
+              {loveStyleValue?.map((item, index) => (
+                <LoveLanguages key={index} item={item} />
+              ))}
+            </View>
           </Card>
         </Pressable>
-        <Pressable
-          onPress={() =>
-            navigation.navigate('LifeEvents', {
-              itemId: id,
-            })
-          }
-        >
-          <Card>
-            <Text style={styles.title}>{name}'s Life Events</Text>
-          </Card>
-        </Pressable>
+
+        <Card>
+          <Text style={styles.title}>{name}'s Life Events</Text>
+          <View style={styles.row}>
+            <View>
+              <Text style={styles.title}>Birthday</Text>
+              <Text style={styles.lifeEventsText}>{birthday}</Text>
+            </View>
+
+            <View>
+              <Text style={styles.title}>Anniversary</Text>
+              <Text style={styles.lifeEventsText}>{anniversary}</Text>
+            </View>
+          </View>
+        </Card>
+
         <Pressable
           onPress={() =>
             navigation.navigate('DateLog', {
@@ -97,7 +116,15 @@ const Relationship = () => {
           }
         >
           <Card>
-            <Text style={styles.title}>DATE LOG</Text>
+            <Text style={styles.title}>Date Log</Text>
+            <Text style={styles.lifeEventsText}>You have been on 1 date</Text>
+            {upcomingDate ? (
+              <Text style={styles.lifeEventsText}>
+                You have 1 upcoming date!
+              </Text>
+            ) : (
+              ''
+            )}
           </Card>
         </Pressable>
       </View>
@@ -197,7 +224,7 @@ const styles = StyleSheet.create({
   },
   message: {
     color: '#EF6E62',
-    fontSize: 10,
+    fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',
   },
@@ -221,6 +248,18 @@ const styles = StyleSheet.create({
     color: '#EF6E62',
     fontSize: 16,
     fontWeight: '700',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 10,
+    paddingTop: 20,
+  },
+  lifeEventsText: {
+    paddingTop: 20,
+    color: '#EF6E62',
+    fontSize: 16,
+    fontWeight: '400',
   },
 })
 

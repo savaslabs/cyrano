@@ -47,11 +47,10 @@ const Fourth = ({
         />
       </View>
       <View>
-        <Text style={styles.label}>Where did you go?/What did you do?</Text>
+        <Text style={styles.label}>Where did you go? / What did you do?</Text>
         <TextInput
           style={styles.input}
           placeholderTextColor="rgba(237,82,68,0.5)"
-          placeholder="Tell us what you did or where you go"
           value={datePlace}
           onChangeText={(newDatePlace) => setDatePlace(newDatePlace)}
         />

@@ -26,7 +26,7 @@ export const RelationshipProvider = ({ children }) => {
     }
   }
 
-  //Update Relationship
+  //Upcoming date update
   const updateRelationship = (id, upcomingDate) => {
     setRelationship(
       relationship.map((item) => {

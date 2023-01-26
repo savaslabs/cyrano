@@ -6,27 +6,21 @@ const LoveLanguages = ({ item }) => {
   return (
     <View>
       {item === 'Activities' && (
-        <View style={styles.iconContainer}>
-          <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{item}</Text>
-          </View>
+        <View style={styles.iconData}>
+          <Image source={Clock} style={{ width: 32, height: 32 }} />
+          <Text style={styles.text}>{item}</Text>
         </View>
       )}
       {item === 'Emotional' && (
-        <View style={styles.iconContainer}>
-          <View style={styles.iconData}>
-            <Image source={Gift} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{item}</Text>
-          </View>
+        <View style={styles.iconData}>
+          <Image source={Gift} style={{ width: 32, height: 32 }} />
+          <Text style={styles.text}>{item}</Text>
         </View>
       )}
       {item === 'Financial' && (
-        <View style={styles.iconContainer}>
-          <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{item}</Text>
-          </View>
+        <View style={styles.iconData}>
+          <Image source={Clock} style={{ width: 32, height: 32 }} />
+          <Text style={styles.text}>{item}</Text>
         </View>
       )}
     </View>
