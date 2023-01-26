@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 16,
     elevation: 7,
+    textAlign: 'center'
   },
 })
 

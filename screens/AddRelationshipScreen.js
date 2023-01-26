@@ -74,7 +74,6 @@ const AddRelationship = () => {
     { label: 'Physical', value: 'Physical', disabled: true },
     { label: 'Practical', value: 'Practical', disabled: true },
   ])
-  const [showRestaurants, setShowRestaurants] = useState(false)
   const [lastTimeDate, setLastTimeDate] = useState('')
   const [datePlace, setDatePlace] = useState('')
   const [pageCounter, setPageCounter] = useState(1)
@@ -83,6 +82,10 @@ const AddRelationship = () => {
 
   const handleNext = () => {
     setPageCounter((count) => count + 1)
+  }
+
+  const handleBack = () => {
+    setPageCounter((count) => count - 1)
   }
 
   const handlePress = async () => {
@@ -127,8 +130,16 @@ const AddRelationship = () => {
 
   useEffect(() => {
     if (
-      (name && lastName && birthday && restaurantArray) ||
-      (name && lastName && birthday)
+      name &&
+      lastName &&
+      birthday &&
+      relationshipValue &&
+      relRatingValue &&
+      dateRatingValue &&
+      trutyValue &&
+      loveStyleValue &&
+      lastTimeDate &&
+      datePlace
     ) {
       setIsDisabled(false)
     } else {
@@ -169,7 +180,6 @@ const AddRelationship = () => {
       <Image source={ShapeSVG} style={styles.img} />
       {/* <Shape/> */}
       <View style={styles.block}>
-   
         <Text style={styles.h1}>Add Relationship</Text>
         <Pressable onPress={pickImage}>
           <View style={styles.cameraContainer}>
@@ -276,20 +286,37 @@ const AddRelationship = () => {
           </View>
         )} */}
       </View>
-      {pageCounter !== 4 && (
+
+      {pageCounter === 1 && (
         <Pressable style={styles.button} onPress={handleNext}>
           <Text style={styles.text}>Next</Text>
         </Pressable>
       )}
 
+      {pageCounter !== 4 && pageCounter !== 1 && (
+        <View style={styles.row}>
+          <Pressable style={styles.button} onPress={handleBack}>
+            <Text style={styles.text}>Back</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={handleNext}>
+            <Text style={styles.text}>Next</Text>
+          </Pressable>
+        </View>
+      )}
+
       {pageCounter === 4 && (
-        <Pressable
-          style={[styles.button, isDisabled ? styles.disabled : '']}
-          onPress={handlePress}
-          disabled={isDisabled}
-        >
-          <Text style={styles.text}>Save</Text>
-        </Pressable>
+        <View style={styles.row}>
+          <Pressable style={styles.button} onPress={handleBack}>
+            <Text style={styles.text}>Back</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.button, isDisabled ? styles.disabled : '']}
+            onPress={handlePress}
+            disabled={isDisabled}
+          >
+            <Text style={styles.text}>Save</Text>
+          </Pressable>
+        </View>
       )}
     </View>
   )
@@ -303,10 +330,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     width: '100%',
   },
+  row: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
   block: {
     textAlign: 'center',
     position: 'relative',
-    width: '100%'
+    width: '100%',
   },
   img: {
     width: '100%',
@@ -358,7 +392,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingBottom: 10,
     zIndex: 2,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   label: {
     color: '#ED5244',
@@ -391,7 +425,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#EF6E62',
@@ -404,7 +438,7 @@ const styles = StyleSheet.create({
     // margin: 'auto',
     marginTop: 20,
     opacity: '1',
-    width: '50%',
+    marginRight: 10,
   },
   disabled: {
     opacity: '0.5',

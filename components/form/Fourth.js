@@ -69,7 +69,7 @@ const Fourth = ({
           placeholder="Rate your date"
           placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
           dropDownContainerStyle={{
-            top: 160,
+            top: 61,
             left: 12,
             margin: 'auto',
             color: '#EF6E62',

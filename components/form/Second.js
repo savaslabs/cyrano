@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TextInput, Animated, Platform } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Animated,
+  Platform,
+} from 'react-native'
 import { useRef, useEffect, useState } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -17,7 +24,6 @@ const Second = ({
   setRelRatingItems,
   relRatingValue,
   setRelRatingValue,
-  
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -73,14 +79,7 @@ const Second = ({
               onChangeText={(newAnniversary) => setAnniversary(newAnniversary)}
             />
           </View>
-          <View  style={{
-
-// The solution: Apply zIndex to any device except Android
-...(Platform.OS !== 'android' && {
-  zIndex: 100000
-})
-
-}}>
+          <View>
             <Text style={styles.label}>
               How would you rate your relationship?
             </Text>
@@ -95,14 +94,14 @@ const Second = ({
               placeholder="Rate your relationship"
               placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
               dropDownContainerStyle={{
-                top: 160,
+                top: 61,
                 left: 12,
                 margin: 'auto',
                 color: '#EF6E62',
                 borderColor: '#ED5244',
                 zIndex: '10000',
                 width: '94%',
-                height: 200
+                height: 200,
               }}
               labelStyle={{
                 color: '#ED5244',

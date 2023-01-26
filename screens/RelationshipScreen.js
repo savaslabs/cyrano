@@ -5,8 +5,6 @@ import Birthday from '../assets/birthday.svg'
 import Arrow from '../assets/arrow-back.svg'
 import { useState, useEffect, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import WhiteStar from '../components/WhiteStar'
-import BorderStar from '../components/BorderStar'
 import Card from '../shared/Card'
 import LoveLanguages from '../components/LoveLanguages'
 import LifeEvents from '../components/LifeEvents'
@@ -29,15 +27,8 @@ const Relationship = () => {
     }
   }, [])
 
-  const {
-    name,
-    lastName,
-    birthday,
-    anniversary,
-    value,
-    profileImage,
-    relRatingValue,
-  } = singleRelationship
+  const { id, name, lastName, birthday, profileImage, relRatingValue } =
+    singleRelationship
 
   return (
     <View style={styles.container}>
@@ -76,37 +67,40 @@ const Relationship = () => {
         {/* <Card>
           <Recommendations />
         </Card> */}
-        <Card>
-          <LoveLanguages name={name} value={value} />
-        </Card>
-        <Card>
-          <LifeEvents birthday={birthday} anniversary={anniversary} />
-        </Card>
-        <Card>
-          <Text>DATE LOG</Text>
-        </Card>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('LoveStyle', {
+              itemId: id,
+            })
+          }
+        >
+          <Card>
+            <Text style={styles.title}>{name}'s Love Styles</Text>
+          </Card>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('LifeEvents', {
+              itemId: id,
+            })
+          }
+        >
+          <Card>
+            <Text style={styles.title}>{name}'s Life Events</Text>
+          </Card>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('DateLog', {
+              itemId: id,
+            })
+          }
+        >
+          <Card>
+            <Text style={styles.title}>DATE LOG</Text>
+          </Card>
+        </Pressable>
       </View>
-
-      {/* <View style={styles.navigation}>
-        <Pressable
-          style={styles.pressable}
-          onPress={() => navigation.navigate('Relationships')}
-        >
-          <Text style={styles.next}>Back</Text>
-        </Pressable>
-        <Pressable
-          style={styles.pressable}
-          // onPress={() => navigation.navigate('Add')}
-        >
-          <Text style={styles.edit}>Edit</Text>
-        </Pressable>
-        <Pressable
-          style={styles.pressable}
-          onPress={() => navigation.navigate('Send')}
-        >
-          <Text style={styles.next}>Next</Text>
-        </Pressable>
-      </View> */}
 
       <Text style={styles.message}>
         It's been over two weeks since your last date with {name}, it's time to
@@ -115,7 +109,11 @@ const Relationship = () => {
 
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate('Book')}
+        onPress={() =>
+          navigation.navigate('Book', {
+            itemId: id,
+          })
+        }
       >
         <Text style={styles.text}>Schedule Your Next Date</Text>
       </Pressable>
@@ -126,8 +124,9 @@ const Relationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     backgroundColor: '#FFFFFF',
+    alignItems: 'center',
   },
   img: {
     width: '100%',
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   heading: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'row',
     justifyContent: 'center',
     paddingBottom: 20,
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
     color: '#EF6E62',
     fontSize: 10,
     marginBottom: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   text: {
     color: '#FFFFFF',
@@ -217,6 +216,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     opacity: '1',
+  },
+  title: {
+    color: '#EF6E62',
+    fontSize: 16,
+    fontWeight: '700',
   },
 })
 

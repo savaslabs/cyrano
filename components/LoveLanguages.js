@@ -2,53 +2,30 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import Clock from '../assets/clock.svg'
 import Gift from '../assets/gift.svg'
 
-const LoveLanguages = ({ name, value }) => {
+const LoveLanguages = ({ item }) => {
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <Text style={{ color: '#EF6E62', fontSize: 16, fontWeight: '400' }}>
-        {name}'s Love Languages
-      </Text>
-      {value === 'Acts of Service' && (
+    <View>
+      {item === 'Activities' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
             <Image source={Clock} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{value}</Text>
+            <Text style={styles.text}>{item}</Text>
           </View>
         </View>
       )}
-      {value === 'Receiving Gifts' && (
+      {item === 'Emotional' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
             <Image source={Gift} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{value}</Text>
+            <Text style={styles.text}>{item}</Text>
           </View>
         </View>
       )}
-      {value === 'Quality Time' && (
+      {item === 'Financial' && (
         <View style={styles.iconContainer}>
           <View style={styles.iconData}>
             <Image source={Clock} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{value}</Text>
-          </View>
-        </View>
-      )}
-      {value === 'Words of Affirmation' && (
-        <View style={styles.iconContainer}>
-          <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{value}</Text>
-          </View>
-        </View>
-      )}
-      {value === 'Physical Touch' && (
-        <View style={styles.iconContainer}>
-          <View style={styles.iconData}>
-            <Image source={Clock} style={{ width: 32, height: 32 }} />
-            <Text style={styles.text}>{value}</Text>
+            <Text style={styles.text}>{item}</Text>
           </View>
         </View>
       )}
@@ -61,7 +38,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 30,
   },
   text: {
     color: '#EF6E62',

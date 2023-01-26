@@ -8,24 +8,78 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState, useContext } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.svg'
 
 const BookCyrano = () => {
-  const { relationship } = useContext(RelationshipContext)
+  const [singleRelationship, setSingleRelationship] = useState('')
+  const [nextDatePlace, setNextDatePlace] = useState('')
+  const [nextDateTime, setNextDateTime] = useState('')
+  const navigation = useNavigation()
+  const route = useRoute()
+  const { relationship, updateRelationship } = useContext(RelationshipContext)
+  const { itemId } = route.params
 
-  const { name } = relationship
+  useEffect(() => {
+    const getRelationship = relationship.find((item) => item.id === itemId)
 
-  const handlePress = async () => {}
+    if (getRelationship) {
+      setSingleRelationship(getRelationship)
+    }
+  }, [])
+
+  const { name } = singleRelationship
+
+  const handlePress = async () => {
+    if ((nextDatePlace, nextDateTime)) {
+      const newRelationship = {
+        nextDatePlace,
+        nextDateTime,
+      }
+
+      await updateRelationship(itemId, newRelationship)
+
+      navigation.navigate('DateLog', {
+        itemId,
+      })
+      setNextDatePlace('')
+      setNextDateTime('')
+    }
+  }
 
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#FED9B7', '#F07167']} style={styles.background}>
         <Image source={LogoIMG} style={styles.logo} />
         {/* <Logo /> */}
-        <Text style={styles.h2}>Schedule a new date with {name}</Text>
+        <Text style={styles.h2}>
+          Based on {name}'s love styles we recommend this restaurant:{' '}
+          <Text style={{ fontWeight: '800' }}>Fancy Restaurant</Text>
+        </Text>
+        <View>
+          <Text style={styles.label}>Enter restaurant name</Text>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor="rgba(237,82,68,0.5)"
+            placeholder="Restaurant Name"
+            value={nextDatePlace}
+            onChangeText={(newNextDatePlace) =>
+              setNextDatePlace(newNextDatePlace)
+            }
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>Enter the Date</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="4 - 26 - 1933"
+            placeholderTextColor="rgba(237,82,68,0.5)"
+            value={nextDateTime}
+            onChangeText={(newNextDateTime) => setNextDateTime(newNextDateTime)}
+          />
+        </View>
         <Pressable style={styles.button} onPress={handlePress}>
           <Text style={styles.text}>BOOK WITH CYRANO</Text>
         </Pressable>
@@ -46,6 +100,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 80,
+    alignSelf: 'center',
   },
   h1: {
     color: '#FFFFFF',

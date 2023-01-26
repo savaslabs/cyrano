@@ -26,6 +26,19 @@ export const RelationshipProvider = ({ children }) => {
     }
   }
 
+  //Update Relationship
+  const updateRelationship = (id, upcomingDate) => {
+    setRelationship(
+      relationship.map((item) => {
+        if (item.id === id) {
+          return { ...item, upcomingDate }
+        } else {
+          return item
+        }
+      })
+    )
+  }
+
   return (
     <RelationshipContext.Provider
       value={{
@@ -33,6 +46,7 @@ export const RelationshipProvider = ({ children }) => {
         user,
         addRelationship,
         relationship,
+        updateRelationship,
       }}
     >
       {children}

@@ -2,9 +2,9 @@ import { SvgXml } from 'react-native-svg'
 import { StyleSheet } from 'react-native'
 
 const BorderStar = () => {
-  const borderstar = `<svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M11.7583 0L8.12475 7.36234L0 8.54275L5.87913 14.2733L4.49124 22.3654L11.7583 18.5447L19.0249 22.3654L17.6374 14.2733L23.5161 8.54275L15.3918 7.36234L11.7583 0Z" fill="white"/>
-  </svg>
+  const borderstar = `<svg width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M13.3958 2L9.76261 9.36234L1.63788 10.5427L7.51702 16.2733L6.12911 24.3654L13.3958 20.5447L20.6628 24.3654L19.2749 16.2733L25.154 10.5427L17.0293 9.36234L13.3958 2Z" stroke="white"/>
+  </svg>  
  `
 
   const CyranoBorderStar = () => <SvgXml xml={borderstar} style={styles.shape} />
