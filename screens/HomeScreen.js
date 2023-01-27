@@ -55,7 +55,7 @@ const HomeScreen = () => {
           <Image source={LogoIMG} style={styles.logo} />
           {/* <Logo /> */}
         </View>
-          <Text style={styles.h1}>Welcome to Cyrano</Text>
+          <Text style={styles.h1}>Welcome to Cyranoooo</Text>
           <Text style={styles.h2}>
             Please fill your details below to create your account
           </Text>
