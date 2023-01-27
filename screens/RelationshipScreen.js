@@ -17,7 +17,10 @@ const Relationship = () => {
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
-  const { itemId } = route.params
+  const { itemId, relParams } = route.params
+  const month = new Date().getMonth()
+  const date = new Date().getDate()
+  const year = new Date().getFullYear()
 
   useEffect(() => {
     const getRelationship = relationship.find((item) => item.id === itemId)
@@ -34,9 +37,9 @@ const Relationship = () => {
     birthday,
     anniversary,
     profileImage,
-    relRatingValue,
-    loveStyleValue,
+    relationshipRating,
     upcomingDate,
+    lastTimeDate,
   } = singleRelationship
 
   return (
@@ -57,42 +60,18 @@ const Relationship = () => {
           <Text style={styles.name}>
             {name} {lastName}
           </Text>
-          <View style={styles.birthday}>
-            <Image
-              source={Birthday}
-              style={{ width: 18, height: 18, marginRight: 7 }}
-            />
-            <Text style={styles.birthdayDate}>{birthday}</Text>
-          </View>
 
           <View style={styles.rankingContainer}>
-            <RelationshipRating relRatingValue={relRatingValue} />
+            <RelationshipRating relationshipRating={relationshipRating} />
             <Text style={styles.relationshipText}>Relationship Strength</Text>
+            <Text style={styles.relationshipText}>
+              As of {month + 1} - {date} - {year}
+            </Text>
           </View>
         </View>
       </View>
 
       <View style={styles.body}>
-        {/* <Card>
-          <Recommendations />
-        </Card> */}
-        <Pressable
-          onPress={() =>
-            navigation.navigate('LoveStyle', {
-              itemId: id,
-            })
-          }
-        >
-          <Card>
-            <Text style={styles.title}>{name}'s Love Styles</Text>
-            <View style={styles.row}>
-              {loveStyleValue?.map((item, index) => (
-                <LoveLanguages key={index} item={item} />
-              ))}
-            </View>
-          </Card>
-        </Pressable>
-
         <Card>
           <Text style={styles.title}>{name}'s Life Events</Text>
           <View style={styles.row}>
@@ -112,15 +91,18 @@ const Relationship = () => {
           onPress={() =>
             navigation.navigate('DateLog', {
               itemId: id,
+              relParams,
             })
           }
         >
           <Card>
-            <Text style={styles.title}>Date Log</Text>
-            <Text style={styles.lifeEventsText}>You have been on 1 date</Text>
-            {upcomingDate ? (
+            <Text style={styles.title}>History</Text>
+            <Text style={styles.lifeEventsText}>
+              Your last event was on {lastTimeDate}
+            </Text>
+            {relParams ? (
               <Text style={styles.lifeEventsText}>
-                You have 1 upcoming date!
+                You have 1 upcoming date on {relParams.nextDateDate}
               </Text>
             ) : (
               ''
@@ -129,21 +111,42 @@ const Relationship = () => {
         </Pressable>
       </View>
 
-      <Text style={styles.message}>
-        It's been over two weeks since your last date with {name}, it's time to
-        schedule another one.
-      </Text>
+      {relParams &&
+        relParams.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+          <>
+            <Text style={styles.message}>
+              You are taking {name} to dinner at {relParams.pickRestaurantValue}{' '}
+              on {relParams.nextDateDate} at {relParams.nextDateTimeBetween}.
+              Make sure you let them know you're excited for your date!
+            </Text>
+          </>
+        )}
 
-      <Pressable
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate('Book', {
-            itemId: id,
-          })
-        }
-      >
-        <Text style={styles.text}>Schedule Your Next Date</Text>
-      </Pressable>
+      {relParams &&
+        relParams.pickRestaurantValue === 'Choose My Own Restaurant' && (
+          <>
+            <Text style={styles.message}>
+              You are taking {name} to dinner at {relParams.nextDatePlace} on{' '}
+              {relParams.nextDateDate} at {relParams.nextDateTimeBetween}. Make
+              sure you let them know you're excited for your date!
+            </Text>
+          </>
+        )}
+
+      {relParams ? (
+        ''
+      ) : (
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate('Book', {
+              itemId: id,
+            })
+          }
+        >
+          <Text style={styles.text}>Schedule Your Next Date</Text>
+        </Pressable>
+      )}
     </View>
   )
 }
@@ -151,7 +154,7 @@ const Relationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
   },
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 24,
     fontWeight: '600',
-    paddingBottom: 10,
+    textAlign: 'center',
   },
   relationshipText: {
     color: '#FFFFFF',
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   rankingContainer: {
-    paddingTop: 20,
+    paddingTop: 5,
   },
   pressable: {
     alignItems: 'center',
@@ -252,6 +255,7 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
     gap: 10,
     paddingTop: 20,
   },

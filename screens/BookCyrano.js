@@ -6,17 +6,27 @@ import {
   TextInput,
   Pressable,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.svg'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const BookCyrano = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
   const [nextDatePlace, setNextDatePlace] = useState('')
-  const [nextDateTime, setNextDateTime] = useState('')
+  const [nextDateDate, setNextDateDate] = useState('')
+  const [nextDateTimeBetween, setNextDateTimeBetween] = useState('')
+  const [nextDateTimeAnd, setNextDateTimeAnd] = useState('')
+  const [openPickRestaurant, setOpenPickRestaurant] = useState(false)
+  const [pickRestaurantValue, setPickRestaurantValue] = useState(null)
+  const [pickRestaurantItems, setPickRestaurantItems] = useState([
+    { label: "Roy's", value: "Roy's" },
+    { label: 'Capital Grille', value: 'Capital Grille' },
+    { label: 'Nobu', value: 'Nobu' },
+    { label: 'Choose My Own Restaurant', value: 'Choose My Own Restaurant' },
+  ])
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship, updateRelationship } = useContext(RelationshipContext)
@@ -33,57 +43,131 @@ const BookCyrano = () => {
   const { name } = singleRelationship
 
   const handlePress = async () => {
-    if ((nextDatePlace, nextDateTime)) {
+    if ((pickRestaurantValue)) {
       const newRelationship = {
         nextDatePlace,
-        nextDateTime,
+        nextDateDate,
+        nextDateTimeAnd,
+        nextDateTimeBetween,
+        pickRestaurantValue,
       }
 
       await updateRelationship(itemId, newRelationship)
 
-      navigation.navigate('DateLog', {
-        itemId,
-      })
+      setPickRestaurantValue('')
       setNextDatePlace('')
-      setNextDateTime('')
+      setNextDateDate('')
+      setNextDateTimeAnd('')
+      setNextDateTimeBetween('')
+
+      if (newRelationship) {
+        navigation.navigate('Relationship', {
+          itemId,
+          relParams: newRelationship,
+        })
+      }
     }
   }
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#FED9B7', '#F07167']} style={styles.background}>
-        <Image source={LogoIMG} style={styles.logo} />
-        {/* <Logo /> */}
-        <Text style={styles.h2}>
-          Based on {name}'s love styles we recommend this restaurant:{' '}
-          <Text style={{ fontWeight: '800' }}>Fancy Restaurant</Text>
-        </Text>
-        <View>
-          <Text style={styles.label}>Enter restaurant name</Text>
-          <TextInput
-            style={styles.input}
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            placeholder="Restaurant Name"
-            value={nextDatePlace}
-            onChangeText={(newNextDatePlace) =>
-              setNextDatePlace(newNextDatePlace)
-            }
-          />
+      <Text style={styles.label}>
+        For your next event, we recommend taking{' '}
+        <Text style={{ fontWeight: '800' }}>{name}</Text> out to a fancy
+        restaurant
+      </Text>
+      <View>
+        <View style={{ zIndex: '2' }}>
+          <Text style={styles.label}>Where would you like to go?</Text>
+          <>
+            <DropDownPicker
+              open={openPickRestaurant}
+              value={pickRestaurantValue}
+              items={pickRestaurantItems}
+              setOpen={setOpenPickRestaurant}
+              setValue={setPickRestaurantValue}
+              setItems={setPickRestaurantItems}
+              style={styles.dropdown}
+              placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+              dropDownContainerStyle={{
+                top: 60,
+                left: 12,
+                margin: 'auto',
+                color: '#EF6E62',
+                borderColor: '#ED5244',
+                zIndex: '10000',
+                width: '100%',
+                height: 160,
+              }}
+              labelStyle={{
+                color: '#ED5244',
+              }}
+              listItemLabelStyle={{
+                color: '#ED5244',
+              }}
+              disabledItemLabelStyle={{
+                color: 'rgba(237,82,68,0.5)',
+              }}
+            />
+          </>
         </View>
-        <View>
-          <Text style={styles.label}>Enter the Date</Text>
+        {pickRestaurantValue === 'Choose My Own Restaurant' && (
+          <View>
+            <Text style={styles.label}>Preferred Restaurant</Text>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor="rgba(237,82,68,0.5)"
+              placeholder="Restaurant Name"
+              value={nextDatePlace}
+              onChangeText={(newNextDatePlace) =>
+                setNextDatePlace(newNextDatePlace)
+              }
+            />
+          </View>
+        )}
+
+        <View style={{ zIndex: '1' }}>
+          <Text style={styles.label}>When would you like to go?</Text>
           <TextInput
             style={styles.input}
             placeholder="4 - 26 - 1933"
             placeholderTextColor="rgba(237,82,68,0.5)"
-            value={nextDateTime}
-            onChangeText={(newNextDateTime) => setNextDateTime(newNextDateTime)}
+            value={nextDateDate}
+            onChangeText={(newNexteDateDate) =>
+              setNextDateDate(newNexteDateDate)
+            }
           />
         </View>
-        <Pressable style={styles.button} onPress={handlePress}>
-          <Text style={styles.text}>BOOK WITH CYRANO</Text>
-        </Pressable>
-      </LinearGradient>
+        <View style={styles.rowTime}>
+          <View style={{ zIndex: '1' }}>
+            <Text style={styles.label}>Between</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="7:00 PM"
+              placeholderTextColor="rgba(237,82,68,0.5)"
+              value={nextDateTimeBetween}
+              onChangeText={(newNextDateTimeBetween) =>
+                setNextDateTimeBetween(newNextDateTimeBetween)
+              }
+            />
+          </View>
+          <View style={{ zIndex: '1' }}>
+            <Text style={styles.label}>and</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="9:00 PM"
+              placeholderTextColor="rgba(237,82,68,0.5)"
+              value={nextDateTimeAnd}
+              onChangeText={(newNextTimeAnd) =>
+                setNextDateTimeAnd(newNextTimeAnd)
+              }
+            />
+          </View>
+        </View>
+      </View>
+      <Pressable style={styles.button} onPress={handlePress}>
+        <Text style={styles.text}>BOOK WITH CYRANO</Text>
+      </Pressable>
     </View>
   )
 }
@@ -91,81 +175,177 @@ const BookCyrano = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    width: '100%',
   },
-  background: {
-    height: '100%',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 100,
-    height: 80,
+  h1: {
+    color: '#EF6E62',
+    fontSize: 16,
+    fontWeight: '600',
+    paddingBottom: 10,
+    zIndex: 2,
     alignSelf: 'center',
+  },
+  row: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  rowTime: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingTop: 40,
+  },
+  block: {
+    textAlign: 'center',
+    position: 'relative',
+    width: '100%',
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+    zIndex: 0,
+    position: 'absolute',
+    top: '0',
+    zIndex: '0',
+    width: '100%',
+    height: '100%',
+    top: -500,
+  },
+  cameraContainer: {
+    width: 68,
+    height: 68,
+    borderRadius: '50%',
+    position: 'relative',
+    cursor: 'pointer',
+    alignSelf: 'center',
+    backgroundColor: '#FFFFFF',
+    shadowColor: 'rgba(237, 99, 88, 0.4);',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 2,
+    shadowRadius: 16,
+    elevation: 7,
+  },
+  camera: {
+    width: 15,
+    height: 15,
+    color: '#EF6E62',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    margin: 'auto',
+  },
+  profileImage: {
+    width: 68,
+    height: 68,
+    borderRadius: '50%',
   },
   h1: {
     color: '#FFFFFF',
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: '600',
     paddingBottom: 10,
-    alignSelf: 'center',
-  },
-  h2: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '400',
-    paddingBottom: 20,
-    width: '70%',
-    textAlign: 'center',
+    zIndex: 2,
     alignSelf: 'center',
   },
   label: {
-    color: '#FFFFFF',
+    color: '#ED5244',
     fontWeight: '700',
     fontSize: 16,
     paddingLeft: 10,
   },
-  imgContainer: {
-    paddingBottom: 10,
+  form: {
+    width: '80%',
     alignSelf: 'center',
+    paddingTop: 40,
   },
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    borderColor: '#FFFFFF',
+    borderColor: '#ED5244',
     borderRadius: 5,
+    color: '#ED5244',
+  },
+  dropdown: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: '#ED5244',
+    borderRadius: 5,
+    color: '#ED5244',
+  },
+  text: {
     color: '#FFFFFF',
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#EF6E62',
     paddingTop: 10,
     paddingBottom: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 50,
+    paddingLeft: 50,
     borderRadius: 65,
     textAlign: 'center',
-    margin: 'auto',
+    // margin: 'auto',
     marginTop: 20,
-    shadowColor: '#ed6358',
-    shadowOffset: {
-      width: '0',
-      height: '4',
-    },
-    shadowOpacity: '0.19',
-    shadowRadius: '5.62',
-    elevation: '6',
     opacity: '1',
-    width: '50%',
-    alignSelf: 'center',
+    marginRight: 10,
   },
   disabled: {
     opacity: '0.5',
   },
-  text: {
+  addRestaurant: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  restaurant: {
+    width: '87%',
+  },
+  add: {
+    fontSize: 24,
     color: '#EF6E62',
-    textAlign: 'center',
-    fontWeight: '800',
+    fontWeight: '700',
+    cursor: 'pointer',
+  },
+  delete: {
+    fontSize: 24,
+    color: '#EF6E62',
+    fontWeight: '700',
+    cursor: 'pointer',
+    marginLeft: 15,
+  },
+  restaurantItem: {
+    color: '#EF6E62',
+    fontSize: 14,
+  },
+  deleteRestaurant: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15,
+    marginBottom: 5,
+  },
+  hideButton: {
+    display: 'none',
+  },
+  showButton: {
+    display: 'block',
   },
 })
 

@@ -14,7 +14,7 @@ const DateLog = () => {
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
-  const { itemId } = route.params
+  const { itemId, relParams } = route.params
 
   useEffect(() => {
     const getRelationship = relationship.find((item) => item.id === itemId)
@@ -24,7 +24,7 @@ const DateLog = () => {
     }
   }, [])
 
-  const { name, lastTimeDate, datePlace, dateRatingValue, upcomingDate } =
+  const { name, lastTimeDate, datePlace, dateRating, upcomingDate } =
     singleRelationship
 
   return (
@@ -32,35 +32,45 @@ const DateLog = () => {
       {/* <Shape /> */}
       <Image source={ShapeSVG} style={styles.img} />
       <View style={styles.block}>
-        <Text style={styles.h1}>Date Log</Text>
+        <Text style={styles.h1}>History</Text>
       </View>
 
       <View style={styles.body}>
         <Card>
-          <Text style={styles.title}>Last date with {name}</Text>
+          <Text style={styles.title}>Last event with {name}</Text>
           <Text style={styles.next}>Was on {lastTimeDate}</Text>
           <Text style={styles.next}>You went to {datePlace}</Text>
           <Text style={styles.next}>
-            You rate this date {dateRatingValue} stars
+            You rate this event {dateRating} stars
           </Text>
+          <Text style={styles.next}>{name} rated this event with 4 stars</Text>
         </Card>
 
         <Card>
-          <Text style={styles.title}>Upcoming dates with {name}</Text>
-          {upcomingDate ? (
-            <>
-              <Text style={styles.next}>Your next date with {name}</Text>
-              <Text style={styles.next}>
-                Will be on {upcomingDate.nextDateTime}
-              </Text>
-              <Text style={styles.next}>
-                You will go to {upcomingDate.nextDatePlace}
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.message}>
-              You have no upcoming dates with {name}, it's time to schedule
-              another one.
+          <Text style={styles.title}>Upcoming events with {name}</Text>
+          {relParams &&
+            relParams.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+              <>
+                <Text style={styles.next}>
+                  You are taking {name} to dinner at{' '}
+                  {relParams.pickRestaurantValue} on {relParams.nextDateDate} at{' '}
+                  {relParams.nextDateTimeBetween}.
+                </Text>
+              </>
+            )}
+
+          {relParams &&
+            relParams.pickRestaurantValue === 'Choose My Own Restaurant' && (
+              <>
+                <Text style={styles.next}>
+                  You are taking {name} to dinner at {relParams.nextDatePlace}{' '}
+                  on {relParams.nextDateDate} at {relParams.nextDateTimeBetween}
+                </Text>
+              </>
+            )}
+          {!relParams && (
+            <Text style={styles.next}>
+              You have no events scheduled with {name}
             </Text>
           )}
         </Card>
@@ -71,6 +81,7 @@ const DateLog = () => {
         onPress={() =>
           navigation.navigate('Relationship', {
             itemId,
+            relParams: relParams,
           })
         }
       >

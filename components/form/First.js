@@ -1,13 +1,18 @@
 import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect } from 'react'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const First = ({
   name,
   setName,
   lastName,
   setLastName,
-  birthday,
-  setBirthday,
+  openRelationship,
+  setOpenRelationship,
+  relationshipItems,
+  setRelationshipItems,
+  relationshipValue,
+  setRelationshipValue,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -41,16 +46,40 @@ const First = ({
           onChangeText={(newLastName) => setLastName(newLastName)}
         />
       </View>
-      <View>
-        <Text style={styles.label}>Birthday</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="4 - 26 - 1933"
-          placeholderTextColor="rgba(237,82,68,0.5)"
-          value={birthday}
-          onChangeText={(newBirthday) => setBirthday(newBirthday)}
-        />
+      <View style={{zIndex: 2}}>
+      <Text style={styles.label}>Relationship Type</Text>
+      <DropDownPicker
+        open={openRelationship}
+        value={relationshipValue}
+        items={relationshipItems}
+        setOpen={setOpenRelationship}
+        setValue={setRelationshipValue}
+        setItems={setRelationshipItems}
+        style={styles.dropdown}
+        placeholder="Select a relationship type"
+        placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+        dropDownContainerStyle={{
+          top: 140,
+          left: 12,
+          margin: 'auto',
+          color: '#EF6E62',
+          borderColor: '#ED5244',
+          zIndex: '10000',
+          width: '100%',
+          height: 160,
+        }}
+        labelStyle={{
+          color: '#ED5244',
+        }}
+        listItemLabelStyle={{
+          color: '#ED5244',
+        }}
+        disabledItemLabelStyle={{
+          color: 'rgba(237,82,68,0.5)',
+        }}
+      />
       </View>
+      
     </Animated.View>
   )
 }
@@ -68,6 +97,15 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: '#ED5244',
+    borderRadius: 5,
+    color: '#ED5244',
+  },
+  dropdown: {
     height: 40,
     margin: 12,
     borderWidth: 1,

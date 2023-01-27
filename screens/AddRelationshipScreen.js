@@ -26,10 +26,8 @@ const AddRelationship = () => {
   const [lastName, setLastName] = useState('')
   const [birthday, setBirthday] = useState('')
   const [anniversary, setAnniversary] = useState('')
-  const [restaurant, setRestaurant] = useState('')
+  const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [restaurantArray, setRestaurantArray] = useState([])
-  const [isDisabled, setIsDisabled] = useState(true)
   const [profileImage, setProfileImage] = useState(null)
   const [openRelationship, setOpenRelationship] = useState(false)
   const [relationshipValue, setRelationshipValue] = useState(null)
@@ -39,44 +37,15 @@ const AddRelationship = () => {
     { label: 'Family', value: 'Family', disabled: true },
     { label: 'Business', value: 'Business', disabled: true },
   ])
-  const [openRelRating, setOpenRelRating] = useState(false)
-  const [relRatingValue, setRelRatingValue] = useState(null)
-  const [relRatingItems, setRelRatingItems] = useState([
-    { label: '1', value: 1 },
-    { label: '2', value: 2 },
-    { label: '3', value: 3 },
-    { label: '4', value: 4 },
-    { label: '5', value: 5 },
-  ])
-  const [openDateRating, setOpenDateRating] = useState(false)
-  const [dateRatingValue, setDateRatingValue] = useState(null)
-  const [dateRatingItems, setDateRatingItems] = useState([
-    { label: '1', value: 1 },
-    { label: '2', value: 2 },
-    { label: '3', value: 3 },
-    { label: '4', value: 4 },
-    { label: '5', value: 5 },
-  ])
-  const [openTruty, setOpenTruty] = useState(false)
-  const [trutyValue, setTrutyValue] = useState(null)
-  const [trutyItems, setTrutyItems] = useState([
-    { label: 'Yes', value: 'Yes' },
-    { label: 'No', value: 'No' },
-  ])
-  const [openLoveStyle, setOpenLoveStyle] = useState(false)
-  const [loveStyleValue, setloveStyleValues] = useState(null)
-  const [loveStyleItems, setloveStyleItems] = useState([
-    { label: 'Activities', value: 'Activities' },
-    { label: 'Appreciation', value: 'Appreciation', disabled: true },
-    { label: 'Emotional', value: 'Emotional' },
-    { label: 'Financial', value: 'Financial' },
-    { label: 'Intellectual', value: 'Intellectual', disabled: true },
-    { label: 'Physical', value: 'Physical', disabled: true },
-    { label: 'Practical', value: 'Practical', disabled: true },
-  ])
+  const [relationshipRating, setRelationshipRating] = useState('')
+  const [dateRating, setDateRating] = useState('')
   const [lastTimeDate, setLastTimeDate] = useState('')
   const [datePlace, setDatePlace] = useState('')
   const [pageCounter, setPageCounter] = useState(1)
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [loveStyleIsDisabled] = useState(true)
+  const [nextIsDisabled] = useState(true)
+  const [showMessage, setShowMessage] = useState(false)
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
 
@@ -89,7 +58,7 @@ const AddRelationship = () => {
   }
 
   const handlePress = async () => {
-    if ((name && lastName && birthday) || (name && lastName && birthday)) {
+    if (name && lastName && birthday) {
       const newRelationship = {
         id: uuid.v4(),
         profileImage,
@@ -98,11 +67,10 @@ const AddRelationship = () => {
         birthday,
         anniversary,
         phone,
+        email,
         relationshipValue,
-        relRatingValue,
-        dateRatingValue,
-        trutyValue,
-        loveStyleValue,
+        relationshipRating,
+        dateRating,
         lastTimeDate,
         datePlace,
       }
@@ -112,17 +80,16 @@ const AddRelationship = () => {
       navigation.navigate('Relationship', {
         itemId: newRelationship.id,
       })
+      setProfileImage('')
       setName('')
       setLastName('')
       setBirthday('')
-      setProfileImage('')
       setAnniversary('')
       setPhone('')
+      setEmail('')
       setRelationshipValue('')
-      setRelRatingValue('')
-      setDateRatingValue('')
-      setTrutyValue('')
-      setloveStyleValues('')
+      setRelationshipRating('')
+      setDateRating('')
       setLastTimeDate('')
       setDatePlace('')
     }
@@ -134,10 +101,6 @@ const AddRelationship = () => {
       lastName &&
       birthday &&
       relationshipValue &&
-      relRatingValue &&
-      dateRatingValue &&
-      trutyValue &&
-      loveStyleValue &&
       lastTimeDate &&
       datePlace
     ) {
@@ -159,6 +122,10 @@ const AddRelationship = () => {
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri)
     }
+  }
+
+  const sendLoveTest = () => {
+    setShowMessage(true)
   }
 
   // const handleAddRestaurant = () => {
@@ -201,58 +168,42 @@ const AddRelationship = () => {
             setName={setName}
             lastName={lastName}
             setLastName={setLastName}
-            birthday={birthday}
-            setBirthday={setBirthday}
-          />
-        )}
-        {pageCounter === 2 && (
-          <Second
             openRelationship={openRelationship}
             setOpenRelationship={setOpenRelationship}
             relationshipItems={relationshipItems}
             setRelationshipItems={setRelationshipItems}
             relationshipValue={relationshipValue}
             setRelationshipValue={setRelationshipValue}
+          />
+        )}
+        {pageCounter === 2 && (
+          <Second
+            birthday={birthday}
+            setBirthday={setBirthday}
             anniversary={anniversary}
             setAnniversary={setAnniversary}
-            openRelRating={openRelRating}
-            setOpenRelRating={setOpenRelRating}
-            relRatingItems={relRatingItems}
-            setRelRatingItems={setRelRatingItems}
-            relRatingValue={relRatingValue}
-            setRelRatingValue={setRelRatingValue}
+            relationshipValue={relationshipValue}
+            relationshipRating={relationshipRating}
+            setRelationshipRating={setRelationshipRating}
           />
         )}
         {pageCounter === 3 && (
           <Third
-            openTruty={openTruty}
-            setOpenTruty={setOpenTruty}
-            trutyValue={trutyValue}
-            setTrutyValue={setTrutyValue}
-            trutyItems={trutyItems}
-            setTrutyItems={setTrutyItems}
-            openLoveStyle={openLoveStyle}
-            setOpenLoveStyle={setOpenLoveStyle}
-            loveStyleValue={loveStyleValue}
-            setloveStyleValues={setloveStyleValues}
-            loveStyleItems={loveStyleItems}
-            setloveStyleItems={setloveStyleItems}
+            name={name}
+            email={email}
+            setEmail={setEmail}
             phone={phone}
             setPhone={setPhone}
           />
         )}
         {pageCounter === 4 && (
           <Fourth
-            openDateRating={openDateRating}
-            setOpenDateRating={setOpenDateRating}
-            dateRatingValue={dateRatingValue}
-            setDateRatingValue={setDateRatingValue}
-            dateRatingItems={dateRatingItems}
-            setDateRatingItems={setDateRatingItems}
             lastTimeDate={lastTimeDate}
             setLastTimeDate={setLastTimeDate}
             datePlace={datePlace}
             setDatePlace={setDatePlace}
+            dateRating={dateRating}
+            setDateRating={setDateRating}
             name={name}
           />
         )}
@@ -287,13 +238,98 @@ const AddRelationship = () => {
         )} */}
       </View>
 
-      {pageCounter === 1 && (
+      {pageCounter === 1 && relationshipValue && (
         <Pressable style={styles.button} onPress={handleNext}>
           <Text style={styles.text}>Next</Text>
         </Pressable>
       )}
 
-      {pageCounter !== 4 && pageCounter !== 1 && (
+      {pageCounter === 3 && !email && !phone && (
+        <>
+          <Pressable
+            style={[styles.button, loveStyleIsDisabled ? styles.disabled : '']}
+            onPress={sendLoveTest}
+            disabled={loveStyleIsDisabled}
+          >
+            <Text style={styles.text}>Send Love Styles Test</Text>
+          </Pressable>
+          <View style={styles.row}>
+            <Pressable style={styles.button} onPress={handleBack}>
+              <Text style={styles.text}>Back</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, nextIsDisabled ? styles.disabled : '']}
+              onPress={handleNext}
+              disabled={nextIsDisabled}
+            >
+              <Text style={styles.text}>Next</Text>
+            </Pressable>
+          </View>
+        </>
+      )}
+
+      {(pageCounter === 3 && email && !phone) ||
+        (pageCounter === 3 && !email && phone && (
+          <>
+            <Pressable
+              style={[
+                styles.button,
+                loveStyleIsDisabled ? styles.disabled : '',
+              ]}
+              onPress={sendLoveTest}
+              disabled={loveStyleIsDisabled}
+            >
+              <Text style={styles.text}>Send Love Styles Test</Text>
+            </Pressable>
+
+            <View style={styles.row}>
+              <Pressable style={styles.button} onPress={handleBack}>
+                <Text style={styles.text}>Back</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, nextIsDisabled ? styles.disabled : '']}
+                onPress={handleNext}
+                disabled={nextIsDisabled}
+              >
+                <Text style={styles.text}>Next</Text>
+              </Pressable>
+            </View>
+          </>
+        ))}
+
+      {pageCounter === 3 && email && phone && (
+        <>
+          {showMessage ? (
+            <Text style={styles.restaurantItem}>
+              The test has been sent to {name}. We'll alert you once we have
+              uploaded their results
+            </Text>
+          ) : (
+            <Pressable
+              style={styles.button}
+              onPress={sendLoveTest}
+              disabled={!loveStyleIsDisabled}
+            >
+              <Text style={styles.text}>Send Love Styles Test</Text>
+            </Pressable>
+          )}
+
+          <View style={styles.row}>
+            <Pressable style={styles.button} onPress={handleBack}>
+              <Text style={styles.text}>Back</Text>
+            </Pressable>
+            <Pressable
+              style={styles.button}
+              onPress={handleNext}
+              disabled={!nextIsDisabled}
+            >
+              <Text style={styles.text}>Next</Text>
+            </Pressable>
+          </View>
+        </>
+      )}
+
+      {pageCounter !== 4 && pageCounter !== 1 && pageCounter !== 3 && (
         <View style={styles.row}>
           <Pressable style={styles.button} onPress={handleBack}>
             <Text style={styles.text}>Back</Text>
@@ -439,6 +475,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     opacity: '1',
     marginRight: 10,
+    zIndex: 0,
   },
   disabled: {
     opacity: '0.5',
