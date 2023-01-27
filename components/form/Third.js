@@ -4,24 +4,10 @@ import {
   StyleSheet,
   TextInput,
   Animated,
-  Pressable,
 } from 'react-native'
-import { useRef, useEffect, useState } from 'react'
-import DropDownPicker from 'react-native-dropdown-picker'
+import { useRef, useEffect } from 'react'
 
 const Third = ({
-  openTruty,
-  setOpenTruty,
-  trutyValue,
-  setTrutyValue,
-  trutyItems,
-  setTrutyItems,
-  openLoveStyle,
-  setOpenLoveStyle,
-  loveStyleValue,
-  setloveStyleValues,
-  loveStyleItems,
-  setloveStyleItems,
   name,
   phone,
   setPhone,
@@ -29,8 +15,6 @@ const Third = ({
   setEmail,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
-  const [isDisabled, setIsDisabled] = useState(true)
-  const [showLoveStyles, setShowLoveStyles] = useState('none')
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -40,20 +24,6 @@ const Third = ({
     }).start()
   }, [fadeAnim])
 
-  useEffect(() => {
-    if (phone) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
-    }
-    //eslint-disable-next-line
-  })
-
-  const handlePress = () => {
-    setShowLoveStyles('flex')
-    setPhone('')
-    setIsDisabled(true)
-  }
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>

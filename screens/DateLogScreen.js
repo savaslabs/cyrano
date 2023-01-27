@@ -14,7 +14,7 @@ const DateLog = () => {
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
-  const { itemId, relParams } = route.params
+  const { itemId } = route.params
 
   useEffect(() => {
     const getRelationship = relationship.find((item) => item.id === itemId)
@@ -22,7 +22,7 @@ const DateLog = () => {
     if (getRelationship) {
       setSingleRelationship(getRelationship)
     }
-  }, [])
+  }, [relationship])
 
   const { name, lastTimeDate, datePlace, dateRating, upcomingDate } =
     singleRelationship
@@ -48,32 +48,34 @@ const DateLog = () => {
 
         <Card>
           <Text style={styles.title}>Upcoming events with {name}</Text>
-          {relParams &&
-            relParams.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+          {upcomingDate &&
+            upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
               <>
                 <Text style={styles.next}>
                   You are taking {name} to dinner at{' '}
-                  {relParams.pickRestaurantValue}.
+                  {upcomingDate.pickRestaurantValue}.
                 </Text>
                 <Text style={styles.next}>
-                  On {relParams.nextDateDate} at {relParams.nextDateTimeBetween}
-                  .
+                  On {upcomingDate.nextDateDate} at{' '}
+                  {upcomingDate.nextDateTimeBetween}.
                 </Text>
               </>
             )}
 
-          {relParams &&
-            relParams.pickRestaurantValue === 'Choose My Own Restaurant' && (
+          {upcomingDate &&
+            upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
               <>
                 <Text style={styles.next}>
-                  You are taking {name} to dinner at {relParams.nextDatePlace}{' '}
+                  You are taking {name} to dinner at{' '}
+                  {upcomingDate.nextDatePlace}{' '}
                 </Text>
                 <Text style={styles.next}>
-                  On {relParams.nextDateDate} at {relParams.nextDateTimeBetween}
+                  On {upcomingDate.nextDateDate} at{' '}
+                  {upcomingDate.nextDateTimeBetween}
                 </Text>
               </>
             )}
-          {!relParams && (
+          {!upcomingDate && (
             <Text style={styles.next}>
               You have no events scheduled with {name}
             </Text>
@@ -86,7 +88,6 @@ const DateLog = () => {
         onPress={() =>
           navigation.navigate('Relationship', {
             itemId,
-            relParams: relParams,
           })
         }
       >

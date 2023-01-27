@@ -63,7 +63,6 @@ const BookCyrano = () => {
       if (newRelationship) {
         navigation.navigate('Relationship', {
           itemId,
-          relParams: newRelationship,
         })
       }
     }

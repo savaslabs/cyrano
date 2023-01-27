@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
 import ShapeSVG from '../assets/shape.svg'
-import Birthday from '../assets/birthday.svg'
-import Arrow from '../assets/arrow-back.svg'
 import { useState, useEffect, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
 import LoveLanguages from '../components/LoveLanguages'
-import LifeEvents from '../components/LifeEvents'
 import RelationshipContext from '../context/RelationshipContext'
 import RelationshipRating from '../components/RelationshipRating'
 import Shape from '../svg/Shape'
@@ -17,7 +14,7 @@ const Relationship = () => {
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
-  const { itemId, relParams } = route.params
+  const { itemId } = route.params
   const month = new Date().getMonth()
   const date = new Date().getDate()
   const year = new Date().getFullYear()
@@ -28,7 +25,7 @@ const Relationship = () => {
     if (getRelationship) {
       setSingleRelationship(getRelationship)
     }
-  }, [])
+  }, [relationship])
 
   const {
     id,
@@ -39,6 +36,7 @@ const Relationship = () => {
     profileImage,
     relationshipRating,
     lastTimeDate,
+    upcomingDate,
   } = singleRelationship
 
   return (
@@ -94,7 +92,6 @@ const Relationship = () => {
           onPress={() =>
             navigation.navigate('DateLog', {
               itemId: id,
-              relParams,
             })
           }
         >
@@ -103,9 +100,9 @@ const Relationship = () => {
             <Text style={styles.lifeEventsText}>
               Your last event was on {lastTimeDate}
             </Text>
-            {relParams ? (
+            {upcomingDate ? (
               <Text style={styles.lifeEventsText}>
-                You have 1 upcoming date on {relParams.nextDateDate}
+                You have 1 upcoming date on {upcomingDate.nextDateDate}
               </Text>
             ) : (
               ''
@@ -114,29 +111,30 @@ const Relationship = () => {
         </Pressable>
       </View>
 
-      {relParams &&
-        relParams.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+      {upcomingDate &&
+        upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
           <>
             <Text style={styles.message}>
-              You are taking {name} to dinner at {relParams.pickRestaurantValue}{' '}
-              on {relParams.nextDateDate} at {relParams.nextDateTimeBetween}.
+              You are taking {name} to dinner at{' '}
+              {upcomingDate.pickRestaurantValue} on {upcomingDate.nextDateDate}{' '}
+              at {upcomingDate.nextDateTimeBetween}. Make sure you let them know
+              you're excited for your date!
+            </Text>
+          </>
+        )}
+
+      {upcomingDate &&
+        upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
+          <>
+            <Text style={styles.message}>
+              You are taking {name} to dinner at {upcomingDate.nextDatePlace} on{' '}
+              {upcomingDate.nextDateDate} at {upcomingDate.nextDateTimeBetween}.
               Make sure you let them know you're excited for your date!
             </Text>
           </>
         )}
 
-      {relParams &&
-        relParams.pickRestaurantValue === 'Choose My Own Restaurant' && (
-          <>
-            <Text style={styles.message}>
-              You are taking {name} to dinner at {relParams.nextDatePlace} on{' '}
-              {relParams.nextDateDate} at {relParams.nextDateTimeBetween}. Make
-              sure you let them know you're excited for your date!
-            </Text>
-          </>
-        )}
-
-      {relParams ? (
+      {upcomingDate ? (
         ''
       ) : (
         <Pressable
