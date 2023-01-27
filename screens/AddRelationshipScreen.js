@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: -500,
+    top: -400,
   },
   cameraContainer: {
     width: 68,
@@ -504,6 +504,7 @@ const styles = StyleSheet.create({
   restaurantItem: {
     color: '#EF6E62',
     fontSize: 14,
+    textAlign: 'center'
   },
   deleteRestaurant: {
     flex: 1,

@@ -38,7 +38,6 @@ const Relationship = () => {
     anniversary,
     profileImage,
     relationshipRating,
-    upcomingDate,
     lastTimeDate,
   } = singleRelationship
 
@@ -72,6 +71,10 @@ const Relationship = () => {
       </View>
 
       <View style={styles.body}>
+        <Card>
+          <Text style={styles.titleLoveStyles}>{name}'s Love Styles</Text>
+          <LoveLanguages />
+        </Card>
         <Card>
           <Text style={styles.title}>{name}'s Life Events</Text>
           <View style={styles.row}>
@@ -167,6 +170,9 @@ const styles = StyleSheet.create({
     zIndex: '0',
     top: -335,
   },
+  body: {
+    paddingTop: 50,
+  },
   profileImg: {
     width: 70,
     height: 70,
@@ -251,6 +257,12 @@ const styles = StyleSheet.create({
     color: '#EF6E62',
     fontSize: 16,
     fontWeight: '700',
+  },
+  titleLoveStyles: {
+    color: '#EF6E62',
+    fontSize: 16,
+    fontWeight: '700',
+    paddingBottom: 20,
   },
   row: {
     flex: 1,

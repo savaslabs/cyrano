@@ -65,7 +65,7 @@ const First = ({
           color: '#EF6E62',
           borderColor: '#ED5244',
           zIndex: '10000',
-          width: '100%',
+          width: '94%',
           height: 160,
         }}
         labelStyle={{

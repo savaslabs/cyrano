@@ -43,7 +43,7 @@ const BookCyrano = () => {
   const { name } = singleRelationship
 
   const handlePress = async () => {
-    if ((pickRestaurantValue)) {
+    if (pickRestaurantValue) {
       const newRelationship = {
         nextDatePlace,
         nextDateDate,
@@ -71,7 +71,7 @@ const BookCyrano = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>
+      <Text style={styles.title}>
         For your next event, we recommend taking{' '}
         <Text style={{ fontWeight: '800' }}>{name}</Text> out to a fancy
         restaurant
@@ -266,6 +266,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 10,
   },
+  title: {
+    color: '#ED5244',
+    fontWeight: '700',
+    fontSize: 16,
+    textAlign: 'center',
+  },
   form: {
     width: '80%',
     alignSelf: 'center',
@@ -308,38 +314,6 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: '0.5',
-  },
-  addRestaurant: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  restaurant: {
-    width: '87%',
-  },
-  add: {
-    fontSize: 24,
-    color: '#EF6E62',
-    fontWeight: '700',
-    cursor: 'pointer',
-  },
-  delete: {
-    fontSize: 24,
-    color: '#EF6E62',
-    fontWeight: '700',
-    cursor: 'pointer',
-    marginLeft: 15,
-  },
-  restaurantItem: {
-    color: '#EF6E62',
-    fontSize: 14,
-  },
-  deleteRestaurant: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 15,
-    marginBottom: 5,
   },
   hideButton: {
     display: 'none',

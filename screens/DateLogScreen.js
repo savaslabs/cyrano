@@ -53,8 +53,11 @@ const DateLog = () => {
               <>
                 <Text style={styles.next}>
                   You are taking {name} to dinner at{' '}
-                  {relParams.pickRestaurantValue} on {relParams.nextDateDate} at{' '}
-                  {relParams.nextDateTimeBetween}.
+                  {relParams.pickRestaurantValue}.
+                </Text>
+                <Text style={styles.next}>
+                  On {relParams.nextDateDate} at {relParams.nextDateTimeBetween}
+                  .
                 </Text>
               </>
             )}
@@ -64,7 +67,9 @@ const DateLog = () => {
               <>
                 <Text style={styles.next}>
                   You are taking {name} to dinner at {relParams.nextDatePlace}{' '}
-                  on {relParams.nextDateDate} at {relParams.nextDateTimeBetween}
+                </Text>
+                <Text style={styles.next}>
+                  On {relParams.nextDateDate} at {relParams.nextDateTimeBetween}
                 </Text>
               </>
             )}
