@@ -128,20 +128,6 @@ const AddRelationship = () => {
     setShowMessage(true)
   }
 
-  // const handleAddRestaurant = () => {
-  //   const newRestaurantArr = {
-  //     id: uuid.v4(),
-  //     restaurant,
-  //   }
-  //   setRestaurantArray((prevState) => [...prevState, newRestaurantArr])
-
-  //   setRestaurant('')
-  // }
-
-  // const handleDeleteRestaurant = (id) => {
-  //   setRestaurantArray(restaurantArray.filter((item) => item.id !== id))
-  // }
-
   return (
     <View style={styles.container}>
       <Image source={ShapeSVG} style={styles.img} />
@@ -300,10 +286,12 @@ const AddRelationship = () => {
       {pageCounter === 3 && email && phone && (
         <>
           {showMessage ? (
-            <Text style={styles.restaurantItem}>
-              The test has been sent to {name}. We'll alert you once we have
-              uploaded their results
-            </Text>
+            <View>
+              <Text style={styles.restaurantItem}>
+                The test has been sent to {name}. We'll alert you once we have
+                uploaded their results
+              </Text>
+            </View>
           ) : (
             <Pressable
               style={styles.button}
@@ -387,7 +375,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: -400,
+    top: -500,
   },
   cameraContainer: {
     width: 68,
@@ -504,7 +492,8 @@ const styles = StyleSheet.create({
   restaurantItem: {
     color: '#EF6E62',
     fontSize: 14,
-    textAlign: 'center'
+    textAlign: 'center',
+    width: 300,
   },
   deleteRestaurant: {
     flex: 1,

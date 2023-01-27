@@ -115,10 +115,20 @@ const Relationship = () => {
         upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
           <>
             <Text style={styles.message}>
-              You are taking {name} to dinner at{' '}
-              {upcomingDate.pickRestaurantValue} on {upcomingDate.nextDateDate}{' '}
-              at {upcomingDate.nextDateTimeBetween}. Make sure you let them know
-              you're excited for your date!
+              You are taking <Text style={{ fontWeight: '700' }}>{name}</Text>{' '}
+              to dinner at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.pickRestaurantValue}
+              </Text>{' '}
+              on{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateDate}{' '}
+              </Text>
+              at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateTimeBetween}
+              </Text>
+              . Make sure you let them know you're excited for your date!
             </Text>
           </>
         )}
@@ -127,8 +137,19 @@ const Relationship = () => {
         upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
           <>
             <Text style={styles.message}>
-              You are taking {name} to dinner at {upcomingDate.nextDatePlace} on{' '}
-              {upcomingDate.nextDateDate} at {upcomingDate.nextDateTimeBetween}.
+              You are taking <Text style={{ fontWeight: '700' }}>{name}</Text>{' '}
+              to dinner at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDatePlace}
+              </Text>{' '}
+              on{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateDate}
+              </Text>{' '}
+              at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateTimeBetween}.
+              </Text>
               Make sure you let them know you're excited for your date!
             </Text>
           </>
@@ -234,6 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',
+    width: 300,
   },
   text: {
     color: '#FFFFFF',

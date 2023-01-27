@@ -27,10 +27,30 @@ const BookCyrano = () => {
     { label: 'Nobu', value: 'Nobu' },
     { label: 'Choose My Own Restaurant', value: 'Choose My Own Restaurant' },
   ])
+  const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship, updateRelationship } = useContext(RelationshipContext)
   const { itemId } = route.params
+
+  useEffect(() => {
+    if (
+      (pickRestaurantValue !== 'Choose My Own Restaurant' &&
+        nextDateDate &&
+        nextDateTimeBetween &&
+        nextDateTimeAnd) ||
+      (pickRestaurantValue === 'Choose My Own Restaurant' &&
+        nextDatePlace &&
+        nextDateDate &&
+        nextDateTimeBetween &&
+        nextDateTimeAnd)
+    ) {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
+    //eslint-disable-next-line
+  })
 
   useEffect(() => {
     const getRelationship = relationship.find((item) => item.id === itemId)
@@ -66,6 +86,12 @@ const BookCyrano = () => {
         })
       }
     }
+  }
+
+  const handleBack = () => {
+    navigation.navigate('Relationship', {
+      itemId,
+    })
   }
 
   return (
@@ -164,9 +190,19 @@ const BookCyrano = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.button} onPress={handlePress}>
-        <Text style={styles.text}>BOOK WITH CYRANO</Text>
-      </Pressable>
+
+      <View style={styles.row}>
+        <Pressable style={styles.button} onPress={handleBack}>
+          <Text style={styles.text}>Back</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.button, isDisabled ? styles.disabled : '']}
+          onPress={handlePress}
+          disabled={isDisabled}
+        >
+          <Text style={styles.text}>BOOK WITH CYRANO</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -293,6 +329,7 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
+    width: '94%',
   },
   text: {
     color: '#FFFFFF',

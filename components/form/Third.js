@@ -1,19 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Animated,
-} from 'react-native'
+import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect } from 'react'
 
-const Third = ({
-  name,
-  phone,
-  setPhone,
-  email,
-  setEmail,
-}) => {
+const Third = ({ name, phone, setPhone, email, setEmail }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -24,17 +12,12 @@ const Third = ({
     }).start()
   }, [fadeAnim])
 
-
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <View style={styles.body}>
         <Text style={styles.label}>
-          We would like to know {name}’s Love Styles in order to fine-tune our
-          recommendations
-        </Text>
-        <Text style={styles.label}>
-          Please enter their contact information below, and we will forward them
-          the test
+          Please enter {name}'s contact information below, and we will forward
+          them the Truity Love Styles test
         </Text>
       </View>
 

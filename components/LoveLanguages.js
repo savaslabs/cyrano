@@ -1,6 +1,7 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
-import Clock from '../assets/clock.svg'
-import Gift from '../assets/gift.svg'
+import Activities from '../assets/activities.svg'
+import Emotional from '../assets/emotional.svg'
+import Financial from '../assets/financial.svg'
 
 const LoveLanguages = ({ item }) => {
   return (
@@ -26,17 +27,17 @@ const LoveLanguages = ({ item }) => {
     // </View>
     <View style={styles.iconContainer}>
       <View style={styles.iconData}>
-        <Image source={Clock} style={{ width: 32, height: 32 }} />
+        <Image source={Activities} style={{ width: 32, height: 32 }} />
         <Text style={styles.text}>Activities</Text>
       </View>
 
       <View style={styles.iconData}>
-        <Image source={Gift} style={{ width: 32, height: 32 }} />
+        <Image source={Emotional} style={{ width: 32, height: 32 }} />
         <Text style={styles.text}>Emotional</Text>
       </View>
 
       <View style={styles.iconData}>
-        <Image source={Clock} style={{ width: 32, height: 32 }} />
+        <Image source={Financial} style={{ width: 32, height: 32 }} />
         <Text style={styles.text}>Financial</Text>
       </View>
     </View>

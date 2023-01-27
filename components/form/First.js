@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
+    width: '94%'
   },
 })
 
