@@ -59,7 +59,7 @@ const First = ({
         placeholder="Select a relationship type"
         placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
         dropDownContainerStyle={{
-          top: 140,
+          top: 130,
           left: 12,
           margin: 'auto',
           color: '#EF6E62',
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
-    width: '94%'
+    width: '94%',
+    minHeight: 0
   },
 })
 

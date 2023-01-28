@@ -12,6 +12,7 @@ import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.svg'
 import DropDownPicker from 'react-native-dropdown-picker'
+import ArrowBack from '../assets/arrow-back.svg'
 
 const BookCyrano = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -96,6 +97,9 @@ const BookCyrano = () => {
 
   return (
     <View style={styles.container}>
+      <Pressable style={styles.arrowContainer} onPress={handleBack}>
+        <Image source={ArrowBack} style={styles.arrow} />
+      </Pressable>
       <View>
         <Text style={styles.title}>
           For your next event, we recommend taking{' '}
@@ -117,7 +121,7 @@ const BookCyrano = () => {
             style={styles.dropdown}
             placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
             dropDownContainerStyle={{
-              top: 60,
+              top: 50,
               left: 12,
               margin: 'auto',
               color: '#EF6E62',
@@ -193,9 +197,6 @@ const BookCyrano = () => {
       </View>
 
       <View style={styles.row}>
-        <Pressable style={styles.button} onPress={handleBack}>
-          <Text style={styles.text}>Back</Text>
-        </Pressable>
         <Pressable
           style={[styles.button, isDisabled ? styles.disabled : '']}
           onPress={handlePress}
@@ -235,6 +236,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     top: -500,
+  },
+  arrowContainer: {
+    position: 'absolute',
+    top: '15px',
+    left: '15px',
+  },
+  arrow: {
+    width: 20,
+    height: 20,
   },
   row: {
     flex: 0,
@@ -343,6 +353,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: '#ED5244',
     width: '94%',
+    minHeight: 0,
   },
   text: {
     color: '#FFFFFF',
