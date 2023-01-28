@@ -96,45 +96,46 @@ const BookCyrano = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        For your next event, we recommend taking{' '}
-        <Text style={{ fontWeight: '800' }}>{name}</Text> out to a fancy
-        restaurant
-      </Text>
       <View>
+        <Text style={styles.title}>
+          For your next event, we recommend taking{' '}
+          <Text style={{ fontWeight: '800' }}>{name}</Text> out to a fancy
+          restaurant
+        </Text>
+      </View>
+      <View style={styles.form}>
         <View style={{ zIndex: '2' }}>
           <Text style={styles.label}>Where would you like to go?</Text>
-          <>
-            <DropDownPicker
-              open={openPickRestaurant}
-              value={pickRestaurantValue}
-              items={pickRestaurantItems}
-              setOpen={setOpenPickRestaurant}
-              setValue={setPickRestaurantValue}
-              setItems={setPickRestaurantItems}
-              style={styles.dropdown}
-              placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-              dropDownContainerStyle={{
-                top: 60,
-                left: 12,
-                margin: 'auto',
-                color: '#EF6E62',
-                borderColor: '#ED5244',
-                zIndex: '10000',
-                width: '100%',
-                height: 160,
-              }}
-              labelStyle={{
-                color: '#ED5244',
-              }}
-              listItemLabelStyle={{
-                color: '#ED5244',
-              }}
-              disabledItemLabelStyle={{
-                color: 'rgba(237,82,68,0.5)',
-              }}
-            />
-          </>
+
+          <DropDownPicker
+            open={openPickRestaurant}
+            value={pickRestaurantValue}
+            items={pickRestaurantItems}
+            setOpen={setOpenPickRestaurant}
+            setValue={setPickRestaurantValue}
+            setItems={setPickRestaurantItems}
+            style={styles.dropdown}
+            placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+            dropDownContainerStyle={{
+              top: 60,
+              left: 12,
+              margin: 'auto',
+              color: '#EF6E62',
+              borderColor: '#ED5244',
+              zIndex: '10000',
+              width: '94%',
+              height: 160,
+            }}
+            labelStyle={{
+              color: '#ED5244',
+            }}
+            listItemLabelStyle={{
+              color: '#ED5244',
+            }}
+            disabledItemLabelStyle={{
+              color: 'rgba(237,82,68,0.5)',
+            }}
+          />
         </View>
         {pickRestaurantValue === 'Choose My Own Restaurant' && (
           <View>
@@ -164,7 +165,7 @@ const BookCyrano = () => {
           />
         </View>
         <View style={styles.rowTime}>
-          <View style={{ zIndex: '1' }}>
+          <View style={{ zIndex: '1', width: '50%' }}>
             <Text style={styles.label}>Between</Text>
             <TextInput
               style={styles.input}
@@ -176,7 +177,7 @@ const BookCyrano = () => {
               }
             />
           </View>
-          <View style={{ zIndex: '1' }}>
+          <View style={{ zIndex: '1', width: '50%' }}>
             <Text style={styles.label}>and</Text>
             <TextInput
               style={styles.input}
@@ -210,18 +211,30 @@ const BookCyrano = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     width: '100%',
   },
   h1: {
-    color: '#EF6E62',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
     paddingBottom: 10,
     zIndex: 2,
     alignSelf: 'center',
+    width: 300,
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+    zIndex: 0,
+    position: 'absolute',
+    top: '0',
+    zIndex: '0',
+    width: '100%',
+    height: '100%',
+    top: -500,
   },
   row: {
     flex: 0,
@@ -306,11 +319,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
     textAlign: 'center',
+    width: 300,
   },
   form: {
     width: '80%',
     alignSelf: 'center',
-    paddingTop: 40,
   },
   input: {
     height: 40,
@@ -329,7 +342,7 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
-    width: '94%',
+    width: '95%',
   },
   text: {
     color: '#FFFFFF',
