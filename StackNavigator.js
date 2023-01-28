@@ -24,7 +24,7 @@ const StackNavigator = () => {
         headerShown: false,
       }}
     >
-      {!isLoggedIn ? (
+      {isLoggedIn ? (
         <>
           <Stack.Screen name="Add" component={AddRelationShipScreen} />
           <Stack.Screen
