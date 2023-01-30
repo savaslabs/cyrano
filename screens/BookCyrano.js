@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.svg'
+import axios from 'axios';
 
 const BookCyrano = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -32,7 +33,7 @@ const BookCyrano = () => {
 
   const { name } = singleRelationship
 
-  const handlePress = async () => {
+  const handlePress = async (e) => {
     if ((nextDatePlace, nextDateTime)) {
       const newRelationship = {
         nextDatePlace,
@@ -47,6 +48,22 @@ const BookCyrano = () => {
       setNextDatePlace('')
       setNextDateTime('')
     }
+
+    require('dotenv').config();
+    const sid = process.env.TWILIO_ACCOUNT_SID;
+    const token = process.env.TWILIO_AUTH_TOKEN;
+    const qs = require('qs');
+
+    await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+      Body: username,
+      From: '+19705008871',
+      To: '+19195383478'
+    }), {
+      auth: {
+        username: sid,
+        password: token
+      }
+    }));
   }
 
   return (
