@@ -32,7 +32,7 @@ const BookCyrano = () => {
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
-  const { relationship, updateRelationship } = useContext(RelationshipContext)
+  const { relationship, updateRelationship, user } = useContext(RelationshipContext)
   const { itemId } = route.params
 
   useEffect(() => {
@@ -86,20 +86,22 @@ const BookCyrano = () => {
         navigation.navigate('Relationship', {
           itemId,
         })
-      }
+      } 
 
       require('dotenv').config();
+      console.log(user.user.phone)
       const sid = process.env.TWILIO_ACCOUNT_SID;
       const token = process.env.TWILIO_AUTH_TOKEN;
       const qs = require('qs');
-      const messageText = `You are taking ${name} to dinner at ${nextDatePlace} on ${nextDateDate} at ${nextDateTimeBetween}.
+      const restaurantName = pickRestaurantValue === 'Choose My Own Restaurant' ? nextDatePlace : pickRestaurantValue
+      const messageText = `You are taking ${name} to dinner at ${restaurantName} on ${nextDateDate} at ${nextDateTimeBetween}. 
 
 Make sure you let them know you're excited for your date!`
 
       await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
         Body: messageText,
         From: '+19705008871',
-        To: '(919) 538-3478'
+        To: user.user.phone
       }),
       {
         auth: {

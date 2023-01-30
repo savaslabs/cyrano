@@ -63,7 +63,7 @@ const First = ({
             zIndex: '10000',
             width: 'calc(100% - 33px)',
             height: 160,
-            top:51,
+            bottom: -147,
             left: 13
           }}
           labelStyle={{
