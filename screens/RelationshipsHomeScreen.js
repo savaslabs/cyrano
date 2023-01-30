@@ -46,7 +46,11 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-between',
     paddingTop: 50,
-    paddingBottom: 50
+    paddingBottom: 50,
+    width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   data: {
     height: '90%',

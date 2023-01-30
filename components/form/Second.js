@@ -1,29 +1,15 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Animated,
-  Platform,
-} from 'react-native'
-import { useRef, useEffect, useState } from 'react'
-import DropDownPicker from 'react-native-dropdown-picker'
+import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
+import { useRef, useEffect } from 'react'
+import { RadioButton } from 'react-native-paper'
 
 const Second = ({
-  openRelationship,
-  setOpenRelationship,
-  relationshipItems,
-  setRelationshipItems,
-  relationshipValue,
-  setRelationshipValue,
+  birthday,
+  setBirthday,
   anniversary,
   setAnniversary,
-  openRelRating,
-  setOpenRelRating,
-  relRatingItems,
-  setRelRatingItems,
-  relRatingValue,
-  setRelRatingValue,
+  relationshipValue,
+  relationshipRating,
+  setRelationshipRating,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -37,43 +23,23 @@ const Second = ({
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
-      <Text style={styles.label}>Relationship Type</Text>
-      <DropDownPicker
-        open={openRelationship}
-        value={relationshipValue}
-        items={relationshipItems}
-        setOpen={setOpenRelationship}
-        setValue={setRelationshipValue}
-        setItems={setRelationshipItems}
-        style={styles.dropdown}
-        placeholder="Select a relationship type"
-        placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-        dropDownContainerStyle={{
-          top: 52,
-          left: 12,
-          margin: 'auto',
-          color: '#EF6E62',
-          borderColor: '#ED5244',
-          zIndex: '10000',
-          width: '94%',
-        }}
-        labelStyle={{
-          color: '#ED5244',
-        }}
-        listItemLabelStyle={{
-          color: '#ED5244',
-        }}
-        disabledItemLabelStyle={{
-          color: 'rgba(237,82,68,0.5)',
-        }}
-      />
       {relationshipValue === 'Romantic' && (
         <>
+          <View>
+            <Text style={styles.label}>Birthday</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="DD/MM/YYYY"
+              placeholderTextColor="rgba(237,82,68,0.5)"
+              value={birthday}
+              onChangeText={(newBirthday) => setBirthday(newBirthday)}
+            />
+          </View>
           <View>
             <Text style={styles.label}>Anniversary</Text>
             <TextInput
               style={styles.input}
-              placeholder="4 - 26 - 1933"
+              placeholder="DD/MM/YYYY"
               placeholderTextColor="rgba(237,82,68,0.5)"
               value={anniversary}
               onChangeText={(newAnniversary) => setAnniversary(newAnniversary)}
@@ -83,36 +49,33 @@ const Second = ({
             <Text style={styles.label}>
               How would you rate your relationship?
             </Text>
-            <DropDownPicker
-              open={openRelRating}
-              value={relRatingValue}
-              items={relRatingItems}
-              setOpen={setOpenRelRating}
-              setValue={setRelRatingValue}
-              setItems={setRelRatingItems}
-              style={styles.dropdown}
-              placeholder="Rate your relationship"
-              placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-              dropDownContainerStyle={{
-                top: 61,
-                left: 12,
-                margin: 'auto',
-                color: '#EF6E62',
-                borderColor: '#ED5244',
-                zIndex: '10000',
-                width: '94%',
-                height: 200,
-              }}
-              labelStyle={{
-                color: '#ED5244',
-              }}
-              listItemLabelStyle={{
-                color: '#ED5244',
-              }}
-              disabledItemLabelStyle={{
-                color: 'rgba(237,82,68,0.5)',
-              }}
-            />
+            <RadioButton.Group
+              onValueChange={(value) => setRelationshipRating(value)}
+              value={relationshipRating}
+            >
+              <View style={styles.row}>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={styles.text}>1</Text>
+                  <RadioButton value="1" color="#ED5244" uncheckedColor='#ED5244'/>
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={styles.text}>2</Text>
+                  <RadioButton value="2" color="#ED5244" uncheckedColor='#ED5244' />
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={styles.text}>3</Text>
+                  <RadioButton value="3" color="#ED5244" uncheckedColor='#ED5244' />
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={styles.text}>4</Text>
+                  <RadioButton value="4" color="#ED5244" uncheckedColor='#ED5244' />
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={styles.text}>5</Text>
+                  <RadioButton value="5" color="#ED5244" uncheckedColor='#ED5244' />
+                </View>
+              </View>
+            </RadioButton.Group>
           </View>
         </>
       )}
@@ -144,6 +107,15 @@ const styles = StyleSheet.create({
     borderColor: '#ED5244',
     borderRadius: 5,
     color: '#ED5244',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  text: {
+    color: '#ED5244',
+    paddingTop: 5,
   },
 })
 

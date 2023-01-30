@@ -1,26 +1,15 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Animated,
-  Pressable,
-} from 'react-native'
+import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, useState } from 'react'
-import DropDownPicker from 'react-native-dropdown-picker'
+import { RadioButton } from 'react-native-paper'
 
 const Fourth = ({
-  openDateRating,
-  setOpenDateRating,
-  dateRatingValue,
-  setDateRatingValue,
-  dateRatingItems,
-  setDateRatingItems,
   lastTimeDate,
   setLastTimeDate,
   datePlace,
   setDatePlace,
   name,
+  dateRating,
+  setDateRating,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -41,7 +30,7 @@ const Fourth = ({
         <TextInput
           style={styles.input}
           placeholderTextColor="rgba(237,82,68,0.5)"
-          placeholder="2 - 23 - 2003"
+          placeholder="DD/MM/YYYY"
           value={lastTimeDate}
           onChangeText={(newLastTimeDate) => setLastTimeDate(newLastTimeDate)}
         />
@@ -55,39 +44,36 @@ const Fourth = ({
           onChangeText={(newDatePlace) => setDatePlace(newDatePlace)}
         />
       </View>
-      <>
-        <Text style={styles.label}>How would you rate that date?</Text>
-        <DropDownPicker
-          open={openDateRating}
-          value={dateRatingValue}
-          items={dateRatingItems}
-          setOpen={setOpenDateRating}
-          setValue={setDateRatingValue}
-          setItems={setDateRatingItems}
-          style={styles.dropdown}
-          placeholder="Rate your date"
-          placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-          dropDownContainerStyle={{
-            top: 61,
-            left: 12,
-            margin: 'auto',
-            color: '#EF6E62',
-            borderColor: '#ED5244',
-            zIndex: '10000',
-            width: '94%',
-            height: 200,
-          }}
-          labelStyle={{
-            color: '#ED5244',
-          }}
-          listItemLabelStyle={{
-            color: '#ED5244',
-          }}
-          disabledItemLabelStyle={{
-            color: 'rgba(237,82,68,0.5)',
-          }}
-        />
-      </>
+      <View>
+        <Text style={styles.label}>How would you rate the date?</Text>
+        <RadioButton.Group
+          onValueChange={(value) => setDateRating(value)}
+          value={dateRating}
+        >
+          <View style={styles.row}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles.text}>1</Text>
+              <RadioButton value="1" color="#ED5244" uncheckedColor="#ED5244" />
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles.text}>2</Text>
+              <RadioButton value="2" color="#ED5244" uncheckedColor="#ED5244" />
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles.text}>3</Text>
+              <RadioButton value="3" color="#ED5244" uncheckedColor="#ED5244" />
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles.text}>4</Text>
+              <RadioButton value="4" color="#ED5244" uncheckedColor="#ED5244" />
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles.text}>5</Text>
+              <RadioButton value="5" color="#ED5244" uncheckedColor="#ED5244" />
+            </View>
+          </View>
+        </RadioButton.Group>
+      </View>
     </Animated.View>
   )
 }
@@ -117,8 +103,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: '#ED5244',
   },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   text: {
-    color: '#FFFFFF',
+    color: '#ED5244',
+    paddingTop: 5,
   },
   button: {
     backgroundColor: '#EF6E62',

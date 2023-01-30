@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
 import ShapeSVG from '../assets/shape.svg'
-import Birthday from '../assets/birthday.svg'
-import Arrow from '../assets/arrow-back.svg'
 import { useState, useEffect, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
 import LoveLanguages from '../components/LoveLanguages'
-import LifeEvents from '../components/LifeEvents'
 import RelationshipContext from '../context/RelationshipContext'
 import RelationshipRating from '../components/RelationshipRating'
 import Shape from '../svg/Shape'
@@ -18,6 +15,9 @@ const Relationship = () => {
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
   const { itemId } = route.params
+  const month = new Date().getMonth()
+  const date = new Date().getDate()
+  const year = new Date().getFullYear()
 
   useEffect(() => {
     const getRelationship = relationship.find((item) => item.id === itemId)
@@ -25,7 +25,7 @@ const Relationship = () => {
     if (getRelationship) {
       setSingleRelationship(getRelationship)
     }
-  }, [])
+  }, [relationship])
 
   const {
     id,
@@ -34,8 +34,8 @@ const Relationship = () => {
     birthday,
     anniversary,
     profileImage,
-    relRatingValue,
-    loveStyleValue,
+    relationshipRating,
+    lastTimeDate,
     upcomingDate,
   } = singleRelationship
 
@@ -57,42 +57,22 @@ const Relationship = () => {
           <Text style={styles.name}>
             {name} {lastName}
           </Text>
-          <View style={styles.birthday}>
-            <Image
-              source={Birthday}
-              style={{ width: 18, height: 18, marginRight: 7 }}
-            />
-            <Text style={styles.birthdayDate}>{birthday}</Text>
-          </View>
 
           <View style={styles.rankingContainer}>
-            <RelationshipRating relRatingValue={relRatingValue} />
+            <RelationshipRating relationshipRating={relationshipRating} />
             <Text style={styles.relationshipText}>Relationship Strength</Text>
+            <Text style={styles.relationshipText}>
+              As of {month + 1}/{date}/{year}
+            </Text>
           </View>
         </View>
       </View>
 
       <View style={styles.body}>
-        {/* <Card>
-          <Recommendations />
-        </Card> */}
-        <Pressable
-          onPress={() =>
-            navigation.navigate('LoveStyle', {
-              itemId: id,
-            })
-          }
-        >
-          <Card>
-            <Text style={styles.title}>{name}'s Love Styles</Text>
-            <View style={styles.row}>
-              {loveStyleValue?.map((item, index) => (
-                <LoveLanguages key={index} item={item} />
-              ))}
-            </View>
-          </Card>
-        </Pressable>
-
+        <Card>
+          <Text style={styles.titleLoveStyles}>{name}'s Love Styles</Text>
+          <LoveLanguages />
+        </Card>
         <Card>
           <Text style={styles.title}>{name}'s Life Events</Text>
           <View style={styles.row}>
@@ -116,11 +96,13 @@ const Relationship = () => {
           }
         >
           <Card>
-            <Text style={styles.title}>Date Log</Text>
-            <Text style={styles.lifeEventsText}>You have been on 1 date</Text>
+            <Text style={styles.title}>History</Text>
+            <Text style={styles.lifeEventsText}>
+              Your last event was on {lastTimeDate}
+            </Text>
             {upcomingDate ? (
               <Text style={styles.lifeEventsText}>
-                You have 1 upcoming date!
+                You have 1 upcoming date on {upcomingDate.nextDateDate}
               </Text>
             ) : (
               ''
@@ -129,21 +111,64 @@ const Relationship = () => {
         </Pressable>
       </View>
 
-      <Text style={styles.message}>
-        It's been over two weeks since your last date with {name}, it's time to
-        schedule another one.
-      </Text>
+      {upcomingDate &&
+        upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+          <>
+            <Text style={styles.message}>
+              You are taking <Text style={{ fontWeight: '700' }}>{name}</Text>{' '}
+              to dinner at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.pickRestaurantValue}
+              </Text>{' '}
+              on{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateDate}{' '}
+              </Text>
+              at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateTimeBetween}
+              </Text>
+              . Make sure you let them know you're excited for your date!
+            </Text>
+          </>
+        )}
 
-      <Pressable
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate('Book', {
-            itemId: id,
-          })
-        }
-      >
-        <Text style={styles.text}>Schedule Your Next Date</Text>
-      </Pressable>
+      {upcomingDate &&
+        upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
+          <>
+            <Text style={styles.message}>
+              You are taking <Text style={{ fontWeight: '700' }}>{name}</Text>{' '}
+              to dinner at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDatePlace}
+              </Text>{' '}
+              on{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateDate}
+              </Text>{' '}
+              at{' '}
+              <Text style={{ fontWeight: '700' }}>
+                {upcomingDate.nextDateTimeBetween}.
+              </Text>
+              Make sure you let them know you're excited for your date!
+            </Text>
+          </>
+        )}
+
+      {upcomingDate ? (
+        ''
+      ) : (
+        <Pressable
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate('Book', {
+              itemId: id,
+            })
+          }
+        >
+          <Text style={styles.text}>Schedule Your Next Date</Text>
+        </Pressable>
+      )}
     </View>
   )
 }
@@ -151,9 +176,13 @@ const Relationship = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
+    width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   img: {
     width: '100%',
@@ -163,6 +192,9 @@ const styles = StyleSheet.create({
     top: '0',
     zIndex: '0',
     top: -335,
+  },
+  body: {
+    paddingTop: 50,
   },
   profileImg: {
     width: 70,
@@ -188,7 +220,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 24,
     fontWeight: '600',
-    paddingBottom: 10,
+    textAlign: 'center',
   },
   relationshipText: {
     color: '#FFFFFF',
@@ -197,7 +229,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   rankingContainer: {
-    paddingTop: 20,
+    paddingTop: 5,
   },
   pressable: {
     alignItems: 'center',
@@ -227,6 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',
+    width: 300,
   },
   text: {
     color: '#FFFFFF',
@@ -249,9 +282,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
+  titleLoveStyles: {
+    color: '#EF6E62',
+    fontSize: 16,
+    fontWeight: '700',
+    paddingBottom: 20,
+  },
   row: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
     gap: 10,
     paddingTop: 20,
   },

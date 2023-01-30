@@ -4,10 +4,10 @@ import BorderStar from './BorderStar'
 // import WhiteStar from '../svg/WhiteStar'
 // import BorderStar from '../svg/BorderStar'
 
-const RelationshipRating = ({ relRatingValue }) => {
+const RelationshipRating = ({ relationshipRating }) => {
   return (
     <>
-      {relRatingValue && relRatingValue === 1 && (
+      {relationshipRating && relationshipRating === '1' && (
         <View style={styles.ranking}>
           <WhiteStar />
           <BorderStar />
@@ -16,7 +16,7 @@ const RelationshipRating = ({ relRatingValue }) => {
           <BorderStar />
         </View>
       )}
-      {relRatingValue && relRatingValue === 2 && (
+      {relationshipRating && relationshipRating === '2' && (
         <View style={styles.ranking}>
           <WhiteStar />
           <WhiteStar />
@@ -25,7 +25,7 @@ const RelationshipRating = ({ relRatingValue }) => {
           <BorderStar />
         </View>
       )}
-      {relRatingValue && relRatingValue === 3 && (
+      {relationshipRating && relationshipRating === '3' && (
         <View style={styles.ranking}>
           <WhiteStar />
           <WhiteStar />
@@ -34,7 +34,7 @@ const RelationshipRating = ({ relRatingValue }) => {
           <BorderStar />
         </View>
       )}
-      {relRatingValue && relRatingValue === 4 && (
+      {relationshipRating && relationshipRating === '4' && (
         <View style={styles.ranking}>
           <WhiteStar />
           <WhiteStar />
@@ -43,7 +43,7 @@ const RelationshipRating = ({ relRatingValue }) => {
           <BorderStar />
         </View>
       )}
-      {relRatingValue && relRatingValue === 5 && (
+      {relationshipRating && relationshipRating === '5' && (
         <View style={styles.ranking}>
           <WhiteStar />
           <WhiteStar />

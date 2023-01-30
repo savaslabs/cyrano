@@ -10,6 +10,10 @@ npm-debug.*
 *.orig.*
 web-build/
 .env
+<<<<<<< HEAD
+package-lock.json
+=======
+>>>>>>> c02adeb175a8c2ad45419c060c5df7d5b2b20f3c
 
 # macOS
 .DS_Store

@@ -22,9 +22,9 @@ const DateLog = () => {
     if (getRelationship) {
       setSingleRelationship(getRelationship)
     }
-  }, [])
+  }, [relationship])
 
-  const { name, lastTimeDate, datePlace, dateRatingValue, upcomingDate } =
+  const { name, lastTimeDate, datePlace, dateRating, upcomingDate } =
     singleRelationship
 
   return (
@@ -32,35 +32,52 @@ const DateLog = () => {
       {/* <Shape /> */}
       <Image source={ShapeSVG} style={styles.img} />
       <View style={styles.block}>
-        <Text style={styles.h1}>Date Log</Text>
+        <Text style={styles.h1}>History</Text>
       </View>
 
       <View style={styles.body}>
         <Card>
-          <Text style={styles.title}>Last date with {name}</Text>
+          <Text style={styles.title}>Last event with {name}</Text>
           <Text style={styles.next}>Was on {lastTimeDate}</Text>
           <Text style={styles.next}>You went to {datePlace}</Text>
           <Text style={styles.next}>
-            You rate this date {dateRatingValue} stars
+            You rate this event {dateRating} stars
           </Text>
+          <Text style={styles.next}>{name} rated this event with 4 stars</Text>
         </Card>
 
         <Card>
-          <Text style={styles.title}>Upcoming dates with {name}</Text>
-          {upcomingDate ? (
-            <>
-              <Text style={styles.next}>Your next date with {name}</Text>
-              <Text style={styles.next}>
-                Will be on {upcomingDate.nextDateTime}
-              </Text>
-              <Text style={styles.next}>
-                You will go to {upcomingDate.nextDatePlace}
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.message}>
-              You have no upcoming dates with {name}, it's time to schedule
-              another one.
+          <Text style={styles.title}>Upcoming events with {name}</Text>
+          {upcomingDate &&
+            upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+              <>
+                <Text style={styles.next}>
+                  You are taking {name} to dinner at{' '}
+                  {upcomingDate.pickRestaurantValue}.
+                </Text>
+                <Text style={styles.next}>
+                  On {upcomingDate.nextDateDate} at{' '}
+                  {upcomingDate.nextDateTimeBetween}.
+                </Text>
+              </>
+            )}
+
+          {upcomingDate &&
+            upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
+              <>
+                <Text style={styles.next}>
+                  You are taking {name} to dinner at{' '}
+                  {upcomingDate.nextDatePlace}{' '}
+                </Text>
+                <Text style={styles.next}>
+                  On {upcomingDate.nextDateDate} at{' '}
+                  {upcomingDate.nextDateTimeBetween}
+                </Text>
+              </>
+            )}
+          {!upcomingDate && (
+            <Text style={styles.next}>
+              You have no events scheduled with {name}
             </Text>
           )}
         </Card>
@@ -86,6 +103,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
+    width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   h1: {
     color: '#FFFFFF',
