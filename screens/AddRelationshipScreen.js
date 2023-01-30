@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 0,
     position: 'absolute',
-    top: '-58vh',
+    top: '-53vh',
     zIndex: '0',
     width: '100%',
     height: '100%',

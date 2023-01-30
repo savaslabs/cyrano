@@ -15,7 +15,7 @@ const Third = ({ name, phone, setPhone, email, setEmail }) => {
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <View style={styles.body}>
-        <Text style={styles.label}>
+        <Text style={[styles.label, styles.labelWithMargin]}>
           Please enter {name}'s contact information below, and we will forward
           them the Truity Love Styles test
         </Text>
@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 10,
+  },
+  labelWithMargin: {
+    marginTop: 31
   },
   input: {
     marginTop: 10,

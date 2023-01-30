@@ -27,17 +27,17 @@ const LoveLanguages = ({ item }) => {
     // </View>
     <View style={styles.iconContainer}>
       <View style={styles.iconData}>
-        <Image source={Activities} style={{ width: 32, height: 45 }} />
+        <Image source={Activities} style={{ width: 25, height: 34 }} />
         <Text style={styles.text}>Activities</Text>
       </View>
 
       <View style={styles.iconData}>
-        <Image source={Emotional} style={{ width: 45, height: 45 }} />
+        <Image source={Emotional} style={{ width: 34, height: 34 }} />
         <Text style={styles.text}>Emotional</Text>
       </View>
 
       <View style={styles.iconData}>
-        <Image source={Financial} style={{ width: 45, height: 45 }} />
+        <Image source={Financial} style={{ width: 34, height: 34 }} />
         <Text style={styles.text}>Financial</Text>
       </View>
     </View>
