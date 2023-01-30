@@ -60,11 +60,6 @@ const BookCyrano = () => {
       To: '+19195383478'
     }),
     {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-        'Access-Control-Allow-Headers': "append,delete,entries,foreach,get,has,keys,set,values,Authorization",
-      },
       auth: {
         username: sid,
         password: token
