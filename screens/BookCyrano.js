@@ -11,8 +11,11 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.svg'
+<<<<<<< HEAD
 import DropDownPicker from 'react-native-dropdown-picker'
 import ArrowBack from '../assets/arrow-back.svg'
+=======
+>>>>>>> c02adeb175a8c2ad45419c060c5df7d5b2b20f3c
 import axios from 'axios';
 
 const BookCyrano = () => {
@@ -108,6 +111,23 @@ Make sure you let them know you're excited for your date!`
         }
       }));
     }
+
+    require('dotenv').config();
+    const sid = process.env.TWILIO_ACCOUNT_SID;
+    const token = process.env.TWILIO_AUTH_TOKEN;
+    const qs = require('qs');
+
+    await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+      Body: 'hi',
+      From: '+19705008871',
+      To: '+19195383478'
+    }),
+    {
+      auth: {
+        username: sid,
+        password: token
+      }
+    }));
   }
 
   const handleBack = () => {
