@@ -39,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/qs": "^6.9.7",
+    "babel-plugin-module-resolver": "^5.0.0",
     "dotenv": "^16.0.3",
     "react-native-dotenv": "^3.4.7",
     "react-native-sass-transformer": "^2.0.0",
