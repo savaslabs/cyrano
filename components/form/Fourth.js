@@ -30,7 +30,7 @@ const Fourth = ({
         <TextInput
           style={styles.input}
           placeholderTextColor="rgba(237,82,68,0.5)"
-          placeholder="2 - 23 - 2003"
+          placeholder="DD/MM/YYYY"
           value={lastTimeDate}
           onChangeText={(newLastTimeDate) => setLastTimeDate(newLastTimeDate)}
         />

@@ -76,6 +76,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     aspectRatio: '10/3',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   background: {
     height: '100%',

@@ -62,7 +62,7 @@ const Relationship = () => {
             <RelationshipRating relationshipRating={relationshipRating} />
             <Text style={styles.relationshipText}>Relationship Strength</Text>
             <Text style={styles.relationshipText}>
-              As of {month + 1} - {date} - {year}
+              As of {month + 1}/{date}/{year}
             </Text>
           </View>
         </View>
@@ -179,6 +179,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
+    width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   img: {
     width: '100%',

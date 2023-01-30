@@ -353,6 +353,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   row: {
     flex: 0,
@@ -375,7 +378,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: -500,
+    top: -545,
   },
   cameraContainer: {
     width: 68,

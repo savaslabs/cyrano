@@ -103,6 +103,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
+    width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   h1: {
     color: '#FFFFFF',

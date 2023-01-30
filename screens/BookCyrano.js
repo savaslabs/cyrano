@@ -13,6 +13,7 @@ import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.svg'
 import DropDownPicker from 'react-native-dropdown-picker'
 import ArrowBack from '../assets/arrow-back.svg'
+import axios from 'axios';
 
 const BookCyrano = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -86,6 +87,26 @@ const BookCyrano = () => {
           itemId,
         })
       }
+
+      require('dotenv').config();
+      const sid = process.env.TWILIO_ACCOUNT_SID;
+      const token = process.env.TWILIO_AUTH_TOKEN;
+      const qs = require('qs');
+      const messageText = `You are taking ${name} to dinner at ${nextDatePlace} on ${nextDateDate} at ${nextDateTimeBetween}.
+
+Make sure you let them know you're excited for your date!`
+
+      await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+        Body: messageText,
+        From: '+19705008871',
+        To: '(919) 538-3478'
+      }),
+      {
+        auth: {
+          username: sid,
+          password: token
+        }
+      }));
     }
   }
 
@@ -160,7 +181,7 @@ const BookCyrano = () => {
           <Text style={styles.label}>When would you like to go?</Text>
           <TextInput
             style={styles.input}
-            placeholder="4 - 26 - 1933"
+            placeholder="MM/DD/YYYY"
             placeholderTextColor="rgba(237,82,68,0.5)"
             value={nextDateDate}
             onChangeText={(newNexteDateDate) =>
@@ -216,6 +237,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   h1: {
     color: '#FFFFFF',
@@ -235,7 +259,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: -500,
+    top: -545,
   },
   arrowContainer: {
     position: 'absolute',

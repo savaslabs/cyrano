@@ -57,7 +57,7 @@ const HomeScreen = () => {
         </View>
           <Text style={styles.h1}>Welcome to Cyrano</Text>
           <Text style={styles.h2}>
-            Please fill your details below to create your account
+            Please fill in your details below to create your account
           </Text>
         <View style={styles.form}>
           <View>
@@ -80,7 +80,7 @@ const HomeScreen = () => {
             <Text style={styles.label}>Phone Number</Text>
             <TextInput
               style={styles.input}
-              placeholder="1 (555) 123-4567"
+              placeholder="(555) 123-4567"
               value={phone}
               onChangeText={(newPhone) => setPhone(newPhone)}
               placeholderTextColor="rgba(255,255,255, 0.5)"
@@ -102,6 +102,10 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    maxWidth:700,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   background: {
     height: '100%',

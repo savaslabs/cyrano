@@ -29,7 +29,7 @@ const Second = ({
             <Text style={styles.label}>Birthday</Text>
             <TextInput
               style={styles.input}
-              placeholder="4 - 26 - 1933"
+              placeholder="DD/MM/YYYY"
               placeholderTextColor="rgba(237,82,68,0.5)"
               value={birthday}
               onChangeText={(newBirthday) => setBirthday(newBirthday)}
@@ -39,7 +39,7 @@ const Second = ({
             <Text style={styles.label}>Anniversary</Text>
             <TextInput
               style={styles.input}
-              placeholder="10 - 26 - 1988"
+              placeholder="DD/MM/YYYY"
               placeholderTextColor="rgba(237,82,68,0.5)"
               value={anniversary}
               onChangeText={(newAnniversary) => setAnniversary(newAnniversary)}

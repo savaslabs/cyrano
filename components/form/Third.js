@@ -26,7 +26,7 @@ const Third = ({ name, phone, setPhone, email, setEmail }) => {
         <TextInput
           style={styles.input}
           placeholderTextColor="rgba(237,82,68,0.5)"
-          placeholder="1 (555) 123-4567"
+          placeholder='(555) 123-4567'
           value={phone}
           onChangeText={(newPhone) => setPhone(newPhone)}
         />
@@ -36,7 +36,6 @@ const Third = ({ name, phone, setPhone, email, setEmail }) => {
         <TextInput
           style={styles.input}
           placeholderTextColor="rgba(237,82,68,0.5)"
-          placeholder="Enter Email"
           value={email}
           onChangeText={(newEmail) => setEmail(newEmail)}
         />
