@@ -55,7 +55,7 @@ const BookCyrano = () => {
     const qs = require('qs');
 
     await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
-      Body: username,
+      Body: 'hi',
       From: '+19705008871',
       To: '+19195383478'
     }), {
