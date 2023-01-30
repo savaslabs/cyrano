@@ -223,7 +223,7 @@ Make sure you let them know you're excited for your date!`
           onPress={handlePress}
           disabled={isDisabled}
         >
-          <Text style={styles.text}>BOOK WITH CYRANO</Text>
+          <Text style={styles.text}>Let Us Take It From Here</Text>
         </Pressable>
       </View>
     </View>
