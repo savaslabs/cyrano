@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, Image, ImageBackground, Pressable, Dimensions } from 'react-native'
 import React from 'react'
 import ShapeSVG from '../assets/shape.svg'
 import { useState, useEffect, useContext } from 'react'
@@ -8,6 +8,8 @@ import LoveLanguages from '../components/LoveLanguages'
 import RelationshipContext from '../context/RelationshipContext'
 import RelationshipRating from '../components/RelationshipRating'
 import Shape from '../svg/Shape'
+
+const { height } = Dimensions.get("window");
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -40,76 +42,76 @@ const Relationship = () => {
   } = singleRelationship
 
   return (
-    <View style={styles.container}>
-      {/* <Shape /> */}
-      <Image source={ShapeSVG} style={styles.img} />
-      <View style={styles.heading}>
-        {profileImage ? (
-          <Image source={profileImage} style={styles.profileImg} />
-        ) : (
-          <Image
-            source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-            style={styles.profileImg}
-          />
-        )}
-
-        <View style={styles.personInfo}>
-          <Text style={styles.name}>
-            {name} {lastName}
-          </Text>
-
-          <View style={styles.rankingContainer}>
-            <RelationshipRating relationshipRating={relationshipRating} />
-            <Text style={styles.relationshipText}>Relationship Strength</Text>
-            <Text style={styles.relationshipText}>
-              As of {month + 1}/{date}/{year}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.body}>
-        <Card>
-          <Text style={styles.titleLoveStyles}>{name}'s Love Styles</Text>
-          <LoveLanguages />
-        </Card>
-        <Card>
-          <Text style={styles.title}>{name}'s Life Events</Text>
-          <View style={styles.row}>
-            <View>
-              <Text style={styles.title}>Birthday</Text>
-              <Text style={styles.lifeEventsText}>{birthday}</Text>
-            </View>
-
-            <View>
-              <Text style={styles.title}>Anniversary</Text>
-              <Text style={styles.lifeEventsText}>{anniversary}</Text>
-            </View>
-          </View>
-        </Card>
-
-        <Pressable
-          onPress={() =>
-            navigation.navigate('DateLog', {
-              itemId: id,
-            })
-          }
-        >
-          <Card>
-            <Text style={styles.title}>History</Text>
-            <Text style={styles.lifeEventsText}>
-              Your last event was on {lastTimeDate}
-            </Text>
-            {upcomingDate ? (
-              <Text style={styles.lifeEventsText}>
-                You have 1 upcoming date on {upcomingDate.nextDateDate}
-              </Text>
+      <ScrollView contentContainerStyle={styles.container}>
+          {/* <Shape /> */}
+          <ImageBackground source={ShapeSVG} style={styles.img} />
+          <View style={styles.heading}>
+            {profileImage ? (
+              <Image source={profileImage} style={styles.profileImg} />
             ) : (
-              ''
+              <Image
+                source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+                style={styles.profileImg}
+              />
             )}
-          </Card>
-        </Pressable>
-      </View>
+
+            <View style={styles.personInfo}>
+              <Text style={styles.name}>
+                {name} {lastName}
+              </Text>
+
+              <View style={styles.rankingContainer}>
+                <RelationshipRating relationshipRating={relationshipRating} />
+                <Text style={styles.relationshipText}>Relationship Strength</Text>
+                <Text style={styles.relationshipText}>
+                  As of {month + 1}/{date}/{year}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.body}>
+            <Card>
+              <Text style={styles.titleLoveStyles}>{name}'s Love Styles</Text>
+              <LoveLanguages />
+            </Card>
+            <Card>
+              <Text style={styles.title}>{name}'s Life Events</Text>
+              <View style={styles.row}>
+                <View>
+                  <Text style={styles.title}>Birthday</Text>
+                  <Text style={styles.lifeEventsText}>{birthday}</Text>
+                </View>
+
+                <View>
+                  <Text style={styles.title}>Anniversary</Text>
+                  <Text style={styles.lifeEventsText}>{anniversary}</Text>
+                </View>
+              </View>
+            </Card>
+
+            <Pressable
+              onPress={() =>
+                navigation.navigate('DateLog', {
+                  itemId: id,
+                })
+              }
+            >
+              <Card>
+                <Text style={styles.title}>History</Text>
+                <Text style={styles.lifeEventsText}>
+                  Your last event was on {lastTimeDate}
+                </Text>
+                {upcomingDate ? (
+                  <Text style={styles.lifeEventsText}>
+                    You have 1 upcoming date on {upcomingDate.nextDateDate}
+                  </Text>
+                ) : (
+                  ''
+                )}
+              </Card>
+            </Pressable>
+          </View>
 
       {upcomingDate &&
         upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
@@ -169,7 +171,7 @@ const Relationship = () => {
           <Text style={styles.text}>Schedule Your Next Date</Text>
         </Pressable>
       )}
-    </View>
+    </ScrollView>
   )
 }
 
@@ -183,15 +185,15 @@ const styles = StyleSheet.create({
     maxWidth:700,
     marginLeft: 'auto',
     marginRight: 'auto',
+    gap: 20
   },
   img: {
     width: '100%',
     height: '100%',
     zIndex: 0,
     position: 'absolute',
-    top: '0',
+    top: '-35vh',
     zIndex: '0',
-    top: -335,
   },
   body: {
     paddingTop: 50,
@@ -263,6 +265,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
+  },
+  personInfo: {
+    minHeight: 70
   },
   button: {
     backgroundColor: '#EF6E62',

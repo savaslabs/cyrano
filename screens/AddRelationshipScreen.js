@@ -3,6 +3,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  ImageBackground,
   TextInput,
   Pressable,
 } from 'react-native'
@@ -130,7 +131,7 @@ const AddRelationship = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={ShapeSVG} style={styles.img} />
+      <ImageBackground source={ShapeSVG} style={styles.img} />
       {/* <Shape/> */}
       <View style={styles.block}>
         <Text style={styles.h1}>Add Relationship</Text>
@@ -374,11 +375,10 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 0,
     position: 'absolute',
-    top: '0',
+    top: '-58vh',
     zIndex: '0',
     width: '100%',
     height: '100%',
-    top: -545,
   },
   cameraContainer: {
     width: 68,

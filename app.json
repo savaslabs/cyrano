@@ -4,7 +4,7 @@
     "slug": "cyrano-mvp-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/favicon.ico",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
