@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     zIndex: '0',
   },
   body: {
-    paddingTop: 50,
+    paddingTop: 75,
   },
   profileImg: {
     width: 70,
