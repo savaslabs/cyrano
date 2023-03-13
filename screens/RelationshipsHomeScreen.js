@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { View, Text, Pressable, Image } from 'react-native'
+import { styles } from '../styles'
 import React, { useEffect, useState, useContext } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 // import Navbar from '../components/Navbar'
@@ -7,6 +8,7 @@ import RelationshipContext from '../context/RelationshipContext'
 import { db, auth } from '../config/firebase-config'
 import { getDocs, collection, where, query } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
+import placeholderSkeleton from '../assets/skeleton.png'
 
 const RelationshipsHomeScreen = () => {
   const [userData, setUserData] = useState('')
@@ -40,19 +42,17 @@ const RelationshipsHomeScreen = () => {
 
   useEffect(() => {
     getUser()
-    console.log('User running..')
   }, [])
 
   useEffect(() => {
     getRelationships()
-    console.log('Rel running...')
   }, [])
 
   useEffect(() => {
-    if (userData && relationships) {
+    if (relationships) {
       setLoading(false)
     }
-  }, [userData, relationships])
+  }, [relationships])
 
   useEffect(() => {
     if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
@@ -67,7 +67,7 @@ const RelationshipsHomeScreen = () => {
       ) : (
         <>
           <View style={{ paddingLeft: 20 }}>
-            <Text style={styles.textNew}>
+            {/* <Text style={styles.textNew}>
               Hello, {userData?.name} {userData?.lastName}!
             </Text>
             <Text style={styles.textNew}>
@@ -75,22 +75,29 @@ const RelationshipsHomeScreen = () => {
             </Text>
             <Text style={styles.textNew}>
               Phone: {userData?.phone}
-            </Text>
+            </Text> */}
             <Text style={styles.heading}>Relationships</Text>
             {relationships.length !== 0 ? (
               relationships.map((item) => (
                 <RelationshipItem item={item} key={item.id} />
               ))
             ) : (
-              <Text style={{ color: '#F17369' }}>
-                There are no relationships yet. Start by adding one!
-              </Text>
+              <View>
+                <Text>
+                  You don't have any relationships yet. Get started by adding
+                  one
+                </Text>
+                <Image
+                  source={placeholderSkeleton}
+                  style={{ width: 450, height: 320 }}
+                />
+              </View>
             )}
           </View>
 
           <Pressable style={styles.button}>
             <Text style={styles.text} onPress={handlePress}>
-              Add Relationship
+              ADD RELATIONSHIP
             </Text>
           </Pressable>
 
@@ -100,54 +107,5 @@ const RelationshipsHomeScreen = () => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    height: '100%',
-    justifyContent: 'space-between',
-    paddingTop: 50,
-    paddingBottom: 50,
-    width: '100%',
-    maxWidth: 700,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  data: {
-    height: '90%',
-    paddingLeft: 30,
-    paddingRight: 30,
-  },
-  heading: {
-    color: '#F17369',
-    fontSize: 20,
-    paddingTop: 40,
-    paddingBottom: 40,
-    fontWeight: 'bold',
-  },
-  button: {
-    backgroundColor: '#F17369',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderRadius: 65,
-    width: '50%',
-    alignSelf: 'center',
-  },
-  hover: {
-    backgroundColor: 'green',
-  },
-  text: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-  textNew: {
-    color: '#F17369',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-})
 
 export default RelationshipsHomeScreen
