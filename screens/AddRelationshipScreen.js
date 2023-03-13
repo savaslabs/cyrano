@@ -18,9 +18,11 @@ import RelationshipContext from '../context/RelationshipContext'
 import uuid from 'react-native-uuid'
 import * as ImagePicker from 'expo-image-picker'
 import First from '../components/form/First'
-import Second from '../components/form/Second'
+// import Second from '../components/form/Second'
 import Third from '../components/form/Third'
-import Fourth from '../components/form/Fourth'
+// import Fourth from '../components/form/Fourth'
+import { auth, db } from '../config/firebase-config'
+import { setDoc, collection, doc } from 'firebase/firestore'
 
 const AddRelationship = () => {
   const [name, setName] = useState('')
@@ -47,8 +49,14 @@ const AddRelationship = () => {
   const [loveStyleIsDisabled] = useState(true)
   const [nextIsDisabled] = useState(true)
   const [showMessage, setShowMessage] = useState(false)
+  const [docID, setDocID] = useState('')
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
+  // const relationshipRef = collection(db, 'relationships')
+
+  useEffect(() => {
+    setDocID(uuid.v4())
+  }, [])
 
   const handleNext = () => {
     setPageCounter((count) => count + 1)
@@ -61,7 +69,7 @@ const AddRelationship = () => {
   const handlePress = async () => {
     if (name && lastName && birthday) {
       const newRelationship = {
-        id: uuid.v4(),
+        id: docID,
         profileImage,
         name,
         lastName,
@@ -81,6 +89,7 @@ const AddRelationship = () => {
       navigation.navigate('Relationship', {
         itemId: newRelationship.id,
       })
+
       setProfileImage('')
       setName('')
       setLastName('')
@@ -93,6 +102,25 @@ const AddRelationship = () => {
       setDateRating('')
       setLastTimeDate('')
       setDatePlace('')
+
+      setDoc(doc(db, 'relationships', docID), {
+        profileImage,
+        name,
+        lastName,
+        birthday,
+        anniversary,
+        phone,
+        email,
+        relationshipValue,
+        relationshipRating,
+        dateRating,
+        lastTimeDate,
+        datePlace,
+        author: {
+          id: auth.currentUser.uid,
+          email: auth.currentUser.email,
+        },
+      })
     }
   }
 
@@ -103,14 +131,23 @@ const AddRelationship = () => {
       birthday &&
       relationshipValue &&
       lastTimeDate &&
-      datePlace
+      datePlace &&
+      dateRating
     ) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
     }
-    //eslint-disable-next-line
-  })
+    console.log('Validation running...')
+  }, [
+    name,
+    lastName,
+    birthday,
+    relationshipValue,
+    lastTimeDate,
+    datePlace,
+    dateRating,
+  ])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -163,17 +200,17 @@ const AddRelationship = () => {
             setRelationshipValue={setRelationshipValue}
           />
         )}
-        {pageCounter === 2 && (
-          <Second
-            birthday={birthday}
-            setBirthday={setBirthday}
-            anniversary={anniversary}
-            setAnniversary={setAnniversary}
-            relationshipValue={relationshipValue}
-            relationshipRating={relationshipRating}
-            setRelationshipRating={setRelationshipRating}
-          />
-        )}
+        {pageCounter === 2 &&
+          // <Second
+          //   birthday={birthday}
+          //   setBirthday={setBirthday}
+          //   anniversary={anniversary}
+          //   setAnniversary={setAnniversary}
+          //   relationshipValue={relationshipValue}
+          //   relationshipRating={relationshipRating}
+          //   setRelationshipRating={setRelationshipRating}
+          // />
+          ''}
         {pageCounter === 3 && (
           <Third
             name={name}
@@ -183,17 +220,17 @@ const AddRelationship = () => {
             setPhone={setPhone}
           />
         )}
-        {pageCounter === 4 && (
-          <Fourth
-            lastTimeDate={lastTimeDate}
-            setLastTimeDate={setLastTimeDate}
-            datePlace={datePlace}
-            setDatePlace={setDatePlace}
-            dateRating={dateRating}
-            setDateRating={setDateRating}
-            name={name}
-          />
-        )}
+        {pageCounter === 4 &&
+          // <Fourth
+          //   lastTimeDate={lastTimeDate}
+          //   setLastTimeDate={setLastTimeDate}
+          //   datePlace={datePlace}
+          //   setDatePlace={setDatePlace}
+          //   dateRating={dateRating}
+          //   setDateRating={setDateRating}
+          //   name={name}
+          // />
+          ''}
 
         {/* {showRestaurants && (
           <View>
@@ -354,7 +391,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     width: '100%',
-    maxWidth:700,
+    maxWidth: 700,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
@@ -375,7 +412,7 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 0,
     position: 'absolute',
-    top: '-53vh',
+    top: 100,
     zIndex: '0',
     width: '100%',
     height: '100%',

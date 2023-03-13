@@ -2,63 +2,41 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 // import Navbar from '../components/Navbar'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import { db, auth } from '../config/firebase-config'
-import { getDocs, collection, where, query } from 'firebase/firestore'
+import { getDocs, collection } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 
-const RelationshipsHomeScreen = () => {
-  const [userData, setUserData] = useState('')
+const AdminRelationshipsView = () => {
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
   const [relationships, setRelationships] = useState('')
-  const { user } = useContext(RelationshipContext)
-  const userRef = collection(db, 'users')
   const relationshipRef = collection(db, 'relationships')
+  const route = useRoute()
+  const { itemId } = route.params
 
   const handlePress = () => {
-    navigation.navigate('Add')
+    navigation.navigate('Admin')
   }
 
-  const getUser = async () => {
-    const q = query(userRef, where('userId', '==', auth.currentUser.uid))
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
-      setUserData(doc.data())
-    })
-  }
+  useEffect(() => {
+    getRelationships()
+    console.log('Admin rel running...')
+  }, [])
 
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const finalRel = newData.filter(
-      (item) => item.author.id === auth.currentUser.uid
-    )
+    const finalRel = newData.filter((item) => item.author.id === itemId)
     setRelationships(finalRel)
   }
 
   useEffect(() => {
-    getUser()
-    console.log('User running..')
-  }, [])
-
-  useEffect(() => {
-    getRelationships()
-    console.log('Rel running...')
-  }, [])
-
-  useEffect(() => {
-    if (userData && relationships) {
+    if (relationships) {
       setLoading(false)
     }
-  }, [userData, relationships])
-
-  useEffect(() => {
-    if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
-      navigation.navigate('Admin')
-    }
-  }, [auth.currentUser.uid])
+  }, [relationships])
 
   return (
     <View style={styles.container}>
@@ -67,34 +45,25 @@ const RelationshipsHomeScreen = () => {
       ) : (
         <>
           <View style={{ paddingLeft: 20 }}>
-            <Text style={styles.textNew}>
-              Hello, {userData?.name} {userData?.lastName}!
-            </Text>
-            <Text style={styles.textNew}>
-              Email: {userData?.email}
-            </Text>
-            <Text style={styles.textNew}>
-              Phone: {userData?.phone}
-            </Text>
-            <Text style={styles.heading}>Relationships</Text>
+            <Text style={styles.heading}>Admin Dashboard</Text>
+
+            <Text style={styles.heading}>Relationships:</Text>
             {relationships.length !== 0 ? (
               relationships.map((item) => (
                 <RelationshipItem item={item} key={item.id} />
               ))
             ) : (
               <Text style={{ color: '#F17369' }}>
-                There are no relationships yet. Start by adding one!
+                The user doesn't have any relationships yet!
               </Text>
             )}
           </View>
 
           <Pressable style={styles.button}>
             <Text style={styles.text} onPress={handlePress}>
-              Add Relationship
+              BACK
             </Text>
           </Pressable>
-
-          {/* <Navbar style={{ height: '10%' }} /> */}
         </>
       )}
     </View>
@@ -143,11 +112,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     textAlign: 'center',
   },
-  textNew: {
-    color: '#F17369',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
 })
 
-export default RelationshipsHomeScreen
+export default AdminRelationshipsView
