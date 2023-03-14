@@ -27,7 +27,7 @@ const SendMessageScreen = () => {
     <View style={styles.container}>
         <View style={styles.imgContainer}>
           <Image
-            source={require('../assets/logo.svg')}
+            source={require('../assets/logo.png')}
             style={{ width: 80, height: 60 }}
           />
         </View>

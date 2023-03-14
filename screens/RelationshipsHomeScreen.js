@@ -64,6 +64,7 @@ const RelationshipsHomeScreen = () => {
     if (relationships) {
       setLoading(false)
     }
+
   }, [relationships])
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const RelationshipsHomeScreen = () => {
       navigation.navigate('Admin')
     }
   }, [auth.currentUser.uid])
+
 
   return (
     <View style={styles.container}>
@@ -95,10 +97,12 @@ const RelationshipsHomeScreen = () => {
                   You don't have any relationships yet. Get started by adding
                   one
                 </Text>
+                
                 <Image
                   source={placeholderSkeleton}
                   style={{ width: 450, height: 320 }}
                 />
+
               </View>
             ) : (
               <View>
@@ -121,7 +125,7 @@ const RelationshipsHomeScreen = () => {
                     <View>
                       <Text style={styles.heading}>Relationships</Text>
                       {relationships.map((item) => (
-                        <View>
+                        <View key={item.id}>
                           <RelationshipItem item={item} key={item.id} />
                         </View>
                       ))}
