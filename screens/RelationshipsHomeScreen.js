@@ -9,12 +9,15 @@ import { db, auth } from '../config/firebase-config'
 import { getDocs, collection, where, query } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
+import EventItem from '../components/EventItem'
 
 const RelationshipsHomeScreen = () => {
   const [userData, setUserData] = useState('')
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
   const [relationships, setRelationships] = useState('')
+  // Events state is a placeholder for now
+  const [event, setEvents] = useState(true)
   const { user } = useContext(RelationshipContext)
   const userRef = collection(db, 'users')
   const relationshipRef = collection(db, 'relationships')
@@ -76,13 +79,28 @@ const RelationshipsHomeScreen = () => {
             <Text style={styles.textNew}>
               Phone: {userData?.phone}
             </Text> */}
-            <Text style={styles.heading}>Relationships</Text>
+            <Text style={styles.heading}>Upcoming Events</Text>
+            {!event ? (
+              <View>
+                <Text>You don't have any upcoming event right now</Text>
+                <Pressable>
+                  <Text>SCHEDULE AN EVENT</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <EventItem />
+            )}
+            <Text>View events history</Text>
             {relationships.length !== 0 ? (
               relationships.map((item) => (
-                <RelationshipItem item={item} key={item.id} />
+                <View>
+                  <Text style={styles.heading}>Relationships</Text>
+                  <RelationshipItem item={item} key={item.id} />
+                </View>
               ))
             ) : (
               <View>
+                <Text style={styles.heading}>Relationships</Text>
                 <Text>
                   You don't have any relationships yet. Get started by adding
                   one
