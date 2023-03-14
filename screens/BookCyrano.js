@@ -10,10 +10,10 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
-import LogoIMG from '../assets/logo.svg'
+import LogoIMG from '../assets/logo.png'
 import DropDownPicker from 'react-native-dropdown-picker'
 import ArrowBack from '../assets/arrow-back.svg'
-import axios from 'axios';
+import axios from 'axios'
 
 const BookCyrano = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -32,7 +32,8 @@ const BookCyrano = () => {
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
-  const { relationship, updateRelationship, user } = useContext(RelationshipContext)
+  const { relationship, updateRelationship, user } =
+    useContext(RelationshipContext)
   const { itemId } = route.params
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const BookCyrano = () => {
       setIsDisabled(true)
     }
     //eslint-disable-next-line
-  })
+  }, [])
 
   useEffect(() => {
     const getRelationship = relationship.find((item) => item.id === itemId)
@@ -86,29 +87,7 @@ const BookCyrano = () => {
         navigation.navigate('Relationship', {
           itemId,
         })
-      } 
-
-      require('dotenv').config();
-      console.log(user.user.phone)
-      const sid = process.env.TWILIO_ACCOUNT_SID;
-      const token = process.env.TWILIO_AUTH_TOKEN;
-      const qs = require('qs');
-      const restaurantName = pickRestaurantValue === 'Choose My Own Restaurant' ? nextDatePlace : pickRestaurantValue
-      const messageText = `You are taking ${name} to dinner at ${restaurantName} on ${nextDateDate} at ${nextDateTimeBetween}. 
-
-Make sure you let them know you're excited for your date!`
-
-      await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
-        Body: messageText,
-        From: '+19705008871',
-        To: user.user.phone
-      }),
-      {
-        auth: {
-          username: sid,
-          password: token
-        }
-      }));
+      }
     }
   }
 
@@ -239,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     width: '100%',
-    maxWidth:700,
+    maxWidth: 700,
     marginLeft: 'auto',
     marginRight: 'auto',
   },

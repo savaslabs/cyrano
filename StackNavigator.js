@@ -10,6 +10,11 @@ import BookCyrano from './screens/BookCyrano'
 import LoveStylesScreen from './screens/LoveStylesScreen'
 import LifeEventsScreen from './screens/LifeEventsScreen'
 import DateLogScreen from './screens/DateLogScreen'
+import LoginScreen from './screens/LoginScreen'
+import GoogleCreate from './screens/GoogleCreate'
+import AdminDashboard from './screens/AdminDashboard'
+import AdminRelationshipsView from './screens/AdminRelationshipsView'
+import FacebookCreate from './screens/FacebookCreate'
 
 const Stack = createNativeStackNavigator()
 
@@ -26,21 +31,27 @@ const StackNavigator = () => {
     >
       {isLoggedIn ? (
         <>
-          <Stack.Screen name="Add" component={AddRelationShipScreen} />
           <Stack.Screen
             name="Relationships"
             component={RelationshipsHomeScreen}
           />
-
+          <Stack.Screen name="Add" component={AddRelationShipScreen} />
           <Stack.Screen name="Relationship" component={RelationshipScreen} />
-          <Stack.Screen name="Send" component={SendMessageScreen} />
+          {/* <Stack.Screen name="Send" component={SendMessageScreen} />
           <Stack.Screen name="Book" component={BookCyrano} />
           <Stack.Screen name="LoveStyle" component={LoveStylesScreen} />
           <Stack.Screen name="LifeEvents" component={LifeEventsScreen} />
-          <Stack.Screen name="DateLog" component={DateLogScreen} />
+          <Stack.Screen name="DateLog" component={DateLogScreen} /> */}
+          <Stack.Screen name="Admin" component={AdminDashboard} />
+          <Stack.Screen name="AdminRel" component={AdminRelationshipsView} />
         </>
       ) : (
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <>
+          <Stack.Screen name="Create Account" component={HomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Google" component={GoogleCreate} />
+          <Stack.Screen name="Facebook" component={FacebookCreate} />
+        </>
       )}
     </Stack.Navigator>
   )

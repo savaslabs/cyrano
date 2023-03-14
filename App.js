@@ -1,8 +1,7 @@
 import StackNavigator from './StackNavigator'
 import { NavigationContainer } from '@react-navigation/native'
 import { RelationshipProvider } from './context/RelationshipContext'
-import {StyleSheet } from 'react-native'
-
+import { StyleSheet } from 'react-native'
 
 export default function App() {
   return (
@@ -16,6 +15,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   pageWrapper: {
-    maxWidth:700,
+    maxWidth: 700,
   },
 })

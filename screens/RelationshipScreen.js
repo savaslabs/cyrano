@@ -1,4 +1,12 @@
-import { ScrollView, View, Text, StyleSheet, Image, ImageBackground, Pressable, Dimensions } from 'react-native'
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  Pressable,
+} from 'react-native'
 import React from 'react'
 import ShapeSVG from '../assets/shape.svg'
 import { useState, useEffect, useContext } from 'react'
@@ -7,27 +15,54 @@ import Card from '../shared/Card'
 import LoveLanguages from '../components/LoveLanguages'
 import RelationshipContext from '../context/RelationshipContext'
 import RelationshipRating from '../components/RelationshipRating'
+import { db, auth } from '../config/firebase-config'
+import { getDoc, doc } from 'firebase/firestore'
+import Load from '../assets/spinner.gif'
 import Shape from '../svg/Shape'
-
-const { height } = Dimensions.get("window");
+import Spinner from '../shared/Spinner'
+import ArrowBack from '../assets/arrow-back-white.svg'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
+  const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
-  const { relationship } = useContext(RelationshipContext)
   const { itemId } = route.params
   const month = new Date().getMonth()
   const date = new Date().getDate()
   const year = new Date().getFullYear()
 
-  useEffect(() => {
-    const getRelationship = relationship.find((item) => item.id === itemId)
+  // useEffect(() => {
+  //   const getRelationship = relationship.find((item) => item.id === itemId)
 
-    if (getRelationship) {
-      setSingleRelationship(getRelationship)
+  //   if (getRelationship) {
+  //     setSingleRelationship(getRelationship)
+  //   }
+  // }, [relationship])
+
+  useEffect(() => {
+    getSpecificDoc()
+    console.log('Specific Doc running...')
+  }, [])
+
+  const getSpecificDoc = async () => {
+    const docRef = doc(db, 'relationships', itemId)
+    try {
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        setSingleRelationship(docSnap.data())
+      }
+    } catch (error) {
+      console.log(error)
     }
-  }, [relationship])
+  }
+
+  useEffect(() => {
+    if (singleRelationship) {
+      setLoading(false)
+      console.log('isLoading rel running...')
+    }
+  }, [singleRelationship])
 
   const {
     id,
@@ -41,10 +76,31 @@ const Relationship = () => {
     upcomingDate,
   } = singleRelationship
 
+  const handleBack = () => {
+    navigation.navigate('Relationships')
+  }
+
+  const handleBackAdmin = () => {
+    navigation.navigate('Admin')
+  }
+
   return (
-      <ScrollView contentContainerStyle={styles.container}>
-          {/* <Shape /> */}
+    <ScrollView contentContainerStyle={styles.container}>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
           <ImageBackground source={ShapeSVG} style={styles.img} />
+          {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+            <Pressable style={styles.arrowContainer} onPress={handleBackAdmin}>
+              <Image source={ArrowBack} style={styles.arrow} />
+            </Pressable>
+          ) : (
+            <Pressable style={styles.arrowContainer} onPress={handleBack}>
+              <Image source={ArrowBack} style={styles.arrow} />
+            </Pressable>
+          )}
+
           <View style={styles.heading}>
             {profileImage ? (
               <Image source={profileImage} style={styles.profileImg} />
@@ -62,7 +118,9 @@ const Relationship = () => {
 
               <View style={styles.rankingContainer}>
                 <RelationshipRating relationshipRating={relationshipRating} />
-                <Text style={styles.relationshipText}>Relationship Strength</Text>
+                <Text style={styles.relationshipText}>
+                  Relationship Strength
+                </Text>
                 <Text style={styles.relationshipText}>
                   As of {month + 1}/{date}/{year}
                 </Text>
@@ -113,64 +171,67 @@ const Relationship = () => {
             </Pressable>
           </View>
 
-      {upcomingDate &&
-        upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
-          <>
-            <Text style={styles.message}>
-              You are taking <Text style={{ fontWeight: '700' }}>{name}</Text>{' '}
-              to dinner at{' '}
-              <Text style={{ fontWeight: '700' }}>
-                {upcomingDate.pickRestaurantValue}
-              </Text>{' '}
-              on{' '}
-              <Text style={{ fontWeight: '700' }}>
-                {upcomingDate.nextDateDate}{' '}
-              </Text>
-              at{' '}
-              <Text style={{ fontWeight: '700' }}>
-                {upcomingDate.nextDateTimeBetween}
-              </Text>
-              . Make sure you let them know you're excited for your date!
-            </Text>
-          </>
-        )}
+          {upcomingDate &&
+            upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
+              <>
+                <Text style={styles.message}>
+                  You are taking{' '}
+                  <Text style={{ fontWeight: '700' }}>{name}</Text> to dinner at{' '}
+                  <Text style={{ fontWeight: '700' }}>
+                    {upcomingDate.pickRestaurantValue}
+                  </Text>{' '}
+                  on{' '}
+                  <Text style={{ fontWeight: '700' }}>
+                    {upcomingDate.nextDateDate}{' '}
+                  </Text>
+                  at{' '}
+                  <Text style={{ fontWeight: '700' }}>
+                    {upcomingDate.nextDateTimeBetween}
+                  </Text>
+                  . Make sure you let them know you're excited for your date!
+                </Text>
+              </>
+            )}
 
-      {upcomingDate &&
-        upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
-          <>
-            <Text style={styles.message}>
-              You are taking <Text style={{ fontWeight: '700' }}>{name}</Text>{' '}
-              to dinner at{' '}
-              <Text style={{ fontWeight: '700' }}>
-                {upcomingDate.nextDatePlace}
-              </Text>{' '}
-              on{' '}
-              <Text style={{ fontWeight: '700' }}>
-                {upcomingDate.nextDateDate}
-              </Text>{' '}
-              at{' '}
-              <Text style={{ fontWeight: '700' }}>
-                {upcomingDate.nextDateTimeBetween}.
-              </Text>
-              Make sure you let them know you're excited for your date!
-            </Text>
-          </>
-        )}
+          {upcomingDate &&
+            upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
+              <>
+                <Text style={styles.message}>
+                  You are taking{' '}
+                  <Text style={{ fontWeight: '700' }}>{name}</Text> to dinner at{' '}
+                  <Text style={{ fontWeight: '700' }}>
+                    {upcomingDate.nextDatePlace}
+                  </Text>{' '}
+                  on{' '}
+                  <Text style={{ fontWeight: '700' }}>
+                    {upcomingDate.nextDateDate}
+                  </Text>{' '}
+                  at{' '}
+                  <Text style={{ fontWeight: '700' }}>
+                    {upcomingDate.nextDateTimeBetween}.
+                  </Text>
+                  Make sure you let them know you're excited for your date!
+                </Text>
+              </>
+            )}
 
-      {upcomingDate ? (
-        ''
-      ) : (
-        <Pressable
-          style={styles.button}
-          onPress={() =>
-            navigation.navigate('Book', {
-              itemId: id,
-            })
-          }
-        >
-          <Text style={styles.text}>Schedule Your Next Date</Text>
-        </Pressable>
+          {upcomingDate
+            ? ''
+            : auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
+                <Pressable
+                  style={styles.button}
+                  onPress={() =>
+                    navigation.navigate('Book', {
+                      itemId: id,
+                    })
+                  }
+                >
+                  <Text style={styles.text}>Schedule Your Next Date</Text>
+                </Pressable>
+              )}
+        </>
       )}
+      {/* <Shape /> */}
     </ScrollView>
   )
 }
@@ -182,10 +243,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     width: '100%',
-    maxWidth:700,
+    maxWidth: 700,
     marginLeft: 'auto',
     marginRight: 'auto',
-    gap: 20
+    gap: 20,
   },
   img: {
     width: '100%',
@@ -267,7 +328,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   personInfo: {
-    minHeight: 70
+    minHeight: 70,
   },
   button: {
     backgroundColor: '#EF6E62',
@@ -305,6 +366,15 @@ const styles = StyleSheet.create({
     color: '#EF6E62',
     fontSize: 16,
     fontWeight: '400',
+  },
+  arrowContainer: {
+    position: 'absolute',
+    top: '15px',
+    left: '15px',
+  },
+  arrow: {
+    width: 20,
+    height: 20,
   },
 })
 

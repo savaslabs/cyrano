@@ -1,186 +1,219 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TextInput,
-  Pressable,
-} from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
+import { View, Text, Image, TextInput, Pressable, Alert } from 'react-native'
+import { styles } from '../styles'
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
-import LogoIMG from '../assets/logo.svg'
+import LogoIMG from '../assets/logo.png'
+import Google from '../assets/google.png'
+import { auth, db } from '../config/firebase-config'
+import { addDoc, collection, doc, deleteDoc } from 'firebase/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
   const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
+  const [userData, setUserData] = useState('')
+  const [password, setPassword] = useState('')
+  const [repeatPassword, setRepeatPassword] = useState('')
+  const [pageCounter, setPageCounter] = useState(1)
   const navigation = useNavigation()
   const { logInUser } = useContext(RelationshipContext)
+  const usersRef = collection(db, 'users')
 
-  const handlePress = async () => {
-    if (name && lastName && phone) {
-      const newUser = {
-        name,
-        lastName,
-        phone,
-      }
-
-      await logInUser(newUser)
+  const handleNext = () => {
+    if (password !== repeatPassword) {
+      Alert.alert("Password don't match")
+      alert("Password don't match")
+    } else {
+      setPageCounter((count) => count + 1)
     }
-
-    setName('')
-    setLastName('')
-    setPhone('')
-
-    navigation.navigate('Relationships')
   }
 
+  const handleBack = () => {
+    setPageCounter((count) => count - 1)
+  }
+
+  const handlePress = async () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setUserData(userCredential)
+        setEmail('')
+        setPassword('')
+        setRepeatPassword('')
+        setName('')
+        setLastName('')
+        setPhone('')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        console.log(errorCode)
+      })
+    // if (name && lastName && phone) {
+    //   const newUser = {
+    //     name,
+    //     lastName,
+    //     phone,
+    //   }
+
+    //   await logInUser(newUser)
+    // }
+
+    // setName('')
+    // setLastName('')
+    // setPhone('')
+
+    // navigation.navigate('Relationships')
+  }
+
+  // Store user data
   useEffect(() => {
-    if (name && lastName && phone) {
+    if (userData) {
+      addDoc(usersRef, {
+        userId: userData?.user?.uid,
+        name: name,
+        lastName: lastName,
+        email: userData?.user?.email,
+        phone: phone,
+      })
+
+      logInUser(userData)
+    }
+  }, [userData])
+
+  useEffect(() => {
+    if (email && password && repeatPassword && name && lastName && phone) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
     }
-    //eslint-disable-next-line
-  })
+  }, [email, password, repeatPassword, name, lastName, phone])
+
+  // const deleteDocu = async () => {
+  //   await deleteDoc(doc(usersRef, 'xXQlTIeikwXss9X3thZJ')).then(
+  //     alert('Documento borrado')
+  //   )
+  // }
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#FED9B7', '#F07167']} style={styles.background}>
-        <View style={styles.imgContainer}>
-          <Image source={LogoIMG} style={styles.logo} />
-          {/* <Logo /> */}
-        </View>
-          <Text style={styles.h1}>Welcome to Cyrano</Text>
-          <Text style={styles.h2}>
-            Please fill in your details below to create your account
-          </Text>
-        <View style={styles.form}>
-          <View>
-            <Text style={styles.label}>First Name</Text>
-            <TextInput
-              style={styles.input}
-              value={name}
-              onChangeText={(newName) => setName(newName)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Last Name</Text>
-            <TextInput
-              style={styles.input}
-              value={lastName}
-              onChangeText={(newLastName) => setLastName(newLastName)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="(555) 123-4567"
-              value={phone}
-              onChangeText={(newPhone) => setPhone(newPhone)}
-              placeholderTextColor="rgba(255,255,255, 0.5)"
-            />
-          </View>
-          <Pressable
-            style={[styles.button, isDisabled ? styles.disabled : '']}
-            onPress={handlePress}
-            disabled={isDisabled}
-          >
-            <Text style={styles.text}>Create Account</Text>
+      <View style={styles.imgContainer}>
+        <Image source={LogoIMG} style={styles.logo} />
+        {/* <Logo /> */}
+      </View>
+      <Text style={styles.h1}>Welcome to Cyrano</Text>
+      <Text style={styles.h2}>
+        Fill in your details below to create your account.
+      </Text>
+      <View style={styles.form}>
+        {pageCounter === 1 && (
+          <>
+            <View>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={(newEmail) => setEmail(newEmail)}
+                keyboardType="email-address"
+              />
+            </View>
+            <View>
+              <Text style={styles.label}>Password</Text>
+              <TextInput
+                style={styles.input}
+                value={password}
+                onChangeText={(newPassword) => setPassword(newPassword)}
+                secureTextEntry
+              />
+            </View>
+            <View>
+              <Text style={styles.label}>Repeat Password</Text>
+              <TextInput
+                style={styles.input}
+                value={repeatPassword}
+                onChangeText={(newRepeatPassword) =>
+                  setRepeatPassword(newRepeatPassword)
+                }
+                secureTextEntry
+              />
+            </View>
+          </>
+        )}
+        {pageCounter === 2 && (
+          <>
+            <View>
+              <Text style={styles.label}>First Name</Text>
+              <TextInput
+                style={styles.input}
+                value={name}
+                onChangeText={(newName) => setName(newName)}
+              />
+            </View>
+            <View>
+              <Text style={styles.label}>Last Name</Text>
+              <TextInput
+                style={styles.input}
+                value={lastName}
+                onChangeText={(newLastName) => setLastName(newLastName)}
+              />
+            </View>
+            <View>
+              <Text style={styles.label}>Phone Number</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="(555) 123-4567"
+                value={phone}
+                onChangeText={(newPhone) => setPhone(newPhone)}
+                placeholderTextColor="rgba(255,255,255, 0.5)"
+              />
+            </View>
+          </>
+        )}
+
+        {pageCounter === 1 && (
+          <Pressable onPress={handleNext}>
+            <Text style={styles.text}>Next</Text>
           </Pressable>
+        )}
+        {pageCounter === 2 && (
+          <View>
+            <Pressable onPress={handleBack}>
+              <Text style={styles.text}>Back</Text>
+            </Pressable>
+            <Pressable
+              style={isDisabled ? styles.disabled : ''}
+              onPress={handlePress}
+              disabled={isDisabled}
+            >
+              <Text style={styles.text}>CREATE ACCOUNT</Text>
+            </Pressable>
+          </View>
+        )}
+
+        <Text style={styles.h2}>
+          Already have an account?{' '}
+          <Pressable onPress={() => navigation.navigate('Login')}>
+            <Text>Click Here</Text>
+          </Pressable>
+        </Text>
+        <View style={styles.flex}>
+          <Text style={styles.h2}>Or: </Text>
+          <View style={styles.row}>
+            <Pressable onPress={() => navigation.navigate('Google')}>
+              <View style={styles.loginContainer}>
+                <Image source={Google} style={styles.loginImg} />
+                <Text style={styles.h2}>Create your account with Google</Text>
+              </View>
+            </Pressable>
+          </View>
         </View>
-      </LinearGradient>
+      </View>
+      {/* <Pressable onPress={deleteDocu}>DELETE</Pressable> */}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    maxWidth:700,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  background: {
-    height: '100%',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 100,
-    height: 80,
-    alignSelf: 'center'
-  },
-  h1: {
-    color: '#FFFFFF',
-    fontSize: 32,
-    fontWeight: '600',
-    paddingBottom: 10,
-    alignSelf: 'center'
-  },
-  h2: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '400',
-    paddingBottom: 20,
-    width: '70%',
-    textAlign: 'center',
-    alignSelf: 'center'
-  },
-  label: {
-    color: '#FFFFFF',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingLeft: 10,
-  },
-  imgContainer: {
-    paddingBottom: 10,
-    alignSelf: 'center'
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#FFFFFF',
-    borderRadius: 5,
-    color: '#FFFFFF',
-  },
-  button: {
-    backgroundColor: '#FFFFFF',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
-    borderRadius: 65,
-    textAlign: 'center',
-    margin: 'auto',
-    marginTop: 20,
-    shadowColor: '#ed6358',
-    shadowOffset: {
-      width: '0',
-      height: '4',
-    },
-    shadowOpacity: '0.19',
-    shadowRadius: '5.62',
-    elevation: '6',
-    opacity: '1',
-    width: '50%',
-    alignSelf: 'center'
-  },
-  disabled: {
-    opacity: '0.5',
-  },
-  text: {
-    color: '#EF6E62',
-    textAlign: 'center'
-  },
-})
 
 export default HomeScreen

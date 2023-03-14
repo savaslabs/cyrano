@@ -7,7 +7,6 @@ import {
   TextInput,
   Pressable,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState } from 'react'
 
 const SendMessageScreen = () => {
@@ -22,14 +21,13 @@ const SendMessageScreen = () => {
       setIsDisabled(true)
     }
     //eslint-disable-next-line
-  })
+  }, [])
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#FED9B7', '#F07167']} style={styles.background}>
         <View style={styles.imgContainer}>
           <Image
-            source={require('../assets/logo.svg')}
+            source={require('../assets/logo.png')}
             style={{ width: 80, height: 60 }}
           />
         </View>
@@ -66,7 +64,6 @@ const SendMessageScreen = () => {
             <Text style={styles.text}>Send Message</Text>
           </Pressable>
         </SafeAreaView>
-      </LinearGradient>
     </View>
   )
 }
