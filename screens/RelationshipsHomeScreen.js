@@ -17,7 +17,16 @@ const RelationshipsHomeScreen = () => {
   const navigation = useNavigation()
   const [relationships, setRelationships] = useState('')
   // Events state is a placeholder for now
-  const [event, setEvents] = useState(true)
+  const [upcomingEvents, setUpcomingEvents] = useState([
+    {
+      id: 1,
+      eventTitle: 'Dinner Date',
+      loveStyleTag: ['Activity', 'Financial'],
+      date: 'Friday, Jan 26, 2023 @ 8 pm',
+      img: 'https://picsum.photos/200',
+      name: 'Amber Barker',
+    },
+  ])
   const { user } = useContext(RelationshipContext)
   const userRef = collection(db, 'users')
   const relationshipRef = collection(db, 'relationships')
@@ -96,7 +105,7 @@ const RelationshipsHomeScreen = () => {
                 {relationships.length > 0 && (
                   <View>
                     <Text style={styles.heading}>Upcoming Events</Text>
-                    {event ? (
+                    {!upcomingEvents ? (
                       <View>
                         <Text>You don't have any upcoming event right now</Text>
                         <Pressable>
@@ -104,7 +113,9 @@ const RelationshipsHomeScreen = () => {
                         </Pressable>
                       </View>
                     ) : (
-                      <EventItem />
+                      upcomingEvents.map((item) => (
+                        <EventItem item={item} key={item.id} />
+                      ))
                     )}
                     <Text>View events history</Text>
                     <View>

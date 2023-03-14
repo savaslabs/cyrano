@@ -12,40 +12,57 @@ const EventItem = ({ item }) => {
     })
   }
 
+  const { id, eventTitle, loveStyleTag, date, img, name } = item
+
   return (
     <View style={styles.container}>
       <View style={styles.item}>
-        {item?.profileImage ? (
-          <Image
-            source={item?.profileImage}
-            style={styles.img}
-            nativeID={item?.id}
-          />
+        <Text>{eventTitle}</Text>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          {loveStyleTag.map((tag, index) => (
+            <Text
+              key={index}
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                marginLeft: 5,
+                marginRight: 5,
+              }}
+            >
+              {tag}
+            </Text>
+          ))}
+        </View>
+      </View>
+      <View>
+        <Text>{date}</Text>
+      </View>
+      <View style={styles.item}>
+        {img ? (
+          <Image source={img} style={styles.img} nativeID={id} />
         ) : (
           <Image
             source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
             style={styles.img}
-            nativeID={item?.id}
+            nativeID={id}
           />
         )}
 
         <Pressable onPress={(e) => handlePress(e.target.id)}>
-          <Text style={styles.heading} nativeID={item?.id}>
-            {item?.name} {item?.lastName}
+          <Text style={styles.heading} nativeID={id}>
+            {name}
           </Text>
         </Pressable>
-        <View style={styles.startBG}>
-          <RelationshipRating relationshipRating={item?.relationshipRating} />
-        </View>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
           <Pressable onPress={() => console.log()} style={styles.button}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              Create Event
+              Edit Event
             </Text>
           </Pressable>
         ) : (
           ''
         )}
+        <Text>View event details</Text>
       </View>
     </View>
   )
