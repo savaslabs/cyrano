@@ -1,9 +1,10 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
+import { useState } from 'react'
 
-const EventItem = ({ item, profileImage }) => {
+const EventItemHistory = ({ item }) => {
   const navigation = useNavigation()
 
   const handlePress = (e) => {
@@ -12,14 +13,14 @@ const EventItem = ({ item, profileImage }) => {
     })
   }
 
-  const { id, eventTitle, loveStyleTag, date, name } = item
+  const { id, eventTitle, loveStyleTag, date, name, relationshipRating } = item
 
   return (
     <View style={styles.container}>
       <View style={styles.item}>
         <Text>{eventTitle}</Text>
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          {loveStyleTag.map((tag, index) => (
+          {loveStyleTag?.map((tag, index) => (
             <Text
               key={index}
               style={{
@@ -38,14 +39,14 @@ const EventItem = ({ item, profileImage }) => {
         <Text>{date}</Text>
       </View>
       <View style={styles.item}>
-        {profileImage ? (
-          <Image source={profileImage} style={styles.img} nativeID={id} />
+        {!relationshipRating ? (
+          <Pressable onPress={() => navigation.navigate('Event Rating')}>
+            <Text>Complete Event Rating</Text>
+          </Pressable>
         ) : (
-          <Image
-            source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-            style={styles.img}
-            nativeID={id}
-          />
+          <View style={{ backgroundColor: '#677788', padding: 5 }}>
+            <RelationshipRating relationshipRating={relationshipRating} />
+          </View>
         )}
 
         <Pressable onPress={(e) => handlePress(e.target.id)}>
@@ -108,4 +109,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default EventItem
+export default EventItemHistory

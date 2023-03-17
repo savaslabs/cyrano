@@ -4,11 +4,9 @@ import {
   Text,
   StyleSheet,
   Image,
-  ImageBackground,
   Pressable,
 } from 'react-native'
 import React from 'react'
-import ShapeSVG from '../assets/shape.svg'
 import { useState, useEffect, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
@@ -21,10 +19,21 @@ import Load from '../assets/spinner.gif'
 import Shape from '../svg/Shape'
 import Spinner from '../shared/Spinner'
 import ArrowBack from '../assets/arrow-back-white.svg'
+import EventItem from '../components/EventItem'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
   const [loading, setLoading] = useState(true)
+  //Placeholder
+  const [upcomingEvents, setUpcomingEvents] = useState([
+    {
+      id: 1,
+      eventTitle: 'Dinner Date',
+      loveStyleTag: ['Activity', 'Financial'],
+      date: 'Friday, Jan 26, 2023 @ 8 pm',
+      name: 'Amber Barker',
+    },
+  ])
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId } = route.params
@@ -90,7 +99,6 @@ const Relationship = () => {
         <Spinner />
       ) : (
         <>
-          <ImageBackground source={ShapeSVG} style={styles.img} />
           {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
             <Pressable style={styles.arrowContainer} onPress={handleBackAdmin}>
               <Image source={ArrowBack} style={styles.arrow} />
@@ -101,7 +109,11 @@ const Relationship = () => {
             </Pressable>
           )}
 
-          <View style={styles.heading}>
+          <View style={styles.row}>
+            <Text style={styles.name}>
+              {name} {lastName}
+            </Text>
+
             {profileImage ? (
               <Image source={profileImage} style={styles.profileImg} />
             ) : (
@@ -110,22 +122,30 @@ const Relationship = () => {
                 style={styles.profileImg}
               />
             )}
+          </View>
 
-            <View style={styles.personInfo}>
-              <Text style={styles.name}>
-                {name} {lastName}
-              </Text>
+          <View style={styles.row}>
+            <Card>
+              <Text style={styles.title}>{name}'s Birthday</Text>
+              <Text style={styles.lifeEventsText}>{birthday}</Text>
+            </Card>
 
-              <View style={styles.rankingContainer}>
+            <Card>
+              <Text style={styles.title}>YOUR ANNIVERSARY</Text>
+              <Text style={styles.lifeEventsText}>{anniversary}</Text>
+            </Card>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.rankingContainer}>
+              <Text>Relationship Rating</Text>
+              <View style={{ backgroundColor: '#677788', padding: 5 }}>
                 <RelationshipRating relationshipRating={relationshipRating} />
-                <Text style={styles.relationshipText}>
-                  Relationship Strength
-                </Text>
-                <Text style={styles.relationshipText}>
-                  As of {month + 1}/{date}/{year}
-                </Text>
               </View>
             </View>
+            <Pressable>
+              <Text>See relationship rating details</Text>
+            </Pressable>
           </View>
 
           <View style={styles.body}>
@@ -133,105 +153,55 @@ const Relationship = () => {
               <Text style={styles.titleLoveStyles}>{name}'s Love Styles</Text>
               <LoveLanguages />
             </Card>
-            <Card>
-              <Text style={styles.title}>{name}'s Life Events</Text>
-              <View style={styles.row}>
-                <View>
-                  <Text style={styles.title}>Birthday</Text>
-                  <Text style={styles.lifeEventsText}>{birthday}</Text>
-                </View>
 
+            <View>
+              <Text>UPCOMING EVENTS</Text>
+              {upcomingEvents ? (
                 <View>
-                  <Text style={styles.title}>Anniversary</Text>
-                  <Text style={styles.lifeEventsText}>{anniversary}</Text>
+                  <Text>You don't have any upcoming event right now</Text>
+                  {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
+                    <Pressable
+                      style={styles.button}
+                      onPress={() => console.log('ok')}
+                    >
+                      <Text style={styles.text}>SCHEDULE AN EVENT</Text>
+                    </Pressable>
+                  )}
                 </View>
-              </View>
-            </Card>
+              ) : (
+                upcomingEvents.map((item) => (
+                  <EventItem
+                    item={item}
+                    key={item.id}
+                    profileImage={profileImage}
+                  />
+                ))
+              )}
+            </View>
 
             <Pressable
               onPress={() =>
-                navigation.navigate('DateLog', {
+                navigation.navigate('Event History', {
                   itemId: id,
                 })
               }
             >
-              <Card>
-                <Text style={styles.title}>History</Text>
-                <Text style={styles.lifeEventsText}>
-                  Your last event was on {lastTimeDate}
-                </Text>
-                {upcomingDate ? (
-                  <Text style={styles.lifeEventsText}>
-                    You have 1 upcoming date on {upcomingDate.nextDateDate}
-                  </Text>
-                ) : (
-                  ''
-                )}
-              </Card>
+              <Text>View full events history</Text>
             </Pressable>
+
+            <View>
+              <Text>Other Details</Text>
+
+              <View>
+                <Text>FAVORITE RESTAURANTS</Text>
+                <Text>Roy's</Text>
+                <Text>Capital Grille</Text>
+                <Text>Nobu</Text>
+              </View>
+            </View>
           </View>
-
-          {upcomingDate &&
-            upcomingDate.pickRestaurantValue !== 'Choose My Own Restaurant' && (
-              <>
-                <Text style={styles.message}>
-                  You are taking{' '}
-                  <Text style={{ fontWeight: '700' }}>{name}</Text> to dinner at{' '}
-                  <Text style={{ fontWeight: '700' }}>
-                    {upcomingDate.pickRestaurantValue}
-                  </Text>{' '}
-                  on{' '}
-                  <Text style={{ fontWeight: '700' }}>
-                    {upcomingDate.nextDateDate}{' '}
-                  </Text>
-                  at{' '}
-                  <Text style={{ fontWeight: '700' }}>
-                    {upcomingDate.nextDateTimeBetween}
-                  </Text>
-                  . Make sure you let them know you're excited for your date!
-                </Text>
-              </>
-            )}
-
-          {upcomingDate &&
-            upcomingDate.pickRestaurantValue === 'Choose My Own Restaurant' && (
-              <>
-                <Text style={styles.message}>
-                  You are taking{' '}
-                  <Text style={{ fontWeight: '700' }}>{name}</Text> to dinner at{' '}
-                  <Text style={{ fontWeight: '700' }}>
-                    {upcomingDate.nextDatePlace}
-                  </Text>{' '}
-                  on{' '}
-                  <Text style={{ fontWeight: '700' }}>
-                    {upcomingDate.nextDateDate}
-                  </Text>{' '}
-                  at{' '}
-                  <Text style={{ fontWeight: '700' }}>
-                    {upcomingDate.nextDateTimeBetween}.
-                  </Text>
-                  Make sure you let them know you're excited for your date!
-                </Text>
-              </>
-            )}
-
-          {upcomingDate
-            ? ''
-            : auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
-                <Pressable
-                  style={styles.button}
-                  onPress={() =>
-                    navigation.navigate('Book', {
-                      itemId: id,
-                    })
-                  }
-                >
-                  <Text style={styles.text}>Schedule Your Next Date</Text>
-                </Pressable>
-              )}
         </>
       )}
-      {/* <Shape /> */}
     </ScrollView>
   )
 }
@@ -276,17 +246,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   birthdayDate: {
-    color: '#FFFFFF',
+    color: '#677788',
     fontSize: 16,
   },
   name: {
-    color: '#FFFFFF',
+    color: '#677788',
     fontSize: 24,
     fontWeight: '600',
     textAlign: 'center',
   },
   relationshipText: {
-    color: '#FFFFFF',
+    color: '#677788',
     fontSize: 12,
     paddingTop: 10,
     paddingLeft: 10,
@@ -306,19 +276,19 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   next: {
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 16,
     fontWeight: '400',
   },
   edit: {
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 18,
     fontWeight: '700',
     marginLeft: 10,
     marginRight: 10,
   },
   message: {
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 14,
     marginBottom: 10,
     textAlign: 'center',
@@ -331,7 +301,7 @@ const styles = StyleSheet.create({
     minHeight: 70,
   },
   button: {
-    backgroundColor: '#EF6E62',
+    backgroundColor: '#677788',
     paddingTop: 10,
     paddingBottom: 10,
     paddingRight: 50,
@@ -344,12 +314,12 @@ const styles = StyleSheet.create({
     opacity: '1',
   },
   title: {
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 16,
     fontWeight: '700',
   },
   titleLoveStyles: {
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 16,
     fontWeight: '700',
     paddingBottom: 20,
@@ -363,7 +333,7 @@ const styles = StyleSheet.create({
   },
   lifeEventsText: {
     paddingTop: 20,
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 16,
     fontWeight: '400',
   },

@@ -3,13 +3,9 @@ import {
   Text,
   StyleSheet,
   Image,
-  ImageBackground,
   TextInput,
   Pressable,
 } from 'react-native'
-import React from 'react'
-import ShapeSVG from '../assets/shape.svg'
-import Shape from '../svg/Shape'
 import CameraSVG from '../assets/camera.svg'
 import Camera from '../svg/Camera'
 import { useState, useEffect, useContext } from 'react'
@@ -18,20 +14,24 @@ import RelationshipContext from '../context/RelationshipContext'
 import uuid from 'react-native-uuid'
 import * as ImagePicker from 'expo-image-picker'
 import First from '../components/form/First'
-// import Second from '../components/form/Second'
+import Second from '../components/form/Second'
 import Third from '../components/form/Third'
-// import Fourth from '../components/form/Fourth'
+import Fourth from '../components/form/Fourth'
 import { auth, db } from '../config/firebase-config'
 import { setDoc, collection, doc } from 'firebase/firestore'
 
 const AddRelationship = () => {
+  const [profileImage, setProfileImage] = useState(null)
+  const [pageCounter, setPageCounter] = useState(1)
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [loveStyleIsDisabled] = useState(true)
+  const [nextIsDisabled] = useState(true)
+  const [showMessage, setShowMessage] = useState(false)
+  const [docID, setDocID] = useState('')
+
+  // First form states
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [birthday, setBirthday] = useState('')
-  const [anniversary, setAnniversary] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [profileImage, setProfileImage] = useState(null)
   const [openRelationship, setOpenRelationship] = useState(false)
   const [relationshipValue, setRelationshipValue] = useState(null)
   const [relationshipItems, setRelationshipItems] = useState([
@@ -40,16 +40,29 @@ const AddRelationship = () => {
     { label: 'Family', value: 'Family', disabled: true },
     { label: 'Business', value: 'Business', disabled: true },
   ])
+  const [openPronouns, setOpenPronouns] = useState(false)
+  const [pronounsValue, setPronounsValue] = useState(null)
+  const [pronounsItem, setPronounsItem] = useState([
+    { label: 'She/her', value: 'She/her' },
+    { label: 'He/him', value: 'He/him' },
+    { label: 'They/them', value: 'They/them' },
+  ])
+  const [location, setLocation] = useState('')
+
+  // Second form states
+  const [birthday, setBirthday] = useState(new Date(Date.now()))
+  const [anniversary, setAnniversary] = useState(new Date(Date.now()))
   const [relationshipRating, setRelationshipRating] = useState('')
+
+  // Third form states
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+
+  // Fourth form states
   const [dateRating, setDateRating] = useState('')
-  const [lastTimeDate, setLastTimeDate] = useState('')
+  const [lastTimeDate, setLastTimeDate] = useState(new Date(Date.now()))
   const [datePlace, setDatePlace] = useState('')
-  const [pageCounter, setPageCounter] = useState(1)
-  const [isDisabled, setIsDisabled] = useState(true)
-  const [loveStyleIsDisabled] = useState(true)
-  const [nextIsDisabled] = useState(true)
-  const [showMessage, setShowMessage] = useState(false)
-  const [docID, setDocID] = useState('')
+
   const navigation = useNavigation()
   const { addRelationship } = useContext(RelationshipContext)
   // const relationshipRef = collection(db, 'relationships')
@@ -138,7 +151,6 @@ const AddRelationship = () => {
     } else {
       setIsDisabled(true)
     }
-    console.log('Validation running...')
   }, [
     name,
     lastName,
@@ -168,12 +180,33 @@ const AddRelationship = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={ShapeSVG} style={styles.img} />
-      {/* <Shape/> */}
-      <View style={styles.block}>
-        <Text style={styles.h1}>Add Relationship</Text>
+      <View style={styles.row}>
+        <View style={styles.block}>
+          <Text style={styles.h1}>Add Relationship</Text>
+          {pageCounter === 1 && <Text>Tell us about your partner</Text>}
+          {pageCounter === 2 && (
+            <Text>
+              More details about your relationship with{' '}
+              <Text style={{ fontWeight: 'bold' }}>{name}</Text>
+            </Text>
+          )}
+          {pageCounter === 3 && (
+            <Text>
+              Enter {name}'s contact information to send them the Truity Love
+              Styles test.
+            </Text>
+          )}
+          {pageCounter === 4 && (
+            <Text>Tell us about your most recent date with {name}.</Text>
+          )}
+        </View>
+
         <Pressable onPress={pickImage}>
-          <View style={styles.cameraContainer}>
+          <View
+            style={
+              profileImage ? styles.cameraWithoutBorder : styles.cameraContainer
+            }
+          >
             {profileImage ? (
               <Image
                 source={{ uri: profileImage }}
@@ -198,19 +231,27 @@ const AddRelationship = () => {
             setRelationshipItems={setRelationshipItems}
             relationshipValue={relationshipValue}
             setRelationshipValue={setRelationshipValue}
+            pronounsValue={pronounsValue}
+            setPronounsValue={setPronounsValue}
+            openPronouns={openPronouns}
+            setOpenPronouns={setOpenPronouns}
+            pronounsItem={pronounsItem}
+            setPronounsItem={setPronounsItem}
+            location={location}
+            setLocation={setLocation}
           />
         )}
-        {pageCounter === 2 &&
-          // <Second
-          //   birthday={birthday}
-          //   setBirthday={setBirthday}
-          //   anniversary={anniversary}
-          //   setAnniversary={setAnniversary}
-          //   relationshipValue={relationshipValue}
-          //   relationshipRating={relationshipRating}
-          //   setRelationshipRating={setRelationshipRating}
-          // />
-          ''}
+        {pageCounter === 2 && (
+          <Second
+            birthday={birthday}
+            setBirthday={setBirthday}
+            anniversary={anniversary}
+            setAnniversary={setAnniversary}
+            relationshipValue={relationshipValue}
+            relationshipRating={relationshipRating}
+            setRelationshipRating={setRelationshipRating}
+          />
+        )}
         {pageCounter === 3 && (
           <Third
             name={name}
@@ -220,73 +261,77 @@ const AddRelationship = () => {
             setPhone={setPhone}
           />
         )}
-        {pageCounter === 4 &&
-          // <Fourth
-          //   lastTimeDate={lastTimeDate}
-          //   setLastTimeDate={setLastTimeDate}
-          //   datePlace={datePlace}
-          //   setDatePlace={setDatePlace}
-          //   dateRating={dateRating}
-          //   setDateRating={setDateRating}
-          //   name={name}
-          // />
-          ''}
-
-        {/* {showRestaurants && (
-          <View>
-            <Text style={styles.label}>Favorite Restaurant</Text>
-            <View style={styles.addRestaurant}>
-              <TextInput
-                style={[styles.input, styles.restaurant]}
-                placeholder="Search"
-                keyboardType="numeric"
-                placeholderTextColor="rgba(237,82,68,0.5)"
-                value={restaurant}
-                onChangeText={(newRestaurant) => setRestaurant(newRestaurant)}
-              />
-              <Pressable onPress={handleAddRestaurant}>
-                <Text style={styles.add}>+</Text>
-              </Pressable>
-            </View>
-            <View>
-              {restaurantArray.map((item) => (
-                <View key={item.id} style={styles.deleteRestaurant}>
-                  <Text style={styles.restaurantItem}>{item.restaurant}</Text>
-                  <Pressable onPress={() => handleDeleteRestaurant(item.id)}>
-                    <Text style={styles.delete}>x</Text>
-                  </Pressable>
-                </View>
-              ))}
-            </View>
-          </View>
-        )} */}
+        {pageCounter === 4 && (
+          <Fourth
+            lastTimeDate={lastTimeDate}
+            setLastTimeDate={setLastTimeDate}
+            datePlace={datePlace}
+            setDatePlace={setDatePlace}
+            dateRating={dateRating}
+            setDateRating={setDateRating}
+            name={name}
+          />
+        )}
       </View>
 
-      {pageCounter === 1 && relationshipValue && (
-        <Pressable style={styles.button} onPress={handleNext}>
-          <Text style={styles.text}>Next</Text>
-        </Pressable>
+      {pageCounter === 1 && (
+        <>
+          <View style={styles.row}>
+            <View style={[styles.dot, styles.active]}></View>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+          </View>
+          <Pressable style={styles.button} onPress={handleNext}>
+            <Text style={styles.text}>CONTINUE</Text>
+          </Pressable>
+        </>
+      )}
+
+      {pageCounter === 2 && (
+        <>
+          <View style={styles.row}>
+            <View style={styles.dot}></View>
+            <View style={[styles.dot, styles.active]}></View>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+          </View>
+          <View style={styles.row}>
+            <Pressable style={styles.button} onPress={handleBack}>
+              <Text style={styles.text}>BACK</Text>
+            </Pressable>
+            <Pressable style={styles.button} onPress={handleNext}>
+              <Text style={styles.text}>CONTINUE</Text>
+            </Pressable>
+          </View>
+        </>
       )}
 
       {pageCounter === 3 && !email && !phone && (
         <>
+          <View style={styles.row}>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+            <View style={[styles.dot, styles.active]}></View>
+            <View style={styles.dot}></View>
+          </View>
           <Pressable
             style={[styles.button, loveStyleIsDisabled ? styles.disabled : '']}
             onPress={sendLoveTest}
             disabled={loveStyleIsDisabled}
           >
-            <Text style={styles.text}>Send Love Styles Test</Text>
+            <Text style={styles.text}>SEND LOVE STYLES TEST</Text>
           </Pressable>
           <View style={styles.row}>
             <Pressable style={styles.button} onPress={handleBack}>
-              <Text style={styles.text}>Back</Text>
+              <Text style={styles.text}>BACK</Text>
             </Pressable>
             <Pressable
               style={[styles.button, nextIsDisabled ? styles.disabled : '']}
               onPress={handleNext}
               disabled={nextIsDisabled}
             >
-              <Text style={styles.text}>Next</Text>
+              <Text style={styles.text}>CONTINUE</Text>
             </Pressable>
           </View>
         </>
@@ -295,6 +340,12 @@ const AddRelationship = () => {
       {(pageCounter === 3 && email && !phone) ||
         (pageCounter === 3 && !email && phone && (
           <>
+            <View style={styles.row}>
+              <View style={styles.dot}></View>
+              <View style={styles.dot}></View>
+              <View style={[styles.dot, styles.active]}></View>
+              <View style={styles.dot}></View>
+            </View>
             <Pressable
               style={[
                 styles.button,
@@ -303,19 +354,19 @@ const AddRelationship = () => {
               onPress={sendLoveTest}
               disabled={loveStyleIsDisabled}
             >
-              <Text style={styles.text}>Send Love Styles Test</Text>
+              <Text style={styles.text}>SEND LOVE STYLES TEST</Text>
             </Pressable>
 
             <View style={styles.row}>
               <Pressable style={styles.button} onPress={handleBack}>
-                <Text style={styles.text}>Back</Text>
+                <Text style={styles.text}>BACK</Text>
               </Pressable>
               <Pressable
                 style={[styles.button, nextIsDisabled ? styles.disabled : '']}
                 onPress={handleNext}
                 disabled={nextIsDisabled}
               >
-                <Text style={styles.text}>Next</Text>
+                <Text style={styles.text}>CONTINUE</Text>
               </Pressable>
             </View>
           </>
@@ -323,6 +374,12 @@ const AddRelationship = () => {
 
       {pageCounter === 3 && email && phone && (
         <>
+          <View style={styles.row}>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+            <View style={[styles.dot, styles.active]}></View>
+            <View style={styles.dot}></View>
+          </View>
           {showMessage ? (
             <View>
               <Text style={styles.restaurantItem}>
@@ -336,49 +393,46 @@ const AddRelationship = () => {
               onPress={sendLoveTest}
               disabled={!loveStyleIsDisabled}
             >
-              <Text style={styles.text}>Send Love Styles Test</Text>
+              <Text style={styles.text}>SEND LOVE STYLES TEST</Text>
             </Pressable>
           )}
 
           <View style={styles.row}>
             <Pressable style={styles.button} onPress={handleBack}>
-              <Text style={styles.text}>Back</Text>
+              <Text style={styles.text}>BACK</Text>
             </Pressable>
             <Pressable
               style={styles.button}
               onPress={handleNext}
               disabled={!nextIsDisabled}
             >
-              <Text style={styles.text}>Next</Text>
+              <Text style={styles.text}>CONTINUE</Text>
             </Pressable>
           </View>
         </>
       )}
 
-      {pageCounter !== 4 && pageCounter !== 1 && pageCounter !== 3 && (
-        <View style={styles.row}>
-          <Pressable style={styles.button} onPress={handleBack}>
-            <Text style={styles.text}>Back</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={handleNext}>
-            <Text style={styles.text}>Next</Text>
-          </Pressable>
-        </View>
-      )}
-
       {pageCounter === 4 && (
-        <View style={styles.row}>
-          <Pressable style={styles.button} onPress={handleBack}>
-            <Text style={styles.text}>Back</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.button, isDisabled ? styles.disabled : '']}
-            onPress={handlePress}
-            disabled={isDisabled}
-          >
-            <Text style={styles.text}>Save</Text>
-          </Pressable>
-        </View>
+        <>
+          <View style={styles.row}>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+            <View style={styles.dot}></View>
+            <View style={[styles.dot, styles.active]}></View>
+          </View>
+          <View style={styles.row}>
+            <Pressable style={styles.button} onPress={handleBack}>
+              <Text style={styles.text}>Back</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, isDisabled ? styles.disabled : '']}
+              onPress={handlePress}
+              disabled={isDisabled}
+            >
+              <Text style={styles.text}>Save</Text>
+            </Pressable>
+          </View>
+        </>
       )}
     </View>
   )
@@ -420,24 +474,18 @@ const styles = StyleSheet.create({
   cameraContainer: {
     width: 68,
     height: 68,
-    borderRadius: '50%',
+    borderWidth: 1,
     position: 'relative',
     cursor: 'pointer',
     alignSelf: 'center',
-    backgroundColor: '#FFFFFF',
-    shadowColor: 'rgba(237, 99, 88, 0.4);',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 2,
-    shadowRadius: 16,
-    elevation: 7,
+  },
+  cameraWithoutBorder: {
+    borderWidth: 'none',
   },
   camera: {
     width: 15,
     height: 15,
-    color: '#EF6E62',
+    color: '#000000',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -451,7 +499,7 @@ const styles = StyleSheet.create({
     borderRadius: '50%',
   },
   h1: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 24,
     fontWeight: '600',
     paddingBottom: 10,
@@ -492,7 +540,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#EF6E62',
+    backgroundColor: '#586187',
     paddingTop: 10,
     paddingBottom: 10,
     paddingRight: 50,
@@ -547,6 +595,17 @@ const styles = StyleSheet.create({
   },
   showButton: {
     display: 'block',
+  },
+  dot: {
+    borderWidth: 1,
+    borderColor: '#586187',
+    borderRadius: '100%',
+    width: 10,
+    height: 10,
+    marginRight: 10,
+  },
+  active: {
+    backgroundColor: '#586187',
   },
 })
 

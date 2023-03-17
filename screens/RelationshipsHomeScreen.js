@@ -32,7 +32,7 @@ const RelationshipsHomeScreen = () => {
   const relationshipRef = collection(db, 'relationships')
 
   const handlePress = () => {
-    navigation.navigate('Add')
+    navigation.navigate('Add a Relationship')
   }
 
   const getUser = async () => {
