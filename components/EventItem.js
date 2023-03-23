@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
 
-const RelationshipItem = ({ item }) => {
+const EventItem = ({ item, profileImage }) => {
   const navigation = useNavigation()
 
   const handlePress = (e) => {
@@ -12,40 +12,57 @@ const RelationshipItem = ({ item }) => {
     })
   }
 
+  const { id, eventTitle, loveStyleTag, date, name } = item
+
   return (
     <View style={styles.container}>
       <View style={styles.item}>
-        {item?.profileImage ? (
-          <Image
-            source={item?.profileImage}
-            style={styles.img}
-            nativeID={item?.id}
-          />
+        <Text>{eventTitle}</Text>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          {loveStyleTag.map((tag, index) => (
+            <Text
+              key={index}
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                marginLeft: 5,
+                marginRight: 5,
+              }}
+            >
+              {tag}
+            </Text>
+          ))}
+        </View>
+      </View>
+      <View>
+        <Text>{date}</Text>
+      </View>
+      <View style={styles.item}>
+        {profileImage ? (
+          <Image source={profileImage} style={styles.img} nativeID={id} />
         ) : (
           <Image
             source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
             style={styles.img}
-            nativeID={item?.id}
+            nativeID={id}
           />
         )}
 
         <Pressable onPress={(e) => handlePress(e.target.id)}>
-          <Text style={styles.heading} nativeID={item?.id}>
-            {item?.name} {item?.lastName}
+          <Text style={styles.heading} nativeID={id}>
+            {name}
           </Text>
         </Pressable>
-        <View style={styles.startBG}>
-          <RelationshipRating relationshipRating={item?.relationshipRating} />
-        </View>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
           <Pressable onPress={() => console.log()} style={styles.button}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              Create Event
+              Edit Event
             </Text>
           </Pressable>
         ) : (
           ''
         )}
+        <Text>View event details</Text>
       </View>
     </View>
   )
@@ -87,8 +104,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#EF6E62',
     padding: 8,
     borderRadius: 8,
-    marginLeft: 30
+    marginLeft: 30,
   },
 })
 
-export default RelationshipItem
+export default EventItem

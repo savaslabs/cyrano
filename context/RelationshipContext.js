@@ -13,7 +13,10 @@ export const RelationshipProvider = ({ children }) => {
   const logInUser = (userData) => {
     if (userData) {
       setUser({
-        user: userData,
+        user: {
+          id: userData?.user?.uid,
+          email: userData?.user?.email,
+        },
         isLoggedIn: true,
       })
     }

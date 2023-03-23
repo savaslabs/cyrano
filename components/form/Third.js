@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Animated, Image } from 'react-native'
 import { useRef, useEffect } from 'react'
+import PhoneIcon from '../../assets/phone.png'
+import EmailIcon from '../../assets/email.png'
 
 const Third = ({ name, phone, setPhone, email, setEmail }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -14,28 +16,23 @@ const Third = ({ name, phone, setPhone, email, setEmail }) => {
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
-      <View style={styles.body}>
-        <Text style={[styles.label, styles.labelWithMargin]}>
-          Please enter {name}'s contact information below, and we will forward
-          them the Truity Love Styles test
-        </Text>
-      </View>
-
       <View>
-        <Text style={styles.label}>{name}'s Phone</Text>
+        <Text style={styles.label}>Phone</Text>
+        <Image source={PhoneIcon} width={30} height={30} />
         <TextInput
           style={styles.input}
-          placeholderTextColor="rgba(237,82,68,0.5)"
-          placeholder='(555) 123-4567'
+          placeholderTextColor="rgba(51,55,75,0.5)"
+          placeholder="(555) 123-4567"
           value={phone}
           onChangeText={(newPhone) => setPhone(newPhone)}
         />
       </View>
       <View>
-        <Text style={styles.label}>{name}'s Email</Text>
+        <Text style={styles.label}>Email</Text>
+        <Image source={EmailIcon} width={30} height={30} />
         <TextInput
           style={styles.input}
-          placeholderTextColor="rgba(237,82,68,0.5)"
+          placeholderTextColor="rgba(51,55,75,0.5)"
           value={email}
           onChangeText={(newEmail) => setEmail(newEmail)}
         />
@@ -51,14 +48,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    color: '#ED5244',
+    color: '#33374B',
     fontWeight: '700',
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 10,
   },
   labelWithMargin: {
-    marginTop: 31
+    marginTop: 31,
   },
   input: {
     marginTop: 10,
@@ -67,9 +64,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderWidth: 1,
     padding: 10,
-    borderColor: '#ED5244',
+    borderColor: '#33374B',
     borderRadius: 5,
-    color: '#ED5244',
+    color: '#33374B',
     width: '100%',
   },
   dropdown: {
@@ -77,9 +74,9 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    borderColor: '#ED5244',
+    borderColor: '#33374B',
     borderRadius: 5,
-    color: '#ED5244',
+    color: '#33374B',
   },
   text: {
     color: '#FFFFFF',

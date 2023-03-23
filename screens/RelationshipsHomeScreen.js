@@ -1,86 +1,152 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import { View, Text, Pressable, Image } from 'react-native'
+import { styles } from '../styles'
 import React, { useEffect, useState, useContext } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 // import Navbar from '../components/Navbar'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
+import { db, auth } from '../config/firebase-config'
+import { getDocs, collection, where, query } from 'firebase/firestore'
+import Spinner from '../shared/Spinner'
+import placeholderSkeleton from '../assets/skeleton.png'
+import EventItem from '../components/EventItem'
 
 const RelationshipsHomeScreen = () => {
+  const [userData, setUserData] = useState('')
+  const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
-  const { relationship } = useContext(RelationshipContext)
+  const [relationships, setRelationships] = useState('')
+  // Events state is a placeholder for now
+  const [upcomingEvents, setUpcomingEvents] = useState([
+    {
+      id: 1,
+      eventTitle: 'Dinner Date',
+      loveStyleTag: ['Activity', 'Financial'],
+      date: 'Friday, Jan 26, 2023 @ 8 pm',
+      img: 'https://picsum.photos/200',
+      name: 'Amber Barker',
+    },
+  ])
+  const { user } = useContext(RelationshipContext)
+  const userRef = collection(db, 'users')
+  const relationshipRef = collection(db, 'relationships')
 
   const handlePress = () => {
-    navigation.navigate('Add')
+    navigation.navigate('Add a Relationship')
   }
+
+  const getUser = async () => {
+    const q = query(userRef, where('userId', '==', auth.currentUser.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      setUserData(doc.data())
+    })
+  }
+
+  const getRelationships = async () => {
+    const data = await getDocs(relationshipRef)
+    const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    const finalRel = newData.filter(
+      (item) => item.author.id === auth.currentUser.uid
+    )
+    setRelationships(finalRel)
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
+  useEffect(() => {
+    getRelationships()
+  }, [])
+
+  useEffect(() => {
+    if (relationships) {
+      setLoading(false)
+    }
+
+  }, [relationships])
+
+  useEffect(() => {
+    if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
+      navigation.navigate('Admin')
+    }
+  }, [auth.currentUser.uid])
+
 
   return (
     <View style={styles.container}>
-      <View style={{paddingLeft: 20}}>
-        <Text style={styles.heading}>Relationships</Text>
-        {relationship.length !== 0 ? (
-          relationship.map((item) => (
-            <RelationshipItem item={item} key={item.id} />
-          ))
-        ) : (
-          <Text style={{ color: '#F17369' }}>
-            There are no relationships yet. Start by adding one!
-          </Text>
-        )}
-      </View>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <View style={{ paddingLeft: 20 }}>
+            {/* <Text style={styles.textNew}>
+              Hello, {userData?.name} {userData?.lastName}!
+            </Text>
+            <Text style={styles.textNew}>
+              Email: {userData?.email}
+            </Text>
+            <Text style={styles.textNew}>
+              Phone: {userData?.phone}
+            </Text> */}
+            {relationships.length === 0 ? (
+              <View>
+                <Text style={styles.heading}>Relationships</Text>
+                <Text>
+                  You don't have any relationships yet. Get started by adding
+                  one
+                </Text>
+                
+                <Image
+                  source={placeholderSkeleton}
+                  style={{ width: 450, height: 320 }}
+                />
 
-      <Pressable style={styles.button}>
-        <Text style={styles.text} onPress={handlePress}>
-          Add Relationship
-        </Text>
-      </Pressable>
+              </View>
+            ) : (
+              <View>
+                {relationships.length > 0 && (
+                  <View>
+                    <Text style={styles.heading}>Upcoming Events</Text>
+                    {!upcomingEvents ? (
+                      <View>
+                        <Text>You don't have any upcoming event right now</Text>
+                        <Pressable>
+                          <Text>SCHEDULE AN EVENT</Text>
+                        </Pressable>
+                      </View>
+                    ) : (
+                      upcomingEvents.map((item) => (
+                        <EventItem item={item} key={item.id} />
+                      ))
+                    )}
+                    <Text>View events history</Text>
+                    <View>
+                      <Text style={styles.heading}>Relationships</Text>
+                      {relationships.map((item) => (
+                        <View key={item.id}>
+                          <RelationshipItem item={item} key={item.id} />
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
 
-      {/* <Navbar style={{ height: '10%' }} /> */}
+          <Pressable style={styles.button}>
+            <Text style={styles.text} onPress={handlePress}>
+              ADD RELATIONSHIP
+            </Text>
+          </Pressable>
+
+          {/* <Navbar style={{ height: '10%' }} /> */}
+        </>
+      )}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    height: '100%',
-    justifyContent: 'space-between',
-    paddingTop: 50,
-    paddingBottom: 50,
-    width: '100%',
-    maxWidth:700,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  data: {
-    height: '90%',
-    paddingLeft: 30,
-    paddingRight: 30,
-  },
-  heading: {
-    color: '#F17369',
-    fontSize: 20,
-    paddingTop: 40,
-    paddingBottom: 40,
-    fontWeight: 'bold',
-  },
-  button: {
-    backgroundColor: '#F17369',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderRadius: 65,
-    width: '50%',
-    alignSelf: 'center'
-  },
-  hover: {
-    backgroundColor: 'green',
-  },
-  text: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-})
 
 export default RelationshipsHomeScreen

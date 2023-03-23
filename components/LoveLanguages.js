@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   text: {
-    color: '#EF6E62',
+    color: '#677788',
     fontSize: 12,
     fontWeight: '400',
     paddingTop: 10,
