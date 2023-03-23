@@ -10,6 +10,8 @@ import { getDocs, collection, where, query } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
+import Page from '../shared/Page'
+
 
 const RelationshipsHomeScreen = () => {
   const [userData, setUserData] = useState('')
@@ -75,12 +77,12 @@ const RelationshipsHomeScreen = () => {
 
 
   return (
-    <View style={styles.container}>
+    <Page>
       {loading ? (
         <Spinner />
       ) : (
         <>
-          <View style={{ paddingLeft: 20 }}>
+          <View style={[styles.page__content, styles.pageTopPadding]}>
             {/* <Text style={styles.textNew}>
               Hello, {userData?.name} {userData?.lastName}!
             </Text>
@@ -91,29 +93,26 @@ const RelationshipsHomeScreen = () => {
               Phone: {userData?.phone}
             </Text> */}
             {relationships.length === 0 ? (
-              <View>
-                <Text style={styles.heading}>Relationships</Text>
-                <Text>
-                  You don't have any relationships yet. Get started by adding
-                  one
-                </Text>
-                
+              <>
+                <View style={styles.page__upper}>
+                  <Text style={styles.h1}>Relationships</Text>
+                  <Text style={styles.p}>You don't have any relationships yet. Get started by adding one.</Text>
+                </View>
                 <Image
                   source={placeholderSkeleton}
                   style={{ width: 450, height: 320 }}
                 />
-
-              </View>
+              </>
             ) : (
               <View>
                 {relationships.length > 0 && (
-                  <View>
-                    <Text style={styles.heading}>Upcoming Events</Text>
+                  <View style={styles.page__upper}>
+                    <Text style={[styles.h1, styles.alignLeft]}>Upcoming Events</Text>
                     {!upcomingEvents ? (
                       <View>
-                        <Text>You don't have any upcoming event right now</Text>
-                        <Pressable>
-                          <Text>SCHEDULE AN EVENT</Text>
+                        <Text style={styles.p}>You don't have any upcoming event right now</Text>
+                        <Pressable style={styles.button}>
+                          <Text style={styles.button__text}>SCHEDULE AN EVENT</Text>
                         </Pressable>
                       </View>
                     ) : (
@@ -135,17 +134,18 @@ const RelationshipsHomeScreen = () => {
               </View>
             )}
           </View>
-
-          <Pressable style={styles.button}>
-            <Text style={styles.text} onPress={handlePress}>
-              ADD RELATIONSHIP
-            </Text>
-          </Pressable>
+          <View style={styles.page__lower}>              
+            <Pressable style={styles.button}>
+              <Text style={styles.button__text} onPress={handlePress}>
+                ADD RELATIONSHIP
+              </Text>
+            </Pressable>
+          </View> 
 
           {/* <Navbar style={{ height: '10%' }} /> */}
         </>
       )}
-    </View>
+    </Page>
   )
 }
 

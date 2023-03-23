@@ -3,12 +3,12 @@ import { styles } from '../styles'
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
-import Logo from '../svg/Logo'
-import LogoIMG from '../assets/logo.png'
+import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
 import { auth, db } from '../config/firebase-config'
 import { addDoc, collection, doc, deleteDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import Page from '../shared/Page'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
@@ -99,120 +99,130 @@ const HomeScreen = () => {
   // }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imgContainer}>
+    <Page>
+      <View style={styles.page__logo}>
         <Image source={LogoIMG} style={styles.logo} />
-        {/* <Logo /> */}
       </View>
-      <Text style={styles.h1}>Welcome to Cyrano</Text>
-      <Text style={styles.h2}>
-        Fill in your details below to create your account.
-      </Text>
-      <View style={styles.form}>
-        {pageCounter === 1 && (
-          <>
-            <View>
-              <Text style={styles.label}>Email</Text>
+      <View style={styles.page__content}>
+        <View style={styles.page__upper}>
+          <Text style={styles.h1}>Welcome to Cyrano</Text>
+          <Text style={styles.p}>
+            Fill in your details below to create your account.
+          </Text>
+        </View>
+        <View style={styles.form}>
+          {pageCounter === 1 && (
+            <>
+              <View>
+                <Text style={styles.form__label}>Email</Text>
+                <TextInput
+                  style={styles.form__input}
+                  value={email}
+                  onChangeText={(newEmail) => setEmail(newEmail)}
+                  keyboardType="email-address"
+                  placeholder="Your email address"
+                  placeholderTextColor="#c7cbd9"
+                />
+              </View>
+              <View style={styles.form__twoCol}>
+                <View style={styles.form__col}>
+                  <Text style={styles.form__label}>Password</Text>
+                  <TextInput
+                    style={styles.form__input}
+                    value={password}
+                    onChangeText={(newPassword) => setPassword(newPassword)}
+                    placeholder="Enter password"
+                    placeholderTextColor="#c7cbd9"
+                    secureTextEntry
+                  />
+                </View>
+                <View style={styles.form__col}>
+                  <Text style={styles.form__label}>Verify Password</Text>
+                  <TextInput
+                    style={styles.form__input}
+                    value={repeatPassword}
+                    onChangeText={(newRepeatPassword) =>
+                      setRepeatPassword(newRepeatPassword)
+                    }
+                    placeholder="Re-enter password"
+                    placeholderTextColor="#c7cbd9"
+                    secureTextEntry
+                  />
+                </View>
+              </View>
+            </>
+          )}
+          {pageCounter === 2 && (
+            <>
+              <View style={styles.form__twoCol}>
+                <View style={styles.form__col}>
+                  <Text style={styles.form__label}>First Name</Text>
+                  <TextInput
+                    style={styles.form__input}
+                    value={name}
+                    onChangeText={(newName) => setName(newName)}
+                    placeholder="Enter first name"
+                    placeholderTextColor="#c7cbd9"
+                  />
+                </View>
+                <View style={styles.form__col}>
+                  <Text style={styles.form__label}>Last Name</Text>
+                  <TextInput
+                    style={styles.form__input}
+                    value={lastName}
+                    onChangeText={(newLastName) => setLastName(newLastName)}
+                    placeholder="Enter last name"
+                    placeholderTextColor="#c7cbd9"
+                  />
+                </View>
+              </View>
+              <Text style={styles.form__label}>Phone Number</Text>
               <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={(newEmail) => setEmail(newEmail)}
-                keyboardType="email-address"
-              />
-            </View>
-            <View>
-              <Text style={styles.label}>Password</Text>
-              <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={(newPassword) => setPassword(newPassword)}
-                secureTextEntry
-              />
-            </View>
-            <View>
-              <Text style={styles.label}>Repeat Password</Text>
-              <TextInput
-                style={styles.input}
-                value={repeatPassword}
-                onChangeText={(newRepeatPassword) =>
-                  setRepeatPassword(newRepeatPassword)
-                }
-                secureTextEntry
-              />
-            </View>
-          </>
-        )}
-        {pageCounter === 2 && (
-          <>
-            <View>
-              <Text style={styles.label}>First Name</Text>
-              <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={(newName) => setName(newName)}
-              />
-            </View>
-            <View>
-              <Text style={styles.label}>Last Name</Text>
-              <TextInput
-                style={styles.input}
-                value={lastName}
-                onChangeText={(newLastName) => setLastName(newLastName)}
-              />
-            </View>
-            <View>
-              <Text style={styles.label}>Phone Number</Text>
-              <TextInput
-                style={styles.input}
+                style={styles.form__input}
                 placeholder="(555) 123-4567"
                 value={phone}
                 onChangeText={(newPhone) => setPhone(newPhone)}
-                placeholderTextColor="rgba(255,255,255, 0.5)"
+                placeholderTextColor="#c7cbd9"
               />
-            </View>
-          </>
-        )}
+            </>
+          )}
 
-        {pageCounter === 1 && (
-          <Pressable onPress={handleNext}>
-            <Text style={styles.text}>Next</Text>
-          </Pressable>
-        )}
-        {pageCounter === 2 && (
-          <View>
-            <Pressable onPress={handleBack}>
-              <Text style={styles.text}>Back</Text>
-            </Pressable>
-            <Pressable
-              style={isDisabled ? styles.disabled : ''}
-              onPress={handlePress}
-              disabled={isDisabled}
-            >
-              <Text style={styles.text}>CREATE ACCOUNT</Text>
-            </Pressable>
-          </View>
-        )}
-
-        <Text style={styles.h2}>
-          Already have an account?{' '}
-          <Pressable onPress={() => navigation.navigate('Login')}>
-            <Text>Click Here</Text>
-          </Pressable>
-        </Text>
-        <View style={styles.flex}>
-          <Text style={styles.h2}>Or: </Text>
-          <View style={styles.row}>
-            <Pressable onPress={() => navigation.navigate('Google')}>
-              <View style={styles.loginContainer}>
-                <Image source={Google} style={styles.loginImg} />
-                <Text style={styles.h2}>Create your account with Google</Text>
+          <View style={styles.page__lower}>
+            {pageCounter === 1 && (
+              <Pressable onPress={handleNext} style={[styles.button, styles.fixedWidth]}>
+                <Text style={styles.button__text}>CREATE ACCOUNT</Text>
+              </Pressable>
+            )}
+            {pageCounter === 2 && (
+              <View style={styles.paginationBtns}>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                </Pressable>
+                <Pressable
+                  // style={isDisabled ? styles.disabled : ''}
+                  style={[styles.button, styles.buttonNext]}
+                  onPress={handlePress}
+                  disabled={isDisabled}
+                >
+                  <Text style={styles.button__text}>CONTINUE</Text>
+                </Pressable>
               </View>
+            )}
+            <Pressable onPress={() => navigation.navigate('Google')} style={[styles.googleButton, styles.fixedWidth]}>
+                <Image source={Google} style={styles.googleButton__logo} />
+                <Text style={styles.googleButton__text}>Create an account with Google</Text>
             </Pressable>
+            <Text style={styles.smallerText}>
+              Already have an account?{' '}
+              <Pressable style={styles.underline} onPress={() => navigation.navigate('Login')}>
+                <Text>Click Here</Text>
+              </Pressable>
+            </Text>
           </View>
+          {/* <Pressable onPress={deleteDocu}>DELETE</Pressable> */}
         </View>
       </View>
-      {/* <Pressable onPress={deleteDocu}>DELETE</Pressable> */}
-    </View>
+    </Page>
   )
 }
 

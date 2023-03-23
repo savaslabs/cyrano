@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, useState, createElement } from 'react'
 import { RadioButton } from 'react-native-paper'
+import { styles } from '../../styles'
 
 const Second = ({
   birthday,
@@ -30,11 +31,17 @@ const Second = ({
         setBirthday(new Date(event.target.value))
       },
       style: {
-        height: 30,
-        padding: 5,
-        border: '2px solid #677788',
-        borderRadius: 5,
-        width: 250,
+        height: 56,
+        marginBottom: 16,
+        fontSize: 17,
+        border: '1px solid rgb(199, 203, 217)',
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 4,
+        color: 'rgba(51, 55, 75, 1)',
+        marginTop: -8,
+        flexGrow: 1,
+        fontFamily: 'sans-serif'
       },
     })
   }
@@ -47,32 +54,41 @@ const Second = ({
         setAnniversary(new Date(event.target.value))
       },
       style: {
-        height: 30,
-        padding: 5,
-        border: '2px solid #677788',
-        borderRadius: 5,
-        width: 250,
+        height: 56,
+        marginBottom: 16,
+        fontSize: 17,
+        border: '1px solid rgb(199, 203, 217)',
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 4,
+        color: 'rgba(51, 55, 75, 1)',
+        marginTop: -8,
+        flexGrow: 1,
+        fontFamily: 'sans-serif'
       },
     })
   }
-
+  
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       {relationshipValue === 'Romantic' && (
         <>
-          <View style={styles.row}>
-            <View>
-              <Text style={styles.label}>Birthday</Text>
-              <BirthdayDatePicker />
+          <View style={styles.form__twoCol}>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Birthday</Text>
+              <BirthdayDatePicker style={styles.form__date} />
             </View>
-            <View>
-              <Text style={styles.label}>Anniversary</Text>
-              <AnniversaryDatePicker />
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Anniversary</Text>
+              <AnniversaryDatePicker style={styles.form__date} />
             </View>
           </View>
           <View>
-            <Text style={styles.label}>
+            <Text style={[styles.p, styles.alignLeft]}>
               How would you rate your relationship?
+            </Text>
+            <Text style={[styles.smallerText, styles.alignLeft]}>
+              On a scale of 1-5, where 1 is bad and 5 is perfect.
             </Text>
             <RadioButton.Group
               onValueChange={(value) => setRelationshipRating(value)}
@@ -127,41 +143,5 @@ const Second = ({
     </Animated.View>
   )
 }
-
-const styles = StyleSheet.create({
-  label: {
-    color: '#677788',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingLeft: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#677788',
-    borderRadius: 5,
-    color: '#677788',
-  },
-  dropdown: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#677788',
-    borderRadius: 5,
-    color: '#677788',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  text: {
-    color: '#677788',
-    paddingTop: 5,
-  },
-})
 
 export default Second

@@ -15,24 +15,14 @@ const EventItem = ({ item, profileImage }) => {
   const { id, eventTitle, loveStyleTag, date, name } = item
 
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        <Text>{eventTitle}</Text>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          {loveStyleTag.map((tag, index) => (
-            <Text
-              key={index}
-              style={{
-                borderWidth: 1,
-                padding: 5,
-                marginLeft: 5,
-                marginRight: 5,
-              }}
-            >
-              {tag}
-            </Text>
-          ))}
-        </View>
+    <View style={styles.eventCard}>
+      <View style={styles.eventCard__topRow}>
+        <Text style={styles.h2}>{eventTitle}</Text>
+        {loveStyleTag.map((tag, index) => (
+          <Text style={styles.eventCard__tag} key={index}>
+            {tag}
+          </Text>
+        ))}
       </View>
       <View>
         <Text>{date}</Text>
