@@ -4,11 +4,13 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
-import LogoIMG from '../assets/logo.png'
+import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
 import { auth, provider, db } from '../config/firebase-config'
 import { addDoc, collection } from 'firebase/firestore'
 import { signInWithPopup } from 'firebase/auth'
+import Page from '../shared/Page'
+
 
 const GoogleCreate = () => {
   const [name, setName] = useState('')
@@ -52,58 +54,66 @@ const GoogleCreate = () => {
   }, [name, lastName, phone])
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imgContainer}>
+    <Page>
+      <View style={styles.page__logo}>
         <Image source={LogoIMG} style={styles.logo} />
-        {/* <Logo /> */}
       </View>
-      <Text style={styles.h1}>Welcome to Cyrano</Text>
-      <Text style={styles.h2}>
-        Fill in your details below to create your account.
-      </Text>
-      <View style={styles.form}>
-        <View>
-          <Text style={styles.label}>First Name</Text>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={(newName) => setName(newName)}
-          />
+      <View style={styles.page__content}>
+        <View style={styles.page__upper}>
+          <Text style={styles.h1}>Welcome to Cyrano</Text>
+          <Text style={styles.p}>Fill in your details below to log in.</Text>
         </View>
-        <View>
-          <Text style={styles.label}>Last Name</Text>
-          <TextInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={(newLastName) => setLastName(newLastName)}
-          />
+        <View style={styles.form}>
+          <View style={styles.form__twoCol}>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>First Name</Text>
+              <TextInput
+                style={styles.form__input}
+                value={name}
+                onChangeText={(newName) => setName(newName)}
+                placeholder="Enter first name"
+                placeholderTextColor="#c7cbd9"
+              />
+            </View>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Last Name</Text>
+              <TextInput
+                style={styles.form__input}
+                value={lastName}
+                onChangeText={(newLastName) => setLastName(newLastName)}
+                placeholder="Enter last name"
+                placeholderTextColor="#c7cbd9"
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.form__label}>Phone Number</Text>
+            <TextInput
+              style={styles.form__input}
+              placeholder="(555) 123-4567"
+              value={phone}
+              onChangeText={(newPhone) => setPhone(newPhone)}
+              placeholderTextColor="#c7cbd9"
+            />
+          </View>
+          <View style={styles.page__lower}>
+            <Pressable
+              style={[styles.button, isDisabled ? styles.disabled : '']}
+              onPress={signInWithGoogle}
+              disabled={isDisabled}
+            >
+              <Text style={styles.button__text}>CREATE ACCOUNT</Text>
+            </Pressable>
+            <Text style={styles.smallerText}>
+              Already have an account?{' '}
+              <Pressable style={styles.underline} onPress={() => navigation.navigate('Login')}>
+                <Text>Click Here</Text>
+              </Pressable>
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.label}>Phone Number</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="(555) 123-4567"
-            value={phone}
-            onChangeText={(newPhone) => setPhone(newPhone)}
-            placeholderTextColor="rgba(255,255,255, 0.5)"
-          />
-        </View>
-        <Pressable
-          style={[styles.button, isDisabled ? styles.disabled : '']}
-          onPress={signInWithGoogle}
-          disabled={isDisabled}
-        >
-          <Image source={Google} style={styles.imgSize} />
-          <Text style={styles.text}>Create Account With Google</Text>
-        </Pressable>
-        <Text style={styles.h2}>
-          Already have an account?{' '}
-          <Pressable onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.underline}>Click Here</Text>
-          </Pressable>
-        </Text>
       </View>
-    </View>
+    </Page>
   )
 }
 

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { styles } from '../../styles'
 
 const First = ({
   name,
@@ -34,30 +35,30 @@ const First = ({
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
-      <View style={styles.row}>
-        <View style={{width: '50%'}}>
-          <Text style={styles.label}>First Name</Text>
+      <View style={styles.form__twoCol}>
+        <View style={styles.form__col}>
+          <Text style={styles.form__label}>First Name</Text>
           <TextInput
-            style={styles.input}
+            style={styles.form__input}
             placeholder="Their first name"
-            placeholderTextColor="rgba(51,55,75,0.5)"
+            placeholderTextColor="#c7cbd9"
             value={name}
             onChangeText={(newName) => setName(newName)}
           />
         </View>
-        <View style={{width: '50%'}}>
-          <Text style={styles.label}>Last Name</Text>
+        <View style={styles.form__col}>
+          <Text style={styles.form__label}>Last Name</Text>
           <TextInput
-            style={styles.input}
+            style={styles.form__input}
             placeholder="Their last name"
-            placeholderTextColor="rgba(51,55,75,0.5)"
+            placeholderTextColor="#c7cbd9"
             value={lastName}
             onChangeText={(newLastName) => setLastName(newLastName)}
           />
         </View>
       </View>
       <View style={{ zIndex: 2 }}>
-        <Text style={styles.label}>Relationship Type</Text>
+        <Text style={styles.form__label}>Relationship Type</Text>
         <DropDownPicker
           open={openRelationship}
           value={relationshipValue}
@@ -65,21 +66,19 @@ const First = ({
           setOpen={setOpenRelationship}
           setValue={setRelationshipValue}
           setItems={setRelationshipItems}
-          style={styles.dropdown}
+          style={styles.form__select}
           placeholder="Select a relationship type"
-          placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
+          placeholderStyle={{ color: '#c7cbd9', paddingLeft: 4, fontSize: 17 }}
+          selectedTextStyle={{ color: 'rgba(51, 55, 75, 1)', paddingLeft: 4, fontSize: 17 }}
           dropDownContainerStyle={{
             margin: 'auto',
             color: '#33374B',
-            borderColor: '#33374B',
             zIndex: '10000',
-            width: '90%',
             height: 160,
-            bottom: -147,
-            left: 13,
-          }}
-          labelStyle={{
-            color: '#33374B',
+            bottom: -135,
+            borderColor: 'rgba(199, 203, 217, 1)',
+            paddingLeft: 4,
+            fontSize: 17
           }}
           listItemLabelStyle={{
             color: '#33374B',
@@ -90,7 +89,7 @@ const First = ({
         />
       </View>
       <View style={{ zIndex: 1 }}>
-        <Text style={styles.label}>Partner Pronouns</Text>
+        <Text style={styles.form__label}>Partner Pronouns</Text>
         <DropDownPicker
           open={openPronouns}
           value={pronounsValue}
@@ -98,18 +97,21 @@ const First = ({
           setOpen={setOpenPronouns}
           setValue={setPronounsValue}
           setItems={setPronounsItem}
-          style={styles.dropdown}
-          placeholder="Select a pronouns"
-          placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
+          style={styles.form__select}
+          placeholder="Select pronouns"
+          placeholderStyle={{ color: '#c7cbd9', paddingLeft: 4, fontSize: 17 }}
+          dropdownStyle={{
+            paddingLeft: 30
+          }}
           dropDownContainerStyle={{
             margin: 'auto',
             color: '#33374B',
-            borderColor: '#33374B',
             zIndex: '10000',
-            width: '90%',
-            height: 160,
-            bottom: -147,
-            left: 13,
+            borderColor: 'rgba(199, 203, 217, 1)',
+            height: 120,
+            bottom: -95,
+            paddingLeft: 4,
+            fontSize: 17
           }}
           labelStyle={{
             color: '#33374B',
@@ -123,11 +125,11 @@ const First = ({
         />
       </View>
       <View>
-        <Text style={styles.label}>Location</Text>
+        <Text style={styles.form__label}>Location</Text>
         <TextInput
-          style={styles.input}
+          style={styles.form__input}
           placeholder="Miami, FL"
-          placeholderTextColor="rgba(51,55,75,0.5)"
+          placeholderTextColor="#c7cbd9"
           value={location}
           onChangeText={(newLocation) => setLocation(newLocation)}
         />
@@ -135,43 +137,5 @@ const First = ({
     </Animated.View>
   )
 }
-
-const styles = StyleSheet.create({
-  label: {
-    color: '#33374B',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingLeft: 10,
-  },
-  form: {
-    width: '80%',
-    alignSelf: 'center',
-    paddingTop: 40,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#33374B',
-    borderRadius: 5,
-    color: '#33374B',
-  },
-  dropdown: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#33374B',
-    borderRadius: 5,
-    color: '#33374B',
-    width: '94%',
-    minHeight: 0,
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-})
 
 export default First

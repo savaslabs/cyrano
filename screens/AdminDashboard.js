@@ -42,7 +42,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <Page>
       {loading ? (
         <Spinner />
       ) : (
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
             ))}
         </>
       )}
-    </View>
+    </Page>
   )
 }
 
