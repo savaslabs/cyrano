@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import Birthday from '../assets/birthday.svg'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
 import RelationshipContext from '../context/RelationshipContext'
@@ -15,7 +15,12 @@ const EventHistory = () => {
   const [relationships, setRelationships] = useState('')
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
-  const [relItem, setRelItem] = useState([])
+  const [relItem, setRelItem] = useState([
+    {
+      label: 'All',
+      value: 'All',
+    },
+  ])
   const [relationshipEvents, setRelationshipEvents] = useState([])
   const navigation = useNavigation()
   const route = useRoute()
@@ -44,12 +49,12 @@ const EventHistory = () => {
       )
       setRelationshipEvents(eventList)
 
-      setRelItem(
-        relationships.map((item) => ({
-          label: `${item.name} ${item.lastName}`,
-          value: `${item.name} ${item.lastName}`,
-        }))
-      )
+      const newArr = relationships.map((item) => ({
+        label: `${item.name} ${item.lastName}`,
+        value: `${item.name} ${item.lastName}`,
+      }))
+
+      setRelItem((prevState) => [...prevState, ...newArr])
     }
   }, [relationships])
 
