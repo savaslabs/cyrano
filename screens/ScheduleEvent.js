@@ -89,6 +89,7 @@ const ScheduleEvent = () => {
           nextEvents: arrayUnion({
             name: relationshipData.name,
             lastName: relationshipData.lastName,
+            fullName: `${relationshipData.name} ${relationshipData.lastName}`,
             img: relationshipData.profileImage,
             loveStyleTag: loveStyleTagValue,
             nextDatePlace,
