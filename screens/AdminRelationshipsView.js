@@ -22,7 +22,6 @@ const AdminRelationshipsView = () => {
 
   useEffect(() => {
     getRelationships()
-    console.log('Admin rel running...')
   }, [])
 
   const getRelationships = async () => {

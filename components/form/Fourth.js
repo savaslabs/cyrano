@@ -25,7 +25,7 @@ const Fourth = ({
   const DatePicker = () => {
     return createElement('input', {
       type: 'date',
-      value: lastTimeDate.toISOString().split('T')[0],
+      value: lastTimeDate,
       onChange: (event) => {
         setLastTimeDate(new Date(event.target.value))
       },
@@ -40,7 +40,7 @@ const Fourth = ({
         color: 'rgba(51, 55, 75, 1)',
         marginTop: -8,
         flexGrow: 1,
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
       },
     })
   }
@@ -51,10 +51,12 @@ const Fourth = ({
         <Text style={[styles.p, styles.alignLeft]}>
           When was the last time you went on a date with {name}?
         </Text>
-        <DatePicker />
+        <DatePicker style={styles.form__date} />
       </View>
       <View>
-        <Text style={[styles.p, styles.alignLeft]}>Where did you go? / What did you do?</Text>
+        <Text style={[styles.p, styles.alignLeft]}>
+          Where did you go? / What did you do?
+        </Text>
         <TextInput
           multiline={true}
           numberOfLines={4}
@@ -66,9 +68,11 @@ const Fourth = ({
         />
       </View>
       <View>
-        <Text style={[styles.p, styles.alignLeft]}>How would you rate the date?</Text>
+        <Text style={[styles.p, styles.alignLeft]}>
+          How would you rate the date?
+        </Text>
         <RadioButton.Group
-          onValueChange={(value) => setDateRating(value)}
+          onValueChange={(newDateRating) => setDateRating(newDateRating)}
           value={dateRating}
         >
           <View style={styles.row}>

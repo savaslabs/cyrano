@@ -38,7 +38,14 @@ const RelationshipItem = ({ item }) => {
           <RelationshipRating relationshipRating={item?.relationshipRating} />
         </View>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-          <Pressable onPress={() => console.log()} style={styles.button}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Schedule Event', {
+                itemId: item?.id,
+              })
+            }
+            style={styles.button}
+          >
             <Text style={{ color: 'white', fontWeight: 'bold' }}>
               Create Event
             </Text>
@@ -87,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EF6E62',
     padding: 8,
     borderRadius: 8,
-    marginLeft: 30
+    marginLeft: 30,
   },
 })
 

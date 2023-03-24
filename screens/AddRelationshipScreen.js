@@ -18,7 +18,7 @@ import Second from '../components/form/Second'
 import Third from '../components/form/Third'
 import Fourth from '../components/form/Fourth'
 import { auth, db } from '../config/firebase-config'
-import { setDoc, collection, doc } from 'firebase/firestore'
+import { setDoc, collection, doc, serverTimestamp } from 'firebase/firestore'
 import { styles } from '../styles'
 import Page from '../shared/Page'
 
@@ -88,15 +88,18 @@ const AddRelationship = () => {
         profileImage,
         name,
         lastName,
+        relationshipValue,
+        pronounsValue,
+        location,
         birthday,
         anniversary,
-        phone,
-        email,
-        relationshipValue,
         relationshipRating,
+        email,
+        phone,
         dateRating,
         lastTimeDate,
         datePlace,
+        nextEvents: [],
       }
 
       await addRelationship(newRelationship)
@@ -108,12 +111,14 @@ const AddRelationship = () => {
       setProfileImage('')
       setName('')
       setLastName('')
+      setRelationshipValue('')
+      setPronounsValue('')
+      setLocation('')
       setBirthday('')
       setAnniversary('')
-      setPhone('')
-      setEmail('')
-      setRelationshipValue('')
       setRelationshipRating('')
+      setEmail('')
+      setPhone('')
       setDateRating('')
       setLastTimeDate('')
       setDatePlace('')
@@ -122,19 +127,23 @@ const AddRelationship = () => {
         profileImage,
         name,
         lastName,
+        relationshipValue,
+        pronounsValue,
+        location,
         birthday,
         anniversary,
-        phone,
-        email,
-        relationshipValue,
         relationshipRating,
+        email,
+        phone,
         dateRating,
         lastTimeDate,
         datePlace,
+        createdAt: serverTimestamp(),
         author: {
           id: auth.currentUser.uid,
           email: auth.currentUser.email,
         },
+        nextEvents: [],
       })
     }
   }
@@ -186,29 +195,32 @@ const AddRelationship = () => {
         <View style={[styles.page__upper, styles.relationshipHeading]}>
           <View style={styles.relationshipHeading__text}>
             <Text style={[styles.h1, styles.alignLeft]}>Add Relationship</Text>
-            {pageCounter === 1 && <Text style={[styles.p, styles.alignLeft]}>Tell us about your partner.</Text>}
+            {pageCounter === 1 && (
+              <Text style={[styles.p, styles.alignLeft]}>
+                Tell us about your partner.
+              </Text>
+            )}
             {pageCounter === 2 && (
               <Text style={[styles.p, styles.alignLeft]}>
                 More details about your relationship with{' '}
-                <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-                .
+                <Text style={{ fontWeight: 'bold' }}>{name}</Text>.
               </Text>
             )}
             {pageCounter === 3 && (
               <Text style={[styles.p, styles.alignLeft]}>
-                Enter <Text style={{ fontWeight: 'bold' }}>{name}</Text>'s contact information to send them the Truity Love
-                Styles test.
+                Enter <Text style={{ fontWeight: 'bold' }}>{name}</Text>'s
+                contact information to send them the Truity Love Styles test.
               </Text>
             )}
             {pageCounter === 4 && (
-              <Text style={[styles.p, styles.alignLeft]}>Tell us about your most recent date with {name}.</Text>
+              <Text style={[styles.p, styles.alignLeft]}>
+                Tell us about your most recent date with {name}.
+              </Text>
             )}
           </View>
           <Pressable onPress={pickImage}>
             <View
-              style={
-                profileImage ? styles.cameraRemoveBorder : styles.camera
-              }
+              style={profileImage ? styles.cameraRemoveBorder : styles.camera}
             >
               {profileImage ? (
                 <Image
@@ -273,6 +285,8 @@ const AddRelationship = () => {
               dateRating={dateRating}
               setDateRating={setDateRating}
               name={name}
+              birthday={birthday}
+              anniversary={anniversary}
             />
           )}
         </View>
@@ -314,11 +328,21 @@ const AddRelationship = () => {
         {pageCounter === 3 && !email && !phone && (
           <>
             <Pressable
-              style={[styles.button, loveStyleIsDisabled ? styles.disabled : '']}
+              style={[
+                styles.button,
+                loveStyleIsDisabled ? styles.disabled : '',
+              ]}
               onPress={sendLoveTest}
               disabled={loveStyleIsDisabled}
             >
-              <Text style={[styles.button__text, loveStyleIsDisabled ? styles.disabled__text : '']}>SEND LOVE STYLES TEST</Text>
+              <Text
+                style={[
+                  styles.button__text,
+                  loveStyleIsDisabled ? styles.disabled__text : '',
+                ]}
+              >
+                SEND LOVE STYLES TEST
+              </Text>
             </Pressable>
             <View style={styles.dots}>
               <View style={styles.dots__dot}></View>
@@ -332,11 +356,22 @@ const AddRelationship = () => {
                   <Text style={styles.button__text}>BACK</Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.button, {marginTop: 16}, nextIsDisabled ? styles.disabled : '']}
+                  style={[
+                    styles.button,
+                    { marginTop: 16 },
+                    nextIsDisabled ? styles.disabled : '',
+                  ]}
                   onPress={handleNext}
                   disabled={nextIsDisabled}
                 >
-                  <Text style={[styles.button__text, nextIsDisabled ? styles.disabled__text : '']}>CONTINUE</Text>
+                  <Text
+                    style={[
+                      styles.button__text,
+                      nextIsDisabled ? styles.disabled__text : '',
+                    ]}
+                  >
+                    CONTINUE
+                  </Text>
                 </Pressable>
               </View>
             </View>
@@ -354,7 +389,14 @@ const AddRelationship = () => {
                 onPress={sendLoveTest}
                 disabled={loveStyleIsDisabled}
               >
-                <Text style={[styles.button__text, loveStyleIsDisabled ? styles.disabled__text : '',]}>SEND LOVE STYLES TEST</Text>
+                <Text
+                  style={[
+                    styles.button__text,
+                    loveStyleIsDisabled ? styles.disabled__text : '',
+                  ]}
+                >
+                  SEND LOVE STYLES TEST
+                </Text>
               </Pressable>
               <View style={styles.dots}>
                 <View style={styles.dots__dot}></View>
@@ -368,11 +410,21 @@ const AddRelationship = () => {
                     <Text style={styles.button__text}>BACK</Text>
                   </Pressable>
                   <Pressable
-                    style={[styles.button, nextIsDisabled ? styles.disabled : '']}
+                    style={[
+                      styles.button,
+                      nextIsDisabled ? styles.disabled : '',
+                    ]}
                     onPress={handleNext}
                     disabled={nextIsDisabled}
                   >
-                    <Text style={[styles.button__text, nextIsDisabled ? styles.disabled__text : '']}>CONTINUE</Text>
+                    <Text
+                      style={[
+                        styles.button__text,
+                        nextIsDisabled ? styles.disabled__text : '',
+                      ]}
+                    >
+                      CONTINUE
+                    </Text>
                   </Pressable>
                 </View>
               </View>
@@ -387,7 +439,13 @@ const AddRelationship = () => {
                   source={{ uri: PaperPlane }}
                   style={styles.truityConfirmation__icon}
                 />
-                <Text style={[styles.p, styles.alignLeft, styles.truityConfirmation__text]}>
+                <Text
+                  style={[
+                    styles.p,
+                    styles.alignLeft,
+                    styles.truityConfirmation__text,
+                  ]}
+                >
                   The test has been sent to {name}. We'll alert you once we have
                   uploaded their results
                 </Text>
@@ -442,7 +500,14 @@ const AddRelationship = () => {
                   onPress={handlePress}
                   disabled={isDisabled}
                 >
-                  <Text style={[styles.button__text, isDisabled ? styles.disabled__text : '']}>Save</Text>
+                  <Text
+                    style={[
+                      styles.button__text,
+                      isDisabled ? styles.disabled__text : '',
+                    ]}
+                  >
+                    Save
+                  </Text>
                 </Pressable>
               </View>
             </View>

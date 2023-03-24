@@ -6,7 +6,7 @@ import AddRelationShipScreen from './screens/AddRelationshipScreen'
 import RelationshipScreen from './screens/RelationshipScreen'
 import SendMessageScreen from './screens/SendMessageScreen'
 import RelationshipContext from './context/RelationshipContext'
-import BookCyrano from './screens/BookCyrano'
+import ScheduleEvent from './screens/ScheduleEvent'
 import LoveStylesScreen from './screens/LoveStylesScreen'
 import LifeEventsScreen from './screens/LifeEventsScreen'
 import LoginScreen from './screens/LoginScreen'
@@ -43,9 +43,9 @@ const StackNavigator = () => {
           />
           <Stack.Screen name="Relationship" component={RelationshipScreen} />
           {/* <Stack.Screen name="Send" component={SendMessageScreen} />
-          <Stack.Screen name="Book" component={BookCyrano} />
           <Stack.Screen name="LoveStyle" component={LoveStylesScreen} />
           <Stack.Screen name="LifeEvents" component={LifeEventsScreen} /> */}
+          <Stack.Screen name="Schedule Event" component={ScheduleEvent} />
           <Stack.Screen name="Event History" component={EventHistory} />
           <Stack.Screen name="Event Rating" component={EventRatingScreen} />
           <Stack.Screen

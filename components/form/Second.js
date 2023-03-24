@@ -68,7 +68,7 @@ const Second = ({
       },
     })
   }
-  
+
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       {relationshipValue === 'Romantic' && (

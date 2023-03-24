@@ -23,38 +23,18 @@ import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 import { styles } from '../styles'
 
-
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
   const [loading, setLoading] = useState(true)
-  //Placeholder
-  const [upcomingEvents, setUpcomingEvents] = useState([
-    {
-      id: 1,
-      eventTitle: 'Dinner Date',
-      loveStyleTag: ['Activity', 'Financial'],
-      date: 'Friday, Jan 26, 2023 @ 8 pm',
-      name: 'Amber Barker',
-    },
-  ])
+  const [finalBirthday, setFinalBirthday] = useState('')
+  const [finalAnniversary, setFinalAnniversary] = useState('')
+  const [upcomingEvents, setUpcomingEvents] = useState([])
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId } = route.params
-  const month = new Date().getMonth()
-  const date = new Date().getDate()
-  const year = new Date().getFullYear()
-
-  // useEffect(() => {
-  //   const getRelationship = relationship.find((item) => item.id === itemId)
-
-  //   if (getRelationship) {
-  //     setSingleRelationship(getRelationship)
-  //   }
-  // }, [relationship])
 
   useEffect(() => {
     getSpecificDoc()
-    console.log('Specific Doc running...')
   }, [])
 
   const getSpecificDoc = async () => {
@@ -72,7 +52,6 @@ const Relationship = () => {
   useEffect(() => {
     if (singleRelationship) {
       setLoading(false)
-      console.log('isLoading rel running...')
     }
   }, [singleRelationship])
 
@@ -86,6 +65,7 @@ const Relationship = () => {
     relationshipRating,
     lastTimeDate,
     upcomingDate,
+    nextEvents,
   } = singleRelationship
 
   const handleBack = () => {
@@ -96,12 +76,33 @@ const Relationship = () => {
     navigation.navigate('Admin')
   }
 
+  useEffect(() => {
+    if (singleRelationship) {
+      setFinalBirthday(
+        `${new Date(birthday.seconds * 1000).getMonth()} - ${new Date(
+          birthday.seconds * 1000
+        ).getDate()} - ${new Date(birthday.seconds * 1000).getFullYear()}`
+      )
+      setFinalAnniversary(
+        `${new Date(anniversary.seconds * 1000).getMonth()} - ${new Date(
+          anniversary.seconds * 1000
+        ).getDate()} - ${new Date(anniversary.seconds * 1000).getFullYear()}`
+      )
+    }
+  }, [singleRelationship])
+
+  useEffect(() => {
+    if (singleRelationship) {
+      setUpcomingEvents(nextEvents)
+    }
+  }, [singleRelationship])
+
   return (
-    <Page>
+    <>
       {loading ? (
         <Spinner />
       ) : (
-        <>
+        <Page>
           {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
             <Pressable style={styles.arrowContainer} onPress={handleBackAdmin}>
               <Image source={ArrowBack} style={styles.arrow} />
@@ -129,13 +130,13 @@ const Relationship = () => {
 
           <View style={styles.row}>
             <Card>
-              <Text style={styles.title}>{name}'s Birthday</Text>
-              <Text style={styles.lifeEventsText}>{birthday}</Text>
+              <Text style={styles.title}>{name.toUpperCase()}'S BIRTHDAY</Text>
+              <Text style={styles.lifeEventsText}>{finalBirthday}</Text>
             </Card>
 
             <Card>
               <Text style={styles.title}>YOUR ANNIVERSARY</Text>
-              <Text style={styles.lifeEventsText}>{anniversary}</Text>
+              <Text style={styles.lifeEventsText}>{finalAnniversary}</Text>
             </Card>
           </View>
 
@@ -159,7 +160,7 @@ const Relationship = () => {
 
             <View>
               <Text>UPCOMING EVENTS</Text>
-              {upcomingEvents ? (
+              {!upcomingEvents ? (
                 <View>
                   <Text>You don't have any upcoming event right now</Text>
                   {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
@@ -172,12 +173,8 @@ const Relationship = () => {
                   )}
                 </View>
               ) : (
-                upcomingEvents.map((item) => (
-                  <EventItem
-                    item={item}
-                    key={item.id}
-                    profileImage={profileImage}
-                  />
+                upcomingEvents.map((item, index) => (
+                  <EventItem item={item} key={index} />
                 ))
               )}
             </View>
@@ -203,9 +200,9 @@ const Relationship = () => {
               </View>
             </View>
           </View>
-        </>
+        </Page>
       )}
-    </Page>
+    </>
   )
 }
 

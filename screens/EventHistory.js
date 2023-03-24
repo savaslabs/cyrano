@@ -8,41 +8,46 @@ import RelationshipContext from '../context/RelationshipContext'
 import DropDownPicker from 'react-native-dropdown-picker'
 import RelationshipRating from '../components/RelationshipRating'
 import EventItemHistory from '../components/EventItemHistory'
+import { db, auth } from '../config/firebase-config'
+import { getDocs, collection } from 'firebase/firestore'
 
 const EventHistory = () => {
+  const [relationships, setRelationships] = useState('')
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
   const [relItem, setRelItem] = useState([
     { label: 'Amber Barker', value: 'Amber Barker' },
     { label: 'Rachel Smith', value: 'Rachel Smith' },
   ])
-  const [relationshipEvents, setRelationshipEvents] = useState([
-    {
-      id: 1,
-      eventTitle: 'Dinner Date',
-      loveStyleTag: ['Activity', 'Financial'],
-      date: 'Friday, Jan 26, 2023 @ 8 pm',
-      relationshipRating: null,
-    },
-    {
-      id: 2,
-      eventTitle: 'Buy New Pen',
-      loveStyleTag: ['Financial'],
-      date: 'Friday, Jan 19, 2023',
-      relationshipRating: '4',
-    },
-    {
-      id: 3,
-      eventTitle: 'Lorem Ipsum Event',
-      loveStyleTag: ['Appreciation'],
-      date: 'Friday, Jan 19, 2023',
-      relationshipRating: '3',
-    },
-  ])
+  const [relationshipEvents, setRelationshipEvents] = useState([])
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
   const { itemId } = route.params
+  const relationshipRef = collection(db, 'relationships')
+
+  const getRelationships = async () => {
+    const data = await getDocs(relationshipRef)
+    const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    const finalRel = newData.filter(
+      (item) => item.author.id === auth.currentUser.uid
+    )
+    setRelationships(finalRel)
+  }
+
+  useEffect(() => {
+    getRelationships()
+  }, [])
+
+  useEffect(() => {
+    if (relationships) {
+      const eventList = relationships?.reduce(
+        (acc, item) => [...acc, ...item.nextEvents],
+        []
+      )
+      setRelationshipEvents(eventList)
+    }
+  }, [relationships])
 
   return (
     <View style={styles.container}>
@@ -105,8 +110,8 @@ const EventHistory = () => {
         </Card>
 
         {relationshipEvents ? (
-          relationshipEvents?.map((item) => (
-            <EventItemHistory key={item.id} item={item} />
+          relationshipEvents?.map((item, index) => (
+            <EventItemHistory key={index} item={item} />
           ))
         ) : (
           <Text>
