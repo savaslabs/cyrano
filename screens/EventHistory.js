@@ -15,10 +15,7 @@ const EventHistory = () => {
   const [relationships, setRelationships] = useState('')
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
-  const [relItem, setRelItem] = useState([
-    { label: 'Amber Barker', value: 'Amber Barker' },
-    { label: 'Rachel Smith', value: 'Rachel Smith' },
-  ])
+  const [relItem, setRelItem] = useState([])
   const [relationshipEvents, setRelationshipEvents] = useState([])
   const navigation = useNavigation()
   const route = useRoute()
@@ -46,6 +43,13 @@ const EventHistory = () => {
         []
       )
       setRelationshipEvents(eventList)
+
+      setRelItem(
+        relationships.map((item) => ({
+          label: `${item.name} ${item.lastName}`,
+          value: `${item.name} ${item.lastName}`,
+        }))
+      )
     }
   }, [relationships])
 
