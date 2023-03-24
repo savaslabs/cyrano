@@ -2,8 +2,10 @@ import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
+import { useState, useEffect } from 'react'
 
-const EventItem = ({ item, profileImage }) => {
+const EventItem = ({ item }) => {
+  const [finalDate, setFinalDate] = useState('')
   const navigation = useNavigation()
 
   const handlePress = (e) => {
@@ -12,12 +14,33 @@ const EventItem = ({ item, profileImage }) => {
     })
   }
 
-  const { id, eventTitle, loveStyleTag, date, name } = item
+  const {
+    img,
+    lastName,
+    name,
+    loveStyleTag,
+    nextDateDate,
+    nextDateTime,
+    pickRestaurantValue,
+    nextDatePlace,
+  } = item
+
+  useEffect(() => {
+    if (item) {
+      setFinalDate(
+        `${new Date(nextDateDate.seconds * 1000).getMonth()} - ${new Date(
+          nextDateDate.seconds * 1000
+        ).getDate()} - ${new Date(nextDateDate.seconds * 1000).getFullYear()}`
+      )
+    }
+  }, [item])
 
   return (
     <View style={styles.eventCard}>
       <View style={styles.eventCard__topRow}>
-        <Text style={styles.h2}>{eventTitle}</Text>
+        <Text style={styles.h2}>
+          {nextDatePlace !== '' ? nextDatePlace : pickRestaurantValue}
+        </Text>
         {loveStyleTag.map((tag, index) => (
           <Text style={styles.eventCard__tag} key={index}>
             {tag}
@@ -25,22 +48,22 @@ const EventItem = ({ item, profileImage }) => {
         ))}
       </View>
       <View>
-        <Text>{date}</Text>
+        <Text>{finalDate}</Text>
+        <Text>{nextDateTime}</Text>
       </View>
       <View style={styles.item}>
-        {profileImage ? (
-          <Image source={profileImage} style={styles.img} nativeID={id} />
+        {img ? (
+          <Image source={img} style={styles.img} />
         ) : (
           <Image
             source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
             style={styles.img}
-            nativeID={id}
           />
         )}
 
         <Pressable onPress={(e) => handlePress(e.target.id)}>
-          <Text style={styles.heading} nativeID={id}>
-            {name}
+          <Text style={styles.heading}>
+            {name} {lastName}
           </Text>
         </Pressable>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (

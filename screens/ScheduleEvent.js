@@ -6,7 +6,7 @@ import {
   TextInput,
   Pressable,
 } from 'react-native'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, createElement } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
 import Logo from '../svg/Logo'
@@ -14,13 +14,14 @@ import LogoIMG from '../assets/logo.png'
 import DropDownPicker from 'react-native-dropdown-picker'
 import ArrowBack from '../assets/arrow-back.svg'
 import axios from 'axios'
+import { db } from '../config/firebase-config'
+import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore'
 
-const BookCyrano = () => {
-  const [singleRelationship, setSingleRelationship] = useState('')
+const ScheduleEvent = () => {
+  const [relationshipData, setRelationshipData] = useState('')
   const [nextDatePlace, setNextDatePlace] = useState('')
-  const [nextDateDate, setNextDateDate] = useState('')
-  const [nextDateTimeBetween, setNextDateTimeBetween] = useState('')
-  const [nextDateTimeAnd, setNextDateTimeAnd] = useState('')
+  const [nextDateDate, setNextDateDate] = useState(new Date(Date.now()))
+  const [nextDateTime, setNextDateTime] = useState('')
   const [openPickRestaurant, setOpenPickRestaurant] = useState(false)
   const [pickRestaurantValue, setPickRestaurantValue] = useState(null)
   const [pickRestaurantItems, setPickRestaurantItems] = useState([
@@ -29,71 +30,136 @@ const BookCyrano = () => {
     { label: 'Nobu', value: 'Nobu' },
     { label: 'Choose My Own Restaurant', value: 'Choose My Own Restaurant' },
   ])
+  const [openLoveStyleTag, setOpenLoveStyleTag] = useState(false)
+  const [loveStyleTagValue, setLoveStyleTagValue] = useState(null)
+  const [loveStyleTagItems, setLoveStyleTagItems] = useState([
+    { label: 'Activity', value: 'Activity' },
+    { label: 'Financial', value: 'Financial' },
+    { label: 'Physical', value: 'Physical' },
+    { label: 'Appeciation', value: 'Appeciation' },
+    { label: 'Emotional', value: 'Emotional' },
+    { label: 'Intellectual', value: 'Intellectual' },
+    { label: 'Practical', value: 'Practical' },
+  ])
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship, updateRelationship, user } =
     useContext(RelationshipContext)
   const { itemId } = route.params
+  const docRef = doc(db, 'relationships', itemId)
+
+  useEffect(() => {
+    getSpecificDoc()
+  }, [])
+
+  const getSpecificDoc = async () => {
+    try {
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        setRelationshipData(docSnap.data())
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     if (
       (pickRestaurantValue !== 'Choose My Own Restaurant' &&
         nextDateDate &&
-        nextDateTimeBetween &&
-        nextDateTimeAnd) ||
+        nextDateTime) ||
       (pickRestaurantValue === 'Choose My Own Restaurant' &&
         nextDatePlace &&
         nextDateDate &&
-        nextDateTimeBetween &&
-        nextDateTimeAnd)
+        nextDateTime)
     ) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
     }
     //eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    const getRelationship = relationship.find((item) => item.id === itemId)
-
-    if (getRelationship) {
-      setSingleRelationship(getRelationship)
-    }
-  }, [])
-
-  const { name } = singleRelationship
+  }, [pickRestaurantValue, nextDateDate, nextDateTime])
 
   const handlePress = async () => {
     if (pickRestaurantValue) {
-      const newRelationship = {
-        nextDatePlace,
-        nextDateDate,
-        nextDateTimeAnd,
-        nextDateTimeBetween,
-        pickRestaurantValue,
-      }
+      await updateDoc(
+        docRef,
+        {
+          nextEvents: arrayUnion({
+            name: relationshipData.name,
+            lastName: relationshipData.lastName,
+            img: relationshipData.profileImage,
+            loveStyleTag: loveStyleTagValue,
+            nextDatePlace,
+            nextDateDate,
+            nextDateTime,
+            pickRestaurantValue,
+          }),
+        },
+        {
+          merge: true,
+        }
+      ).then(navigation.navigate('Admin'))
 
-      await updateRelationship(itemId, newRelationship)
+      // await updateRelationship(itemId, newRelationship)
 
       setPickRestaurantValue('')
       setNextDatePlace('')
       setNextDateDate('')
-      setNextDateTimeAnd('')
-      setNextDateTimeBetween('')
-
-      if (newRelationship) {
-        navigation.navigate('Relationship', {
-          itemId,
-        })
-      }
+      setNextDateTime('')
     }
   }
 
   const handleBack = () => {
-    navigation.navigate('Relationship', {
+    navigation.navigate('AdminRel', {
       itemId,
+    })
+  }
+
+  const NextDatePicker = () => {
+    return createElement('input', {
+      type: 'date',
+      value: nextDateDate,
+      onChange: (event) => {
+        setNextDateDate(new Date(event.target.value))
+      },
+      style: {
+        height: 56,
+        marginBottom: 16,
+        fontSize: 17,
+        border: '1px solid rgb(199, 203, 217)',
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 4,
+        color: 'rgba(51, 55, 75, 1)',
+        marginTop: -8,
+        flexGrow: 1,
+        fontFamily: 'sans-serif',
+      },
+    })
+  }
+
+  const TimePicker = () => {
+    return createElement('input', {
+      type: 'time',
+      value: nextDateTime,
+      onChange: (event) => {
+        setNextDateTime(event.target.value)
+      },
+      style: {
+        height: 56,
+        marginBottom: 16,
+        fontSize: 17,
+        border: '1px solid rgb(199, 203, 217)',
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 4,
+        color: 'rgba(51, 55, 75, 1)',
+        marginTop: -8,
+        flexGrow: 1,
+        fontFamily: 'sans-serif',
+      },
     })
   }
 
@@ -103,16 +169,11 @@ const BookCyrano = () => {
         <Image source={ArrowBack} style={styles.arrow} />
       </Pressable>
       <View>
-        <Text style={styles.title}>
-          For your next event, we recommend taking{' '}
-          <Text style={{ fontWeight: '800' }}>{name}</Text> out to a fancy
-          restaurant
-        </Text>
+        <Text style={styles.title}>Schedule a New Event</Text>
       </View>
       <View style={styles.form}>
         <View style={{ zIndex: '2' }}>
           <Text style={styles.label}>Where would you like to go?</Text>
-
           <DropDownPicker
             open={openPickRestaurant}
             value={pickRestaurantValue}
@@ -121,6 +182,7 @@ const BookCyrano = () => {
             setValue={setPickRestaurantValue}
             setItems={setPickRestaurantItems}
             style={styles.dropdown}
+            placeholder="Select a location"
             placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
             dropDownContainerStyle={{
               top: 50,
@@ -160,51 +222,60 @@ const BookCyrano = () => {
 
         <View style={{ zIndex: '1' }}>
           <Text style={styles.label}>When would you like to go?</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="MM/DD/YYYY"
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            value={nextDateDate}
-            onChangeText={(newNexteDateDate) =>
-              setNextDateDate(newNexteDateDate)
-            }
-          />
+          <NextDatePicker />
         </View>
         <View style={styles.rowTime}>
           <View style={{ zIndex: '1', width: '50%' }}>
-            <Text style={styles.label}>Between</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="7:00 PM"
-              placeholderTextColor="rgba(237,82,68,0.5)"
-              value={nextDateTimeBetween}
-              onChangeText={(newNextDateTimeBetween) =>
-                setNextDateTimeBetween(newNextDateTimeBetween)
-              }
-            />
+            <Text style={styles.label}>Select Time</Text>
+            <TimePicker />
           </View>
-          <View style={{ zIndex: '1', width: '50%' }}>
-            <Text style={styles.label}>and</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="9:00 PM"
-              placeholderTextColor="rgba(237,82,68,0.5)"
-              value={nextDateTimeAnd}
-              onChangeText={(newNextTimeAnd) =>
-                setNextDateTimeAnd(newNextTimeAnd)
-              }
-            />
-          </View>
+        </View>
+        <View style={{ zIndex: '2' }}>
+          <Text style={styles.label}>Where would you like to go?</Text>
+          <DropDownPicker
+            open={openLoveStyleTag}
+            value={loveStyleTagValue}
+            items={loveStyleTagItems}
+            setOpen={setOpenLoveStyleTag}
+            setValue={setLoveStyleTagValue}
+            setItems={setLoveStyleTagItems}
+            style={styles.dropdown}
+            placeholder="Select Love Styles"
+            placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+            dropDownContainerStyle={{
+              top: 50,
+              left: 12,
+              margin: 'auto',
+              color: '#EF6E62',
+              borderColor: '#ED5244',
+              zIndex: '10000',
+              width: '94%',
+              height: 160,
+            }}
+            labelStyle={{
+              color: '#ED5244',
+            }}
+            listItemLabelStyle={{
+              color: '#ED5244',
+            }}
+            disabledItemLabelStyle={{
+              color: 'rgba(237,82,68,0.5)',
+            }}
+            multiple={true}
+            mode="BADGE"
+            badgeDotColors={['#e76f51']}
+          />
         </View>
       </View>
 
       <View style={styles.row}>
         <Pressable
-          style={[styles.button, isDisabled ? styles.disabled : '']}
+          // style={[styles.button, isDisabled ? styles.disabled : '']}
+          style={styles.button}
           onPress={handlePress}
-          disabled={isDisabled}
+          // disabled={isDisabled}
         >
-          <Text style={styles.text}>Let Us Take It From Here</Text>
+          <Text style={styles.text}>LET US TAKE IT FROM HERE</Text>
         </Pressable>
       </View>
     </View>
@@ -388,4 +459,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BookCyrano
+export default ScheduleEvent
