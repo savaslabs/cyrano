@@ -13,6 +13,7 @@ import { getDocs, collection } from 'firebase/firestore'
 
 const EventHistory = () => {
   const [relationships, setRelationships] = useState('')
+  const [filteredRel, setFilteredRel] = useState('')
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
   const [relItem, setRelItem] = useState([
@@ -57,6 +58,24 @@ const EventHistory = () => {
       setRelItem((prevState) => [...prevState, ...newArr])
     }
   }, [relationships])
+
+  useEffect(() => {
+    if (relationships) {
+      if (relValue) {
+        const newData = relationshipEvents.filter((item) => {
+          const fullName = `${item.name} ${item.lastName}`
+          return fullName.toLowerCase().includes(relValue.toLowerCase())
+        })
+        setFilteredRel(newData)
+      } else {
+        setFilteredRel(relationshipEvents)
+      }
+
+      if (relValue === 'All') {
+        setFilteredRel(relationshipEvents)
+      }
+    }
+  }, [relValue])
 
   return (
     <View style={styles.container}>
@@ -118,11 +137,15 @@ const EventHistory = () => {
           </View>
         </Card>
 
-        {relationshipEvents ? (
-          relationshipEvents?.map((item, index) => (
-            <EventItemHistory key={index} item={item} />
-          ))
-        ) : (
+        {filteredRel
+          ? filteredRel?.map((item, index) => (
+              <EventItemHistory key={index} item={item} />
+            ))
+          : relationshipEvents?.map((item, index) => (
+              <EventItemHistory key={index} item={item} />
+            ))}
+
+        {relationshipEvents.length === 0 && (
           <Text>
             You don’t have any relationships yet. Get started by adding one
           </Text>

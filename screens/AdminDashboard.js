@@ -38,16 +38,16 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (users) {
-      if (searchItem === '') {
-        return setFilteredUser([])
-      } else {
-        const filterArr = users.filter(
-          (item) =>
+      if (searchItem) {
+        const newData = users.filter((item) => {
+          return (
             item.name.toLowerCase().includes(searchItem.toLowerCase()) ||
             item.lastName.toLowerCase().includes(searchItem.toLowerCase())
-        )
-
-        setFilteredUser(filterArr)
+          )
+        })
+        setFilteredUser(newData)
+      } else {
+        setFilteredUser(users)
       }
     }
   }, [searchItem])
@@ -67,12 +67,11 @@ const AdminDashboard = () => {
             onChangeText={(newSearchItem) => setSearchItem(newSearchItem)}
           />
 
-          {filteredUsers.length > 0
+          {filteredUsers
             ? filteredUsers?.map((user) => (
                 <AdminRelItem user={user} key={user?.userId} />
               ))
-            : users &&
-              users?.map((user) => (
+            : users?.map((user) => (
                 <AdminRelItem user={user} key={user?.userId} />
               ))}
         </Page>
