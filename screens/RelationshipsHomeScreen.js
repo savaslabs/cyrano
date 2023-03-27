@@ -71,16 +71,6 @@ const RelationshipsHomeScreen = () => {
             <Pressable onPress={() => navigation.navigate('User Panel')}>
               <Text>Go to User Panel</Text>
             </Pressable>
-
-            {/* <Text style={styles.textNew}>
-              Hello, {userData?.name} {userData?.lastName}!
-            </Text>
-            <Text style={styles.textNew}>
-              Email: {userData?.email}
-            </Text>
-            <Text style={styles.textNew}>
-              Phone: {userData?.phone}
-            </Text> */}
             {relationships.length === 0 ? (
               <>
                 <View style={styles.page__upper}>
