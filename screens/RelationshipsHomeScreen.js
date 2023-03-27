@@ -13,26 +13,17 @@ import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 
 const RelationshipsHomeScreen = () => {
-  const [userData, setUserData] = useState('')
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
   const [relationships, setRelationships] = useState('')
   // Events state is a placeholder for now
   const [upcomingEvents, setUpcomingEvents] = useState([])
-  const { user } = useContext(RelationshipContext)
+  const { user, getUser } = useContext(RelationshipContext)
   const userRef = collection(db, 'users')
   const relationshipRef = collection(db, 'relationships')
 
   const handlePress = () => {
     navigation.navigate('Add a Relationship')
-  }
-
-  const getUser = async () => {
-    const q = query(userRef, where('userId', '==', auth.currentUser.uid))
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
-      setUserData(doc.data())
-    })
   }
 
   const getRelationships = async () => {
@@ -43,10 +34,6 @@ const RelationshipsHomeScreen = () => {
     )
     setRelationships(finalRel)
   }
-
-  useEffect(() => {
-    getUser()
-  }, [])
 
   useEffect(() => {
     getRelationships()
@@ -81,6 +68,10 @@ const RelationshipsHomeScreen = () => {
       ) : (
         <Page>
           <View style={[styles.page__content, styles.pageTopPadding]}>
+            <Pressable onPress={() => navigation.navigate('User Panel')}>
+              <Text>Go to User Panel</Text>
+            </Pressable>
+
             {/* <Text style={styles.textNew}>
               Hello, {userData?.name} {userData?.lastName}!
             </Text>

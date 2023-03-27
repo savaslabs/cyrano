@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
+import { db, auth } from '../config/firebase-config'
+import { getDocs, collection, where, query } from 'firebase/firestore'
 
 const RelationshipContext = createContext()
 
@@ -8,6 +10,17 @@ export const RelationshipProvider = ({ children }) => {
     user: null,
     isLoggedIn: false,
   })
+  const [userData, setUserData] = useState('')
+  const userRef = collection(db, 'users')
+
+  // Get user from Firebase
+  const getUser = async () => {
+    const q = query(userRef, where('userId', '==', auth.currentUser.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      setUserData(doc.data())
+    })
+  }
 
   //Log in user
   const logInUser = (userData) => {
@@ -50,6 +63,8 @@ export const RelationshipProvider = ({ children }) => {
         addRelationship,
         relationship,
         updateRelationship,
+        getUser,
+        userData
       }}
     >
       {children}
