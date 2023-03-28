@@ -9,7 +9,6 @@ import { auth, provider } from '../config/firebase-config'
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import Page from '../shared/Page'
 
-
 const LoginScreen = () => {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
@@ -20,10 +19,14 @@ const LoginScreen = () => {
   const handlePress = async () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        logInUser(userCredential)
-        setEmail('')
-        setPassword('')
-        navigation.navigate('Relationships')
+        if (auth.currentUser.emailVerified) {
+          logInUser(userCredential)
+          setEmail('')
+          setPassword('')
+          navigation.navigate('Relationships')
+        } else {
+          alert('The email is not verified. Please check your inbox')
+        }
       })
       .catch((error) => {
         const errorCode = error.code
@@ -84,15 +87,28 @@ const LoginScreen = () => {
               onPress={handlePress}
               disabled={isDisabled}
             >
-              <Text style={[styles.button__text, isDisabled ? styles.disabled__text : '']}>LOGIN</Text>
+              <Text
+                style={[
+                  styles.button__text,
+                  isDisabled ? styles.disabled__text : '',
+                ]}
+              >
+                LOGIN
+              </Text>
             </Pressable>
-            <Pressable onPress={signInWithGoogle} style={[styles.googleButton, styles.fixedWidth]}>
-                <Image source={Google} style={styles.googleButton__logo} />
-                <Text style={styles.googleButton__text}>Sign in with Google</Text>
+            <Pressable
+              onPress={signInWithGoogle}
+              style={[styles.googleButton, styles.fixedWidth]}
+            >
+              <Image source={Google} style={styles.googleButton__logo} />
+              <Text style={styles.googleButton__text}>Sign in with Google</Text>
             </Pressable>
             <Text style={styles.smallerText}>
               Don't have an account yet?{' '}
-              <Pressable style={styles.underline} onPress={() => navigation.navigate('Create Account')}>
+              <Pressable
+                style={styles.underline}
+                onPress={() => navigation.navigate('Create Account')}
+              >
                 <Text>Click Here</Text>
               </Pressable>
             </Text>
