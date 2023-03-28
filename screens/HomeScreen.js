@@ -57,6 +57,11 @@ const HomeScreen = () => {
       })
 
     await sendEmailVerification(auth.currentUser)
+      .then(setPageCounter((count) => count - 1))
+      .then(Alert.alert('An email has been sent to verify the account'))
+      .then(() => alert('An email has been sent to verify the account'))
+      .then(() => console.log(auth.currentUser))
+      .catch((err) => console.log(err))
     // if (name && lastName && phone) {
     //   const newUser = {
     //     name,
