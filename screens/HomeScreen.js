@@ -7,7 +7,10 @@ import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
 import { auth, db } from '../config/firebase-config'
 import { addDoc, collection, doc, deleteDoc } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from 'firebase/auth'
 import Page from '../shared/Page'
 
 const HomeScreen = () => {
@@ -38,7 +41,7 @@ const HomeScreen = () => {
   }
 
   const handlePress = async () => {
-    createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUserData(userCredential)
         setEmail('')
@@ -52,6 +55,8 @@ const HomeScreen = () => {
         const errorCode = error.code
         console.log(errorCode)
       })
+
+    await sendEmailVerification(auth.currentUser)
     // if (name && lastName && phone) {
     //   const newUser = {
     //     name,
@@ -189,14 +194,22 @@ const HomeScreen = () => {
 
           <View style={styles.page__lower}>
             {pageCounter === 1 && (
-              <Pressable onPress={handleNext} style={[styles.button, styles.fixedWidth]}>
+              <Pressable
+                onPress={handleNext}
+                style={[styles.button, styles.fixedWidth]}
+              >
                 <Text style={styles.button__text}>CREATE ACCOUNT</Text>
               </Pressable>
             )}
             {pageCounter === 2 && (
               <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                <Pressable
+                  onPress={handleBack}
+                  style={[styles.button, styles.buttonBack]}
+                >
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>
+                    BACK
+                  </Text>
                 </Pressable>
                 <Pressable
                   // style={isDisabled ? styles.disabled : ''}
@@ -208,13 +221,21 @@ const HomeScreen = () => {
                 </Pressable>
               </View>
             )}
-            <Pressable onPress={() => navigation.navigate('Google')} style={[styles.googleButton, styles.fixedWidth]}>
-                <Image source={Google} style={styles.googleButton__logo} />
-                <Text style={styles.googleButton__text}>Create an account with Google</Text>
+            <Pressable
+              onPress={() => navigation.navigate('Google')}
+              style={[styles.googleButton, styles.fixedWidth]}
+            >
+              <Image source={Google} style={styles.googleButton__logo} />
+              <Text style={styles.googleButton__text}>
+                Create an account with Google
+              </Text>
             </Pressable>
             <Text style={styles.smallerText}>
               Already have an account?{' '}
-              <Pressable style={styles.underline} onPress={() => navigation.navigate('Login')}>
+              <Pressable
+                style={styles.underline}
+                onPress={() => navigation.navigate('Login')}
+              >
                 <Text>Click Here</Text>
               </Pressable>
             </Text>
