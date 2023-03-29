@@ -18,11 +18,12 @@ import EventHistory from './screens/EventHistory'
 import EventRatingScreen from './screens/EventRatingScreen'
 import RelationshipCheckIn from './screens/RelationshipCheckIn'
 import UserPanelScreen from './screens/UserPanelScreen'
+import useAuth from './hooks/useAuth'
 
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
-  const { user } = useContext(RelationshipContext)
+  const { user } = useAuth()
 
   const { isLoggedIn } = user
 

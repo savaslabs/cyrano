@@ -36,7 +36,7 @@ const ScheduleEvent = () => {
     { label: 'Activity', value: 'Activity' },
     { label: 'Financial', value: 'Financial' },
     { label: 'Physical', value: 'Physical' },
-    { label: 'Appeciation', value: 'Appeciation' },
+    { label: 'Appreciation', value: 'Appreciation' },
     { label: 'Emotional', value: 'Emotional' },
     { label: 'Intellectual', value: 'Intellectual' },
     { label: 'Practical', value: 'Practical' },

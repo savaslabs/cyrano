@@ -10,39 +10,29 @@ import { auth, provider, db } from '../config/firebase-config'
 import { addDoc, collection } from 'firebase/firestore'
 import { signInWithPopup } from 'firebase/auth'
 import Page from '../shared/Page'
-
+import useAuth from '../hooks/useAuth'
 
 const GoogleCreate = () => {
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
   const [phone, setPhone] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
-  const [userData, setUserData] = useState('')
   const navigation = useNavigation()
-  const { logInUser } = useContext(RelationshipContext)
+  const { signInWithGoogle, user } = useAuth()
   const usersRef = collection(db, 'users')
-
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider).then((result) => {
-      setUserData(result)
-      navigation.navigate('Relationships')
-    })
-  }
 
   // Store user data
   useEffect(() => {
-    if (userData) {
+    if (user) {
       addDoc(usersRef, {
-        userId: userData?.user?.uid,
+        userId: user?.user?.id,
         name: name,
         lastName: lastName,
-        email: userData?.user?.email,
+        email: user?.user?.email,
         phone: phone,
-      })
-
-      logInUser(userData)
+      }).then(navigation.navigate('Relationships'))
     }
-  }, [userData])
+  }, [user])
 
   useEffect(() => {
     if (name && lastName && phone) {
@@ -106,7 +96,10 @@ const GoogleCreate = () => {
             </Pressable>
             <Text style={styles.smallerText}>
               Already have an account?{' '}
-              <Pressable style={styles.underline} onPress={() => navigation.navigate('Login')}>
+              <Pressable
+                style={styles.underline}
+                onPress={() => navigation.navigate('Login')}
+              >
                 <Text>Click Here</Text>
               </Pressable>
             </Text>

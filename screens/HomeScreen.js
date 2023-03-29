@@ -2,16 +2,12 @@ import { View, Text, Image, TextInput, Pressable, Alert } from 'react-native'
 import { styles } from '../styles'
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
 import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
-import { auth, db } from '../config/firebase-config'
+import { db } from '../config/firebase-config'
 import { addDoc, collection, doc, deleteDoc } from 'firebase/firestore'
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from 'firebase/auth'
 import Page from '../shared/Page'
+import useAuth from '../hooks/useAuth'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
@@ -19,12 +15,11 @@ const HomeScreen = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
-  const [userData, setUserData] = useState('')
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
   const [pageCounter, setPageCounter] = useState(1)
   const navigation = useNavigation()
-  const { logInUser } = useContext(RelationshipContext)
+  const { createUserWithEmail, userCred } = useAuth()
   const usersRef = collection(db, 'users')
 
   const handleNext = () => {
@@ -41,58 +36,29 @@ const HomeScreen = () => {
   }
 
   const handlePress = async () => {
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUserData(userCredential)
-        setEmail('')
-        setPassword('')
-        setRepeatPassword('')
-        setName('')
-        setLastName('')
-        setPhone('')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        console.log(errorCode)
-      })
+    createUserWithEmail(email, password)
 
-    await sendEmailVerification(auth.currentUser)
-      .then(setPageCounter((count) => count - 1))
-      .then(Alert.alert('An email has been sent to verify the account'))
-      .then(() => alert('An email has been sent to verify the account'))
-      .then(() => console.log(auth.currentUser))
-      .catch((err) => console.log(err))
-    // if (name && lastName && phone) {
-    //   const newUser = {
-    //     name,
-    //     lastName,
-    //     phone,
-    //   }
-
-    //   await logInUser(newUser)
-    // }
-
-    // setName('')
-    // setLastName('')
-    // setPhone('')
-
-    // navigation.navigate('Relationships')
+    navigation.navigate('Login')
   }
 
-  // Store user data
   useEffect(() => {
-    if (userData) {
+    // Store user data
+    if (userCred) {
       addDoc(usersRef, {
-        userId: userData?.user?.uid,
+        userId: userCred?.user?.uid,
         name: name,
         lastName: lastName,
-        email: userData?.user?.email,
+        email: userCred?.user?.email,
         phone: phone,
       })
-
-      logInUser(userData)
     }
-  }, [userData])
+    setEmail('')
+    setPassword('')
+    setRepeatPassword('')
+    setName('')
+    setLastName('')
+    setPhone('')
+  }, [userCred])
 
   useEffect(() => {
     if (email && password && repeatPassword && name && lastName && phone) {
@@ -102,11 +68,11 @@ const HomeScreen = () => {
     }
   }, [email, password, repeatPassword, name, lastName, phone])
 
-  // const deleteDocu = async () => {
-  //   await deleteDoc(doc(usersRef, 'xXQlTIeikwXss9X3thZJ')).then(
-  //     alert('Documento borrado')
-  //   )
-  // }
+  const deleteDocu = async () => {
+    await deleteDoc(doc(usersRef, 'VKjarsL0dvLKWgP4l2sf')).then(
+      alert('Documento borrado')
+    )
+  }
 
   return (
     <Page>
@@ -245,7 +211,7 @@ const HomeScreen = () => {
               </Pressable>
             </Text>
           </View>
-          {/* <Pressable onPress={deleteDocu}>DELETE</Pressable> */}
+          <Pressable onPress={deleteDocu}>DELETE</Pressable>
         </View>
       </View>
     </Page>
