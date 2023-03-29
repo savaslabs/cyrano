@@ -1,13 +1,12 @@
 import { View, Text, Pressable } from 'react-native'
-import { useContext } from 'react'
-import RelationshipContext from '../context/RelationshipContext'
 import { useEffect, useState } from 'react'
 import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
+import useAuth from '../hooks/useAuth'
 
 const UserPanelScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const { userData, getUser } = useContext(RelationshipContext)
+  const { userData, getUser } = useAuth()
 
   useEffect(() => {
     getUser()

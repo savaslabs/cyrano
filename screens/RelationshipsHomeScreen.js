@@ -11,6 +11,7 @@ import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
+import useAuth from '../hooks/useAuth'
 
 const RelationshipsHomeScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -18,7 +19,8 @@ const RelationshipsHomeScreen = () => {
   const [relationships, setRelationships] = useState('')
   // Events state is a placeholder for now
   const [upcomingEvents, setUpcomingEvents] = useState([])
-  const { user, getUser } = useContext(RelationshipContext)
+  const { getUser } = useContext(RelationshipContext)
+  const { user } = useAuth()
   const userRef = collection(db, 'users')
   const relationshipRef = collection(db, 'relationships')
 

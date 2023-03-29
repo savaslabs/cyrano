@@ -1,38 +1,18 @@
 import { View, Text, Image, TextInput, Pressable } from 'react-native'
 import { styles } from '../styles'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
 import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
-import { auth, provider } from '../config/firebase-config'
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import Page from '../shared/Page'
+import useAuth from '../hooks/useAuth'
 
 const LoginScreen = () => {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
-  const { logInUser } = useContext(RelationshipContext)
-
-  const handlePress = async () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        if (auth.currentUser.emailVerified) {
-          logInUser(userCredential)
-          setEmail('')
-          setPassword('')
-          navigation.navigate('Relationships')
-        } else {
-          alert('The email is not verified. Please check your inbox')
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        alert(errorCode)
-      })
-  }
+  const { signInWithGoogle, signInWithEmail, user } = useAuth()
 
   useEffect(() => {
     if (email && password) {
@@ -42,12 +22,11 @@ const LoginScreen = () => {
     }
   }, [email, password])
 
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider).then((result) => {
-      logInUser(result)
+  useEffect(() => {
+    if (user) {
       navigation.navigate('Relationships')
-    })
-  }
+    }
+  }, [user])
 
   return (
     <Page>
@@ -84,7 +63,7 @@ const LoginScreen = () => {
           <View style={styles.page__lower}>
             <Pressable
               style={[styles.button, isDisabled ? styles.disabled : '']}
-              onPress={handlePress}
+              onPress={() => signInWithEmail(email, password)}
               disabled={isDisabled}
             >
               <Text

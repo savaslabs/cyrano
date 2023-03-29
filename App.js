@@ -1,15 +1,16 @@
 import StackNavigator from './StackNavigator'
 import { NavigationContainer } from '@react-navigation/native'
 import { RelationshipProvider } from './context/RelationshipContext'
-import {ImageBackground, View} from 'react-native';
+import { AuthProvider } from './hooks/useAuth'
 
 export default function App() {
   return (
-    <RelationshipProvider >
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    </RelationshipProvider>
+    <AuthProvider>
+      <RelationshipProvider>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </RelationshipProvider>
+    </AuthProvider>
   )
 }
-
