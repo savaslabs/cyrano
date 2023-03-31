@@ -55,7 +55,7 @@ const EventHistory = () => {
   useEffect(() => {
     if (relationships) {
       const eventList = relationships?.reduce(
-        (acc, item) => [...acc, ...item.nextEvents],
+        (acc, item) => [...acc, ...item.totalEvents],
         []
       )
       setRelationshipEvents(eventList)

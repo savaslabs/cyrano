@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, createElement } from 'react'
-import { RadioButton } from 'react-native-paper'
 import { styles } from '../../styles'
+import StarRating from 'react-native-star-rating-widget'
 
 const Fourth = ({
   lastTimeDate,
@@ -71,33 +71,13 @@ const Fourth = ({
         <Text style={[styles.p, styles.alignLeft]}>
           How would you rate the date?
         </Text>
-        <RadioButton.Group
-          onValueChange={(newDateRating) => setDateRating(newDateRating)}
-          value={dateRating}
-        >
-          <View style={styles.row}>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.text}>1</Text>
-              <RadioButton value="1" color="#33374B" uncheckedColor="#33374B" />
-            </View>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.text}>2</Text>
-              <RadioButton value="2" color="#33374B" uncheckedColor="#33374B" />
-            </View>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.text}>3</Text>
-              <RadioButton value="3" color="#33374B" uncheckedColor="#33374B" />
-            </View>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.text}>4</Text>
-              <RadioButton value="4" color="#33374B" uncheckedColor="#33374B" />
-            </View>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.text}>5</Text>
-              <RadioButton value="5" color="#33374B" uncheckedColor="#33374B" />
-            </View>
-          </View>
-        </RadioButton.Group>
+        <View>
+          <StarRating
+            rating={dateRating}
+            onChange={setDateRating}
+            color="#7B82A2"
+          />
+        </View>
       </View>
     </Animated.View>
   )

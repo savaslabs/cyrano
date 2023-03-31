@@ -97,6 +97,17 @@ const ScheduleEvent = () => {
             nextDateTime,
             pickRestaurantValue,
           }),
+          totalEvents: arrayUnion({
+            name: relationshipData.name,
+            lastName: relationshipData.lastName,
+            fullName: `${relationshipData.name} ${relationshipData.lastName}`,
+            img: relationshipData.profileImage,
+            loveStyleTag: loveStyleTagValue,
+            nextDatePlace,
+            nextDateDate,
+            nextDateTime,
+            pickRestaurantValue,
+          }),
         },
         {
           merge: true,

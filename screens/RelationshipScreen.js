@@ -119,7 +119,15 @@ const Relationship = () => {
             </Text>
 
             {profileImage ? (
-              <Image source={profileImage} style={styles.profileImg} />
+              <Image
+                source={profileImage}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  marginRight: 10,
+                }}
+              />
             ) : (
               <Image
                 source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
@@ -143,7 +151,7 @@ const Relationship = () => {
           <View style={styles.row}>
             <View style={styles.rankingContainer}>
               <Text>Relationship Rating</Text>
-              <View style={{ backgroundColor: '#677788', padding: 5 }}>
+              <View>
                 <RelationshipRating relationshipRating={relationshipRating} />
               </View>
             </View>
