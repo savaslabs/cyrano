@@ -21,6 +21,7 @@ const HomeScreen = () => {
   const navigation = useNavigation()
   const { createUserWithEmail, userCred } = useAuth()
   const usersRef = collection(db, 'users')
+  // const relref= collection(db, 'relationships')
 
   const handleNext = () => {
     if (password !== repeatPassword) {
@@ -68,11 +69,11 @@ const HomeScreen = () => {
     }
   }, [email, password, repeatPassword, name, lastName, phone])
 
-  const deleteDocu = async () => {
-    await deleteDoc(doc(usersRef, 'VKjarsL0dvLKWgP4l2sf')).then(
-      alert('Documento borrado')
-    )
-  }
+  // const deleteDocu = async () => {
+  //   await deleteDoc(doc(relref, '77cd43f6-ae95-444b-a8f7-5f8c761dd7c0')).then(
+  //     alert('Documento borrado')
+  //   )
+  // }
 
   return (
     <Page>
@@ -211,7 +212,7 @@ const HomeScreen = () => {
               </Pressable>
             </Text>
           </View>
-          <Pressable onPress={deleteDocu}>DELETE</Pressable>
+          {/* <Pressable onPress={deleteDocu}>DELETE</Pressable> */}
         </View>
       </View>
     </Page>
