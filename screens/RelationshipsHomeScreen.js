@@ -134,30 +134,9 @@ const RelationshipsHomeScreen = () => {
                         <EventItem item={item} key={index} />
                       ))
                     )}
-                    <Text>View events history</Text>
+                    <Text style={styles.eventsHistoryLink}>View events history</Text>
                     <View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}
-                      >
-                        <Text style={styles.heading}>Relationships</Text>
-                        <Pressable onPress={handlePress}>
-                          <Text
-                            style={{
-                              fontSize: 30,
-                              borderWidth: 1,
-                              borderRadius: 100,
-                              padding: 10,
-                            }}
-                          >
-                            +
-                          </Text>
-                        </Pressable>
-                      </View>
-
+                      <Text style={styles.h1}>Relationships</Text>
                       {relationships.map((item) => (
                         <View key={item.id}>
                           <RelationshipItem item={item} key={item.id} />

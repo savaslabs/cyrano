@@ -1,8 +1,10 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
+import { View, Text, Image, StyleSheet, Pressable, Dimensions  } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
 import { useState, useEffect } from 'react'
+
+const isSmallDevice = Dimensions.get('window').width < 800
 
 const EventItem = ({ item }) => {
   const [finalDate, setFinalDate] = useState('')
@@ -37,8 +39,8 @@ const EventItem = ({ item }) => {
 
   return (
     <View style={styles.eventCard}>
-      <View style={styles.eventCard__topRow}>
-        <Text style={styles.h2}>
+      <View style={styles.eventCard__top}>
+        <Text style={styles.eventCard__heading}>
           {nextDatePlace !== '' ? nextDatePlace : pickRestaurantValue}
         </Text>
         {loveStyleTag.map((tag, index) => (
@@ -47,78 +49,105 @@ const EventItem = ({ item }) => {
           </Text>
         ))}
       </View>
-      <View>
-        <Text>{finalDate}</Text>
-        <Text>{nextDateTime}</Text>
-      </View>
-      <View style={styles.item}>
-        {img ? (
-          <Image source={img} style={styles.img} />
-        ) : (
-          <Image
-            source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-            style={styles.img}
-          />
-        )}
-
-        <Pressable onPress={(e) => handlePress(e.target.id)}>
-          <Text style={styles.heading}>
-            {name} {lastName}
-          </Text>
-        </Pressable>
-        {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-          <Pressable onPress={() => console.log()} style={styles.button}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              Edit Event
-            </Text>
+      <Text style={styles.eventCard__dateTime}>{finalDate} @ {nextDateTime}</Text>
+      <View style={[styles.eventCard__bottom, isSmallDevice && styles.eventCard__bottomMobile]}>
+        <View style={styles.eventCard__profile}>
+          {img ? (
+            <Image source={img} style={styles.eventCard__profileImg} />
+          ) : (
+            <Image
+              source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+              style={styles.eventCard__profileImg}
+            />
+          )}
+          <Pressable onPress={(e) => handlePress(e.target.id)}>
+            <Text style={styles.eventCard__profileName}>{name} {lastName}</Text>
           </Pressable>
-        ) : (
-          ''
-        )}
-        <Text>View event details</Text>
+        </View>
+        <View style={styles.eventCard__buttons}>
+          {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+            <Pressable onPress={() => console.log()} style={[styles.eventCard__link, styles.eventCard__admin]}>
+              <Text>Edit event</Text>
+            </Pressable>
+          ) : (
+            ''
+          )}
+          <Text style={styles.eventCard__link}>View event details</Text>
+        </View>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    height: '100%',
-    marginTop: 10,
-    marginBottom: 10,
+  eventCard: {
+    backgroundColor: 'rgba(241, 242, 246, 1)',
+    padding: 16,
+    marginBottom: 16,
+    color: 'rgba(51, 55, 75, 1)',
+    borderRadius: 4
   },
-  heading: {
-    color: '#F1776C',
-    fontWeight: '800',
-  },
-  item: {
+  eventCard__top: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    marginBottom: 16,
+    flexWrap: 'wrap'
   },
-  img: {
+  eventCard__heading: {
+    fontSize: 19,
+    fontWeight: 700,
+    marginRight: 8
+  },
+  eventCard__tag: {
+    backgroundColor: '#ffffff',
+    fontSize: 11,
+    fontWeight: 700,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 56
+  },
+  eventCard__dateTime: {
+    fontSize: 15,
+    marginBottom: 16
+  },
+  eventCard__bottom: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8
+  },
+  eventCard__bottomMobile: {
+    flexDirection: 'column',
+  },
+  eventCard__profile: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },  
+  eventCard__profileImg: {
     width: 40,
     height: 40,
-    borderRadius: '50%',
-    marginRight: 10,
+    borderRadius: '100%'
   },
-  startBG: {
-    backgroundColor: '#F1776C',
-    padding: 10,
-    borderRadius: 15,
-    marginLeft: 30,
-    marginTop: 10,
-    marginBottom: 10,
+  eventCard__profileName: {
+    fontSize: 17,
+    fontWeight: 700,
   },
-  button: {
-    backgroundColor: '#EF6E62',
-    padding: 8,
-    borderRadius: 8,
-    marginLeft: 30,
+  eventCard__buttons: {
+    flex: 1,
+    gap: 8,
+    justifySelf: 'flex-end',
+    textAlign: 'right'
   },
+  eventCard__link: {
+    color: 'rgba(51, 55, 75, .75)',
+    fontSize: 15,
+    textDecorationLine: 'underline'
+  }
 })
 
 export default EventItem

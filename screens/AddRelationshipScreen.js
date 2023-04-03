@@ -315,10 +315,10 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable style={styles.button} onPress={handleBack}>
-                  <Text style={styles.button__text}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
                 </Pressable>
-                <Pressable style={styles.button} onPress={handleNext}>
+                <Pressable style={[styles.button, styles.buttonNext]} onPress={handleNext}>
                   <Text style={styles.button__text}>CONTINUE</Text>
                 </Pressable>
               </View>
@@ -352,13 +352,13 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable style={styles.button} onPress={handleBack}>
-                  <Text style={styles.button__text}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
                 </Pressable>
                 <Pressable
                   style={[
                     styles.button,
-                    { marginTop: 16 },
+                    styles.buttonNext,
                     nextIsDisabled ? styles.disabled : '',
                   ]}
                   onPress={handleNext}
@@ -406,12 +406,13 @@ const AddRelationship = () => {
               </View>
               <View style={styles.page__lower}>
                 <View style={styles.paginationBtns}>
-                  <Pressable style={styles.button} onPress={handleBack}>
-                    <Text style={styles.button__text}>BACK</Text>
+                  <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
+                    <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
                   </Pressable>
                   <Pressable
                     style={[
                       styles.button,
+                      styles.buttonNext,
                       nextIsDisabled ? styles.disabled : '',
                     ]}
                     onPress={handleNext}
@@ -467,11 +468,11 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable style={styles.button} onPress={handleBack}>
-                  <Text style={styles.button__text}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
                 </Pressable>
                 <Pressable
-                  style={styles.button}
+                  style={[styles.button, styles.buttonNext]}
                   onPress={handleNext}
                   disabled={!nextIsDisabled}
                 >
@@ -492,11 +493,11 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable style={styles.button} onPress={handleBack}>
-                  <Text style={styles.button__text}>Back</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.button, isDisabled ? styles.disabled : '']}
+                  style={[styles.button, styles.buttonNext, isDisabled ? styles.disabled : '']}
                   onPress={handlePress}
                   disabled={isDisabled}
                 >

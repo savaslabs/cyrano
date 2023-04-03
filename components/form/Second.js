@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, useState, createElement } from 'react'
 import { RadioButton } from 'react-native-paper'
 import { styles } from '../../styles'
+import Stars from '../../shared/Stars'
 
 const Second = ({
   birthday,
@@ -27,6 +28,7 @@ const Second = ({
     return createElement('input', {
       type: 'date',
       value: birthday.toISOString().split('T')[0],
+      placeholder: 'Select a date',
       onChange: (event) => {
         setBirthday(new Date(event.target.value))
       },
@@ -90,7 +92,8 @@ const Second = ({
             <Text style={[styles.smallerText, styles.alignLeft]}>
               On a scale of 1-5, where 1 is bad and 5 is perfect.
             </Text>
-            <RadioButton.Group
+            <Stars />
+            {/* <RadioButton.Group
               onValueChange={(value) => setRelationshipRating(value)}
               value={relationshipRating}
             >
@@ -135,8 +138,8 @@ const Second = ({
                     uncheckedColor="#677788"
                   />
                 </View>
-              </View>
-            </RadioButton.Group>
+              </View> 
+            </RadioButton.Group>*/}
           </View>
         </>
       )}

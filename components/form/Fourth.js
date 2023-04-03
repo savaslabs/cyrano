@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, createElement } from 'react'
 import { RadioButton } from 'react-native-paper'
 import { styles } from '../../styles'
+import Stars from '../../shared/Stars'
 
 const Fourth = ({
   lastTimeDate,
@@ -29,6 +30,7 @@ const Fourth = ({
       onChange: (event) => {
         setLastTimeDate(new Date(event.target.value))
       },
+      placeholder: 'Select a date',
       style: {
         height: 56,
         marginBottom: 16,
@@ -71,7 +73,8 @@ const Fourth = ({
         <Text style={[styles.p, styles.alignLeft]}>
           How would you rate the date?
         </Text>
-        <RadioButton.Group
+        <Stars />
+        {/* <RadioButton.Group
           onValueChange={(newDateRating) => setDateRating(newDateRating)}
           value={dateRating}
         >
@@ -97,7 +100,7 @@ const Fourth = ({
               <RadioButton value="5" color="#33374B" uncheckedColor="#33374B" />
             </View>
           </View>
-        </RadioButton.Group>
+        </RadioButton.Group> */}
       </View>
     </Animated.View>
   )

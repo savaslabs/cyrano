@@ -110,7 +110,7 @@ const First = ({
             borderColor: 'rgba(199, 203, 217, 1)',
             height: 120,
             bottom: -95,
-            paddingLeft: 4,
+            paddingLeft: 8,
             fontSize: 17
           }}
           labelStyle={{
