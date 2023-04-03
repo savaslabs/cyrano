@@ -168,7 +168,7 @@ const Relationship = () => {
 
             <View>
               <Text>UPCOMING EVENTS</Text>
-              {!upcomingEvents ? (
+              {upcomingEvents.length === 0 ? (
                 <View>
                   <Text>You don't have any upcoming event right now</Text>
                   {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
@@ -176,7 +176,7 @@ const Relationship = () => {
                       style={styles.button}
                       onPress={() => console.log('ok')}
                     >
-                      <Text style={styles.text}>SCHEDULE AN EVENT</Text>
+                      <Text style={styles.text}>SCHEDULE NEXT EVENT</Text>
                     </Pressable>
                   )}
                 </View>
