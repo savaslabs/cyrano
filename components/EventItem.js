@@ -23,6 +23,8 @@ const EventItem = ({ item }) => {
     nextDateTime,
     pickRestaurantValue,
     nextDatePlace,
+    additionalComments,
+    eventName,
   } = item
 
   useEffect(() => {
@@ -75,7 +77,15 @@ const EventItem = ({ item }) => {
         ) : (
           ''
         )}
-        <Text>View event details</Text>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('Event Details', {
+              item: item,
+            })
+          }
+        >
+          <Text>View event details</Text>
+        </Pressable>
       </View>
     </View>
   )

@@ -56,6 +56,7 @@ const EventRatingScreen = () => {
           <TextInput
             multiline={true}
             numberOfLines={4}
+            textAlignVertical='top'
             style={styles.input}
             placeholderTextColor="rgba(51,55,75,0.5)"
           />
@@ -68,6 +69,7 @@ const EventRatingScreen = () => {
           <TextInput
             multiline={true}
             numberOfLines={4}
+            textAlignVertical='top'
             style={styles.input}
             placeholderTextColor="rgba(51,55,75,0.5)"
           />
@@ -80,6 +82,7 @@ const EventRatingScreen = () => {
           <TextInput
             multiline={true}
             numberOfLines={4}
+            textAlignVertical='top'
             style={styles.input}
             placeholderTextColor="rgba(51,55,75,0.5)"
           />

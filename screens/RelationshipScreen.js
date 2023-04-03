@@ -22,6 +22,7 @@ import ArrowBack from '../assets/arrow-back-white.svg'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 import { styles } from '../styles'
+import OtherDetails from '../components/OtherDetails'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -66,6 +67,8 @@ const Relationship = () => {
     lastTimeDate,
     upcomingDate,
     nextEvents,
+    location,
+    otherDetails,
   } = singleRelationship
 
   const handleBack = () => {
@@ -97,6 +100,12 @@ const Relationship = () => {
     }
   }, [singleRelationship])
 
+  const handlePress = () => {
+    navigation.navigate('Other Details', {
+      itemId,
+    })
+  }
+
   return (
     <>
       {loading ? (
@@ -114,9 +123,12 @@ const Relationship = () => {
           )}
 
           <View style={styles.row}>
-            <Text style={styles.name}>
-              {name} {lastName}
-            </Text>
+            <View>
+              <Text style={styles.name}>
+                {name} {lastName}
+              </Text>
+              <Text>{location}</Text>
+            </View>
 
             {profileImage ? (
               <Image
@@ -131,7 +143,12 @@ const Relationship = () => {
             ) : (
               <Image
                 source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-                style={styles.profileImg}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  marginRight: 10,
+                }}
               />
             )}
           </View>
@@ -199,13 +216,25 @@ const Relationship = () => {
 
             <View>
               <Text>Other Details</Text>
-
-              <View>
-                <Text>FAVORITE RESTAURANTS</Text>
-                <Text>Roy's</Text>
-                <Text>Capital Grille</Text>
-                <Text>Nobu</Text>
-              </View>
+              <Pressable onPress={handlePress}>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    borderWidth: 1,
+                    borderRadius: 100,
+                    padding: 10,
+                  }}
+                >
+                  +
+                </Text>
+              </Pressable>
+              {otherDetails.length === 0 ? (
+                <Text> You don't have other details. Start by adding one</Text>
+              ) : (
+                otherDetails.map((item, i) => (
+                  <OtherDetails item={item} key={i} />
+                ))
+              )}
             </View>
           </View>
         </Page>
