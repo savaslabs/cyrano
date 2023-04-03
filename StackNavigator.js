@@ -19,6 +19,8 @@ import EventRatingScreen from './screens/EventRatingScreen'
 import RelationshipCheckIn from './screens/RelationshipCheckIn'
 import UserPanelScreen from './screens/UserPanelScreen'
 import useAuth from './hooks/useAuth'
+import EventDetails from './screens/EventDetails'
+import OtherDetailsForm from './screens/OtherDetailsForm'
 
 const Stack = createNativeStackNavigator()
 
@@ -54,6 +56,8 @@ const StackNavigator = () => {
           <Stack.Screen name="Schedule Event" component={ScheduleEvent} />
           <Stack.Screen name="Event History" component={EventHistory} />
           <Stack.Screen name="Event Rating" component={EventRatingScreen} />
+          <Stack.Screen name="Event Details" component={EventDetails} />
+          <Stack.Screen name="Other Details" component={OtherDetailsForm} />
           <Stack.Screen
             name="Relationship Check-In"
             component={RelationshipCheckIn}

@@ -13,23 +13,16 @@ import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.png'
 import DropDownPicker from 'react-native-dropdown-picker'
 import ArrowBack from '../assets/arrow-back.svg'
-import axios from 'axios'
 import { db } from '../config/firebase-config'
 import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore'
 
 const ScheduleEvent = () => {
   const [relationshipData, setRelationshipData] = useState('')
+  const [eventName, setEventName] = useState('')
   const [nextDatePlace, setNextDatePlace] = useState('')
   const [nextDateDate, setNextDateDate] = useState(new Date(Date.now()))
   const [nextDateTime, setNextDateTime] = useState('')
-  const [openPickRestaurant, setOpenPickRestaurant] = useState(false)
-  const [pickRestaurantValue, setPickRestaurantValue] = useState(null)
-  const [pickRestaurantItems, setPickRestaurantItems] = useState([
-    { label: "Roy's", value: "Roy's" },
-    { label: 'Capital Grille', value: 'Capital Grille' },
-    { label: 'Nobu', value: 'Nobu' },
-    { label: 'Choose My Own Restaurant', value: 'Choose My Own Restaurant' },
-  ])
+  const [additionalComments, setAdditionalComments] = useState('')
   const [openLoveStyleTag, setOpenLoveStyleTag] = useState(false)
   const [loveStyleTagValue, setLoveStyleTagValue] = useState(null)
   const [loveStyleTagItems, setLoveStyleTagItems] = useState([
@@ -65,24 +58,16 @@ const ScheduleEvent = () => {
   }
 
   useEffect(() => {
-    if (
-      (pickRestaurantValue !== 'Choose My Own Restaurant' &&
-        nextDateDate &&
-        nextDateTime) ||
-      (pickRestaurantValue === 'Choose My Own Restaurant' &&
-        nextDatePlace &&
-        nextDateDate &&
-        nextDateTime)
-    ) {
+    if (nextDatePlace && nextDateDate && nextDateTime) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
     }
     //eslint-disable-next-line
-  }, [pickRestaurantValue, nextDateDate, nextDateTime])
+  }, [nextDateDate, nextDateTime])
 
   const handlePress = async () => {
-    if (pickRestaurantValue) {
+    if (nextDatePlace) {
       await updateDoc(
         docRef,
         {
@@ -92,10 +77,11 @@ const ScheduleEvent = () => {
             fullName: `${relationshipData.name} ${relationshipData.lastName}`,
             img: relationshipData.profileImage,
             loveStyleTag: loveStyleTagValue,
+            eventName,
             nextDatePlace,
             nextDateDate,
             nextDateTime,
-            pickRestaurantValue,
+            additionalComments
           }),
           totalEvents: arrayUnion({
             name: relationshipData.name,
@@ -103,10 +89,11 @@ const ScheduleEvent = () => {
             fullName: `${relationshipData.name} ${relationshipData.lastName}`,
             img: relationshipData.profileImage,
             loveStyleTag: loveStyleTagValue,
+            eventName,
             nextDatePlace,
             nextDateDate,
             nextDateTime,
-            pickRestaurantValue,
+            additionalComments
           }),
         },
         {
@@ -116,7 +103,7 @@ const ScheduleEvent = () => {
 
       // await updateRelationship(itemId, newRelationship)
 
-      setPickRestaurantValue('')
+      setEventName('')
       setNextDatePlace('')
       setNextDateDate('')
       setNextDateTime('')
@@ -185,65 +172,51 @@ const ScheduleEvent = () => {
       </View>
       <View style={styles.form}>
         <View style={{ zIndex: '2' }}>
-          <Text style={styles.label}>Where would you like to go?</Text>
-          <DropDownPicker
-            open={openPickRestaurant}
-            value={pickRestaurantValue}
-            items={pickRestaurantItems}
-            setOpen={setOpenPickRestaurant}
-            setValue={setPickRestaurantValue}
-            setItems={setPickRestaurantItems}
-            style={styles.dropdown}
-            placeholder="Select a location"
-            placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
-            dropDownContainerStyle={{
-              top: 50,
-              left: 12,
-              margin: 'auto',
-              color: '#EF6E62',
-              borderColor: '#ED5244',
-              zIndex: '10000',
-              width: '94%',
-              height: 160,
-            }}
-            labelStyle={{
-              color: '#ED5244',
-            }}
-            listItemLabelStyle={{
-              color: '#ED5244',
-            }}
-            disabledItemLabelStyle={{
-              color: 'rgba(237,82,68,0.5)',
-            }}
+          <Text style={styles.label}>Event Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor="rgba(237,82,68,0.5)"
+            placeholder="Event name"
+            value={eventName}
+            onChangeText={(newEventName) => setEventName(newEventName)}
           />
         </View>
-        {pickRestaurantValue === 'Choose My Own Restaurant' && (
-          <View>
-            <Text style={styles.label}>Preferred Restaurant</Text>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor="rgba(237,82,68,0.5)"
-              placeholder="Restaurant Name"
-              value={nextDatePlace}
-              onChangeText={(newNextDatePlace) =>
-                setNextDatePlace(newNextDatePlace)
-              }
-            />
-          </View>
-        )}
 
         <View style={{ zIndex: '1' }}>
-          <Text style={styles.label}>When would you like to go?</Text>
+          <Text style={styles.label}>Date</Text>
           <NextDatePicker />
         </View>
         <View style={styles.rowTime}>
           <View style={{ zIndex: '1', width: '50%' }}>
-            <Text style={styles.label}>Select Time</Text>
+            <Text style={styles.label}>Time</Text>
             <TimePicker />
           </View>
         </View>
         <View style={{ zIndex: '2' }}>
-          <Text style={styles.label}>Where would you like to go?</Text>
+          <Text style={styles.label}>Location</Text>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor="rgba(237,82,68,0.5)"
+            placeholder="Add the address of the event"
+            value={nextDatePlace}
+            onChangeText={(newNextDatePlace) =>
+              setNextDatePlace(newNextDatePlace)
+            }
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>Additional Comments</Text>
+          <TextInput
+            placeholder="Additional Comments"
+            placeholderTextColor="rgba(237,82,68,0.5)"
+            multiline={true}
+            numberOfLines={4}
+            style={styles.textArea}
+            onChangeText={(newComments) => setAdditionalComments(newComments)}
+          />
+        </View>
+        <View style={{ zIndex: '2' }}>
+          <Text style={styles.label}>Select the love styles</Text>
           <DropDownPicker
             open={openLoveStyleTag}
             value={loveStyleTagValue}
@@ -425,6 +398,16 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: '#ED5244',
+    borderRadius: 5,
+    color: '#ED5244',
+  },
+  textArea: {
+    height: 150,
+    textAlignVertical: 'top',
     margin: 12,
     borderWidth: 1,
     padding: 10,

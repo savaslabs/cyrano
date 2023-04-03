@@ -70,7 +70,7 @@ const HomeScreen = () => {
   }, [email, password, repeatPassword, name, lastName, phone])
 
   // const deleteDocu = async () => {
-  //   await deleteDoc(doc(relref, '77cd43f6-ae95-444b-a8f7-5f8c761dd7c0')).then(
+  //   await deleteDoc(doc(relref, '73695c0a-f17e-47ca-b04f-1f136205442b')).then(
   //     alert('Documento borrado')
   //   )
   // }
