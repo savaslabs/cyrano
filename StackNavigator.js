@@ -17,11 +17,13 @@ import FacebookCreate from './screens/FacebookCreate'
 import EventHistory from './screens/EventHistory'
 import EventRatingScreen from './screens/EventRatingScreen'
 import RelationshipCheckIn from './screens/RelationshipCheckIn'
+import UserPanelScreen from './screens/UserPanelScreen'
+import useAuth from './hooks/useAuth'
 
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
-  const { user } = useContext(RelationshipContext)
+  const { user } = useAuth()
 
   const { isLoggedIn } = user
 
@@ -33,6 +35,10 @@ const StackNavigator = () => {
     >
       {isLoggedIn ? (
         <>
+          <Stack.Screen name="Create Account" component={HomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Google" component={GoogleCreate} />
+          <Stack.Screen name="Facebook" component={FacebookCreate} />
           <Stack.Screen
             name="Relationships"
             component={RelationshipsHomeScreen}
@@ -54,6 +60,7 @@ const StackNavigator = () => {
           />
           <Stack.Screen name="Admin" component={AdminDashboard} />
           <Stack.Screen name="AdminRel" component={AdminRelationshipsView} />
+          <Stack.Screen name="User Panel" component={UserPanelScreen} />
         </>
       ) : (
         <>

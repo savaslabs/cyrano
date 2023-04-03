@@ -2,13 +2,12 @@ import { View, Text, Image, TextInput, Pressable, Alert } from 'react-native'
 import { styles } from '../styles'
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
 import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
-import { auth, db } from '../config/firebase-config'
+import { db } from '../config/firebase-config'
 import { addDoc, collection, doc, deleteDoc } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
 import Page from '../shared/Page'
+import useAuth from '../hooks/useAuth'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
@@ -16,13 +15,13 @@ const HomeScreen = () => {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
-  const [userData, setUserData] = useState('')
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
   const [pageCounter, setPageCounter] = useState(1)
   const navigation = useNavigation()
-  const { logInUser } = useContext(RelationshipContext)
+  const { createUserWithEmail, userCred } = useAuth()
   const usersRef = collection(db, 'users')
+  // const relref= collection(db, 'relationships')
 
   const handleNext = () => {
     if (password !== repeatPassword) {
@@ -38,51 +37,29 @@ const HomeScreen = () => {
   }
 
   const handlePress = async () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUserData(userCredential)
-        setEmail('')
-        setPassword('')
-        setRepeatPassword('')
-        setName('')
-        setLastName('')
-        setPhone('')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        console.log(errorCode)
-      })
-    // if (name && lastName && phone) {
-    //   const newUser = {
-    //     name,
-    //     lastName,
-    //     phone,
-    //   }
+    createUserWithEmail(email, password)
 
-    //   await logInUser(newUser)
-    // }
-
-    // setName('')
-    // setLastName('')
-    // setPhone('')
-
-    // navigation.navigate('Relationships')
+    navigation.navigate('Login')
   }
 
-  // Store user data
   useEffect(() => {
-    if (userData) {
+    // Store user data
+    if (userCred) {
       addDoc(usersRef, {
-        userId: userData?.user?.uid,
+        userId: userCred?.user?.uid,
         name: name,
         lastName: lastName,
-        email: userData?.user?.email,
+        email: userCred?.user?.email,
         phone: phone,
       })
-
-      logInUser(userData)
     }
-  }, [userData])
+    setEmail('')
+    setPassword('')
+    setRepeatPassword('')
+    setName('')
+    setLastName('')
+    setPhone('')
+  }, [userCred])
 
   useEffect(() => {
     if (email && password && repeatPassword && name && lastName && phone) {
@@ -93,7 +70,7 @@ const HomeScreen = () => {
   }, [email, password, repeatPassword, name, lastName, phone])
 
   // const deleteDocu = async () => {
-  //   await deleteDoc(doc(usersRef, 'xXQlTIeikwXss9X3thZJ')).then(
+  //   await deleteDoc(doc(relref, '77cd43f6-ae95-444b-a8f7-5f8c761dd7c0')).then(
   //     alert('Documento borrado')
   //   )
   // }
@@ -189,14 +166,22 @@ const HomeScreen = () => {
 
           <View style={styles.page__lower}>
             {pageCounter === 1 && (
-              <Pressable onPress={handleNext} style={[styles.button, styles.fixedWidth]}>
+              <Pressable
+                onPress={handleNext}
+                style={[styles.button, styles.fixedWidth]}
+              >
                 <Text style={styles.button__text}>CREATE ACCOUNT</Text>
               </Pressable>
             )}
             {pageCounter === 2 && (
               <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                <Pressable
+                  onPress={handleBack}
+                  style={[styles.button, styles.buttonBack]}
+                >
+                  <Text style={[styles.button__text, styles.buttonBack__text]}>
+                    BACK
+                  </Text>
                 </Pressable>
                 <Pressable
                   // style={isDisabled ? styles.disabled : ''}
@@ -208,13 +193,21 @@ const HomeScreen = () => {
                 </Pressable>
               </View>
             )}
-            <Pressable onPress={() => navigation.navigate('Google')} style={[styles.googleButton, styles.fixedWidth]}>
-                <Image source={Google} style={styles.googleButton__logo} />
-                <Text style={styles.googleButton__text}>Create an account with Google</Text>
+            <Pressable
+              onPress={() => navigation.navigate('Google')}
+              style={[styles.googleButton, styles.fixedWidth]}
+            >
+              <Image source={Google} style={styles.googleButton__logo} />
+              <Text style={styles.googleButton__text}>
+                Create an account with Google
+              </Text>
             </Pressable>
             <Text style={styles.smallerText}>
               Already have an account?{' '}
-              <Pressable style={styles.underline} onPress={() => navigation.navigate('Login')}>
+              <Pressable
+                style={styles.underline}
+                onPress={() => navigation.navigate('Login')}
+              >
                 <Text>Click Here</Text>
               </Pressable>
             </Text>

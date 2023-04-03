@@ -13,7 +13,7 @@ const EventItemHistory = ({ item }) => {
     })
   }
 
-  const { id, eventTitle, loveStyleTag, date, name, relationshipRating } = item
+  const { id, eventTitle, loveStyleTag, date, name, dateRating } = item
 
   return (
     <View style={styles.container}>
@@ -39,13 +39,13 @@ const EventItemHistory = ({ item }) => {
         <Text>{date}</Text>
       </View>
       <View style={styles.item}>
-        {!relationshipRating ? (
+        {!dateRating ? (
           <Pressable onPress={() => navigation.navigate('Event Rating')}>
             <Text>Complete Event Rating</Text>
           </Pressable>
         ) : (
-          <View style={{ backgroundColor: '#677788', padding: 5 }}>
-            <RelationshipRating relationshipRating={relationshipRating} />
+          <View>
+            <RelationshipRating relationshipRating={dateRating} />
           </View>
         )}
 

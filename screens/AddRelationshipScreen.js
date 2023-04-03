@@ -1,16 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  Pressable,
-} from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import CameraSVG from '../assets/camera.svg'
 import PaperPlane from '../assets/paper-plane.svg'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
 import uuid from 'react-native-uuid'
 import * as ImagePicker from 'expo-image-picker'
 import First from '../components/form/First'
@@ -18,7 +10,7 @@ import Second from '../components/form/Second'
 import Third from '../components/form/Third'
 import Fourth from '../components/form/Fourth'
 import { auth, db } from '../config/firebase-config'
-import { setDoc, collection, doc, serverTimestamp } from 'firebase/firestore'
+import { setDoc, doc, serverTimestamp, arrayUnion } from 'firebase/firestore'
 import { styles } from '../styles'
 import Page from '../shared/Page'
 
@@ -66,8 +58,6 @@ const AddRelationship = () => {
   const [datePlace, setDatePlace] = useState('')
 
   const navigation = useNavigation()
-  const { addRelationship } = useContext(RelationshipContext)
-  // const relationshipRef = collection(db, 'relationships')
 
   useEffect(() => {
     setDocID(uuid.v4())
@@ -83,31 +73,6 @@ const AddRelationship = () => {
 
   const handlePress = async () => {
     if (name && lastName && birthday) {
-      const newRelationship = {
-        id: docID,
-        profileImage,
-        name,
-        lastName,
-        relationshipValue,
-        pronounsValue,
-        location,
-        birthday,
-        anniversary,
-        relationshipRating,
-        email,
-        phone,
-        dateRating,
-        lastTimeDate,
-        datePlace,
-        nextEvents: [],
-      }
-
-      await addRelationship(newRelationship)
-
-      navigation.navigate('Relationship', {
-        itemId: newRelationship.id,
-      })
-
       setProfileImage('')
       setName('')
       setLastName('')
@@ -144,6 +109,28 @@ const AddRelationship = () => {
           email: auth.currentUser.email,
         },
         nextEvents: [],
+        prevEvents: arrayUnion({
+          name: name,
+          lastName: lastName,
+          fullName: `${name} ${lastName}`,
+          img: profileImage,
+          loveStyleTag: [],
+          datePlace,
+          dateRating,
+        }),
+        totalEvents: arrayUnion({
+          name: name,
+          lastName: lastName,
+          fullName: `${name} ${lastName}`,
+          img: profileImage,
+          loveStyleTag: [],
+          datePlace,
+          dateRating,
+        }),
+      })
+
+      navigation.navigate('Relationship', {
+        itemId: docID,
       })
     }
   }

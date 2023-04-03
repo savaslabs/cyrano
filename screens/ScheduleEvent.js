@@ -36,7 +36,7 @@ const ScheduleEvent = () => {
     { label: 'Activity', value: 'Activity' },
     { label: 'Financial', value: 'Financial' },
     { label: 'Physical', value: 'Physical' },
-    { label: 'Appeciation', value: 'Appeciation' },
+    { label: 'Appreciation', value: 'Appreciation' },
     { label: 'Emotional', value: 'Emotional' },
     { label: 'Intellectual', value: 'Intellectual' },
     { label: 'Practical', value: 'Practical' },
@@ -87,6 +87,17 @@ const ScheduleEvent = () => {
         docRef,
         {
           nextEvents: arrayUnion({
+            name: relationshipData.name,
+            lastName: relationshipData.lastName,
+            fullName: `${relationshipData.name} ${relationshipData.lastName}`,
+            img: relationshipData.profileImage,
+            loveStyleTag: loveStyleTagValue,
+            nextDatePlace,
+            nextDateDate,
+            nextDateTime,
+            pickRestaurantValue,
+          }),
+          totalEvents: arrayUnion({
             name: relationshipData.name,
             lastName: relationshipData.lastName,
             fullName: `${relationshipData.name} ${relationshipData.lastName}`,

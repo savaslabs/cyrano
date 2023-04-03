@@ -4,23 +4,6 @@ const RelationshipContext = createContext()
 
 export const RelationshipProvider = ({ children }) => {
   const [relationship, setRelationship] = useState([])
-  const [user, setUser] = useState({
-    user: null,
-    isLoggedIn: false,
-  })
-
-  //Log in user
-  const logInUser = (userData) => {
-    if (userData) {
-      setUser({
-        user: {
-          id: userData?.user?.uid,
-          email: userData?.user?.email,
-        },
-        isLoggedIn: true,
-      })
-    }
-  }
 
   //Add Relationship
   const addRelationship = (data) => {
@@ -45,8 +28,6 @@ export const RelationshipProvider = ({ children }) => {
   return (
     <RelationshipContext.Provider
       value={{
-        logInUser,
-        user,
         addRelationship,
         relationship,
         updateRelationship,

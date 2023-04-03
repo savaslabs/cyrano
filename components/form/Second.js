@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, useState, createElement } from 'react'
-import { RadioButton } from 'react-native-paper'
+import StarRating from 'react-native-star-rating-widget'
 import { styles } from '../../styles'
 import Stars from '../../shared/Stars'
 
@@ -12,7 +12,7 @@ const Second = ({
   relationshipValue,
   relationshipRating,
   setRelationshipRating,
-  name
+  name,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -43,7 +43,7 @@ const Second = ({
         color: 'rgba(51, 55, 75, 1)',
         marginTop: -8,
         flexGrow: 1,
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
       },
     })
   }
@@ -66,7 +66,7 @@ const Second = ({
         color: 'rgba(51, 55, 75, 1)',
         marginTop: -8,
         flexGrow: 1,
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
       },
     })
   }
@@ -92,54 +92,13 @@ const Second = ({
             <Text style={[styles.smallerText, styles.alignLeft]}>
               On a scale of 1-5, where 1 is bad and 5 is perfect.
             </Text>
-            <Stars />
-            {/* <RadioButton.Group
-              onValueChange={(value) => setRelationshipRating(value)}
-              value={relationshipRating}
-            >
-              <View style={styles.row}>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.text}>1</Text>
-                  <RadioButton
-                    value="1"
-                    color="#677788"
-                    uncheckedColor="#677788"
-                  />
-                </View>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.text}>2</Text>
-                  <RadioButton
-                    value="2"
-                    color="#677788"
-                    uncheckedColor="#677788"
-                  />
-                </View>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.text}>3</Text>
-                  <RadioButton
-                    value="3"
-                    color="#677788"
-                    uncheckedColor="#677788"
-                  />
-                </View>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.text}>4</Text>
-                  <RadioButton
-                    value="4"
-                    color="#677788"
-                    uncheckedColor="#677788"
-                  />
-                </View>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.text}>5</Text>
-                  <RadioButton
-                    value="5"
-                    color="#677788"
-                    uncheckedColor="#677788"
-                  />
-                </View>
-              </View> 
-            </RadioButton.Group>*/}
+            <View>
+              <StarRating
+                rating={relationshipRating}
+                onChange={setRelationshipRating}
+                color="#7B82A2"
+              />
+            </View>
           </View>
         </>
       )}

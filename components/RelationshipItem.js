@@ -34,9 +34,7 @@ const RelationshipItem = ({ item }) => {
             {item?.name} {item?.lastName}
           </Text>
         </Pressable>
-        <View style={styles.startBG}>
-          <RelationshipRating relationshipRating={item?.relationshipRating} />
-        </View>
+        <RelationshipRating relationshipRating={item?.relationshipRating} />
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
           <Pressable
             onPress={() =>

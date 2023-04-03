@@ -10,6 +10,7 @@ import RelationshipRating from '../components/RelationshipRating'
 import EventItemHistory from '../components/EventItemHistory'
 import { db, auth } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
+import LoveStyleFilter from '../components/LoveStyleFilter'
 
 const EventHistory = () => {
   const [relationships, setRelationships] = useState('')
@@ -23,6 +24,15 @@ const EventHistory = () => {
     },
   ])
   const [relationshipEvents, setRelationshipEvents] = useState([])
+  const [tagsFilter] = useState([
+    'Activity',
+    'Financial',
+    'Physical',
+    'Appreciation',
+    'Emotional',
+    'Intellectual',
+    'Practical',
+  ])
   const navigation = useNavigation()
   const route = useRoute()
   const { relationship } = useContext(RelationshipContext)
@@ -45,7 +55,7 @@ const EventHistory = () => {
   useEffect(() => {
     if (relationships) {
       const eventList = relationships?.reduce(
-        (acc, item) => [...acc, ...item.nextEvents],
+        (acc, item) => [...acc, ...item.totalEvents],
         []
       )
       setRelationshipEvents(eventList)
@@ -76,6 +86,10 @@ const EventHistory = () => {
       }
     }
   }, [relValue])
+
+  const showAll = () => {
+    setFilteredRel(relationshipEvents)
+  }
 
   return (
     <View style={styles.container}>
@@ -115,13 +129,17 @@ const EventHistory = () => {
         />
 
         <View>
-          <Card>Activity</Card>
-          <Card>Financial</Card>
-          <Card>Physical</Card>
-          <Card>Appreciation</Card>
-          <Card>Emotional</Card>
-          <Card>Intellectual</Card>
-          <Card>Practical</Card>
+          {tagsFilter.map((tag, index) => (
+            <LoveStyleFilter
+              key={index}
+              tag={tag}
+              setFilteredRel={setFilteredRel}
+              relationshipEvents={relationshipEvents}
+            />
+          ))}
+          <Pressable onPress={showAll}>
+            <Card>All</Card>
+          </Pressable>
         </View>
       </View>
 

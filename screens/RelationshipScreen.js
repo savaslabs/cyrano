@@ -119,7 +119,15 @@ const Relationship = () => {
             </Text>
 
             {profileImage ? (
-              <Image source={profileImage} style={styles.profileImg} />
+              <Image
+                source={profileImage}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  marginRight: 10,
+                }}
+              />
             ) : (
               <Image
                 source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
@@ -143,7 +151,7 @@ const Relationship = () => {
           <View style={styles.row}>
             <View style={styles.rankingContainer}>
               <Text>Relationship Rating</Text>
-              <View style={{ backgroundColor: '#677788', padding: 5 }}>
+              <View>
                 <RelationshipRating relationshipRating={relationshipRating} />
               </View>
             </View>
@@ -160,7 +168,7 @@ const Relationship = () => {
 
             <View>
               <Text>UPCOMING EVENTS</Text>
-              {!upcomingEvents ? (
+              {upcomingEvents.length === 0 ? (
                 <View>
                   <Text>You don't have any upcoming event right now</Text>
                   {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
@@ -168,7 +176,7 @@ const Relationship = () => {
                       style={styles.button}
                       onPress={() => console.log('ok')}
                     >
-                      <Text style={styles.text}>SCHEDULE AN EVENT</Text>
+                      <Text style={styles.text}>SCHEDULE NEXT EVENT</Text>
                     </Pressable>
                   )}
                 </View>
