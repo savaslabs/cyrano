@@ -103,6 +103,7 @@ const AddRelationship = () => {
         dateRating,
         lastTimeDate,
         datePlace,
+        otherDetails: [],
         createdAt: serverTimestamp(),
         author: {
           id: auth.currentUser.uid,

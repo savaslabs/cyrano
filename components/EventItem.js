@@ -25,6 +25,8 @@ const EventItem = ({ item }) => {
     nextDateTime,
     pickRestaurantValue,
     nextDatePlace,
+    additionalComments,
+    eventName,
   } = item
 
   useEffect(() => {
@@ -63,17 +65,18 @@ const EventItem = ({ item }) => {
           <Pressable onPress={(e) => handlePress(e.target.id)}>
             <Text style={styles.eventCard__profileName}>{name} {lastName}</Text>
           </Pressable>
-        </View>
-        <View style={styles.eventCard__buttons}>
-          {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-            <Pressable onPress={() => console.log()} style={[styles.eventCard__link, styles.eventCard__admin]}>
-              <Text>Edit event</Text>
-            </Pressable>
-          ) : (
-            ''
-          )}
-          <Text style={styles.eventCard__link}>View event details</Text>
-        </View>
+        ) : (
+          ''
+        )}
+        <Pressable
+          onPress={() =>
+            navigation.navigate('Event Details', {
+              item: item,
+            })
+          }
+        >
+          <Text>View event details</Text>
+        </Pressable>
       </View>
     </View>
   )
