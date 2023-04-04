@@ -2,33 +2,28 @@ import { View, Text, Pressable, Image } from 'react-native'
 import { styles } from '../styles'
 import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
-// import Navbar from '../components/Navbar'
-import { useNavigation } from '@react-navigation/native'
-import { db, auth } from '../config/firebase-config'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { db } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 
-const RelationshipsHomeScreen = () => {
+const RelationshipsHomeAdminScreen = () => {
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
   const [relationships, setRelationships] = useState('')
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [showMessage, setShowMessage] = useState(false)
   const relationshipRef = collection(db, 'relationships')
-
-  const handlePress = () => {
-    navigation.navigate('Add a Relationship')
-  }
+  const route = useRoute()
+  const { itemId } = route.params
 
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const finalRel = newData.filter(
-      (item) => item.author.id === auth.currentUser.uid
-    )
+    const finalRel = newData.filter((item) => item.author.id === itemId)
     setRelationships(finalRel)
   }
 
@@ -43,12 +38,6 @@ const RelationshipsHomeScreen = () => {
   }, [relationships])
 
   useEffect(() => {
-    if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
-      navigation.navigate('Admin')
-    }
-  }, [auth.currentUser.uid])
-
-  useEffect(() => {
     if (relationships) {
       const eventList = relationships?.reduce(
         (acc, item) => [...acc, ...item.nextEvents],
@@ -58,7 +47,7 @@ const RelationshipsHomeScreen = () => {
     }
   }, [relationships])
 
-  const handleMessagePress = () => {
+  const handlePress = () => {
     setShowMessage(true)
   }
 
@@ -74,20 +63,8 @@ const RelationshipsHomeScreen = () => {
                 <View style={styles.page__upper}>
                   <Text style={styles.h2}>Relationships</Text>
                   <Text style={styles.p}>
-                    You don't have any relationships yet. Get started by adding
-                    one.
+                    This user does not have any relationships yet
                   </Text>
-                </View>
-                <Image
-                  source={placeholderSkeleton}
-                  style={{ width: 450, height: 320 }}
-                />
-                <View style={styles.page__lower}>
-                  <Pressable style={styles.button}>
-                    <Text style={styles.button__text} onPress={handlePress}>
-                      ADD RELATIONSHIP
-                    </Text>
-                  </Pressable>
                 </View>
               </>
             ) : (
@@ -100,7 +77,7 @@ const RelationshipsHomeScreen = () => {
                     {upcomingEvents.length === 0 ? (
                       <View style={[styles.greybox, styles.greyboxLarge]}>
                         <Text style={[styles.p, styles.center]}>
-                          You don't have any upcoming events right now.
+                          This user does not have any upcoming events
                         </Text>
                         <Pressable
                           style={[
@@ -108,7 +85,7 @@ const RelationshipsHomeScreen = () => {
                             styles.buttonGrey,
                             styles.center,
                           ]}
-                          onPress={handleMessagePress}
+                          onPress={handlePress}
                         >
                           {showMessage ? (
                             <Text>
@@ -164,4 +141,4 @@ const RelationshipsHomeScreen = () => {
   )
 }
 
-export default RelationshipsHomeScreen
+export default RelationshipsHomeAdminScreen

@@ -16,6 +16,7 @@ import UserPanelScreen from './screens/UserPanelScreen'
 import useAuth from './hooks/useAuth'
 import EventDetails from './screens/EventDetails'
 import OtherDetailsForm from './screens/OtherDetailsForm'
+import RelationshipsHomeAdminScreen from './screens/RelationshipsHomeAdminScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -57,6 +58,10 @@ const StackNavigator = () => {
           <Stack.Screen name="Admin" component={AdminDashboard} />
           <Stack.Screen name="AdminRel" component={AdminRelationshipsView} />
           <Stack.Screen name="User Panel" component={UserPanelScreen} />
+          <Stack.Screen
+            name="Relationships Admin"
+            component={RelationshipsHomeAdminScreen}
+          />
         </>
       ) : (
         <>
