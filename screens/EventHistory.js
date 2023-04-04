@@ -1,18 +1,19 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
-import Birthday from '../assets/birthday.svg'
 import { useState, useEffect, useContext, useMemo } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
-import RelationshipContext from '../context/RelationshipContext'
 import DropDownPicker from 'react-native-dropdown-picker'
-import RelationshipRating from '../components/RelationshipRating'
 import EventItemHistory from '../components/EventItemHistory'
 import { db, auth } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
 import LoveStyleFilter from '../components/LoveStyleFilter'
+import { styles } from '../styles'
+import Spinner from '../shared/Spinner'
+import Page from '../shared/Page'
 
 const EventHistory = () => {
+  const [loading, setLoading] = useState(true)
   const [relationships, setRelationships] = useState('')
   const [filteredRel, setFilteredRel] = useState('')
   const [openRel, setOpenRel] = useState(false)
@@ -34,9 +35,6 @@ const EventHistory = () => {
     'Practical',
   ])
   const navigation = useNavigation()
-  const route = useRoute()
-  const { relationship } = useContext(RelationshipContext)
-  const { itemId } = route.params
   const relationshipRef = collection(db, 'relationships')
 
   const getRelationships = async () => {
@@ -66,6 +64,7 @@ const EventHistory = () => {
       }))
 
       setRelItem((prevState) => [...prevState, ...newArr])
+      setLoading(false)
     }
   }, [relationships])
 
@@ -92,95 +91,100 @@ const EventHistory = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.block}>
-        <Text style={styles.h1}>Event History</Text>
-        <Text style={styles.title}>Relationships</Text>
+    <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Page>
+          <View style={styles.container}>
+            <View style={styles.block}>
+              <Text style={styles.h1}>Event History</Text>
+              <Text style={styles.title}>Relationships</Text>
 
-        <DropDownPicker
-          open={openRel}
-          value={relValue}
-          items={relItem}
-          setOpen={setOpenRel}
-          setValue={setRelValue}
-          setItems={setRelItem}
-          style={styles.dropdown}
-          placeholder="Select a relationship"
-          placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
-          dropDownContainerStyle={{
-            margin: 'auto',
-            color: '#33374B',
-            borderColor: '#33374B',
-            zIndex: '10000',
-            width: '90%',
-            height: 160,
-            bottom: -147,
-            left: 13,
-          }}
-          labelStyle={{
-            color: '#33374B',
-          }}
-          listItemLabelStyle={{
-            color: '#33374B',
-          }}
-          disabledItemLabelStyle={{
-            color: 'rgba(51,55,75,0.5)',
-          }}
-        />
+              <DropDownPicker
+                open={openRel}
+                value={relValue}
+                items={relItem}
+                setOpen={setOpenRel}
+                setValue={setRelValue}
+                setItems={setRelItem}
+                style={styles.dropdown}
+                placeholder="Select a relationship"
+                placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
+                dropDownContainerStyle={{
+                  margin: 'auto',
+                  color: '#33374B',
+                  borderColor: '#33374B',
+                  zIndex: '10000',
+                  width: '90%',
+                  height: 160,
+                  bottom: -147,
+                  left: 13,
+                }}
+                labelStyle={{
+                  color: '#33374B',
+                }}
+                listItemLabelStyle={{
+                  color: '#33374B',
+                }}
+                disabledItemLabelStyle={{
+                  color: 'rgba(51,55,75,0.5)',
+                }}
+              />
 
-        <View>
-          {tagsFilter.map((tag, index) => (
-            <LoveStyleFilter
-              key={index}
-              tag={tag}
-              setFilteredRel={setFilteredRel}
-              relationshipEvents={relationshipEvents}
-            />
-          ))}
-          <Pressable onPress={showAll}>
-            <Card>All</Card>
-          </Pressable>
-        </View>
-      </View>
+              <View>
+                {tagsFilter.map((tag, index) => (
+                  <LoveStyleFilter
+                    key={index}
+                    tag={tag}
+                    setFilteredRel={setFilteredRel}
+                    relationshipEvents={relationshipEvents}
+                  />
+                ))}
+                <Pressable onPress={showAll}>
+                  <Card>All</Card>
+                </Pressable>
+              </View>
+            </View>
 
-      <View>
-        <View style={styles.row}>
-          <Text>RESULTS</Text>
-          <Text>All Events</Text>
-        </View>
-        <Card>
-          <View style={styles.row}>
-            <Text>Percentage of Events In Categories</Text>
-            <Text>100%</Text>
+            <View>
+              <View style={styles.row}>
+                <Text>RESULTS</Text>
+                <Text>All Events</Text>
+              </View>
+              <Card>
+                <View style={styles.row}>
+                  <Text>Percentage of Events In Categories</Text>
+                  <Text>100%</Text>
+                </View>
+              </Card>
+
+              {filteredRel
+                ? filteredRel?.map((item, index) => (
+                    <EventItemHistory key={index} item={item} />
+                  ))
+                : relationshipEvents?.map((item, index) => (
+                    <EventItemHistory key={index} item={item} />
+                  ))}
+
+              {relationshipEvents.length === 0 && (
+                <Text>
+                  You don’t have any relationships yet. Get started by adding
+                  one
+                </Text>
+              )}
+            </View>
+
+            <Pressable
+              style={styles.button}
+              onPress={() => navigation.navigate('Relationships')}
+            >
+              <Text style={styles.text}>Back</Text>
+            </Pressable>
           </View>
-        </Card>
-
-        {filteredRel
-          ? filteredRel?.map((item, index) => (
-              <EventItemHistory key={index} item={item} />
-            ))
-          : relationshipEvents?.map((item, index) => (
-              <EventItemHistory key={index} item={item} />
-            ))}
-
-        {relationshipEvents.length === 0 && (
-          <Text>
-            You don’t have any relationships yet. Get started by adding one
-          </Text>
-        )}
-      </View>
-
-      <Pressable
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate('Relationship', {
-            itemId,
-          })
-        }
-      >
-        <Text style={styles.text}>Back</Text>
-      </Pressable>
-    </View>
+        </Page>
+      )}
+    </>
   )
 }
 

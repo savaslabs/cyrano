@@ -118,7 +118,10 @@ const Relationship = () => {
         <Page>
           <View style={[styles.page__content, styles.pageTopPadding]}>
             {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-              <Pressable style={styles.arrowContainer} onPress={handleBackAdmin}>
+              <Pressable
+                style={styles.arrowContainer}
+                onPress={handleBackAdmin}
+              >
                 <Image source={ArrowBack} style={styles.arrow} />
               </Pressable>
             ) : (
@@ -126,23 +129,23 @@ const Relationship = () => {
                 <Image source={ArrowBack} style={styles.arrow} />
               </Pressable>
             )}
-            <View style={[styles.page__upper, styles.vertCenter, styles.relationshipHeading]}>
+            <View
+              style={[
+                styles.page__upper,
+                styles.vertCenter,
+                styles.relationshipHeading,
+              ]}
+            >
               <View style={styles.relationshipHeading__text}>
                 <Text style={styles.xl}>{fullName}</Text>
                 <View style={styles.location}>
-                  <Image 
-                    source={mapMarker}
-                    style={styles.location__icon}
-                  />
+                  <Image source={mapMarker} style={styles.location__icon} />
                   <Text style={styles.location__text}>{location}</Text>
                 </View>
               </View>
               <View>
                 {profileImage ? (
-                  <Image
-                    source={profileImage}
-                    style={styles.profileImage}
-                  />
+                  <Image source={profileImage} style={styles.profileImage} />
                 ) : (
                   <Image
                     source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
@@ -170,18 +173,28 @@ const Relationship = () => {
                 <View>
                   <Pressable style={styles.ratingCard__button}>
                     See relationship rating details
-                  </Pressable>  
+                  </Pressable>
                 </View>
               </View>
             </View>
-            <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>Upcoming Events</Text>
+            <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
+              Upcoming Events
+            </Text>
             {upcomingEvents.length === 0 ? (
               <View style={[styles.greybox, styles.greyboxLarge]}>
                 <Text style={[styles.p, styles.center]}>
                   You don't have any upcoming events with {name}.
                 </Text>
-                <Pressable style={[styles.button, styles.buttonGrey, styles.center]}>
-                  <Text style={[styles.button__text, styles.buttonGrey__text, styles.superBold]}>
+                <Pressable
+                  style={[styles.button, styles.buttonGrey, styles.center]}
+                >
+                  <Text
+                    style={[
+                      styles.button__text,
+                      styles.buttonGrey__text,
+                      styles.superBold,
+                    ]}
+                  >
                     SCHEDULE NEXT EVENT
                   </Text>
                 </Pressable>
@@ -195,7 +208,7 @@ const Relationship = () => {
             <Pressable
               onPress={() =>
                 navigation.navigate('Event History', {
-                  itemId: id,
+                  itemId,
                 })
               }
             >
@@ -203,20 +216,40 @@ const Relationship = () => {
             </Pressable>
             {otherDetails.length === 0 ? (
               <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
-                <Text style={[styles.h2, styles.alignLeft, styles.mb0, {paddingTop: 8}]}>Add Details</Text>
+                <Text
+                  style={[
+                    styles.h2,
+                    styles.alignLeft,
+                    styles.mb0,
+                    { paddingTop: 8 },
+                  ]}
+                >
+                  Add Details
+                </Text>
                 <Pressable style={styles.addBtn} onPress={handlePress}>
                   <Image source={circlePlus} style={styles.addBtn__icon} />
                 </Pressable>
               </View>
             ) : (
               <>
-                <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
-                  <Text style={[styles.h2, styles.alignLeft, styles.mb0, {paddingTop: 8}]}>Other Details</Text>
+                <View
+                  style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}
+                >
+                  <Text
+                    style={[
+                      styles.h2,
+                      styles.alignLeft,
+                      styles.mb0,
+                      { paddingTop: 8 },
+                    ]}
+                  >
+                    Other Details
+                  </Text>
                   <Pressable style={styles.addBtn} onPress={handlePress}>
                     <Image source={circlePlus} style={styles.addBtn__icon} />
                   </Pressable>
                 </View>
-                {otherDetails.map((item, i) => (  
+                {otherDetails.map((item, i) => (
                   <OtherDetails item={item} key={i} />
                 ))}
               </>
@@ -227,147 +260,5 @@ const Relationship = () => {
     </>
   )
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'space-around',
-//     backgroundColor: '#FFFFFF',
-//     alignItems: 'center',
-//     width: '100%',
-//     maxWidth: 700,
-//     marginLeft: 'auto',
-//     marginRight: 'auto',
-//     gap: 20,
-//   },
-//   img: {
-//     width: '100%',
-//     height: '100%',
-//     zIndex: 0,
-//     position: 'absolute',
-//     top: '-35vh',
-//     zIndex: '0',
-//   },
-//   body: {
-//     paddingTop: 75,
-//   },
-//   profileImg: {
-//     width: 70,
-//     height: 70,
-//     borderRadius: '50%',
-//     marginRight: 20,
-//   },
-//   heading: {
-//     flex: 0,
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     paddingBottom: 20,
-//   },
-//   birthday: {
-//     flex: 1,
-//     flexDirection: 'row',
-//   },
-//   birthdayDate: {
-//     color: '#677788',
-//     fontSize: 16,
-//   },
-//   name: {
-//     color: '#677788',
-//     fontSize: 24,
-//     fontWeight: '600',
-//     textAlign: 'center',
-//   },
-//   relationshipText: {
-//     color: '#677788',
-//     fontSize: 12,
-//     paddingTop: 10,
-//     paddingLeft: 10,
-//   },
-//   rankingContainer: {
-//     paddingTop: 5,
-//   },
-//   pressable: {
-//     alignItems: 'center',
-//     cursor: 'pointer',
-//   },
-//   navigation: {
-//     flex: 1,
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     alignContent: 'center',
-//   },
-//   next: {
-//     color: '#677788',
-//     fontSize: 16,
-//     fontWeight: '400',
-//   },
-//   edit: {
-//     color: '#677788',
-//     fontSize: 18,
-//     fontWeight: '700',
-//     marginLeft: 10,
-//     marginRight: 10,
-//   },
-//   message: {
-//     color: '#677788',
-//     fontSize: 14,
-//     marginBottom: 10,
-//     textAlign: 'center',
-//     width: 300,
-//   },
-//   text: {
-//     color: '#FFFFFF',
-//   },
-//   personInfo: {
-//     minHeight: 70,
-//   },
-//   button: {
-//     backgroundColor: '#677788',
-//     paddingTop: 10,
-//     paddingBottom: 10,
-//     paddingRight: 50,
-//     paddingLeft: 50,
-//     borderRadius: 65,
-//     textAlign: 'center',
-//     margin: 'auto',
-//     marginTop: 20,
-//     marginBottom: 20,
-//     opacity: '1',
-//   },
-//   title: {
-//     color: '#677788',
-//     fontSize: 16,
-//     fontWeight: '700',
-//   },
-//   titleLoveStyles: {
-//     color: '#677788',
-//     fontSize: 16,
-//     fontWeight: '700',
-//     paddingBottom: 20,
-//   },
-//   row: {
-//     flex: 1,
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     gap: 10,
-//     paddingTop: 20,
-//   },
-//   lifeEventsText: {
-//     paddingTop: 20,
-//     color: '#677788',
-//     fontSize: 16,
-//     fontWeight: '400',
-//   },
-//   arrowContainer: {
-//     position: 'absolute',
-//     top: '15px',
-//     left: '15px',
-//   },
-//   arrow: {
-//     width: 20,
-//     height: 20,
-//   },
-// })
 
 export default Relationship
