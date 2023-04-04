@@ -28,7 +28,14 @@ const AdminRelItem = ({ user }) => {
           </Text>
           <Text style={styles.textSM}>Mobile: {user?.phone}</Text>
           <Text style={styles.textSM}>Email: {user?.email}</Text>
-          <Pressable style={styles.button} onPress={() => console.log('ok')}>
+          <Pressable
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate('Relationships Admin', {
+                itemId: user?.userId,
+              })
+            }
+          >
             <Text style={styles.buttonText}>LOGIN AS USER</Text>
           </Pressable>
           <Pressable

@@ -1,23 +1,11 @@
-import {
-  ScrollView,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-} from 'react-native'
+import { ScrollView, View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import Card from '../shared/Card'
-import LoveLanguages from '../components/LoveLanguages'
-import RelationshipContext from '../context/RelationshipContext'
 import RelationshipRating from '../components/RelationshipRating'
 import { db, auth } from '../config/firebase-config'
 import { getDoc, doc } from 'firebase/firestore'
-import Load from '../assets/spinner.gif'
 import circlePlus from '../assets/circle-plus.svg'
-import Shape from '../svg/Shape'
 import Spinner from '../shared/Spinner'
 import ArrowBack from '../assets/arrow-back-white.svg'
 import mapMarker from '../assets/map-marker.svg'
@@ -32,6 +20,7 @@ const Relationship = () => {
   const [finalBirthday, setFinalBirthday] = useState('')
   const [finalAnniversary, setFinalAnniversary] = useState('')
   const [upcomingEvents, setUpcomingEvents] = useState([])
+  const [showMessage, setShowMessage] = useState(false)
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId } = route.params
@@ -108,6 +97,10 @@ const Relationship = () => {
     navigation.navigate('Other Details', {
       itemId,
     })
+  }
+
+  const handleMessagePress = () => {
+    setShowMessage(true)
   }
 
   return (
@@ -187,16 +180,23 @@ const Relationship = () => {
                 </Text>
                 <Pressable
                   style={[styles.button, styles.buttonGrey, styles.center]}
+                  onPress={handleMessagePress}
                 >
-                  <Text
-                    style={[
-                      styles.button__text,
-                      styles.buttonGrey__text,
-                      styles.superBold,
-                    ]}
-                  >
-                    SCHEDULE NEXT EVENT
-                  </Text>
+                  {showMessage ? (
+                    <Text>
+                      A message has been sent. A cyrano will contact you soon
+                    </Text>
+                  ) : (
+                    <Text
+                      style={[
+                        styles.button__text,
+                        styles.buttonGrey__text,
+                        styles.superBold,
+                      ]}
+                    >
+                      SCHEDULE AN EVENT
+                    </Text>
+                  )}
                 </Pressable>
               </View>
             ) : (
