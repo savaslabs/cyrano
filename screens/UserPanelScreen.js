@@ -79,7 +79,10 @@ const UserPanelScreen = () => {
                 source={
                   'https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg'
                 }
-                style={styles.profileImage}
+                style={[
+                  styles.profileImage,
+                  newProfileImage ? { display: 'none' } : { display: 'block' },
+                ]}
               />
             )}
             {newProfileImage && (
