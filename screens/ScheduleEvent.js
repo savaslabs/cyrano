@@ -9,10 +9,9 @@ import {
 import React, { useEffect, useState, useContext, createElement } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
-import Logo from '../svg/Logo'
-import LogoIMG from '../assets/logo.png'
+import { styles } from '../styles'
 import DropDownPicker from 'react-native-dropdown-picker'
-import ArrowBack from '../assets/arrow-back.svg'
+import Page from '../shared/Page'
 import { db } from '../config/firebase-config'
 import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore'
 
@@ -163,60 +162,42 @@ const ScheduleEvent = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.arrowContainer} onPress={handleBack}>
-        <Image source={ArrowBack} style={styles.arrow} />
-      </Pressable>
-      <View>
-        <Text style={styles.title}>Schedule a New Event</Text>
-      </View>
-      <View style={styles.form}>
-        <View style={{ zIndex: '2' }}>
-          <Text style={styles.label}>Event Name</Text>
+    <>
+    <Page>
+      <View style={[styles.page__content, styles.pageTopPadding]}>
+        <View style={styles.page__upper}>
+          <Text style={styles.h1}>Create Event</Text>
+        </View>
+        <View style={styles.form}>
+          <Text style={styles.form__label}>Event Name</Text>
           <TextInput
-            style={styles.input}
-            placeholderTextColor="rgba(237,82,68,0.5)"
+            style={styles.form__input}
+            placeholderTextColor="#c7cbd9"
             placeholder="Event name"
             value={eventName}
             onChangeText={(newEventName) => setEventName(newEventName)}
           />
-        </View>
-
-        <View style={{ zIndex: '1' }}>
-          <Text style={styles.label}>Date</Text>
-          <NextDatePicker />
-        </View>
-        <View style={styles.rowTime}>
-          <View style={{ zIndex: '1', width: '50%' }}>
-            <Text style={styles.label}>Time</Text>
-            <TimePicker />
+          <View style={styles.form__twoCol}>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Date</Text>
+              <NextDatePicker />
+            </View>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Time</Text>
+              <TimePicker />
+            </View>
           </View>
-        </View>
-        <View style={{ zIndex: '2' }}>
-          <Text style={styles.label}>Location</Text>
+          <Text style={styles.form__label}>Location</Text>
           <TextInput
-            style={styles.input}
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            placeholder="Add the address of the event"
+            style={styles.form__input}
+            placeholderTextColor="#c7cbd9"
+            placeholder="Address of the event"
             value={nextDatePlace}
             onChangeText={(newNextDatePlace) =>
               setNextDatePlace(newNextDatePlace)
             }
           />
-        </View>
-        <View>
-          <Text style={styles.label}>Additional Comments</Text>
-          <TextInput
-            placeholder="Additional Comments"
-            placeholderTextColor="rgba(237,82,68,0.5)"
-            multiline={true}
-            numberOfLines={4}
-            style={styles.textArea}
-            onChangeText={(newComments) => setAdditionalComments(newComments)}
-          />
-        </View>
-        <View style={{ zIndex: '2' }}>
-          <Text style={styles.label}>Select the love styles</Text>
+          <Text style={styles.form__label}>Select the love styles</Text>
           <DropDownPicker
             open={openLoveStyleTag}
             value={loveStyleTagValue}
@@ -224,234 +205,59 @@ const ScheduleEvent = () => {
             setOpen={setOpenLoveStyleTag}
             setValue={setLoveStyleTagValue}
             setItems={setLoveStyleTagItems}
-            style={styles.dropdown}
+            style={styles.form__select}
             placeholder="Select Love Styles"
-            placeholderStyle={{ color: 'rgba(237,82,68,0.5)' }}
+            placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
             dropDownContainerStyle={{
-              top: 50,
-              left: 12,
               margin: 'auto',
-              color: '#EF6E62',
-              borderColor: '#ED5244',
-              zIndex: '10000',
-              width: '94%',
+              color: '#33374B',
+              zIndex: '20000',
               height: 160,
-            }}
-            labelStyle={{
-              color: '#ED5244',
+              bottom: -135,
+              borderColor: 'rgba(199, 203, 217, 1)',
+              paddingLeft: 4,
+              fontSize: 17
             }}
             listItemLabelStyle={{
-              color: '#ED5244',
+              color: '#33374B',
             }}
             disabledItemLabelStyle={{
-              color: 'rgba(237,82,68,0.5)',
+              color: 'rgba(51,55,75,0.5)',
+            }}
+            labelStyle={{
+              color: '#33374B',
             }}
             multiple={true}
             mode="BADGE"
-            badgeDotColors={['#e76f51']}
+            badgeDotColors={['#586187']}
           />
+          <View style={{ zIndex: 1 }}>
+            <Text style={styles.form__label}>Additional Comments</Text>
+            <TextInput
+              placeholder="Additional Comments"
+              placeholderTextColor="#c7cbd9"
+              multiline={true}
+              numberOfLines={4}
+              style={styles.form__textArea}
+              onChangeText={(newComments) => setAdditionalComments(newComments)}
+            />
+          </View>
+        </View>
+
+        <View style={styles.page__lower}>
+          <Pressable
+            // style={[styles.button, isDisabled ? styles.disabled : '']}
+            style={styles.button}
+            onPress={handlePress}
+            // disabled={isDisabled}
+          >
+            <Text style={styles.button__text}>CREATE EVENT</Text>
+          </Pressable>
         </View>
       </View>
-
-      <View style={styles.row}>
-        <Pressable
-          // style={[styles.button, isDisabled ? styles.disabled : '']}
-          style={styles.button}
-          onPress={handlePress}
-          // disabled={isDisabled}
-        >
-          <Text style={styles.text}>LET US TAKE IT FROM HERE</Text>
-        </Pressable>
-      </View>
-    </View>
+    </Page>
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    width: '100%',
-    maxWidth: 700,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  h1: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-    paddingBottom: 10,
-    zIndex: 2,
-    alignSelf: 'center',
-    width: 300,
-  },
-  img: {
-    width: '100%',
-    height: '100%',
-    zIndex: 0,
-    position: 'absolute',
-    top: '0',
-    zIndex: '0',
-    width: '100%',
-    height: '100%',
-    top: -545,
-  },
-  arrowContainer: {
-    position: 'absolute',
-    top: '15px',
-    left: '15px',
-  },
-  arrow: {
-    width: 20,
-    height: 20,
-  },
-  row: {
-    flex: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-  rowTime: {
-    flex: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-    paddingTop: 40,
-  },
-  block: {
-    textAlign: 'center',
-    position: 'relative',
-    width: '100%',
-  },
-  img: {
-    width: '100%',
-    height: '100%',
-    zIndex: 0,
-    position: 'absolute',
-    top: '0',
-    zIndex: '0',
-    width: '100%',
-    height: '100%',
-    top: -500,
-  },
-  cameraContainer: {
-    width: 68,
-    height: 68,
-    borderRadius: '50%',
-    position: 'relative',
-    cursor: 'pointer',
-    alignSelf: 'center',
-    backgroundColor: '#FFFFFF',
-    shadowColor: 'rgba(237, 99, 88, 0.4);',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 2,
-    shadowRadius: 16,
-    elevation: 7,
-  },
-  camera: {
-    width: 15,
-    height: 15,
-    color: '#EF6E62',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    margin: 'auto',
-  },
-  profileImage: {
-    width: 68,
-    height: 68,
-    borderRadius: '50%',
-  },
-  h1: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: '600',
-    paddingBottom: 10,
-    zIndex: 2,
-    alignSelf: 'center',
-  },
-  label: {
-    color: '#ED5244',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingLeft: 10,
-  },
-  title: {
-    color: '#ED5244',
-    fontWeight: '700',
-    fontSize: 16,
-    textAlign: 'center',
-    width: 300,
-  },
-  form: {
-    width: '80%',
-    alignSelf: 'center',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#ED5244',
-    borderRadius: 5,
-    color: '#ED5244',
-  },
-  textArea: {
-    height: 150,
-    textAlignVertical: 'top',
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#ED5244',
-    borderRadius: 5,
-    color: '#ED5244',
-  },
-  dropdown: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#ED5244',
-    borderRadius: 5,
-    color: '#ED5244',
-    width: '94%',
-    minHeight: 0,
-  },
-  text: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#EF6E62',
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 50,
-    paddingLeft: 50,
-    borderRadius: 65,
-    textAlign: 'center',
-    // margin: 'auto',
-    marginTop: 20,
-    opacity: '1',
-    marginRight: 10,
-  },
-  disabled: {
-    opacity: '0.5',
-  },
-  hideButton: {
-    display: 'none',
-  },
-  showButton: {
-    display: 'block',
-  },
-})
 
 export default ScheduleEvent

@@ -4,6 +4,8 @@ import { useRoute } from '@react-navigation/native'
 import { updateDoc, doc, arrayUnion } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
 import { useNavigation } from '@react-navigation/native'
+import { styles } from '../styles'
+import Page from '../shared/Page'
 
 const OtherDetails = () => {
   const [detailHeading, setDetailHeading] = useState('')
@@ -35,28 +37,37 @@ const OtherDetails = () => {
   }
 
   return (
-    <View>
-      <Text>Fill the data...</Text>
-      <TextInput
-        placeholder="Detail Heading"
-        placeholderTextColor="rgba(237,82,68,0.5)"
-        value={detailHeading}
-        onChangeText={(newHeading) => setDetailHeading(newHeading)}
-      />
-      <TextInput
-        value={detailText}
-        onChangeText={(newText) => setDetailText(newText)}
-        placeholder="Detail Text"
-        placeholderTextColor="rgba(237,82,68,0.5)"
-        multiline={true}
-        numberOfLines={4}
-        textAlignVertical="top"
-        style={{ height: 150 }}
-      />
-      <Pressable onPress={handleSave}>
-        <Text>SAVE</Text>
-      </Pressable>
-    </View>
+    <Page>
+      <View style={[styles.page__content, styles.pageTopPadding]}>
+        <View style={styles.page__upper}>
+          <Text style={styles.h2}>Add New Relationship Detail</Text>
+        </View>
+        <Text style={styles.form__label}>Detail Heading</Text>
+        <TextInput
+          placeholder="ie. Favorite Restaurants"
+          placeholderTextColor="#c7cbd9"
+          value={detailHeading}
+          onChangeText={(newHeading) => setDetailHeading(newHeading)}
+          style={styles.form__input}
+        />
+        <Text style={styles.form__label}>Detail Text</Text>
+        <TextInput
+          value={detailText}
+          onChangeText={(newText) => setDetailText(newText)}
+          placeholder="ie. Roy's Grille, Nobu, etc."
+          placeholderTextColor="#c7cbd9"
+          multiline={true}
+          numberOfLines={4}
+          textAlignVertical="top"
+          style={[styles.form__textArea, { height: 250 }]}
+        />
+        <View style={styles.page__lower}>
+          <Pressable style={styles.button} onPress={handleSave}>
+            <Text style={styles.button__text}>SAVE</Text>
+          </Pressable>`
+        </View>
+      </View>
+    </Page>
   )
 }
 

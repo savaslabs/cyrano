@@ -76,7 +76,7 @@ const RelationshipsHomeScreen = () => {
             {relationships.length === 0 ? (
               <>
                 <View style={styles.page__upper}>
-                  <Text style={styles.h1}>Relationships</Text>
+                  <Text style={styles.h2}>Relationships</Text>
                   <Text style={styles.p}>
                     You don't have any relationships yet. Get started by adding
                     one.
@@ -98,16 +98,16 @@ const RelationshipsHomeScreen = () => {
               <View>
                 {relationships.length > 0 && (
                   <View style={styles.page__upper}>
-                    <Text style={[styles.h1, styles.alignLeft]}>
+                    <Text style={[styles.h2, styles.alignLeft]}>
                       Upcoming Events
                     </Text>
                     {upcomingEvents.length === 0 ? (
-                      <View>
-                        <Text style={styles.p}>
-                          You don't have any upcoming event right now
+                      <View style={[styles.greybox, styles.greyboxLarge]}>
+                        <Text style={[styles.p, styles.center]}>
+                          You don't have any upcoming events right now.
                         </Text>
-                        <Pressable style={styles.button}>
-                          <Text style={styles.button__text}>
+                        <Pressable style={[styles.button, styles.buttonGrey, styles.center]}>
+                          <Text style={[styles.button__text, styles.buttonGrey__text, styles.superBold]}>
                             SCHEDULE AN EVENT
                           </Text>
                         </Pressable>
@@ -117,30 +117,9 @@ const RelationshipsHomeScreen = () => {
                         <EventItem item={item} key={index} />
                       ))
                     )}
-                    <Text>View events history</Text>
+                    <Text style={styles.textLink}>View events history</Text>
                     <View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}
-                      >
-                        <Text style={styles.heading}>Relationships</Text>
-                        <Pressable onPress={handlePress}>
-                          <Text
-                            style={{
-                              fontSize: 30,
-                              borderWidth: 1,
-                              borderRadius: 100,
-                              padding: 10,
-                            }}
-                          >
-                            +
-                          </Text>
-                        </Pressable>
-                      </View>
-
+                      <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>Relationships</Text>
                       {relationships.map((item) => (
                         <View key={item.id}>
                           <RelationshipItem item={item} key={item.id} />

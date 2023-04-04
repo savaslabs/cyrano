@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
 import { useRef, useEffect, useState, createElement } from 'react'
 import StarRating from 'react-native-star-rating-widget'
 import { styles } from '../../styles'
+import Stars from '../../shared/Stars'
 
 const Second = ({
   birthday,
@@ -27,6 +28,7 @@ const Second = ({
     return createElement('input', {
       type: 'date',
       value: birthday.toISOString().split('T')[0],
+      placeholder: 'Select a date',
       onChange: (event) => {
         setBirthday(new Date(event.target.value))
       },
@@ -94,7 +96,9 @@ const Second = ({
               <StarRating
                 rating={relationshipRating}
                 onChange={setRelationshipRating}
+                starSize="52"
                 color="#7B82A2"
+                style={styles.starRating}
               />
             </View>
           </View>

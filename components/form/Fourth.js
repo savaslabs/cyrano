@@ -29,6 +29,7 @@ const Fourth = ({
       onChange: (event) => {
         setLastTimeDate(new Date(event.target.value))
       },
+      placeholder: 'Select a date',
       style: {
         height: 56,
         marginBottom: 16,
@@ -76,6 +77,8 @@ const Fourth = ({
             rating={dateRating}
             onChange={setDateRating}
             color="#7B82A2"
+            starSize="52"
+            style={styles.starRating}
           />
         </View>
       </View>

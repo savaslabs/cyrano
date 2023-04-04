@@ -110,7 +110,7 @@ const First = ({
             borderColor: 'rgba(199, 203, 217, 1)',
             height: 120,
             bottom: -95,
-            paddingLeft: 4,
+            paddingLeft: 8,
             fontSize: 17
           }}
           labelStyle={{
@@ -128,7 +128,7 @@ const First = ({
         <Text style={styles.form__label}>Location</Text>
         <TextInput
           style={styles.form__input}
-          placeholder="Miami, FL"
+          placeholder="Where does your partner live?"
           placeholderTextColor="#c7cbd9"
           value={location}
           onChangeText={(newLocation) => setLocation(newLocation)}

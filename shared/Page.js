@@ -56,7 +56,7 @@ const Page = ({ children }) => {
 
 const styles = StyleSheet.create({
   body: {
-    height: '100vh',
+    minHeight: '100vh'
   },
   container: {
     width: '100%',
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#ffffff',
+    paddingVertical: 40
   },
   page: {
     flex: 1,
