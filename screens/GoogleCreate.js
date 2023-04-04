@@ -30,6 +30,8 @@ const GoogleCreate = () => {
         lastName: lastName,
         email: user?.user?.email,
         phone: phone,
+        profileImg: '',
+        fullName:`${name} ${lastName}`,
       }).then(navigation.navigate('Relationships'))
     }
   }, [user])

@@ -46,6 +46,8 @@ const FacebookCreate = () => {
         lastName: lastName,
         email: userData?.user?.email,
         phone: phone,
+        profileImg: '',
+        fullName: `${name} ${lastName}`,
       })
 
       logInUser(userData)
@@ -63,56 +65,56 @@ const FacebookCreate = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.imgContainer}>
-          <Image source={LogoIMG} style={styles.logo} />
-          {/* <Logo /> */}
+      <View style={styles.imgContainer}>
+        <Image source={LogoIMG} style={styles.logo} />
+        {/* <Logo /> */}
+      </View>
+      <Text style={styles.h1}>Welcome to Cyrano</Text>
+      <Text style={styles.h2}>
+        Fill in your details below to create your account.
+      </Text>
+      <View style={styles.form}>
+        <View>
+          <Text style={styles.label}>First Name</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={(newName) => setName(newName)}
+          />
         </View>
-        <Text style={styles.h1}>Welcome to Cyrano</Text>
+        <View>
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            value={lastName}
+            onChangeText={(newLastName) => setLastName(newLastName)}
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>Phone Number</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="(555) 123-4567"
+            value={phone}
+            onChangeText={(newPhone) => setPhone(newPhone)}
+            placeholderTextColor="rgba(255,255,255, 0.5)"
+          />
+        </View>
+        <Pressable
+          style={[styles.button, isDisabled ? styles.disabled : '']}
+          onPress={signInWithFacebook}
+          disabled={isDisabled}
+        >
+          <Text style={styles.text}>Create Account With </Text>
+          <Image source={Facebook} style={styles.imgSize} />
+        </Pressable>
         <Text style={styles.h2}>
-          Fill in your details below to create your account.
-        </Text>
-        <View style={styles.form}>
-          <View>
-            <Text style={styles.label}>First Name</Text>
-            <TextInput
-              style={styles.input}
-              value={name}
-              onChangeText={(newName) => setName(newName)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Last Name</Text>
-            <TextInput
-              style={styles.input}
-              value={lastName}
-              onChangeText={(newLastName) => setLastName(newLastName)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="(555) 123-4567"
-              value={phone}
-              onChangeText={(newPhone) => setPhone(newPhone)}
-              placeholderTextColor="rgba(255,255,255, 0.5)"
-            />
-          </View>
-          <Pressable
-            style={[styles.button, isDisabled ? styles.disabled : '']}
-            onPress={signInWithFacebook}
-            disabled={isDisabled}
-          >
-            <Text style={styles.text}>Create Account With </Text>
-            <Image source={Facebook} style={styles.imgSize} />
+          Already have an account?{' '}
+          <Pressable onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.underline}>Click Here</Text>
           </Pressable>
-          <Text style={styles.h2}>
-            Already have an account?{' '}
-            <Pressable onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.underline}>Click Here</Text>
-            </Pressable>
-          </Text>
-        </View>
+        </Text>
+      </View>
     </View>
   )
 }

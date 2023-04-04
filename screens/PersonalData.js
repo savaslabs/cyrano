@@ -26,6 +26,8 @@ const PersonalData = () => {
       lastName: lastName,
       email: auth.currentUser.email,
       phone: phone,
+      profileImg: '',
+      fullName: `${name} ${lastName}`,
     })
 
     navigation.navigate('Relationships')

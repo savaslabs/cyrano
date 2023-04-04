@@ -252,6 +252,23 @@ const Relationship = () => {
                 {otherDetails.map((item, i) => (
                   <OtherDetails item={item} key={i} />
                 ))}
+                <View
+                  style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}
+                >
+                  <Pressable
+                    style={[styles.button, styles.buttonGrey, styles.center]}
+                  >
+                    <Text
+                      style={[
+                        styles.button__text,
+                        styles.buttonGrey__text,
+                        styles.superBold,
+                      ]}
+                    >
+                      EDIT THIS RELATIONSHIP
+                    </Text>
+                  </Pressable>
+                </View>
               </>
             )}
           </View>
