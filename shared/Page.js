@@ -25,8 +25,8 @@ const Page = ({ children }) => {
         style={styles.background}
       >
         <View style={styles.container}>
-          {isLoggedIn ? <TabNavigator /> : ''}
           <View style={[styles.page, isSmallDevice && styles.mobilePage]}>
+            {isLoggedIn ? <TabNavigator /> : ''}
             {children}
           </View>
           <View style={[styles.footer, isSmallDevice && styles.mobileFooter]}>
