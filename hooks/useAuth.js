@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState('')
   const [userData, setUserData] = useState('')
   const [userCred, setUserCred] = useState('')
+  const [saveId, setSaveId] = useState('')
   const userRef = collection(db, 'users')
 
   // Create user with Email and Password
@@ -75,6 +76,7 @@ export const AuthProvider = ({ children }) => {
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       setUserData(doc.data())
+      setSaveId(doc.id)
     })
   }
 
@@ -87,7 +89,8 @@ export const AuthProvider = ({ children }) => {
         signInWithEmail,
         getUser,
         userData,
-        userCred
+        userCred,
+        saveId
       }}
     >
       {children}

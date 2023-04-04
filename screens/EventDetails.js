@@ -71,9 +71,19 @@ const EventDetails = () => {
           <Text>{item?.additionalComments}</Text>
         </View>
 
-        <Pressable>
-          <Text>EDIT EVENT DETAILS</Text>
-        </Pressable>
+        <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
+          <Pressable style={[styles.button, styles.buttonGrey, styles.center]}>
+            <Text
+              style={[
+                styles.button__text,
+                styles.buttonGrey__text,
+                styles.superBold,
+              ]}
+            >
+              EDIT EVENT DETAILS
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </Page>
   )

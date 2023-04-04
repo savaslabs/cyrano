@@ -51,6 +51,8 @@ const HomeScreen = () => {
         lastName: lastName,
         email: userCred?.user?.email,
         phone: phone,
+        profileImg: '',
+        fullName: `${name} ${lastName}`,
       })
     }
     setEmail('')
