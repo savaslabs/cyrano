@@ -9,6 +9,7 @@ import {
 import { useRef, useEffect, useState } from 'react'
 import Card from '../shared/Card'
 import StarRating from 'react-native-star-rating-widget'
+import Page from '../shared/Page'
 
 const EventRatingScreen = () => {
   const [dateRating, setDateRating] = useState('')
@@ -24,87 +25,89 @@ const EventRatingScreen = () => {
   }, [fadeAnim])
 
   return (
-    <Animated.View style={{ opacity: fadeAnim }}>
-      <View style={styles.container}>
-        <Text>Event Rating</Text>
-        <Card>
-          <Text>Dinner Date with Amber</Text>
+    <Page>
+      <Animated.View style={{ opacity: fadeAnim }}>
+        <View style={styles.container}>
+          <Text>Event Rating</Text>
           <Card>
-            <Text>Activity</Text>
+            <Text>Dinner Date with Amber</Text>
+            <Card>
+              <Text>Activity</Text>
+            </Card>
+            <Card>
+              <Text>Financial</Text>
+            </Card>
+            <Text>Friday, Jan 26, 2023 @ 8 pm</Text>
           </Card>
-          <Card>
-            <Text>Financial</Text>
-          </Card>
-          <Text>Friday, Jan 26, 2023 @ 8 pm</Text>
-        </Card>
 
-        <View>
-          <Text style={styles.label}>
-            How would you rate your dinner date with Amber?
-          </Text>
           <View>
+            <Text style={styles.label}>
+              How would you rate your dinner date with Amber?
+            </Text>
+            <View>
+              <StarRating
+                rating={dateRating}
+                onChange={setDateRating}
+                color="#7B82A2"
+              />
+            </View>
+          </View>
+
+          <View>
+            <Text style={styles.label}>What was a highlight?</Text>
+            <TextInput
+              multiline={true}
+              numberOfLines={4}
+              textAlignVertical="top"
+              style={styles.input}
+              placeholderTextColor="rgba(51,55,75,0.5)"
+            />
+          </View>
+
+          <View>
+            <Text style={styles.label}>
+              Were there any lowlights or challenges?
+            </Text>
+            <TextInput
+              multiline={true}
+              numberOfLines={4}
+              textAlignVertical="top"
+              style={styles.input}
+              placeholderTextColor="rgba(51,55,75,0.5)"
+            />
+          </View>
+
+          <View>
+            <Text style={styles.label}>
+              Any other notes regarding the recommendation?
+            </Text>
+            <TextInput
+              multiline={true}
+              numberOfLines={4}
+              textAlignVertical="top"
+              style={styles.input}
+              placeholderTextColor="rgba(51,55,75,0.5)"
+            />
+          </View>
+
+          <View>
+            <Text style={styles.label}>
+              How would you rate your overall relationship with Amber after this
+              event?
+            </Text>
             <StarRating
-              rating={dateRating}
-              onChange={setDateRating}
+              rating={relationshipRating}
+              onChange={setRelationshipRating}
               color="#7B82A2"
             />
           </View>
-        </View>
 
-        <View>
-          <Text style={styles.label}>What was a highlight?</Text>
-          <TextInput
-            multiline={true}
-            numberOfLines={4}
-            textAlignVertical='top'
-            style={styles.input}
-            placeholderTextColor="rgba(51,55,75,0.5)"
-          />
+          <Pressable style={styles.button}>
+            <Text>SUBMIT</Text>
+          </Pressable>
         </View>
-
-        <View>
-          <Text style={styles.label}>
-            Were there any lowlights or challenges?
-          </Text>
-          <TextInput
-            multiline={true}
-            numberOfLines={4}
-            textAlignVertical='top'
-            style={styles.input}
-            placeholderTextColor="rgba(51,55,75,0.5)"
-          />
-        </View>
-
-        <View>
-          <Text style={styles.label}>
-            Any other notes regarding the recommendation?
-          </Text>
-          <TextInput
-            multiline={true}
-            numberOfLines={4}
-            textAlignVertical='top'
-            style={styles.input}
-            placeholderTextColor="rgba(51,55,75,0.5)"
-          />
-        </View>
-
-        <View>
-          <Text style={styles.label}>
-            How would you rate your overall relationship with Amber after this
-            event?
-          </Text>
-          <StarRating
-            rating={relationshipRating}
-            onChange={setRelationshipRating}
-            color="#7B82A2"
-          />
-        </View>
-
-        <Pressable style={styles.button}>
-          <Text>SUBMIT</Text>
-        </Pressable>
-      </View>
-    </Animated.View>
+      </Animated.View>
+    </Page>
   )
 }
 

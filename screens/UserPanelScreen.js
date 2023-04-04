@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
 import useAuth from '../hooks/useAuth'
+import { useNavigation } from '@react-navigation/native'
 
 const UserPanelScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
   const { userData, getUser } = useAuth()
+  const navigation = useNavigation()
 
   useEffect(() => {
     getUser()
@@ -34,6 +36,11 @@ const UserPanelScreen = () => {
           <Text>Phone: {phone}</Text>
           <Pressable onPress={() => console.log('ok')}>
             <Text>Save</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate('Relationship Check-In')}
+          >
+            Relationship Check-In
           </Pressable>
         </Page>
       )}

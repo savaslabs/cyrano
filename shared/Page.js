@@ -7,11 +7,15 @@ import {
   Dimensions,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import TabNavigator from '../components/TabNavigator'
+import useAuth from '../hooks/useAuth'
 
 const isSmallDevice = Dimensions.get('window').width < 800
 
 const Page = ({ children }) => {
   const navigation = useNavigation()
+  const { user } = useAuth()
+  const { isLoggedIn } = user
 
   return (
     <View style={styles.body}>
@@ -21,6 +25,7 @@ const Page = ({ children }) => {
         style={styles.background}
       >
         <View style={styles.container}>
+          {isLoggedIn ? <TabNavigator /> : ''}
           <View style={[styles.page, isSmallDevice && styles.mobilePage]}>
             {children}
           </View>
@@ -56,7 +61,7 @@ const Page = ({ children }) => {
 
 const styles = StyleSheet.create({
   body: {
-    minHeight: '100vh'
+    minHeight: '100vh',
   },
   container: {
     width: '100%',
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#ffffff',
-    paddingVertical: 40
+    paddingVertical: 40,
   },
   page: {
     flex: 1,
