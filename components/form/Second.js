@@ -96,7 +96,9 @@ const Second = ({
               <StarRating
                 rating={relationshipRating}
                 onChange={setRelationshipRating}
+                starSize="52"
                 color="#7B82A2"
+                style={styles.starRating}
               />
             </View>
           </View>

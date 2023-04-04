@@ -64,19 +64,27 @@ const EventItem = ({ item }) => {
           )}
           <Pressable onPress={(e) => handlePress(e.target.id)}>
             <Text style={styles.eventCard__profileName}>{name} {lastName}</Text>
-          </Pressable>
-        ) : (
-          ''
-        )}
-        <Pressable
-          onPress={() =>
-            navigation.navigate('Event Details', {
-              item: item,
-            })
-          }
-        >
-          <Text>View event details</Text>
-        </Pressable>
+          </Pressable> 
+          <View style={styles.eventCard__buttons}>
+            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+              <Pressable onPress={() => console.log()} style={[styles.eventCard__link, styles.eventCard__admin]}>
+                <Text>Edit event</Text>
+              </Pressable>
+            ) : (
+              ''
+            )}         
+            <Pressable
+              style={styles.eventCard__link}
+              onPress={() =>
+                navigation.navigate('Event Details', {
+                  item: item,
+                })
+              }
+            >
+              <Text>View event details</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
     </View>
   )
@@ -87,7 +95,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(241, 242, 246, 1)',
     padding: 16,
     marginBottom: 16,
-    color: 'rgba(51, 55, 75, 1)',
     borderRadius: 4
   },
   eventCard__top: {
@@ -101,7 +108,8 @@ const styles = StyleSheet.create({
   eventCard__heading: {
     fontSize: 19,
     fontWeight: 700,
-    marginRight: 8
+    marginRight: 8,
+    color: '#33374B'
   },
   eventCard__tag: {
     backgroundColor: '#ffffff',
@@ -109,11 +117,13 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     paddingVertical: 4,
     paddingHorizontal: 8,
-    borderRadius: 56
+    borderRadius: 56,
+    color: '#33374B'
   },
   eventCard__dateTime: {
     fontSize: 15,
-    marginBottom: 16
+    marginBottom: 16,
+    color: '#33374B'
   },
   eventCard__bottom: {
     flex: 1,
@@ -129,7 +139,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 12
   },  
   eventCard__profileImg: {
     width: 40,
@@ -139,6 +149,7 @@ const styles = StyleSheet.create({
   eventCard__profileName: {
     fontSize: 17,
     fontWeight: 700,
+    color: '#33374B'
   },
   eventCard__buttons: {
     flex: 1,

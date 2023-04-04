@@ -182,7 +182,7 @@ const AddRelationship = () => {
       <View style={[styles.page__content, styles.pageTopPadding]}>
         <View style={[styles.page__upper, styles.relationshipHeading]}>
           <View style={styles.relationshipHeading__text}>
-            <Text style={[styles.h1, styles.alignLeft]}>Add Relationship</Text>
+            <Text style={[styles.h2, styles.alignLeft]}>Add Relationship</Text>
             {pageCounter === 1 && (
               <Text style={[styles.p, styles.alignLeft]}>
                 Tell us about your partner.
@@ -303,8 +303,8 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
                 </Pressable>
                 <Pressable style={[styles.button, styles.buttonNext]} onPress={handleNext}>
                   <Text style={styles.button__text}>CONTINUE</Text>
@@ -340,8 +340,8 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
                 </Pressable>
                 <Pressable
                   style={[
@@ -394,8 +394,8 @@ const AddRelationship = () => {
               </View>
               <View style={styles.page__lower}>
                 <View style={styles.paginationBtns}>
-                  <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                    <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                  <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
+                    <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
                   </Pressable>
                   <Pressable
                     style={[
@@ -423,16 +423,16 @@ const AddRelationship = () => {
         {pageCounter === 3 && email && phone && (
           <>
             {showMessage ? (
-              <View style={styles.truityConfirmation}>
+              <View style={styles.confirmation}>
                 <Image
                   source={{ uri: PaperPlane }}
-                  style={styles.truityConfirmation__icon}
+                  style={styles.confirmation__icon}
                 />
                 <Text
                   style={[
                     styles.p,
                     styles.alignLeft,
-                    styles.truityConfirmation__text,
+                    styles.confirmation__text,
                   ]}
                 >
                   The test has been sent to {name}. We'll alert you once we have
@@ -456,8 +456,8 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonNext]}
@@ -481,8 +481,8 @@ const AddRelationship = () => {
             </View>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonBack]}>
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>BACK</Text>
+                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonNext, isDisabled ? styles.disabled : '']}

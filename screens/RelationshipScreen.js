@@ -16,9 +16,11 @@ import RelationshipRating from '../components/RelationshipRating'
 import { db, auth } from '../config/firebase-config'
 import { getDoc, doc } from 'firebase/firestore'
 import Load from '../assets/spinner.gif'
+import circlePlus from '../assets/circle-plus.svg'
 import Shape from '../svg/Shape'
 import Spinner from '../shared/Spinner'
 import ArrowBack from '../assets/arrow-back-white.svg'
+import mapMarker from '../assets/map-marker.svg'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 import { styles } from '../styles'
@@ -71,6 +73,8 @@ const Relationship = () => {
     otherDetails,
   } = singleRelationship
 
+  const fullName = `${name} ${lastName}`
+
   const handleBack = () => {
     navigation.navigate('Relationships')
   }
@@ -112,97 +116,81 @@ const Relationship = () => {
         <Spinner />
       ) : (
         <Page>
-          {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-            <Pressable style={styles.arrowContainer} onPress={handleBackAdmin}>
-              <Image source={ArrowBack} style={styles.arrow} />
-            </Pressable>
-          ) : (
-            <Pressable style={styles.arrowContainer} onPress={handleBack}>
-              <Image source={ArrowBack} style={styles.arrow} />
-            </Pressable>
-          )}
-
-          <View style={styles.row}>
-            <View>
-              <Text style={styles.name}>
-                {name} {lastName}
-              </Text>
-              <Text>{location}</Text>
-            </View>
-
-            {profileImage ? (
-              <Image
-                source={profileImage}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  marginRight: 10,
-                }}
-              />
+          <View style={[styles.page__content, styles.pageTopPadding]}>
+            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+              <Pressable style={styles.arrowContainer} onPress={handleBackAdmin}>
+                <Image source={ArrowBack} style={styles.arrow} />
+              </Pressable>
             ) : (
-              <Image
-                source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  marginRight: 10,
-                }}
-              />
+              <Pressable style={styles.arrowContainer} onPress={handleBack}>
+                <Image source={ArrowBack} style={styles.arrow} />
+              </Pressable>
             )}
-          </View>
-
-          <View style={styles.row}>
-            <Card>
-              <Text style={styles.title}>{name.toUpperCase()}'S BIRTHDAY</Text>
-              <Text style={styles.lifeEventsText}>{finalBirthday}</Text>
-            </Card>
-
-            <Card>
-              <Text style={styles.title}>YOUR ANNIVERSARY</Text>
-              <Text style={styles.lifeEventsText}>{finalAnniversary}</Text>
-            </Card>
-          </View>
-
-          <View style={styles.row}>
-            <View style={styles.rankingContainer}>
-              <Text>Relationship Rating</Text>
+            <View style={[styles.page__upper, styles.vertCenter, styles.relationshipHeading]}>
+              <View style={styles.relationshipHeading__text}>
+                <Text style={styles.xl}>{fullName}</Text>
+                <View style={styles.location}>
+                  <Image 
+                    source={mapMarker}
+                    style={styles.location__icon}
+                  />
+                  <Text style={styles.location__text}>{location}</Text>
+                </View>
+              </View>
               <View>
-                <RelationshipRating relationshipRating={relationshipRating} />
+                {profileImage ? (
+                  <Image
+                    source={profileImage}
+                    style={styles.profileImage}
+                  />
+                ) : (
+                  <Image
+                    source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+                    style={styles.profileImage}
+                  />
+                )}
               </View>
             </View>
-            <Pressable>
-              <Text>See relationship rating details</Text>
-            </Pressable>
-          </View>
-
-          <View style={styles.body}>
-            <Card>
-              <Text style={styles.titleLoveStyles}>{name}'s Love Styles</Text>
-              <LoveLanguages />
-            </Card>
-
-            <View>
-              <Text>UPCOMING EVENTS</Text>
-              {upcomingEvents.length === 0 ? (
-                <View>
-                  <Text>You don't have any upcoming event right now</Text>
-                  {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' && (
-                    <Pressable
-                      style={styles.button}
-                      onPress={() => console.log('ok')}
-                    >
-                      <Text style={styles.text}>SCHEDULE NEXT EVENT</Text>
-                    </Pressable>
-                  )}
-                </View>
-              ) : (
-                upcomingEvents.map((item, index) => (
-                  <EventItem item={item} key={index} />
-                ))
-              )}
+            <View style={styles.greybox__pair}>
+              <View style={styles.greybox}>
+                <Text style={styles.h5}>{name.toUpperCase()}'S BIRTHDAY</Text>
+                <Text style={[styles.p, styles.mb0]}>{finalBirthday}</Text>
+              </View>
+              <View style={styles.greybox}>
+                <Text style={styles.h5}>YOUR ANNIVERSARY</Text>
+                <Text style={[styles.p, styles.mb0]}>{finalAnniversary}</Text>
+              </View>
             </View>
+            <View style={styles.greybox}>
+              <View style={styles.ratingCard}>
+                <View style={styles.ratingCard__text}>
+                  <Text style={styles.h5}>RELATIONSHIP RATING</Text>
+                  <RelationshipRating relationshipRating={relationshipRating} />
+                </View>
+                <View>
+                  <Pressable style={styles.ratingCard__button}>
+                    See relationship rating details
+                  </Pressable>  
+                </View>
+              </View>
+            </View>
+            <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>Upcoming Events</Text>
+            {upcomingEvents.length === 0 ? (
+              <View style={[styles.greybox, styles.greyboxLarge]}>
+                <Text style={[styles.p, styles.center]}>
+                  You don't have any upcoming events with {name}.
+                </Text>
+                <Pressable style={[styles.button, styles.buttonGrey, styles.center]}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text, styles.superBold]}>
+                    SCHEDULE NEXT EVENT
+                  </Text>
+                </Pressable>
+              </View>
+            ) : (
+              upcomingEvents.map((item, index) => (
+                <EventItem item={item} key={index} />
+              ))
+            )}
 
             <Pressable
               onPress={() =>
@@ -211,31 +199,28 @@ const Relationship = () => {
                 })
               }
             >
-              <Text>View full events history</Text>
+              <Text style={styles.textLink}>View full events history</Text>
             </Pressable>
-
-            <View>
-              <Text>Other Details</Text>
-              <Pressable onPress={handlePress}>
-                <Text
-                  style={{
-                    fontSize: 30,
-                    borderWidth: 1,
-                    borderRadius: 100,
-                    padding: 10,
-                  }}
-                >
-                  +
-                </Text>
-              </Pressable>
-              {otherDetails.length === 0 ? (
-                <Text> You don't have other details. Start by adding one</Text>
-              ) : (
-                otherDetails.map((item, i) => (
+            {otherDetails.length === 0 ? (
+              <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
+                <Text style={[styles.h2, styles.alignLeft, styles.mb0, {paddingTop: 8}]}>Add Details</Text>
+                <Pressable style={styles.addBtn} onPress={handlePress}>
+                  <Image source={circlePlus} style={styles.addBtn__icon} />
+                </Pressable>
+              </View>
+            ) : (
+              <>
+                <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
+                  <Text style={[styles.h2, styles.alignLeft, styles.mb0, {paddingTop: 8}]}>Other Details</Text>
+                  <Pressable style={styles.addBtn} onPress={handlePress}>
+                    <Image source={circlePlus} style={styles.addBtn__icon} />
+                  </Pressable>
+                </View>
+                {otherDetails.map((item, i) => (  
                   <OtherDetails item={item} key={i} />
-                ))
-              )}
-            </View>
+                ))}
+              </>
+            )}
           </View>
         </Page>
       )}

@@ -37,6 +37,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
   },
+  xl: {
+    color: '#33374B',
+    fontSize: 40,
+    fontWeight: '700',
+    alignSelf: 'center',
+    flex: 1,
+    flexWrap: 'wrap',
+    marginBottom: 6
+  },
   h1: {
     color: '#33374B',
     fontSize: 36,
@@ -45,6 +54,24 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     flexWrap: 'wrap'
+  },
+  h1Gap: {
+    marginTop: 64
+  },
+  h2: {
+    color: '#33374B',
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 16,
+    alignSelf: 'center',
+    flex: 1,
+    flexWrap: 'wrap'
+  },
+  h5: {
+    color: '#586187',
+    fontSize: 11,
+    fontWeight: 900,
+    marginBottom: 4
   },
   p: {
     color: '#33374B',
@@ -63,12 +90,9 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginBottom: 15
   },
-  underline: {
-    textDecorationLine: 'underline'
-  },
-  alignLeft: {
-    alignSelf: 'flex-start',
-    textAlign: 'left'
+  starRating: {
+    marginHorizontal: 'auto',
+    paddingVertical: 8
   },
   form__twoCol: {
     flex: 1,
@@ -148,12 +172,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 24.5
   },
-  buttonBack: {
+  buttonGrey: {
     backgroundColor: 'rgba(241, 242, 246, 1)',
     marginLeft: 0
   },
-  buttonBack__text: {
+  buttonGrey__text: {
     color: 'rgba(51, 55, 75, 1)'
+  },
+  textLink: {
+    fontSize: 15,
+    color: 'rgba(51,55,75,0.75)',
+    textAlign: 'center',
+    paddingTop: 16,
+    textDecorationLine: 'underline'
   },
   buttonNext: {
     marginRight: 0
@@ -248,58 +279,118 @@ const styles = StyleSheet.create({
   dots__active: {
     backgroundColor: '#586187',
   },
-  truityConfirmation: {
+  confirmation: {
     flex: 1,
     flexDirection: 'row',
     gap: 12
   },
-  truityConfirmation__icon: {
+  confirmation__icon: {
     width: 32,
     height: 32
   },
-  truityConfirmation__text: {
+  confirmation__text: {
     color: 'rgba(88, 97, 135, 1)'
   },
-  // disabled: {
-  //   opacity: '0.5',
-  // },
-  // text: {
-  //   color: '#EF6E62',
-  //   textAlign: 'center',
-  // },
-  // underline: {
-  //   textDecorationLine: 'underline',
-  // },
-  // row: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  // },
-  // flex: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   marginTop: 4,
-  // },
-  // loginContainer: {
-  //   backgroundColor: 'white',
-  //   flexDirection: 'row',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   padding: 8,
-  //   borderRadius: 20,
-  //   marginTop: 8,
-  //   marginRight: 8,
-  //   borderWidth: 1,
-  // },
-  // loginImg: {
-  //   width: 32,
-  //   height: 32,
-  // },
-  // imgSize: {
-  //   width: 24,
-  //   height: 24,
-  //   marginLeft: 4,
-  // },
+  greybox: {
+    borderColor: '#C7CBD9',
+    borderWidth: 1,
+    borderRadius: 4,
+    flex: 1,
+    alignItems: 'center',
+    padding: 16
+  },
+  greyboxLarge: {
+    paddingVertical: 24,
+    paddingHorizontal: 16
+  },
+  greybox__pair: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+    flexWrap: 'wrap'
+  },
+  ratingCard: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+    alignItems: 'center'
+  },
+  ratingCard__text: {
+    flexGrow: 1,
+    textAlign: 'center'
+  },
+  ratingCard__button: {
+    padding: 16,
+    fontSize: 15,
+    fontFamily: 'sans-serif',
+    borderSize: 1,
+    borderColor: '#C7CBD9',
+    backgroundColor: '#F1F2F6',
+    color: '#33374B',
+    maxWidth: 214,
+    textAlign: 'center',
+    borderRadius: 60
+  },
+  location: {
+    flexGrow: 1,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 6,
+    alignItems: 'center'
+  },
+  location__icon: {
+    width: 15,
+    height: 22
+  },
+  location__text: {
+    color: 'rgba(51,55,75,0.75)',
+    fontSize: 13
+  },
+  headingPlusBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap',
+    alignItems: 'center'
+  },
+  addBtn: {
+    backgroundColor: '#F1F2F6',
+    maxWidth: 48,
+    height: 48,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '100%'
+  },
+  addBtn__icon: {
+    width: 32,
+    height: 32
+  },
+  underline: {
+    textDecorationLine: 'underline'
+  },
+  center: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
+  alignLeft: {
+    alignSelf: 'flex-start',
+    textAlign: 'left'
+  },
+  vertCenter: {
+    alignItems: 'center'
+  },
+  superBold: {
+    fontWeight: 800
+  },
+  mb0: {
+    marginBottom: 0
+  },
+  mb16: {
+    marginBottom: 16
+  }
 })
 
 export { styles }

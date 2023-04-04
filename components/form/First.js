@@ -128,7 +128,7 @@ const First = ({
         <Text style={styles.form__label}>Location</Text>
         <TextInput
           style={styles.form__input}
-          placeholder="Miami, FL"
+          placeholder="Where does your partner live?"
           placeholderTextColor="#c7cbd9"
           value={location}
           onChangeText={(newLocation) => setLocation(newLocation)}

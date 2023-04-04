@@ -77,6 +77,8 @@ const Fourth = ({
             rating={dateRating}
             onChange={setDateRating}
             color="#7B82A2"
+            starSize="52"
+            style={styles.starRating}
           />
         </View>
       </View>

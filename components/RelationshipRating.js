@@ -11,7 +11,12 @@ const RelationshipRating = ({ relationshipRating }) => {
   }, [relationshipRating])
 
   return (
-    <StarRating rating={starRating} onChange={setStarRating} color="#7B82A2" style={{pointerEvents: 'none'}}/>
+    <StarRating rating={starRating} 
+      onChange={setStarRating} 
+      color="#7B82A2" 
+      starStyle={{marginLeft: 0, marginRight: 0}}
+      starSize="26"
+      style={{pointerEvents: 'none', marginHorizontal: 'auto'}}/>
   )
 }
 

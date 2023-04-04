@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipRating from './RelationshipRating'
+import RelationshipCardRating from './RelationshipCardRating'
 import { auth } from '../config/firebase-config'
 
 const RelationshipItem = ({ item }) => {
@@ -13,87 +13,112 @@ const RelationshipItem = ({ item }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        {item?.profileImage ? (
-          <Image
-            source={item?.profileImage}
-            style={styles.img}
-            nativeID={item?.id}
-          />
-        ) : (
-          <Image
-            source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-            style={styles.img}
-            nativeID={item?.id}
-          />
-        )}
-
-        <Pressable onPress={(e) => handlePress(e.target.id)}>
-          <Text style={styles.heading} nativeID={item?.id}>
-            {item?.name} {item?.lastName}
-          </Text>
-        </Pressable>
-        <RelationshipRating relationshipRating={item?.relationshipRating} />
-        {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+    <View style={styles.relationshipCard}>
+      <View style={styles.relationshipCard__top}>
+        <View style={styles.relationshipCard__profile}>
+          {item?.profileImage ? (
+            <Image
+              source={item?.profileImage}
+              style={styles.relationshipCard__img}
+              nativeID={item?.id}
+            />
+          ) : (
+            <Image
+              source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+              style={styles.relationshipCard__img}
+              nativeID={item?.id}
+            />
+          )}
+          <Pressable onPress={(e) => handlePress(e.target.id)}>
+            <Text style={styles.relationshipCard__name} nativeID={item?.id}>
+              {item?.name} {item?.lastName}
+            </Text>
+          </Pressable>
+        </View>
+        <RelationshipCardRating relationshipRating={item?.relationshipRating} />
+      </View>
+      {auth.currentUser.uid != 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+        <View style={styles.relationshipCard__admin}>
           <Pressable
             onPress={() =>
               navigation.navigate('Schedule Event', {
                 itemId: item?.id,
               })
             }
-            style={styles.button}
+            style={styles.relationshipCard__button}
           >
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              Create Event
-            </Text>
+            Create Event
           </Pressable>
-        ) : (
-          ''
-        )}
-      </View>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Schedule Event', {
+                itemId: item?.id,
+              })
+            }
+            style={styles.relationshipCard__button}
+          >
+            Request Check-in
+          </Pressable>
+        </View>
+      ) : (
+        <View style={styles.relationshipCard__bottom}>
+          <Pressable style={styles.relationshipCard__button}>
+            How is the relationship going?
+          </Pressable>
+        </View>
+      )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    height: '100%',
-    marginTop: 10,
-    marginBottom: 10,
+  relationshipCard: {
+    backgroundColor: '#F1F2F6',
+    padding: 16,
+    borderRadius: 4
   },
-  heading: {
-    color: '#F1776C',
-    fontWeight: '800',
-  },
-  item: {
+  relationshipCard__top: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
+    alignItems: 'center'
   },
-  img: {
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    marginRight: 10,
+  relationshipCard__profile: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center'
   },
-  startBG: {
-    backgroundColor: '#F1776C',
-    padding: 10,
-    borderRadius: 15,
-    marginLeft: 30,
-    marginTop: 10,
-    marginBottom: 10,
+  relationshipCard__img: {
+    width: 64,
+    height: 64,
+    borderRadius: 100
   },
-  button: {
-    backgroundColor: '#EF6E62',
-    padding: 8,
-    borderRadius: 8,
-    marginLeft: 30,
+  relationshipCard__name: {
+    fontSize: 17,
+    fontWeight: 700
   },
+  relationshipCard__bottom: {
+    paddingTop: 16
+  },
+  relationshipCard__button: {
+    padding: 16,
+    border: '1px solid #A0A5BD',
+    backgroundColor: '#ffffff',
+    textAlign: 'center',
+    borderRadius: 60,
+    fontSize: 15,
+    fontFamily: 'sans-serif',
+    color: '#33374B',
+    flexGrow: 1
+  },
+  relationshipCard__admin: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    paddingTop: 16
+  }
 })
 
 export default RelationshipItem

@@ -177,9 +177,9 @@ const HomeScreen = () => {
               <View style={styles.paginationBtns}>
                 <Pressable
                   onPress={handleBack}
-                  style={[styles.button, styles.buttonBack]}
+                  style={[styles.button, styles.buttonGrey]}
                 >
-                  <Text style={[styles.button__text, styles.buttonBack__text]}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>
                     BACK
                   </Text>
                 </Pressable>
