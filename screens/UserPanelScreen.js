@@ -4,6 +4,7 @@ import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
+import { auth } from '../config/firebase-config'
 
 const UserPanelScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -37,11 +38,15 @@ const UserPanelScreen = () => {
           <Pressable onPress={() => console.log('ok')}>
             <Text>Save</Text>
           </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate('Relationship Check-In')}
-          >
-            Relationship Check-In
-          </Pressable>
+          {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+            <Pressable
+              onPress={() => navigation.navigate('Relationship Check-In')}
+            >
+              Relationship Check-In
+            </Pressable>
+          ) : (
+            ''
+          )}
         </Page>
       )}
     </>
