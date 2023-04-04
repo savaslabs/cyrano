@@ -1,14 +1,11 @@
 import { View, Text, Image, TextInput, Pressable } from 'react-native'
 import { styles } from '../styles'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
-import Logo from '../svg/Logo'
 import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
 import { auth, provider, db } from '../config/firebase-config'
 import { addDoc, collection } from 'firebase/firestore'
-import { signInWithPopup } from 'firebase/auth'
 import Page from '../shared/Page'
 import useAuth from '../hooks/useAuth'
 
@@ -30,8 +27,8 @@ const GoogleCreate = () => {
         lastName: lastName,
         email: user?.user?.email,
         phone: phone,
-        profileImg: '',
-        fullName:`${name} ${lastName}`,
+        profileImg: user?.user?.img,
+        fullName: `${name} ${lastName}`,
       }).then(navigation.navigate('Relationships'))
     }
   }, [user])

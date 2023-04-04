@@ -5,6 +5,7 @@ import {
   Pressable,
   TextInput,
   Button,
+  Image,
 } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -23,6 +24,19 @@ const AdminRelItem = ({ user }) => {
     <View style={styles.mb3} key={user?.userId}>
       <Card>
         <View style={styles.row}>
+          {user?.profileImg ? (
+            <Image
+              source={user?.profileImg}
+              style={{ width: 30, height: 30, borderRadius: '100%' }}
+            />
+          ) : (
+            <Image
+              source={
+                'https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg'
+              }
+              style={{ width: 30, height: 30, borderRadius: '100%' }}
+            />
+          )}
           <Text style={styles.textSM}>
             Name: {user?.name} {user?.lastName}
           </Text>
