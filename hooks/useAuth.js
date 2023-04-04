@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
         user: {
           id: result.user.uid,
           email: result.user.email,
+          img: result.user.photoURL,
         },
         isLoggedIn: true,
       })
@@ -90,7 +91,7 @@ export const AuthProvider = ({ children }) => {
         getUser,
         userData,
         userCred,
-        saveId
+        saveId,
       }}
     >
       {children}

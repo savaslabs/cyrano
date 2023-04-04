@@ -66,24 +66,15 @@ const UserPanelScreen = () => {
         <Page>
           <Text>Settings</Text>
           <View>
-            {auth.currentUser.photoURL && (
+            {profileImg ? (
               <Image
-                source={auth.currentUser.photoURL}
+                source={profileImg}
                 style={[
                   styles.profileImage,
-                  newProfileImage || profileImg
-                    ? { display: 'none' }
-                    : { display: 'block' },
+                  newProfileImage ? { display: 'none' } : { display: 'block' },
                 ]}
               />
-            )}
-            {auth.currentUser.photoURL && profileImg && (
-              <Image source={profileImg} style={styles.profileImage} />
-            )}
-            {!auth.currentUser.photoURL && profileImg && (
-              <Image source={profileImg} style={styles.profileImage} />
-            )}
-            {!auth.currentUser.photoURL && !profileImg && !newProfileImage && (
+            ) : (
               <Image
                 source={
                   'https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg'
