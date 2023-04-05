@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import React from 'react'
-import { useState, useEffect, useContext, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
 import DropDownPicker from 'react-native-dropdown-picker'

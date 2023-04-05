@@ -1,4 +1,3 @@
-import { Alert } from 'react-native'
 import { createContext, useContext, useState } from 'react'
 import { auth, provider, db } from '../config/firebase-config'
 import {
@@ -8,6 +7,7 @@ import {
   sendEmailVerification,
 } from 'firebase/auth'
 import { getDocs, collection, where, query } from 'firebase/firestore'
+import Toast from 'react-native-toast-message'
 
 const AuthContext = createContext({})
 
@@ -26,13 +26,28 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         const errorCode = error.code
-        console.log(errorCode)
+        Toast.show({
+          type: 'error',
+          text1: errorCode,
+          visibilityTime: 2000,
+        })
       })
 
     await sendEmailVerification(auth.currentUser)
-      .then(Alert.alert('An email has been sent to verify the account'))
-      .then(() => alert('An email has been sent to verify the account'))
-      .catch((err) => console.log(err))
+      .then(() =>
+        Toast.show({
+          type: 'success',
+          text1: 'Check your email to verify your account',
+          visibilityTime: 2000,
+        })
+      )
+      .catch((err) =>
+        Toast.show({
+          type: 'error',
+          text1: err,
+          visibilityTime: 2000,
+        })
+      )
   }
 
   // Sign in with Google
@@ -62,12 +77,20 @@ export const AuthProvider = ({ children }) => {
           isLoggedIn: true,
         })
         // } else {
-        //   alert('The email is not verified. Please check your inbox')
+        //   Toast.show({
+        //     type: 'error',
+        //     text1: 'The email is not verified. Check your inbox',
+        //     visibilityTime: 2000
+        //   })
         // }
       })
       .catch((error) => {
         const errorCode = error.code
-        alert(errorCode)
+        Toast.show({
+          type: 'error',
+          text1: errorCode,
+          visibilityTime: 2000,
+        })
       })
   }
 
@@ -89,6 +112,7 @@ export const AuthProvider = ({ children }) => {
         signInWithGoogle,
         signInWithEmail,
         getUser,
+        setUser,
         userData,
         userCred,
         saveId,

@@ -1,19 +1,12 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TextInput,
-  Pressable,
-} from 'react-native'
-import React, { useEffect, useState, useContext, createElement } from 'react'
+import { View, Text, TextInput, Pressable } from 'react-native'
+import React, { useEffect, useState, createElement } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
 import { styles } from '../styles'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Page from '../shared/Page'
 import { db } from '../config/firebase-config'
 import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore'
+import Toast from 'react-native-toast-message'
 
 const ScheduleEvent = () => {
   const [relationshipData, setRelationshipData] = useState('')
@@ -36,8 +29,6 @@ const ScheduleEvent = () => {
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
-  const { relationship, updateRelationship, user } =
-    useContext(RelationshipContext)
   const { itemId } = route.params
   const docRef = doc(db, 'relationships', itemId)
 
@@ -80,7 +71,7 @@ const ScheduleEvent = () => {
             nextDatePlace,
             nextDateDate,
             nextDateTime,
-            additionalComments
+            additionalComments,
           }),
           totalEvents: arrayUnion({
             name: relationshipData.name,
@@ -92,13 +83,21 @@ const ScheduleEvent = () => {
             nextDatePlace,
             nextDateDate,
             nextDateTime,
-            additionalComments
+            additionalComments,
           }),
         },
         {
           merge: true,
         }
-      ).then(navigation.navigate('Admin'))
+      )
+        .then(navigation.navigate('Admin'))
+        .then(
+          Toast.show({
+            type: 'success',
+            text1: 'Event created! ✅',
+            visibilityTime: 2000,
+          })
+        )
 
       // await updateRelationship(itemId, newRelationship)
 
@@ -163,99 +162,101 @@ const ScheduleEvent = () => {
 
   return (
     <>
-    <Page>
-      <View style={[styles.page__content, styles.pageTopPadding]}>
-        <View style={styles.page__upper}>
-          <Text style={styles.h1}>Create Event</Text>
-        </View>
-        <View style={styles.form}>
-          <Text style={styles.form__label}>Event Name</Text>
-          <TextInput
-            style={styles.form__input}
-            placeholderTextColor="#c7cbd9"
-            placeholder="Event name"
-            value={eventName}
-            onChangeText={(newEventName) => setEventName(newEventName)}
-          />
-          <View style={styles.form__twoCol}>
-            <View style={styles.form__col}>
-              <Text style={styles.form__label}>Date</Text>
-              <NextDatePicker />
-            </View>
-            <View style={styles.form__col}>
-              <Text style={styles.form__label}>Time</Text>
-              <TimePicker />
-            </View>
+      <Page>
+        <View style={[styles.page__content, styles.pageTopPadding]}>
+          <View style={styles.page__upper}>
+            <Text style={styles.h1}>Create Event</Text>
           </View>
-          <Text style={styles.form__label}>Location</Text>
-          <TextInput
-            style={styles.form__input}
-            placeholderTextColor="#c7cbd9"
-            placeholder="Address of the event"
-            value={nextDatePlace}
-            onChangeText={(newNextDatePlace) =>
-              setNextDatePlace(newNextDatePlace)
-            }
-          />
-          <Text style={styles.form__label}>Select the love styles</Text>
-          <DropDownPicker
-            open={openLoveStyleTag}
-            value={loveStyleTagValue}
-            items={loveStyleTagItems}
-            setOpen={setOpenLoveStyleTag}
-            setValue={setLoveStyleTagValue}
-            setItems={setLoveStyleTagItems}
-            style={styles.form__select}
-            placeholder="Select Love Styles"
-            placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
-            dropDownContainerStyle={{
-              margin: 'auto',
-              color: '#33374B',
-              zIndex: '20000',
-              height: 160,
-              bottom: -135,
-              borderColor: 'rgba(199, 203, 217, 1)',
-              paddingLeft: 4,
-              fontSize: 17
-            }}
-            listItemLabelStyle={{
-              color: '#33374B',
-            }}
-            disabledItemLabelStyle={{
-              color: 'rgba(51,55,75,0.5)',
-            }}
-            labelStyle={{
-              color: '#33374B',
-            }}
-            multiple={true}
-            mode="BADGE"
-            badgeDotColors={['#586187']}
-          />
-          <View style={{ zIndex: 1 }}>
-            <Text style={styles.form__label}>Additional Comments</Text>
+          <View style={styles.form}>
+            <Text style={styles.form__label}>Event Name</Text>
             <TextInput
-              placeholder="Additional Comments"
+              style={styles.form__input}
               placeholderTextColor="#c7cbd9"
-              multiline={true}
-              numberOfLines={4}
-              style={styles.form__textArea}
-              onChangeText={(newComments) => setAdditionalComments(newComments)}
+              placeholder="Event name"
+              value={eventName}
+              onChangeText={(newEventName) => setEventName(newEventName)}
             />
+            <View style={styles.form__twoCol}>
+              <View style={styles.form__col}>
+                <Text style={styles.form__label}>Date</Text>
+                <NextDatePicker />
+              </View>
+              <View style={styles.form__col}>
+                <Text style={styles.form__label}>Time</Text>
+                <TimePicker />
+              </View>
+            </View>
+            <Text style={styles.form__label}>Location</Text>
+            <TextInput
+              style={styles.form__input}
+              placeholderTextColor="#c7cbd9"
+              placeholder="Address of the event"
+              value={nextDatePlace}
+              onChangeText={(newNextDatePlace) =>
+                setNextDatePlace(newNextDatePlace)
+              }
+            />
+            <Text style={styles.form__label}>Select the love styles</Text>
+            <DropDownPicker
+              open={openLoveStyleTag}
+              value={loveStyleTagValue}
+              items={loveStyleTagItems}
+              setOpen={setOpenLoveStyleTag}
+              setValue={setLoveStyleTagValue}
+              setItems={setLoveStyleTagItems}
+              style={styles.form__select}
+              placeholder="Select Love Styles"
+              placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
+              dropDownContainerStyle={{
+                margin: 'auto',
+                color: '#33374B',
+                zIndex: '20000',
+                height: 160,
+                bottom: -135,
+                borderColor: 'rgba(199, 203, 217, 1)',
+                paddingLeft: 4,
+                fontSize: 17,
+              }}
+              listItemLabelStyle={{
+                color: '#33374B',
+              }}
+              disabledItemLabelStyle={{
+                color: 'rgba(51,55,75,0.5)',
+              }}
+              labelStyle={{
+                color: '#33374B',
+              }}
+              multiple={true}
+              mode="BADGE"
+              badgeDotColors={['#586187']}
+            />
+            <View style={{ zIndex: 1 }}>
+              <Text style={styles.form__label}>Additional Comments</Text>
+              <TextInput
+                placeholder="Additional Comments"
+                placeholderTextColor="#c7cbd9"
+                multiline={true}
+                numberOfLines={4}
+                style={styles.form__textArea}
+                onChangeText={(newComments) =>
+                  setAdditionalComments(newComments)
+                }
+              />
+            </View>
+          </View>
+
+          <View style={styles.page__lower}>
+            <Pressable
+              // style={[styles.button, isDisabled ? styles.disabled : '']}
+              style={styles.button}
+              onPress={handlePress}
+              // disabled={isDisabled}
+            >
+              <Text style={styles.button__text}>CREATE EVENT</Text>
+            </Pressable>
           </View>
         </View>
-
-        <View style={styles.page__lower}>
-          <Pressable
-            // style={[styles.button, isDisabled ? styles.disabled : '']}
-            style={styles.button}
-            onPress={handlePress}
-            // disabled={isDisabled}
-          >
-            <Text style={styles.button__text}>CREATE EVENT</Text>
-          </Pressable>
-        </View>
-      </View>
-    </Page>
+      </Page>
     </>
   )
 }

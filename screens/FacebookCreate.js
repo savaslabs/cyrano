@@ -9,7 +9,6 @@ import {
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipContext from '../context/RelationshipContext'
-import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.png'
 import Facebook from '../assets/facebook.png'
 import { auth, facebookProvider, db } from '../config/firebase-config'

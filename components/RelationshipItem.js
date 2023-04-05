@@ -65,6 +65,16 @@ const RelationshipItem = ({ item }) => {
           <Pressable style={styles.relationshipCard__button}>
             How is the relationship going?
           </Pressable>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Schedule Event', {
+                itemId: item?.id,
+              })
+            }
+            style={styles.relationshipCard__button}
+          >
+            Create Event
+          </Pressable>
         </View>
       )}
     </View>
@@ -75,31 +85,31 @@ const styles = StyleSheet.create({
   relationshipCard: {
     backgroundColor: '#F1F2F6',
     padding: 16,
-    borderRadius: 4
+    borderRadius: 4,
   },
   relationshipCard__top: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   relationshipCard__profile: {
     flex: 1,
     flexDirection: 'row',
     gap: 12,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   relationshipCard__img: {
     width: 64,
     height: 64,
-    borderRadius: 100
+    borderRadius: 100,
   },
   relationshipCard__name: {
     fontSize: 17,
-    fontWeight: 700
+    fontWeight: 700,
   },
   relationshipCard__bottom: {
-    paddingTop: 16
+    paddingTop: 16,
   },
   relationshipCard__button: {
     padding: 16,
@@ -110,15 +120,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'sans-serif',
     color: '#33374B',
-    flexGrow: 1
+    flexGrow: 1,
   },
   relationshipCard__admin: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 16,
-    paddingTop: 16
-  }
+    paddingTop: 16,
+  },
 })
 
 export default RelationshipItem

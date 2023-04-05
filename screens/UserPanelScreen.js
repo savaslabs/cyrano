@@ -4,9 +4,11 @@ import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
-import { auth, db } from '../config/firebase-config'
+import { auth, db, resetPassword } from '../config/firebase-config'
 import { updateDoc, doc } from 'firebase/firestore'
+import { sendPasswordResetEmail } from 'firebase/auth'
 import * as ImagePicker from 'expo-image-picker'
+import Toast from 'react-native-toast-message'
 
 const UserPanelScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -51,10 +53,36 @@ const UserPanelScreen = () => {
           {
             merge: true,
           }
-        ).then(navigation.navigate('Relationships'))
+        )
+          .then(() =>
+            Toast.show({
+              type: 'success',
+              text1: 'Profile updated! 🤝',
+              visibilityTime: 2000,
+            })
+          )
+          .then(navigation.navigate('Relationships'))
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleResetPassword = () => {
+    try {
+      sendPasswordResetEmail(auth, email).then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Email sent! 🚀',
+          visibilityTime: 2000,
+        })
+      })
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: error,
+        visibilityTime: 2000,
+      })
     }
   }
 
@@ -97,6 +125,13 @@ const UserPanelScreen = () => {
           <Text>Name: {fullName}</Text>
           <Text>Email: {email}</Text>
           <Text>Phone: {phone}</Text>
+          <Pressable onPress={handleResetPassword}>
+            {auth.currentUser.providerData[0].providerId === 'password' ? (
+              <Text>Change password</Text>
+            ) : (
+              ''
+            )}
+          </Pressable>
           <Pressable onPress={handleSave}>
             <Text>Save</Text>
           </Pressable>

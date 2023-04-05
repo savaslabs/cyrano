@@ -6,9 +6,21 @@ import HomeIcon from '../assets/home-icon.svg'
 import EventsIcon from '../assets/events-icon.svg'
 import SettingsIcon from '../assets/settings-icon.svg'
 import { auth } from '../config/firebase-config'
+import { signOut } from 'firebase/auth'
+import useAuth from '../hooks/useAuth'
 
 const TabNavigator = () => {
   const navigation = useNavigation()
+  const { setUser } = useAuth()
+
+  const handleSignOut = () => {
+    signOut(auth).then(() =>
+      setUser({
+        user: auth.currentUser,
+        isLoggedIn: false,
+      })
+    )
+  }
 
   return (
     <View style={styles.nav}>
@@ -18,31 +30,53 @@ const TabNavigator = () => {
         </View>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
           <>
-            <Pressable style={[styles.nav__link, {maxWidth: 92}]} onPress={() => navigation.navigate('Admin')}>
+            <Pressable
+              style={[styles.nav__link, { maxWidth: 92 }]}
+              onPress={() => navigation.navigate('Admin')}
+            >
               <Image source={HomeIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Home</Text>
             </Pressable>
-            <Pressable style={[styles.nav__link, {maxWidth: 121}]} onPress={() => navigation.navigate('User Panel')}>
+            <Pressable
+              style={[styles.nav__link, { maxWidth: 121 }]}
+              onPress={() => navigation.navigate('User Panel')}
+            >
               <Image source={SettingsIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Settings</Text>
             </Pressable>
           </>
         ) : (
           <>
-            <Pressable style={[styles.nav__link, {maxWidth: 92}]} onPress={() => navigation.navigate('Relationships')}>
+            <Pressable
+              style={[styles.nav__link, { maxWidth: 92 }]}
+              onPress={() => navigation.navigate('Relationships')}
+            >
               <Image source={HomeIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Home</Text>
             </Pressable>
-            <Pressable style={[styles.nav__link, {maxWidth: 106}]} onPress={() => navigation.navigate('Event History')}>
+            <Pressable
+              style={[styles.nav__link, { maxWidth: 106 }]}
+              onPress={() => navigation.navigate('Event History')}
+            >
               <Image source={EventsIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Events</Text>
             </Pressable>
-            <Pressable style={[styles.nav__link, {maxWidth: 121}]} onPress={() => navigation.navigate('User Panel')}>
-            <Image source={SettingsIcon} style={styles.nav__icon} />
+            <Pressable
+              style={[styles.nav__link, { maxWidth: 121 }]}
+              onPress={() => navigation.navigate('User Panel')}
+            >
+              <Image source={SettingsIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Settings</Text>
             </Pressable>
           </>
         )}
+        <Pressable
+          style={[styles.nav__link, { maxWidth: 121 }]}
+          onPress={handleSignOut}
+        >
+          <Image source={SettingsIcon} style={styles.nav__icon} />
+          <Text style={styles.nav__text}>Sign Out</Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -62,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     alignItems: 'center',
-    flexGrow: 1
+    flexGrow: 1,
   },
   nav__logo: {
     maxWidth: 48,
@@ -73,7 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   nav__link: {
     backgroundColor: '#ffffff',
@@ -87,21 +121,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    flexShrink: 0
+    flexShrink: 0,
   },
   nav__icon: {
     width: 24,
-    height: 24
+    height: 24,
   },
   nav__text: {
     textTransform: 'uppercase',
     fontSize: 14,
     letterSpacing: '5%',
-    color: '#33374B'
+    color: '#33374B',
   },
   nav__space: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 })
 
 export default TabNavigator
