@@ -134,15 +134,6 @@ const UserPanelScreen = () => {
           <Pressable onPress={handleSave}>
             <Text>Save</Text>
           </Pressable>
-          {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-            <Pressable
-              onPress={() => navigation.navigate('Relationship Check-In')}
-            >
-              Relationship Check-In
-            </Pressable>
-          ) : (
-            ''
-          )}
         </Page>
       )}
     </>
