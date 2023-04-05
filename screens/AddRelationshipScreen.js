@@ -13,6 +13,8 @@ import { auth, db } from '../config/firebase-config'
 import { setDoc, doc, serverTimestamp, arrayUnion } from 'firebase/firestore'
 import { styles } from '../styles'
 import Page from '../shared/Page'
+import Toast from 'react-native-toast-message'
+import Spinner from '../shared/Spinner'
 
 const AddRelationship = () => {
   const [profileImage, setProfileImage] = useState(null)
@@ -21,6 +23,7 @@ const AddRelationship = () => {
   const [loveStyleIsDisabled] = useState(true)
   const [nextIsDisabled] = useState(true)
   const [showMessage, setShowMessage] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [docID, setDocID] = useState('')
 
   // First form states
@@ -73,21 +76,7 @@ const AddRelationship = () => {
 
   const handlePress = async () => {
     if (name && lastName && birthday) {
-      setProfileImage('')
-      setName('')
-      setLastName('')
-      setRelationshipValue('')
-      setPronounsValue('')
-      setLocation('')
-      setBirthday('')
-      setAnniversary('')
-      setRelationshipRating('')
-      setEmail('')
-      setPhone('')
-      setDateRating('')
-      setLastTimeDate('')
-      setDatePlace('')
-
+      setLoading(true)
       setDoc(doc(db, 'relationships', docID), {
         profileImage,
         name,
@@ -129,10 +118,42 @@ const AddRelationship = () => {
           dateRating,
         }),
       })
-
-      navigation.navigate('Relationship', {
-        itemId: docID,
-      })
+        .then(() =>
+          navigation.navigate('Relationship', {
+            itemId: docID,
+          })
+        )
+        .then(() => {
+          Toast.show({
+            type: 'success',
+            text1: 'Relationship created! 🤝',
+            visibilityTime: 2000,
+          })
+        })
+        .then(() => {
+          setProfileImage('')
+          setName('')
+          setLastName('')
+          setRelationshipValue('')
+          setPronounsValue('')
+          setLocation('')
+          setBirthday('')
+          setAnniversary('')
+          setRelationshipRating('')
+          setEmail('')
+          setPhone('')
+          setDateRating('')
+          setLastTimeDate('')
+          setDatePlace('')
+        })
+        .then(() => setLoading(false))
+        .catch((err) =>
+          Toast.show({
+            type: 'error',
+            text1: err.code,
+            visibilityTime: 2000,
+          })
+        )
     }
   }
 
@@ -178,332 +199,389 @@ const AddRelationship = () => {
   }
 
   return (
-    <Page>
-      <View style={[styles.page__content, styles.pageTopPadding]}>
-        <View style={[styles.page__upper, styles.relationshipHeading]}>
-          <View style={styles.relationshipHeading__text}>
-            <Text style={[styles.h2, styles.alignLeft]}>Add Relationship</Text>
-            {pageCounter === 1 && (
-              <Text style={[styles.p, styles.alignLeft]}>
-                Tell us about your partner.
-              </Text>
-            )}
-            {pageCounter === 2 && (
-              <Text style={[styles.p, styles.alignLeft]}>
-                More details about your relationship with{' '}
-                <Text style={{ fontWeight: 'bold' }}>{name}</Text>.
-              </Text>
-            )}
-            {pageCounter === 3 && (
-              <Text style={[styles.p, styles.alignLeft]}>
-                Enter <Text style={{ fontWeight: 'bold' }}>{name}</Text>'s
-                contact information to send them the Truity Love Styles test.
-              </Text>
-            )}
-            {pageCounter === 4 && (
-              <Text style={[styles.p, styles.alignLeft]}>
-                Tell us about your most recent date with {name}.
-              </Text>
-            )}
-          </View>
-          <Pressable onPress={pickImage}>
-            <View
-              style={profileImage ? styles.cameraRemoveBorder : styles.camera}
-            >
-              {profileImage ? (
-                <Image
-                  source={{ uri: profileImage }}
-                  style={styles.profileImage}
-                />
-              ) : (
-                <Image source={CameraSVG} style={styles.camera__img} />
-              )}
-            </View>
-          </Pressable>
-        </View>
-        <View style={styles.form}>
-          {pageCounter === 1 && (
-            <First
-              name={name}
-              setName={setName}
-              lastName={lastName}
-              setLastName={setLastName}
-              openRelationship={openRelationship}
-              setOpenRelationship={setOpenRelationship}
-              relationshipItems={relationshipItems}
-              setRelationshipItems={setRelationshipItems}
-              relationshipValue={relationshipValue}
-              setRelationshipValue={setRelationshipValue}
-              pronounsValue={pronounsValue}
-              setPronounsValue={setPronounsValue}
-              openPronouns={openPronouns}
-              setOpenPronouns={setOpenPronouns}
-              pronounsItem={pronounsItem}
-              setPronounsItem={setPronounsItem}
-              location={location}
-              setLocation={setLocation}
-            />
-          )}
-          {pageCounter === 2 && (
-            <Second
-              birthday={birthday}
-              setBirthday={setBirthday}
-              anniversary={anniversary}
-              setAnniversary={setAnniversary}
-              relationshipValue={relationshipValue}
-              relationshipRating={relationshipRating}
-              setRelationshipRating={setRelationshipRating}
-            />
-          )}
-          {pageCounter === 3 && (
-            <Third
-              name={name}
-              email={email}
-              setEmail={setEmail}
-              phone={phone}
-              setPhone={setPhone}
-            />
-          )}
-          {pageCounter === 4 && (
-            <Fourth
-              lastTimeDate={lastTimeDate}
-              setLastTimeDate={setLastTimeDate}
-              datePlace={datePlace}
-              setDatePlace={setDatePlace}
-              dateRating={dateRating}
-              setDateRating={setDateRating}
-              name={name}
-              birthday={birthday}
-              anniversary={anniversary}
-            />
-          )}
-        </View>
-        {pageCounter === 1 && (
-          <>
-            <View style={styles.dots}>
-              <View style={[styles.dots__dot, styles.dots__active]}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
-            </View>
-            <View style={styles.page__lower}>
-              <Pressable style={styles.button} onPress={handleNext}>
-                <Text style={styles.button__text}>CONTINUE</Text>
+    <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Page>
+          <View style={[styles.page__content, styles.pageTopPadding]}>
+            <View style={[styles.page__upper, styles.relationshipHeading]}>
+              <View style={styles.relationshipHeading__text}>
+                <Text style={[styles.h2, styles.alignLeft]}>
+                  Add Relationship
+                </Text>
+                {pageCounter === 1 && (
+                  <Text style={[styles.p, styles.alignLeft]}>
+                    Tell us about your partner.
+                  </Text>
+                )}
+                {pageCounter === 2 && (
+                  <Text style={[styles.p, styles.alignLeft]}>
+                    More details about your relationship with{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{name}</Text>.
+                  </Text>
+                )}
+                {pageCounter === 3 && (
+                  <Text style={[styles.p, styles.alignLeft]}>
+                    Enter <Text style={{ fontWeight: 'bold' }}>{name}</Text>'s
+                    contact information to send them the Truity Love Styles
+                    test.
+                  </Text>
+                )}
+                {pageCounter === 4 && (
+                  <Text style={[styles.p, styles.alignLeft]}>
+                    Tell us about your most recent date with {name}.
+                  </Text>
+                )}
+              </View>
+              <Pressable onPress={pickImage}>
+                <View
+                  style={
+                    profileImage ? styles.cameraRemoveBorder : styles.camera
+                  }
+                >
+                  {profileImage ? (
+                    <Image
+                      source={{ uri: profileImage }}
+                      style={styles.profileImage}
+                    />
+                  ) : (
+                    <Image source={CameraSVG} style={styles.camera__img} />
+                  )}
+                </View>
               </Pressable>
             </View>
-          </>
-        )}
-        {pageCounter === 2 && (
-          <>
-            <View style={styles.dots}>
-              <View style={styles.dots__dot}></View>
-              <View style={[styles.dots__dot, styles.dots__active]}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
+            <View style={styles.form}>
+              {pageCounter === 1 && (
+                <First
+                  name={name}
+                  setName={setName}
+                  lastName={lastName}
+                  setLastName={setLastName}
+                  openRelationship={openRelationship}
+                  setOpenRelationship={setOpenRelationship}
+                  relationshipItems={relationshipItems}
+                  setRelationshipItems={setRelationshipItems}
+                  relationshipValue={relationshipValue}
+                  setRelationshipValue={setRelationshipValue}
+                  pronounsValue={pronounsValue}
+                  setPronounsValue={setPronounsValue}
+                  openPronouns={openPronouns}
+                  setOpenPronouns={setOpenPronouns}
+                  pronounsItem={pronounsItem}
+                  setPronounsItem={setPronounsItem}
+                  location={location}
+                  setLocation={setLocation}
+                />
+              )}
+              {pageCounter === 2 && (
+                <Second
+                  birthday={birthday}
+                  setBirthday={setBirthday}
+                  anniversary={anniversary}
+                  setAnniversary={setAnniversary}
+                  relationshipValue={relationshipValue}
+                  relationshipRating={relationshipRating}
+                  setRelationshipRating={setRelationshipRating}
+                />
+              )}
+              {pageCounter === 3 && (
+                <Third
+                  name={name}
+                  email={email}
+                  setEmail={setEmail}
+                  phone={phone}
+                  setPhone={setPhone}
+                />
+              )}
+              {pageCounter === 4 && (
+                <Fourth
+                  lastTimeDate={lastTimeDate}
+                  setLastTimeDate={setLastTimeDate}
+                  datePlace={datePlace}
+                  setDatePlace={setDatePlace}
+                  dateRating={dateRating}
+                  setDateRating={setDateRating}
+                  name={name}
+                  birthday={birthday}
+                  anniversary={anniversary}
+                />
+              )}
             </View>
-            <View style={styles.page__lower}>
-              <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
-                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
-                </Pressable>
-                <Pressable style={[styles.button, styles.buttonNext]} onPress={handleNext}>
-                  <Text style={styles.button__text}>CONTINUE</Text>
-                </Pressable>
-              </View>
-            </View>
-          </>
-        )}
-        {pageCounter === 3 && !email && !phone && (
-          <>
-            <Pressable
-              style={[
-                styles.button,
-                loveStyleIsDisabled ? styles.disabled : '',
-              ]}
-              onPress={sendLoveTest}
-              disabled={loveStyleIsDisabled}
-            >
-              <Text
-                style={[
-                  styles.button__text,
-                  loveStyleIsDisabled ? styles.disabled__text : '',
-                ]}
-              >
-                SEND LOVE STYLES TEST
-              </Text>
-            </Pressable>
-            <View style={styles.dots}>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={[styles.dots__dot, styles.dots__active]}></View>
-              <View style={styles.dots__dot}></View>
-            </View>
-            <View style={styles.page__lower}>
-              <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
-                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
-                </Pressable>
+            {pageCounter === 1 && (
+              <>
+                <View style={styles.dots}>
+                  <View style={[styles.dots__dot, styles.dots__active]}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                </View>
+                <View style={styles.page__lower}>
+                  <Pressable style={styles.button} onPress={handleNext}>
+                    <Text style={styles.button__text}>CONTINUE</Text>
+                  </Pressable>
+                </View>
+              </>
+            )}
+            {pageCounter === 2 && (
+              <>
+                <View style={styles.dots}>
+                  <View style={styles.dots__dot}></View>
+                  <View style={[styles.dots__dot, styles.dots__active]}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                </View>
+                <View style={styles.page__lower}>
+                  <View style={styles.paginationBtns}>
+                    <Pressable
+                      onPress={handleBack}
+                      style={[styles.button, styles.buttonGrey]}
+                    >
+                      <Text
+                        style={[styles.button__text, styles.buttonGrey__text]}
+                      >
+                        BACK
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      style={[styles.button, styles.buttonNext]}
+                      onPress={handleNext}
+                    >
+                      <Text style={styles.button__text}>CONTINUE</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </>
+            )}
+            {pageCounter === 3 && !email && !phone && (
+              <>
                 <Pressable
                   style={[
                     styles.button,
-                    styles.buttonNext,
-                    nextIsDisabled ? styles.disabled : '',
+                    loveStyleIsDisabled ? styles.disabled : '',
                   ]}
-                  onPress={handleNext}
-                  disabled={nextIsDisabled}
+                  onPress={sendLoveTest}
+                  disabled={loveStyleIsDisabled}
                 >
                   <Text
                     style={[
                       styles.button__text,
-                      nextIsDisabled ? styles.disabled__text : '',
+                      loveStyleIsDisabled ? styles.disabled__text : '',
                     ]}
                   >
-                    CONTINUE
+                    SEND LOVE STYLES TEST
                   </Text>
                 </Pressable>
-              </View>
-            </View>
-          </>
-        )}
+                <View style={styles.dots}>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={[styles.dots__dot, styles.dots__active]}></View>
+                  <View style={styles.dots__dot}></View>
+                </View>
+                <View style={styles.page__lower}>
+                  <View style={styles.paginationBtns}>
+                    <Pressable
+                      onPress={handleBack}
+                      style={[styles.button, styles.buttonGrey]}
+                    >
+                      <Text
+                        style={[styles.button__text, styles.buttonGrey__text]}
+                      >
+                        BACK
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      style={[
+                        styles.button,
+                        styles.buttonNext,
+                        nextIsDisabled ? styles.disabled : '',
+                      ]}
+                      onPress={handleNext}
+                      disabled={nextIsDisabled}
+                    >
+                      <Text
+                        style={[
+                          styles.button__text,
+                          nextIsDisabled ? styles.disabled__text : '',
+                        ]}
+                      >
+                        CONTINUE
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </>
+            )}
 
-        {(pageCounter === 3 && email && !phone) ||
-          (pageCounter === 3 && !email && phone && (
-            <>
-              <Pressable
-                style={[
-                  styles.button,
-                  loveStyleIsDisabled ? styles.disabled : '',
-                ]}
-                onPress={sendLoveTest}
-                disabled={loveStyleIsDisabled}
-              >
-                <Text
-                  style={[
-                    styles.button__text,
-                    loveStyleIsDisabled ? styles.disabled__text : '',
-                  ]}
-                >
-                  SEND LOVE STYLES TEST
-                </Text>
-              </Pressable>
-              <View style={styles.dots}>
-                <View style={styles.dots__dot}></View>
-                <View style={styles.dots__dot}></View>
-                <View style={[styles.dots__dot, styles.dots__active]}></View>
-                <View style={styles.dots__dot}></View>
-              </View>
-              <View style={styles.page__lower}>
-                <View style={styles.paginationBtns}>
-                  <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
-                    <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
-                  </Pressable>
+            {(pageCounter === 3 && email && !phone) ||
+              (pageCounter === 3 && !email && phone && (
+                <>
                   <Pressable
                     style={[
                       styles.button,
-                      styles.buttonNext,
-                      nextIsDisabled ? styles.disabled : '',
+                      loveStyleIsDisabled ? styles.disabled : '',
                     ]}
-                    onPress={handleNext}
-                    disabled={nextIsDisabled}
+                    onPress={sendLoveTest}
+                    disabled={loveStyleIsDisabled}
                   >
                     <Text
                       style={[
                         styles.button__text,
-                        nextIsDisabled ? styles.disabled__text : '',
+                        loveStyleIsDisabled ? styles.disabled__text : '',
                       ]}
                     >
-                      CONTINUE
+                      SEND LOVE STYLES TEST
                     </Text>
                   </Pressable>
-                </View>
-              </View>
-            </>
-          ))}
+                  <View style={styles.dots}>
+                    <View style={styles.dots__dot}></View>
+                    <View style={styles.dots__dot}></View>
+                    <View
+                      style={[styles.dots__dot, styles.dots__active]}
+                    ></View>
+                    <View style={styles.dots__dot}></View>
+                  </View>
+                  <View style={styles.page__lower}>
+                    <View style={styles.paginationBtns}>
+                      <Pressable
+                        onPress={handleBack}
+                        style={[styles.button, styles.buttonGrey]}
+                      >
+                        <Text
+                          style={[styles.button__text, styles.buttonGrey__text]}
+                        >
+                          BACK
+                        </Text>
+                      </Pressable>
+                      <Pressable
+                        style={[
+                          styles.button,
+                          styles.buttonNext,
+                          nextIsDisabled ? styles.disabled : '',
+                        ]}
+                        onPress={handleNext}
+                        disabled={nextIsDisabled}
+                      >
+                        <Text
+                          style={[
+                            styles.button__text,
+                            nextIsDisabled ? styles.disabled__text : '',
+                          ]}
+                        >
+                          CONTINUE
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </>
+              ))}
 
-        {pageCounter === 3 && email && phone && (
-          <>
-            {showMessage ? (
-              <View style={styles.confirmation}>
-                <Image
-                  source={{ uri: PaperPlane }}
-                  style={styles.confirmation__icon}
-                />
-                <Text
-                  style={[
-                    styles.p,
-                    styles.alignLeft,
-                    styles.confirmation__text,
-                  ]}
-                >
-                  The test has been sent to {name}. We'll alert you once we have
-                  uploaded their results
-                </Text>
-              </View>
-            ) : (
-              <Pressable
-                style={styles.button}
-                onPress={sendLoveTest}
-                disabled={!loveStyleIsDisabled}
-              >
-                <Text style={styles.button__text}>SEND LOVE STYLES TEST</Text>
-              </Pressable>
-            )}
-            <View style={styles.dots}>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={[styles.dots__dot, styles.dots__active]}></View>
-              <View style={styles.dots__dot}></View>
-            </View>
-            <View style={styles.page__lower}>
-              <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
-                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonNext]}
-                  onPress={handleNext}
-                  disabled={!nextIsDisabled}
-                >
-                  <Text style={styles.button__text}>CONTINUE</Text>
-                </Pressable>
-              </View>
-            </View>
-          </>
-        )}
-
-        {pageCounter === 4 && (
-          <>
-            <View style={styles.dots}>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={styles.dots__dot}></View>
-              <View style={[styles.dots__dot, styles.dots__active]}></View>
-            </View>
-            <View style={styles.page__lower}>
-              <View style={styles.paginationBtns}>
-                <Pressable onPress={handleBack} style={[styles.button, styles.buttonGrey]}>
-                  <Text style={[styles.button__text, styles.buttonGrey__text]}>BACK</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonNext, isDisabled ? styles.disabled : '']}
-                  onPress={handlePress}
-                  disabled={isDisabled}
-                >
-                  <Text
-                    style={[
-                      styles.button__text,
-                      isDisabled ? styles.disabled__text : '',
-                    ]}
+            {pageCounter === 3 && email && phone && (
+              <>
+                {showMessage ? (
+                  <View style={styles.confirmation}>
+                    <Image
+                      source={{ uri: PaperPlane }}
+                      style={styles.confirmation__icon}
+                    />
+                    <Text
+                      style={[
+                        styles.p,
+                        styles.alignLeft,
+                        styles.confirmation__text,
+                      ]}
+                    >
+                      The test has been sent to {name}. We'll alert you once we
+                      have uploaded their results
+                    </Text>
+                  </View>
+                ) : (
+                  <Pressable
+                    style={styles.button}
+                    onPress={sendLoveTest}
+                    disabled={!loveStyleIsDisabled}
                   >
-                    Save
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </>
-        )}
-      </View>
-    </Page>
+                    <Text style={styles.button__text}>
+                      SEND LOVE STYLES TEST
+                    </Text>
+                  </Pressable>
+                )}
+                <View style={styles.dots}>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={[styles.dots__dot, styles.dots__active]}></View>
+                  <View style={styles.dots__dot}></View>
+                </View>
+                <View style={styles.page__lower}>
+                  <View style={styles.paginationBtns}>
+                    <Pressable
+                      onPress={handleBack}
+                      style={[styles.button, styles.buttonGrey]}
+                    >
+                      <Text
+                        style={[styles.button__text, styles.buttonGrey__text]}
+                      >
+                        BACK
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      style={[styles.button, styles.buttonNext]}
+                      onPress={handleNext}
+                      disabled={!nextIsDisabled}
+                    >
+                      <Text style={styles.button__text}>CONTINUE</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </>
+            )}
+
+            {pageCounter === 4 && (
+              <>
+                <View style={styles.dots}>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={styles.dots__dot}></View>
+                  <View style={[styles.dots__dot, styles.dots__active]}></View>
+                </View>
+                <View style={styles.page__lower}>
+                  <View style={styles.paginationBtns}>
+                    <Pressable
+                      onPress={handleBack}
+                      style={[styles.button, styles.buttonGrey]}
+                    >
+                      <Text
+                        style={[styles.button__text, styles.buttonGrey__text]}
+                      >
+                        BACK
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      style={[
+                        styles.button,
+                        styles.buttonNext,
+                        isDisabled ? styles.disabled : '',
+                      ]}
+                      onPress={handlePress}
+                      disabled={isDisabled}
+                    >
+                      <Text
+                        style={[
+                          styles.button__text,
+                          isDisabled ? styles.disabled__text : '',
+                        ]}
+                      >
+                        Save
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
+        </Page>
+      )}
+    </>
   )
 }
 

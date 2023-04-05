@@ -25,6 +25,8 @@ const LoginScreen = () => {
   useEffect(() => {
     if (user) {
       navigation.navigate('Relationships')
+      setEmail('')
+      setPassword('')
     }
   }, [user])
 

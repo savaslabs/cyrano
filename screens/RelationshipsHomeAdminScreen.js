@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { styles } from '../styles'
 import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
@@ -6,7 +6,6 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { db } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
-import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 

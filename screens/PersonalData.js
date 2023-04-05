@@ -1,14 +1,10 @@
 import { View, Text, Image, TextInput, Pressable } from 'react-native'
 import { styles } from '../styles'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import RelationshipContext from '../context/RelationshipContext'
-import Logo from '../svg/Logo'
 import LogoIMG from '../assets/logo.png'
-import Google from '../assets/google.png'
-import { auth, provider, db } from '../config/firebase-config'
+import { auth, db } from '../config/firebase-config'
 import { addDoc, collection } from 'firebase/firestore'
-import { signInWithPopup } from 'firebase/auth'
 
 const PersonalData = () => {
   const [name, setName] = useState('')
@@ -16,7 +12,6 @@ const PersonalData = () => {
   const [phone, setPhone] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
-  const { logInUser } = useContext(RelationshipContext)
   const usersRef = collection(db, 'users')
 
   const createUserData = () => {

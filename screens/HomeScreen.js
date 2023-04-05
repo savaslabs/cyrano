@@ -1,13 +1,14 @@
-import { View, Text, Image, TextInput, Pressable, Alert } from 'react-native'
+import { View, Text, Image, TextInput, Pressable } from 'react-native'
 import { styles } from '../styles'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
 import { db } from '../config/firebase-config'
-import { addDoc, collection, doc, deleteDoc } from 'firebase/firestore'
+import { addDoc, collection } from 'firebase/firestore'
 import Page from '../shared/Page'
 import useAuth from '../hooks/useAuth'
+import Toast from 'react-native-toast-message'
 
 const HomeScreen = () => {
   const [name, setName] = useState('')
@@ -25,8 +26,11 @@ const HomeScreen = () => {
 
   const handleNext = () => {
     if (password !== repeatPassword) {
-      Alert.alert("Password don't match")
-      alert("Password don't match")
+      Toast.show({
+        type: 'error',
+        text1: "Passwords don't match",
+        visibilityTime: 2000,
+      })
     } else {
       setPageCounter((count) => count + 1)
     }
@@ -37,7 +41,15 @@ const HomeScreen = () => {
   }
 
   const handlePress = async () => {
-    createUserWithEmail(email, password)
+    try {
+      createUserWithEmail(email, password)
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: error,
+        visibilityTime: 2000,
+      })
+    }
 
     navigation.navigate('Login')
   }

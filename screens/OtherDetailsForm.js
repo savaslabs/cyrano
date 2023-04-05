@@ -6,6 +6,7 @@ import { db } from '../config/firebase-config'
 import { useNavigation } from '@react-navigation/native'
 import { styles } from '../styles'
 import Page from '../shared/Page'
+import Toast from 'react-native-toast-message'
 
 const OtherDetails = () => {
   const [detailHeading, setDetailHeading] = useState('')
@@ -29,7 +30,15 @@ const OtherDetails = () => {
           {
             merge: true,
           }
-        ).then(navigation.navigate('Relationships'))
+        )
+          .then(navigation.navigate('Relationships'))
+          .then(() =>
+            Toast.show({
+              type: 'success',
+              text1: 'Details added ✅',
+              visibilityTime: 2000,
+            })
+          )
       }
     } catch (error) {
       console.log(error)
@@ -64,7 +73,8 @@ const OtherDetails = () => {
         <View style={styles.page__lower}>
           <Pressable style={styles.button} onPress={handleSave}>
             <Text style={styles.button__text}>SAVE</Text>
-          </Pressable>`
+          </Pressable>
+          `
         </View>
       </View>
     </Page>

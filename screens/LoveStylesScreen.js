@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
 import ShapeSVG from '../assets/shape.svg'
-import Birthday from '../assets/birthday.svg'
 import { useState, useEffect, useContext } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
 import RelationshipContext from '../context/RelationshipContext'
-import RelationshipRating from '../components/RelationshipRating'
-import Shape from '../svg/Shape'
 import LoveLanguages from '../components/LoveLanguages'
 
 const LoveStyle = () => {
