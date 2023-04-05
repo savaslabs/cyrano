@@ -100,6 +100,8 @@ const EditRelationshipScreen = () => {
     location,
     relationshipRating,
     nextEvents,
+    prevEvents,
+    totalEvents,
   } = singleRelationship
 
   useEffect(() => {
@@ -236,6 +238,49 @@ const EditRelationshipScreen = () => {
                 additionalComments: item.additionalComments,
               }
             }),
+            prevEvents: prevEvents.map((item) => {
+              return {
+                name: editName ? editName : name,
+                lastName: editLastName ? editLastName : lastName,
+                fullName:
+                  (editName && `${editName} ${lastName}`) ||
+                  (editLastName && `${name} ${editLastName}`) ||
+                  (editName && editLastName && `${editName} ${lastName}`),
+                img: newProfileImage ? newProfileImage : profileImage,
+                loveStyleTag: item.loveStyleTag
+                  ? item.loveStyleTag.map((i) => {
+                      return i
+                    })
+                  : '',
+                datePlace: item.datePlace,
+                dateRating: item.dateRating,
+              }
+            }),
+            totalEvents: totalEvents.map((item) => {
+              return {
+                name: editName ? editName : name,
+                lastName: editLastName ? editLastName : lastName,
+                fullName:
+                  (editName && `${editName} ${lastName}`) ||
+                  (editLastName && `${name} ${editLastName}`) ||
+                  (editName && editLastName && `${editName} ${lastName}`),
+                img: newProfileImage ? newProfileImage : profileImage,
+                loveStyleTag: item.loveStyleTag
+                  ? item.loveStyleTag.map((i) => {
+                      return i
+                    })
+                  : '',
+                datePlace: item.datePlace ? item.datePlace : '',
+                dateRating: item.dateRating ? item.dateRating : '',
+                eventName: item.eventName ? item.eventName : '',
+                nextDatePlace: item.nextDatePlace ? item.nextDatePlace : '',
+                nextDateDate: item.nextDateDate ? item.nextDateDate : '',
+                nextDateTime: item.nextDateTime ? item.nextDateTime : '',
+                additionalComments: item.additionalComments
+                  ? item.additionalComments
+                  : '',
+              }
+            }),
           },
           {
             merge: true,
@@ -263,6 +308,49 @@ const EditRelationshipScreen = () => {
             email: editEmail ? editEmail : email,
             phone: editPhone ? editPhone : phone,
             relationshipRating: editRating ? editRating : relationshipRating,
+            prevEvents: prevEvents.map((item) => {
+              return {
+                name: editName ? editName : name,
+                lastName: editLastName ? editLastName : lastName,
+                fullName:
+                  (editName && `${editName} ${lastName}`) ||
+                  (editLastName && `${name} ${editLastName}`) ||
+                  (editName && editLastName && `${editName} ${lastName}`),
+                img: newProfileImage ? newProfileImage : profileImage,
+                loveStyleTag: item.loveStyleTag
+                  ? item.loveStyleTag.map((i) => {
+                      return i
+                    })
+                  : '',
+                datePlace: item.datePlace,
+                dateRating: item.dateRating,
+              }
+            }),
+            totalEvents: totalEvents.map((item) => {
+              return {
+                name: editName ? editName : name,
+                lastName: editLastName ? editLastName : lastName,
+                fullName:
+                  (editName && `${editName} ${lastName}`) ||
+                  (editLastName && `${name} ${editLastName}`) ||
+                  (editName && editLastName && `${editName} ${lastName}`),
+                img: newProfileImage ? newProfileImage : profileImage,
+                loveStyleTag: item.loveStyleTag
+                  ? item.loveStyleTag.map((i) => {
+                      return i
+                    })
+                  : '',
+                datePlace: item.datePlace ? item.datePlace : '',
+                dateRating: item.dateRating ? item.dateRating : '',
+                eventName: item.eventName ? item.eventName : '',
+                nextDatePlace: item.nextDatePlace ? item.nextDatePlace : '',
+                nextDateDate: item.nextDateDate ? item.nextDateDate : '',
+                nextDateTime: item.nextDateTime ? item.nextDateTime : '',
+                additionalComments: item.additionalComments
+                  ? item.additionalComments
+                  : '',
+              }
+            }),
           },
           {
             merge: true,
