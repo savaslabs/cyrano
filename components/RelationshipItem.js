@@ -69,6 +69,7 @@ const RelationshipItem = ({ item }) => {
               navigation.navigate('Relationship Check-In', {
                 itemId: item?.id,
                 rating: item?.relationshipRating,
+                name: item?.name,
               })
             }
           >

@@ -22,7 +22,7 @@ const RelationshipCheckIn = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current
   const route = useRoute()
   const navigation = useNavigation()
-  const { itemId, rating } = route.params
+  const { itemId, rating, name } = route.params
   const relRef = doc(db, 'relationships', itemId)
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const RelationshipCheckIn = () => {
 
               <View>
                 <Text style={styles.label}>
-                  How would you say your relationship with Amber is going?
+                  How would you say your relationship with {name} is going?
                 </Text>
                 <StarRating
                   rating={dateRating}
