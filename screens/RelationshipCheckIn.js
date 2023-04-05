@@ -9,11 +9,19 @@ import {
 import { useRef, useEffect, useState } from 'react'
 import StarRating from 'react-native-star-rating-widget'
 import Page from '../shared/Page'
+import { useRoute, useNavigation } from '@react-navigation/native'
+import { db } from '../config/firebase-config'
+import { doc, updateDoc } from 'firebase/firestore'
+import Toast from 'react-native-toast-message'
 
 const RelationshipCheckIn = () => {
   const [dateRating, setDateRating] = useState('')
-  const [relationshipRating, setRelationshipRating] = useState('')
+  const [ratingComments, setRatingComments] = useState('')
   const fadeAnim = useRef(new Animated.Value(0)).current
+  const route = useRoute()
+  const navigation = useNavigation()
+  const { itemId, rating } = route.params
+  const relRef = doc(db, 'relationships', itemId)
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -22,6 +30,26 @@ const RelationshipCheckIn = () => {
       useNativeDriver: true,
     }).start()
   }, [fadeAnim])
+
+  useEffect(() => {
+    setDateRating(rating)
+  }, [rating])
+
+  const handleUpdate = async () => {
+    await updateDoc(relRef, {
+      relationshipRating: dateRating,
+      ratingComments,
+    })
+      .then(() =>
+        Toast.show({
+          type: 'success',
+          text1: 'Relationship updated ✅',
+          visibilityTime: 2000,
+        })
+      )
+
+      .then(() => navigation.navigate('Relationships'))
+  }
 
   return (
     <Page>
@@ -49,10 +77,12 @@ const RelationshipCheckIn = () => {
               numberOfLines={4}
               style={styles.input}
               placeholderTextColor="rgba(51,55,75,0.5)"
+              value={ratingComments}
+              onChangeText={(newRatingCom) => setRatingComments(newRatingCom)}
             />
           </View>
 
-          <Pressable style={styles.button}>
+          <Pressable style={styles.button} onPress={handleUpdate}>
             <Text>SUBMIT</Text>
           </Pressable>
         </View>

@@ -63,6 +63,7 @@ const Relationship = () => {
     nextEvents,
     location,
     otherDetails,
+    ratingComments,
   } = singleRelationship
 
   const fullName = `${name} ${lastName}`
@@ -164,7 +165,17 @@ const Relationship = () => {
                   <RelationshipRating relationshipRating={relationshipRating} />
                 </View>
                 <View>
-                  <Pressable style={styles.ratingCard__button}>
+                  <Pressable
+                    style={styles.ratingCard__button}
+                    onPress={() =>
+                      navigation.navigate('Relationship Status', {
+                        rating: relationshipRating,
+                        comments: ratingComments
+                          ? ratingComments
+                          : 'This relationship has no comments yet',
+                      })
+                    }
+                  >
                     See relationship rating details
                   </Pressable>
                 </View>

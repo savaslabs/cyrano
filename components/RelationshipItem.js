@@ -63,18 +63,16 @@ const RelationshipItem = ({ item }) => {
         </View>
       ) : (
         <View style={styles.relationshipCard__bottom}>
-          <Pressable style={styles.relationshipCard__button}>
-            How is the relationship going?
-          </Pressable>
           <Pressable
+            style={styles.relationshipCard__button}
             onPress={() =>
-              navigation.navigate('Schedule Event', {
+              navigation.navigate('Relationship Check-In', {
                 itemId: item?.id,
+                rating: item?.relationshipRating,
               })
             }
-            style={styles.relationshipCard__button}
           >
-            Create Event
+            How is the relationship going?
           </Pressable>
         </View>
       )}
