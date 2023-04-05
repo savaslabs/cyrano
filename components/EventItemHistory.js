@@ -16,29 +16,17 @@ const EventItemHistory = ({ item }) => {
   const { id, eventTitle, loveStyleTag, date, name, dateRating } = item
 
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        <Text>{eventTitle}</Text>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          {loveStyleTag?.map((tag, index) => (
-            <Text
-              key={index}
-              style={{
-                borderWidth: 1,
-                padding: 5,
-                marginLeft: 5,
-                marginRight: 5,
-              }}
-            >
-              {tag}
-            </Text>
-          ))}
-        </View>
+    <View style={styles.eventCard}>
+      <View style={styles.eventCard__top}>
+        <Text style={styles.eventCard__heading}>{eventTitle}</Text>
+        {loveStyleTag?.map((tag, index) => (
+          <Text style={styles.eventCard__tag} key={index}>
+            {tag}
+          </Text>
+        ))}
       </View>
-      <View>
-        <Text>{date}</Text>
-      </View>
-      <View style={styles.item}>
+      <Text style={styles.eventCard__dateTime}>{date}</Text>
+      <View style={styles.eventCard__bottom}>
         {!dateRating ? (
           <Pressable onPress={() => navigation.navigate('Event Rating')}>
             <Text>Complete Event Rating</Text>
@@ -70,43 +58,77 @@ const EventItemHistory = ({ item }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    height: '100%',
-    marginTop: 10,
-    marginBottom: 10,
+  eventCard: {
+    backgroundColor: 'rgba(241, 242, 246, 1)',
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 4
   },
-  heading: {
-    color: '#F1776C',
-    fontWeight: '800',
-  },
-  item: {
+  eventCard__top: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    marginBottom: 16,
+    flexWrap: 'wrap'
   },
-  img: {
+  eventCard__heading: {
+    fontSize: 19,
+    fontWeight: 700,
+    marginRight: 8,
+    color: '#33374B'
+  },
+  eventCard__tag: {
+    backgroundColor: '#ffffff',
+    fontSize: 11,
+    fontWeight: 700,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 56,
+    color: '#33374B'
+  },
+  eventCard__dateTime: {
+    fontSize: 15,
+    marginBottom: 16,
+    color: '#33374B'
+  },
+  eventCard__bottom: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8
+  },
+  eventCard__bottomMobile: {
+    flexDirection: 'column',
+  },
+  eventCard__profile: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12
+  },  
+  eventCard__profileImg: {
     width: 40,
     height: 40,
-    borderRadius: '50%',
-    marginRight: 10,
+    borderRadius: '100%'
   },
-  startBG: {
-    backgroundColor: '#F1776C',
-    padding: 10,
-    borderRadius: 15,
-    marginLeft: 30,
-    marginTop: 10,
-    marginBottom: 10,
+  eventCard__profileName: {
+    fontSize: 17,
+    fontWeight: 700,
+    color: '#33374B'
   },
-  button: {
-    backgroundColor: '#EF6E62',
-    padding: 8,
-    borderRadius: 8,
-    marginLeft: 30,
+  eventCard__buttons: {
+    flex: 1,
+    gap: 8,
+    justifySelf: 'flex-end',
+    textAlign: 'right'
   },
+  eventCard__link: {
+    color: 'rgba(51, 55, 75, .75)',
+    fontSize: 15,
+    textDecorationLine: 'underline'
+  }
 })
 
 export default EventItemHistory

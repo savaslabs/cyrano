@@ -37,7 +37,7 @@ const RelationshipItem = ({ item }) => {
         </View>
         <RelationshipCardRating relationshipRating={item?.relationshipRating} />
       </View>
-      {auth.currentUser.uid != 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+      {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
         <View style={styles.relationshipCard__admin}>
           <Pressable
             onPress={() =>

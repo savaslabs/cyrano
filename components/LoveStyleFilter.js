@@ -1,5 +1,6 @@
 import { Pressable } from 'react-native'
 import Card from '../shared/Card'
+import { styles } from '../styles'
 
 const LoveStyleFilter = ({ tag, setFilteredRel, relationshipEvents }) => {
   const handleFilter = (tag) => {
@@ -11,8 +12,8 @@ const LoveStyleFilter = ({ tag, setFilteredRel, relationshipEvents }) => {
   }
 
   return (
-    <Pressable onPress={() => handleFilter(tag)}>
-      <Card>{tag}</Card>
+    <Pressable style={styles.loveStyleTags__tag} onPress={() => handleFilter(tag)}>
+      {tag}
     </Pressable>
   )
 }

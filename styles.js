@@ -58,12 +58,24 @@ const styles = StyleSheet.create({
   h1Gap: {
     marginTop: 64
   },
+  medGap: {
+    marginTop: 32
+  },
   h2: {
     color: '#33374B',
     fontSize: 28,
     fontWeight: '700',
     marginBottom: 16,
     alignSelf: 'center',
+    flex: 1,
+    flexWrap: 'wrap'
+  },
+  h4: {
+    color: '#33374B',
+    fontSize: 15,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    marginBottom: 16,
     flex: 1,
     flexWrap: 'wrap'
   },
@@ -367,6 +379,24 @@ const styles = StyleSheet.create({
   addBtn__icon: {
     width: 32,
     height: 32
+  },
+  loveStyleTags: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 4,
+    flexWrap: 'wrap',
+    marginBottom: 8
+  },
+  loveStyleTags__tag: {
+    borderWidth: 1,
+    borderColor: '#C7CBD9',
+    backgroundColor: '#F1F2F6',
+    fontFamily: 'sans-serif',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 56,
+    color: '#33374B',
+    marginBottom: 4,
   },
   underline: {
     textDecorationLine: 'underline'

@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import Card from '../shared/Card'
 import DropDownPicker from 'react-native-dropdown-picker'
 import EventItemHistory from '../components/EventItemHistory'
+import EventItem from '../components/EventItem'
 import { db, auth } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
 import LoveStyleFilter from '../components/LoveStyleFilter'
@@ -96,11 +97,12 @@ const EventHistory = () => {
         <Spinner />
       ) : (
         <Page>
-          <View style={styles.container}>
-            <View style={styles.block}>
-              <Text style={styles.h1}>Event History</Text>
-              <Text style={styles.title}>Relationships</Text>
-
+          <View style={styles.page__content}>
+            <View style={[styles.page__upper, styles.pageTopPadding]}>
+              <Text style={[styles.h2, styles.alignLeft]}>Event History</Text>
+            </View>
+            <View style={{zIndex: 2}}>
+              <Text style={styles.h4}>Relationships</Text>
               <DropDownPicker
                 open={openRel}
                 value={relValue}
@@ -108,18 +110,21 @@ const EventHistory = () => {
                 setOpen={setOpenRel}
                 setValue={setRelValue}
                 setItems={setRelItem}
-                style={styles.dropdown}
+                style={[styles.form__select, {marginTop: 0}]}
                 placeholder="Select a relationship"
-                placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
+                placeholderStyle={{ color: '#c7cbd9', paddingLeft: 4, fontSize: 17 }}
+                dropdownStyle={{
+                  paddingLeft: 30
+                }}
                 dropDownContainerStyle={{
                   margin: 'auto',
                   color: '#33374B',
-                  borderColor: '#33374B',
                   zIndex: '10000',
-                  width: '90%',
-                  height: 160,
-                  bottom: -147,
-                  left: 13,
+                  borderColor: 'rgba(199, 203, 217, 1)',
+                  height: 120,
+                  bottom: -95,
+                  paddingLeft: 8,
+                  fontSize: 17
                 }}
                 labelStyle={{
                   color: '#33374B',
@@ -131,56 +136,35 @@ const EventHistory = () => {
                   color: 'rgba(51,55,75,0.5)',
                 }}
               />
-
-              <View>
-                {tagsFilter.map((tag, index) => (
-                  <LoveStyleFilter
-                    key={index}
-                    tag={tag}
-                    setFilteredRel={setFilteredRel}
-                    relationshipEvents={relationshipEvents}
-                  />
-                ))}
-                <Pressable onPress={showAll}>
-                  <Card>All</Card>
-                </Pressable>
-              </View>
             </View>
-
-            <View>
-              <View style={styles.row}>
-                <Text>RESULTS</Text>
-                <Text>All Events</Text>
-              </View>
-              <Card>
-                <View style={styles.row}>
-                  <Text>Percentage of Events In Categories</Text>
-                  <Text>100%</Text>
-                </View>
-              </Card>
-
-              {filteredRel
-                ? filteredRel?.map((item, index) => (
-                    <EventItemHistory key={index} item={item} />
-                  ))
-                : relationshipEvents?.map((item, index) => (
-                    <EventItemHistory key={index} item={item} />
-                  ))}
-
-              {relationshipEvents.length === 0 && (
-                <Text>
-                  You don’t have any relationships yet. Get started by adding
-                  one
-                </Text>
-              )}
+            <Text style={[styles.h4, styles.medGap]}>Event Breakdown</Text>
+            <View style={styles.loveStyleTags}>
+              {tagsFilter.map((tag, index) => (
+                <LoveStyleFilter
+                  key={index}
+                  tag={tag}
+                  setFilteredRel={setFilteredRel}
+                  relationshipEvents={relationshipEvents}
+                />
+              ))}
+              <Pressable style={styles.loveStyleTags__tag} onPress={showAll}>
+                All
+              </Pressable>
             </View>
+            {filteredRel
+              ? filteredRel?.map((item, index) => (
+                <EventItemHistory key={index} item={item} />
+              ))
+              : relationshipEvents?.map((item, index) => (
+                <EventItemHistory key={index} item={item} />
+              ))}
 
-            <Pressable
-              style={styles.button}
-              onPress={() => navigation.navigate('Relationships')}
-            >
-              <Text style={styles.text}>Back</Text>
-            </Pressable>
+            {relationshipEvents.length === 0 && (
+              <Text>
+                You don’t have any relationships yet. Get started by adding
+                one
+              </Text>
+            )}
           </View>
         </Page>
       )}
