@@ -13,6 +13,7 @@ import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 import { styles } from '../styles'
 import OtherDetails from '../components/OtherDetails'
+import Avatar from '../assets/avatar.png'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -21,6 +22,7 @@ const Relationship = () => {
   const [finalAnniversary, setFinalAnniversary] = useState('')
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [showMessage, setShowMessage] = useState(false)
+  const [savedId, setSavedId] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId } = route.params
@@ -35,6 +37,7 @@ const Relationship = () => {
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
         setSingleRelationship(docSnap.data())
+        setSavedId(docSnap.id)
       }
     } catch (error) {
       console.log(error)
@@ -140,10 +143,7 @@ const Relationship = () => {
                 {profileImage ? (
                   <Image source={profileImage} style={styles.profileImage} />
                 ) : (
-                  <Image
-                    source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-                    style={styles.profileImage}
-                  />
+                  <Image source={Avatar} style={styles.profileImage} />
                 )}
               </View>
             </View>
@@ -254,23 +254,27 @@ const Relationship = () => {
                 ))}
                 <View
                   style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}
-                >
-                  <Pressable
-                    style={[styles.button, styles.buttonGrey, styles.center]}
-                  >
-                    <Text
-                      style={[
-                        styles.button__text,
-                        styles.buttonGrey__text,
-                        styles.superBold,
-                      ]}
-                    >
-                      EDIT THIS RELATIONSHIP
-                    </Text>
-                  </Pressable>
-                </View>
+                ></View>
               </>
             )}
+            <Pressable
+              style={[styles.button, styles.buttonGrey, styles.center]}
+              onPress={() =>
+                navigation.navigate('Edit Relationship', {
+                  savedId,
+                })
+              }
+            >
+              <Text
+                style={[
+                  styles.button__text,
+                  styles.buttonGrey__text,
+                  styles.superBold,
+                ]}
+              >
+                EDIT THIS RELATIONSHIP
+              </Text>
+            </Pressable>
           </View>
         </Page>
       )}

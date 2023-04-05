@@ -9,6 +9,7 @@ import { updateDoc, doc } from 'firebase/firestore'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import * as ImagePicker from 'expo-image-picker'
 import Toast from 'react-native-toast-message'
+import Avatar from '../assets/avatar.png'
 
 const UserPanelScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -104,9 +105,7 @@ const UserPanelScreen = () => {
               />
             ) : (
               <Image
-                source={
-                  'https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg'
-                }
+                source={Avatar}
                 style={[
                   styles.profileImage,
                   newProfileImage ? { display: 'none' } : { display: 'block' },

@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipCardRating from './RelationshipCardRating'
 import { auth } from '../config/firebase-config'
+import Avatar from '../assets/avatar.png'
 
 const RelationshipItem = ({ item }) => {
   const navigation = useNavigation()
@@ -24,7 +25,7 @@ const RelationshipItem = ({ item }) => {
             />
           ) : (
             <Image
-              source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+              source={Avatar}
               style={styles.relationshipCard__img}
               nativeID={item?.id}
             />

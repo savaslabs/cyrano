@@ -5,6 +5,7 @@ import Logo from '../assets/cyrano-logo.svg'
 import HomeIcon from '../assets/home-icon.svg'
 import EventsIcon from '../assets/events-icon.svg'
 import SettingsIcon from '../assets/settings-icon.svg'
+import SignOutIcon from '../assets/sign-out.svg'
 import { auth } from '../config/firebase-config'
 import { signOut } from 'firebase/auth'
 import useAuth from '../hooks/useAuth'
@@ -74,7 +75,7 @@ const TabNavigator = () => {
           style={[styles.nav__link, { maxWidth: 121 }]}
           onPress={handleSignOut}
         >
-          <Image source={SettingsIcon} style={styles.nav__icon} />
+          <Image source={SignOutIcon} style={styles.nav__icon} />
           <Text style={styles.nav__text}>Sign Out</Text>
         </Pressable>
       </View>
