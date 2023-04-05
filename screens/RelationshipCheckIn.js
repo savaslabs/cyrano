@@ -13,10 +13,12 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 import { db } from '../config/firebase-config'
 import { doc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
+import Spinner from '../shared/Spinner'
 
 const RelationshipCheckIn = () => {
   const [dateRating, setDateRating] = useState('')
   const [ratingComments, setRatingComments] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const fadeAnim = useRef(new Animated.Value(0)).current
   const route = useRoute()
   const navigation = useNavigation()
@@ -32,10 +34,14 @@ const RelationshipCheckIn = () => {
   }, [fadeAnim])
 
   useEffect(() => {
-    setDateRating(rating)
+    if (rating) {
+      setDateRating(rating)
+      setIsLoading(false)
+    }
   }, [rating])
 
   const handleUpdate = async () => {
+    setIsLoading(true)
     await updateDoc(relRef, {
       relationshipRating: dateRating,
       ratingComments,
@@ -52,42 +58,50 @@ const RelationshipCheckIn = () => {
   }
 
   return (
-    <Page>
-      <Animated.View style={{ opacity: fadeAnim }}>
-        <View style={styles.container}>
-          <Text>Relationship Check-in</Text>
+    <>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <Page>
+          <Animated.View style={{ opacity: fadeAnim }}>
+            <View style={styles.container}>
+              <Text>Relationship Check-in</Text>
 
-          <View>
-            <Text style={styles.label}>
-              How would you say your relationship with Amber is going?
-            </Text>
-            <StarRating
-              rating={dateRating}
-              onChange={setDateRating}
-              color="#7B82A2"
-            />
-          </View>
+              <View>
+                <Text style={styles.label}>
+                  How would you say your relationship with Amber is going?
+                </Text>
+                <StarRating
+                  rating={dateRating}
+                  onChange={setDateRating}
+                  color="#7B82A2"
+                />
+              </View>
 
-          <View>
-            <Text style={styles.label}>
-              Are there any details you want to remember about this rating?
-            </Text>
-            <TextInput
-              multiline={true}
-              numberOfLines={4}
-              style={styles.input}
-              placeholderTextColor="rgba(51,55,75,0.5)"
-              value={ratingComments}
-              onChangeText={(newRatingCom) => setRatingComments(newRatingCom)}
-            />
-          </View>
+              <View>
+                <Text style={styles.label}>
+                  Are there any details you want to remember about this rating?
+                </Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={4}
+                  style={styles.input}
+                  placeholderTextColor="rgba(51,55,75,0.5)"
+                  value={ratingComments}
+                  onChangeText={(newRatingCom) =>
+                    setRatingComments(newRatingCom)
+                  }
+                />
+              </View>
 
-          <Pressable style={styles.button} onPress={handleUpdate}>
-            <Text>SUBMIT</Text>
-          </Pressable>
-        </View>
-      </Animated.View>
-    </Page>
+              <Pressable style={styles.button} onPress={handleUpdate}>
+                <Text>SUBMIT</Text>
+              </Pressable>
+            </View>
+          </Animated.View>
+        </Page>
+      )}
+    </>
   )
 }
 
