@@ -99,6 +99,7 @@ const EditRelationshipScreen = () => {
     pronounsValue,
     location,
     relationshipRating,
+    nextEvents,
   } = singleRelationship
 
   useEffect(() => {
@@ -201,32 +202,81 @@ const EditRelationshipScreen = () => {
       editRating
     ) {
       setIsLoading(true)
-      await updateDoc(
-        relRef,
-        {
-          profileImage: newProfileImage ? newProfileImage : profileImage,
-          name: editName ? editName : name,
-          lastName: editLastName ? editLastName : lastName,
-          birthday: editBirthday ? editBirthday : birthday,
-          anniversary: editAnniversary ? editAnniversary : anniversary,
-          location: editLocation ? editLocation : location,
-          pronounsValue: editPronouns ? editPronouns : pronounsValue,
-          email: editEmail ? editEmail : email,
-          phone: editPhone ? editPhone : phone,
-          relationshipRating: editRating ? editRating : relationshipRating,
-        },
-        {
-          merge: true,
-        }
-      )
-        .then(() => navigation.navigate('Relationships'))
-        .then(() =>
-          Toast.show({
-            type: 'success',
-            text1: 'Relationship updated ✅',
-            visibilityTime: 2000,
-          })
+
+      if (nextEvents.length !== 0) {
+        await updateDoc(
+          relRef,
+          {
+            profileImage: newProfileImage ? newProfileImage : profileImage,
+            name: editName ? editName : name,
+            lastName: editLastName ? editLastName : lastName,
+            birthday: editBirthday ? editBirthday : birthday,
+            anniversary: editAnniversary ? editAnniversary : anniversary,
+            location: editLocation ? editLocation : location,
+            pronounsValue: editPronouns ? editPronouns : pronounsValue,
+            email: editEmail ? editEmail : email,
+            phone: editPhone ? editPhone : phone,
+            relationshipRating: editRating ? editRating : relationshipRating,
+            nextEvents: nextEvents.map((item) => {
+              return {
+                name: editName ? editName : name,
+                lastName: editLastName ? editLastName : lastName,
+                fullName:
+                  (editName && `${editName} ${lastName}`) ||
+                  (editLastName && `${name} ${editLastName}`) ||
+                  (editName && editLastName && `${editName} ${lastName}`),
+                img: newProfileImage ? newProfileImage : profileImage,
+                loveStyleTag: item.loveStyleTag.map((i) => {
+                  return i
+                }),
+                eventName: item.eventName,
+                nextDatePlace: item.nextDatePlace,
+                nextDateDate: item.nextDateDate,
+                nextDateTime: item.nextDateTime,
+                additionalComments: item.additionalComments,
+              }
+            }),
+          },
+          {
+            merge: true,
+          }
         )
+          .then(() => navigation.navigate('Relationships'))
+          .then(() =>
+            Toast.show({
+              type: 'success',
+              text1: 'Relationship updated ✅',
+              visibilityTime: 2000,
+            })
+          )
+      } else {
+        await updateDoc(
+          relRef,
+          {
+            profileImage: newProfileImage ? newProfileImage : profileImage,
+            name: editName ? editName : name,
+            lastName: editLastName ? editLastName : lastName,
+            birthday: editBirthday ? editBirthday : birthday,
+            anniversary: editAnniversary ? editAnniversary : anniversary,
+            location: editLocation ? editLocation : location,
+            pronounsValue: editPronouns ? editPronouns : pronounsValue,
+            email: editEmail ? editEmail : email,
+            phone: editPhone ? editPhone : phone,
+            relationshipRating: editRating ? editRating : relationshipRating,
+          },
+          {
+            merge: true,
+          }
+        )
+          .then(() => navigation.navigate('Relationships'))
+          .then(() =>
+            Toast.show({
+              type: 'success',
+              text1: 'Relationship updated ✅',
+              visibilityTime: 2000,
+            })
+          )
+      }
     } else {
       Toast.show({
         type: 'error',
