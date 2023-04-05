@@ -10,6 +10,7 @@ import {
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import Card from '../shared/Card'
+import Avatar from '../assets/avatar.png'
 
 const AdminRelItem = ({ user }) => {
   const navigation = useNavigation()
@@ -31,9 +32,7 @@ const AdminRelItem = ({ user }) => {
             />
           ) : (
             <Image
-              source={
-                'https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg'
-              }
+              source={Avatar}
               style={{ width: 30, height: 30, borderRadius: '100%' }}
             />
           )}

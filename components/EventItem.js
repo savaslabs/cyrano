@@ -1,8 +1,16 @@
-import { View, Text, Image, StyleSheet, Pressable, Dimensions  } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
 import { useState, useEffect } from 'react'
+import Avatar from '../assets/avatar.png'
 
 const isSmallDevice = Dimensions.get('window').width < 800
 
@@ -51,28 +59,37 @@ const EventItem = ({ item }) => {
           </Text>
         ))}
       </View>
-      <Text style={styles.eventCard__dateTime}>{finalDate} @ {nextDateTime}</Text>
-      <View style={[styles.eventCard__bottom, isSmallDevice && styles.eventCard__bottomMobile]}>
+      <Text style={styles.eventCard__dateTime}>
+        {finalDate} @ {nextDateTime}
+      </Text>
+      <View
+        style={[
+          styles.eventCard__bottom,
+          isSmallDevice && styles.eventCard__bottomMobile,
+        ]}
+      >
         <View style={styles.eventCard__profile}>
           {img ? (
             <Image source={img} style={styles.eventCard__profileImg} />
           ) : (
-            <Image
-              source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
-              style={styles.eventCard__profileImg}
-            />
+            <Image source={Avatar} style={styles.eventCard__profileImg} />
           )}
           <Pressable onPress={(e) => handlePress(e.target.id)}>
-            <Text style={styles.eventCard__profileName}>{name} {lastName}</Text>
-          </Pressable> 
+            <Text style={styles.eventCard__profileName}>
+              {name} {lastName}
+            </Text>
+          </Pressable>
           <View style={styles.eventCard__buttons}>
             {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-              <Pressable onPress={() => console.log()} style={[styles.eventCard__link, styles.eventCard__admin]}>
+              <Pressable
+                onPress={() => console.log()}
+                style={[styles.eventCard__link, styles.eventCard__admin]}
+              >
                 <Text>Edit event</Text>
               </Pressable>
             ) : (
               ''
-            )}         
+            )}
             <Pressable
               style={styles.eventCard__link}
               onPress={() =>
@@ -95,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(241, 242, 246, 1)',
     padding: 16,
     marginBottom: 16,
-    borderRadius: 4
+    borderRadius: 4,
   },
   eventCard__top: {
     flex: 1,
@@ -103,13 +120,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     marginBottom: 16,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   eventCard__heading: {
     fontSize: 19,
     fontWeight: 700,
     marginRight: 8,
-    color: '#33374B'
+    color: '#33374B',
   },
   eventCard__tag: {
     backgroundColor: '#ffffff',
@@ -118,19 +135,19 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 56,
-    color: '#33374B'
+    color: '#33374B',
   },
   eventCard__dateTime: {
     fontSize: 15,
     marginBottom: 16,
-    color: '#33374B'
+    color: '#33374B',
   },
   eventCard__bottom: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 8
+    gap: 8,
   },
   eventCard__bottomMobile: {
     flexDirection: 'column',
@@ -139,29 +156,29 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12
-  },  
+    gap: 12,
+  },
   eventCard__profileImg: {
     width: 40,
     height: 40,
-    borderRadius: '100%'
+    borderRadius: '100%',
   },
   eventCard__profileName: {
     fontSize: 17,
     fontWeight: 700,
-    color: '#33374B'
+    color: '#33374B',
   },
   eventCard__buttons: {
     flex: 1,
     gap: 8,
     justifySelf: 'flex-end',
-    textAlign: 'right'
+    textAlign: 'right',
   },
   eventCard__link: {
     color: 'rgba(51, 55, 75, .75)',
     fontSize: 15,
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+  },
 })
 
 export default EventItem

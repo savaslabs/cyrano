@@ -3,6 +3,7 @@ import { useRoute } from '@react-navigation/native'
 import { styles } from '../styles'
 import { useState, useEffect } from 'react'
 import Page from '../shared/Page'
+import Avatar from '../assets/avatar.png'
 
 const EventDetails = () => {
   const [finalDate, setFinalDate] = useState('')
@@ -44,7 +45,7 @@ const EventDetails = () => {
             />
           ) : (
             <Image
-              source="https://cedicdiagnostico.com.ar/wp-content/uploads/2020/08/generic-avatar.jpg"
+              source={Avatar}
               style={{
                 width: 40,
                 height: 40,
