@@ -14,7 +14,7 @@ import Avatar from '../assets/avatar.png'
 
 const isSmallDevice = Dimensions.get('window').width < 800
 
-const EventItem = ({ item }) => {
+const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
   const [finalDate, setFinalDate] = useState('')
   const navigation = useNavigation()
 
@@ -25,14 +25,11 @@ const EventItem = ({ item }) => {
   }
 
   const {
-    img,
-    lastName,
-    name,
     loveStyleTag,
-    nextDateDate,
-    nextDateTime,
+    dateDate,
+    dateTime,
     pickRestaurantValue,
-    nextDatePlace,
+    datePlace,
     additionalComments,
     eventName,
   } = item
@@ -40,9 +37,9 @@ const EventItem = ({ item }) => {
   useEffect(() => {
     if (item) {
       setFinalDate(
-        `${new Date(nextDateDate.seconds * 1000).getMonth()} - ${new Date(
-          nextDateDate.seconds * 1000
-        ).getDate()} - ${new Date(nextDateDate.seconds * 1000).getFullYear()}`
+        `${new Date(dateDate?.seconds * 1000).getMonth()} - ${new Date(
+          dateDate?.seconds * 1000
+        ).getDate()} - ${new Date(dateDate?.seconds * 1000).getFullYear()}`
       )
     }
   }, [item])
@@ -51,7 +48,7 @@ const EventItem = ({ item }) => {
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>
-          {nextDatePlace !== '' ? nextDatePlace : pickRestaurantValue}
+          {datePlace !== '' ? datePlace : pickRestaurantValue}
         </Text>
         {loveStyleTag.map((tag, index) => (
           <Text style={styles.eventCard__tag} key={index}>
@@ -60,7 +57,7 @@ const EventItem = ({ item }) => {
         ))}
       </View>
       <Text style={styles.eventCard__dateTime}>
-        {finalDate} @ {nextDateTime}
+        {finalDate} @ {dateTime}
       </Text>
       <View
         style={[
@@ -69,16 +66,14 @@ const EventItem = ({ item }) => {
         ]}
       >
         <View style={styles.eventCard__profile}>
-          {img ? (
-            <Image source={img} style={styles.eventCard__profileImg} />
+          {imgDisplay ? (
+            <Image source={imgDisplay} style={styles.eventCard__profileImg} />
           ) : (
             <Image source={Avatar} style={styles.eventCard__profileImg} />
           )}
-          <Pressable onPress={(e) => handlePress(e.target.id)}>
-            <Text style={styles.eventCard__profileName}>
-              {name} {lastName}
-            </Text>
-          </Pressable>
+
+          <Text style={styles.eventCard__profileName}>{fullNameDisplay}</Text>
+
           <View style={styles.eventCard__buttons}>
             {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
               <Pressable
@@ -94,7 +89,9 @@ const EventItem = ({ item }) => {
               style={styles.eventCard__link}
               onPress={() =>
                 navigation.navigate('Event Details', {
-                  item: item,
+                  item,
+                  imgDisplay,
+                  fullNameDisplay,
                 })
               }
             >

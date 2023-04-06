@@ -1,5 +1,5 @@
 import { View, Text, Pressable, Image } from 'react-native'
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { styles } from '../styles'
 import { useState, useEffect } from 'react'
 import Page from '../shared/Page'
@@ -7,16 +7,17 @@ import Avatar from '../assets/avatar.png'
 
 const EventDetails = () => {
   const [finalDate, setFinalDate] = useState('')
+  const navigation = useNavigation()
   const route = useRoute()
-  const { item } = route.params
+  const { item, imgDisplay, fullNameDisplay } = route.params
 
   useEffect(() => {
     if (item) {
       setFinalDate(
-        `${new Date(item?.nextDateDate.seconds * 1000).getMonth()} - ${new Date(
-          item?.nextDateDate.seconds * 1000
+        `${new Date(item?.dateDate.seconds * 1000).getMonth()} - ${new Date(
+          item?.dateDate.seconds * 1000
         ).getDate()} - ${new Date(
-          item?.nextDateDate.seconds * 1000
+          item?.dateDate.seconds * 1000
         ).getFullYear()}`
       )
     }
@@ -33,9 +34,9 @@ const EventDetails = () => {
         </View>
         <Text>
           With:
-          {item?.img ? (
+          {imgDisplay ? (
             <Image
-              source={item?.img}
+              source={imgDisplay}
               style={{
                 width: 40,
                 height: 40,
@@ -54,17 +55,17 @@ const EventDetails = () => {
               }}
             />
           )}
-          {item?.fullName}
+          {fullNameDisplay}
         </Text>
         <View>
           <Text>DATE AND TIME</Text>
           <Text>
-            {finalDate} @ {item?.nextDateTime}
+            {finalDate} @ {item?.dateTime}
           </Text>
         </View>
         <View>
           <Text>LOCATION</Text>
-          <Text>{item?.nextDatePlace}</Text>
+          <Text>{item?.datePlace}</Text>
           <Text>Get Directions</Text>
         </View>
         <View>
@@ -73,7 +74,16 @@ const EventDetails = () => {
         </View>
 
         <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
-          <Pressable style={[styles.button, styles.buttonGrey, styles.center]}>
+          <Pressable
+            style={[styles.button, styles.buttonGrey, styles.center]}
+            onPress={() =>
+              navigation.navigate('Edit Event', {
+                item,
+                imgDisplay,
+                fullNameDisplay,
+              })
+            }
+          >
             <Text
               style={[
                 styles.button__text,

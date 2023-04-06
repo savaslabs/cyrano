@@ -4,12 +4,20 @@ import RelationshipCardRating from './RelationshipCardRating'
 import { auth } from '../config/firebase-config'
 import Avatar from '../assets/avatar.png'
 
-const RelationshipItem = ({ item }) => {
+const RelationshipItem = ({
+  item,
+  upcomingEvents,
+  imgDisplay,
+  fullNameDisplay,
+}) => {
   const navigation = useNavigation()
 
   const handlePress = (e) => {
     navigation.navigate('Relationship', {
       itemId: e,
+      upcomingEvents,
+      imgDisplay,
+      fullNameDisplay,
     })
   }
 
