@@ -28,7 +28,6 @@ const EditRelationshipScreen = () => {
   const [newProfileImage, setNewProfileImage] = useState('')
   const [finalBirthday, setFinalBirthday] = useState('')
   const [finalAnniversary, setFinalAnniversary] = useState('')
-  const [editRating, setEditRating] = useState('')
   const [editName, setEditName] = useState('')
   const [editLastName, setEditLastName] = useState('')
   const [editBirthday, setEditBirthday] = useState('')
@@ -99,9 +98,6 @@ const EditRelationshipScreen = () => {
     pronounsValue,
     location,
     relationshipRating,
-    nextEvents,
-    prevEvents,
-    totalEvents,
   } = singleRelationship
 
   useEffect(() => {
@@ -139,7 +135,6 @@ const EditRelationshipScreen = () => {
     setEditPronouns(pronounsValue)
     setEditEmail(email)
     setEditPhone(phone)
-    setEditRating(relationshipRating)
   }, [name, lastName, location, pronounsValue, email, phone])
 
   const BirthdayDatePicker = () => {
@@ -200,171 +195,35 @@ const EditRelationshipScreen = () => {
       editLocation ||
       editPronouns ||
       editEmail ||
-      editPhone ||
-      editRating
+      editPhone
     ) {
       setIsLoading(true)
 
-      if (nextEvents.length !== 0) {
-        await updateDoc(
-          relRef,
-          {
-            profileImage: newProfileImage ? newProfileImage : profileImage,
-            name: editName ? editName : name,
-            lastName: editLastName ? editLastName : lastName,
-            birthday: editBirthday ? editBirthday : birthday,
-            anniversary: editAnniversary ? editAnniversary : anniversary,
-            location: editLocation ? editLocation : location,
-            pronounsValue: editPronouns ? editPronouns : pronounsValue,
-            email: editEmail ? editEmail : email,
-            phone: editPhone ? editPhone : phone,
-            relationshipRating: editRating ? editRating : relationshipRating,
-            nextEvents: nextEvents.map((item) => {
-              return {
-                name: editName ? editName : name,
-                lastName: editLastName ? editLastName : lastName,
-                fullName:
-                  (editName && `${editName} ${lastName}`) ||
-                  (editLastName && `${name} ${editLastName}`) ||
-                  (editName && editLastName && `${editName} ${lastName}`),
-                img: newProfileImage ? newProfileImage : profileImage,
-                loveStyleTag: item.loveStyleTag.map((i) => {
-                  return i
-                }),
-                eventName: item.eventName,
-                nextDatePlace: item.nextDatePlace,
-                nextDateDate: item.nextDateDate,
-                nextDateTime: item.nextDateTime,
-                additionalComments: item.additionalComments,
-              }
-            }),
-            prevEvents: prevEvents.map((item) => {
-              return {
-                name: editName ? editName : name,
-                lastName: editLastName ? editLastName : lastName,
-                fullName:
-                  (editName && `${editName} ${lastName}`) ||
-                  (editLastName && `${name} ${editLastName}`) ||
-                  (editName && editLastName && `${editName} ${lastName}`),
-                img: newProfileImage ? newProfileImage : profileImage,
-                loveStyleTag: item.loveStyleTag
-                  ? item.loveStyleTag.map((i) => {
-                      return i
-                    })
-                  : '',
-                datePlace: item.datePlace,
-                dateRating: item.dateRating,
-              }
-            }),
-            totalEvents: totalEvents.map((item) => {
-              return {
-                name: editName ? editName : name,
-                lastName: editLastName ? editLastName : lastName,
-                fullName:
-                  (editName && `${editName} ${lastName}`) ||
-                  (editLastName && `${name} ${editLastName}`) ||
-                  (editName && editLastName && `${editName} ${lastName}`),
-                img: newProfileImage ? newProfileImage : profileImage,
-                loveStyleTag: item.loveStyleTag
-                  ? item.loveStyleTag.map((i) => {
-                      return i
-                    })
-                  : '',
-                datePlace: item.datePlace ? item.datePlace : '',
-                dateRating: item.dateRating ? item.dateRating : '',
-                eventName: item.eventName ? item.eventName : '',
-                nextDatePlace: item.nextDatePlace ? item.nextDatePlace : '',
-                nextDateDate: item.nextDateDate ? item.nextDateDate : '',
-                nextDateTime: item.nextDateTime ? item.nextDateTime : '',
-                additionalComments: item.additionalComments
-                  ? item.additionalComments
-                  : '',
-              }
-            }),
-          },
-          {
-            merge: true,
-          }
+      await updateDoc(
+        relRef,
+        {
+          profileImage: newProfileImage ? newProfileImage : profileImage,
+          name: editName ? editName : name,
+          lastName: editLastName ? editLastName : lastName,
+          birthday: editBirthday ? editBirthday : birthday,
+          anniversary: editAnniversary ? editAnniversary : anniversary,
+          location: editLocation ? editLocation : location,
+          pronounsValue: editPronouns ? editPronouns : pronounsValue,
+          email: editEmail ? editEmail : email,
+          phone: editPhone ? editPhone : phone,
+        },
+        {
+          merge: true,
+        }
+      )
+        .then(() => navigation.navigate('Relationships'))
+        .then(() =>
+          Toast.show({
+            type: 'success',
+            text1: 'Relationship updated ✅',
+            visibilityTime: 2000,
+          })
         )
-          .then(() => navigation.navigate('Relationships'))
-          .then(() =>
-            Toast.show({
-              type: 'success',
-              text1: 'Relationship updated ✅',
-              visibilityTime: 2000,
-            })
-          )
-      } else {
-        await updateDoc(
-          relRef,
-          {
-            profileImage: newProfileImage ? newProfileImage : profileImage,
-            name: editName ? editName : name,
-            lastName: editLastName ? editLastName : lastName,
-            birthday: editBirthday ? editBirthday : birthday,
-            anniversary: editAnniversary ? editAnniversary : anniversary,
-            location: editLocation ? editLocation : location,
-            pronounsValue: editPronouns ? editPronouns : pronounsValue,
-            email: editEmail ? editEmail : email,
-            phone: editPhone ? editPhone : phone,
-            relationshipRating: editRating ? editRating : relationshipRating,
-            prevEvents: prevEvents.map((item) => {
-              return {
-                name: editName ? editName : name,
-                lastName: editLastName ? editLastName : lastName,
-                fullName:
-                  (editName && `${editName} ${lastName}`) ||
-                  (editLastName && `${name} ${editLastName}`) ||
-                  (editName && editLastName && `${editName} ${lastName}`),
-                img: newProfileImage ? newProfileImage : profileImage,
-                loveStyleTag: item.loveStyleTag
-                  ? item.loveStyleTag.map((i) => {
-                      return i
-                    })
-                  : '',
-                datePlace: item.datePlace,
-                dateRating: item.dateRating,
-              }
-            }),
-            totalEvents: totalEvents.map((item) => {
-              return {
-                name: editName ? editName : name,
-                lastName: editLastName ? editLastName : lastName,
-                fullName:
-                  (editName && `${editName} ${lastName}`) ||
-                  (editLastName && `${name} ${editLastName}`) ||
-                  (editName && editLastName && `${editName} ${lastName}`),
-                img: newProfileImage ? newProfileImage : profileImage,
-                loveStyleTag: item.loveStyleTag
-                  ? item.loveStyleTag.map((i) => {
-                      return i
-                    })
-                  : '',
-                datePlace: item.datePlace ? item.datePlace : '',
-                dateRating: item.dateRating ? item.dateRating : '',
-                eventName: item.eventName ? item.eventName : '',
-                nextDatePlace: item.nextDatePlace ? item.nextDatePlace : '',
-                nextDateDate: item.nextDateDate ? item.nextDateDate : '',
-                nextDateTime: item.nextDateTime ? item.nextDateTime : '',
-                additionalComments: item.additionalComments
-                  ? item.additionalComments
-                  : '',
-              }
-            }),
-          },
-          {
-            merge: true,
-          }
-        )
-          .then(() => navigation.navigate('Relationships'))
-          .then(() =>
-            Toast.show({
-              type: 'success',
-              text1: 'Relationship updated ✅',
-              visibilityTime: 2000,
-            })
-          )
-      }
     } else {
       Toast.show({
         type: 'error',
@@ -414,20 +273,26 @@ const EditRelationshipScreen = () => {
               </Pressable>
             </View>
             <View style={styles.form}>
-              <View style={[styles.greybox, styles.mb16]}>
-                <View style={styles.ratingCard}>
-                  <View style={styles.ratingCard__text}>
-                    <Text style={styles.h5}>RELATIONSHIP RATING</Text>
-                    <StarRating
-                      rating={editRating}
-                      onChange={setEditRating}
-                      color="#7B82A2"
-                      starSize="52"
-                      style={styles.starRating}
-                    />
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('Relationship Check-In', {
+                    itemId: savedId,
+                    rating: relationshipRating,
+                    name: name,
+                  })
+                }
+              >
+                <View style={[styles.greybox, styles.mb16]}>
+                  <View style={styles.ratingCard}>
+                    <View style={styles.ratingCard__text}>
+                      <Text style={styles.h5}>RELATIONSHIP RATING</Text>
+                      <RelationshipRating
+                        relationshipRating={relationshipRating}
+                      />
+                    </View>
                   </View>
                 </View>
-              </View>
+              </Pressable>
               <View style={styles.form__twoCol}>
                 <View style={styles.form__col}>
                   <Text style={styles.form__label}>Name</Text>

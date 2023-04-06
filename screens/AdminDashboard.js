@@ -68,11 +68,11 @@ const AdminDashboard = () => {
           />
 
           {filteredUsers
-            ? filteredUsers?.map((user) => (
-                <AdminRelItem user={user} key={user?.userId} />
+            ? filteredUsers?.map((user, index) => (
+                <AdminRelItem user={user} key={index} />
               ))
-            : users?.map((user) => (
-                <AdminRelItem user={user} key={user?.userId} />
+            : users?.map((user, index) => (
+                <AdminRelItem user={user} key={index} />
               ))}
         </Page>
       )}

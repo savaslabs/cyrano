@@ -20,12 +20,11 @@ const Relationship = () => {
   const [loading, setLoading] = useState(true)
   const [finalBirthday, setFinalBirthday] = useState('')
   const [finalAnniversary, setFinalAnniversary] = useState('')
-  const [upcomingEvents, setUpcomingEvents] = useState([])
   const [showMessage, setShowMessage] = useState(false)
   const [savedId, setSavedId] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
-  const { itemId } = route.params
+  const { itemId, upcomingEvents, imgDisplay, fullNameDisplay } = route.params
 
   useEffect(() => {
     getSpecificDoc()
@@ -58,9 +57,6 @@ const Relationship = () => {
     anniversary,
     profileImage,
     relationshipRating,
-    lastTimeDate,
-    upcomingDate,
-    nextEvents,
     location,
     otherDetails,
     ratingComments,
@@ -88,12 +84,6 @@ const Relationship = () => {
           anniversary.seconds * 1000
         ).getDate()} - ${new Date(anniversary.seconds * 1000).getFullYear()}`
       )
-    }
-  }, [singleRelationship])
-
-  useEffect(() => {
-    if (singleRelationship) {
-      setUpcomingEvents(nextEvents)
     }
   }, [singleRelationship])
 
@@ -184,7 +174,7 @@ const Relationship = () => {
             <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
               Upcoming Events
             </Text>
-            {upcomingEvents.length === 0 ? (
+            {!upcomingEvents ? (
               <View style={[styles.greybox, styles.greyboxLarge]}>
                 <Text style={[styles.p, styles.center]}>
                   You don't have any upcoming events with {name}.
@@ -212,7 +202,12 @@ const Relationship = () => {
               </View>
             ) : (
               upcomingEvents.map((item, index) => (
-                <EventItem item={item} key={index} />
+                <EventItem
+                  item={item}
+                  key={index}
+                  imgDisplay={imgDisplay}
+                  fullNameDisplay={fullNameDisplay}
+                />
               ))
             )}
 

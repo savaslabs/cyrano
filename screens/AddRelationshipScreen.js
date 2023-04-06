@@ -25,6 +25,8 @@ const AddRelationship = () => {
   const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [docID, setDocID] = useState('')
+  const [prevID, setPrevID] = useState('')
+  const [allID, setAllID] = useState('')
 
   // First form states
   const [name, setName] = useState('')
@@ -64,6 +66,8 @@ const AddRelationship = () => {
 
   useEffect(() => {
     setDocID(uuid.v4())
+    setPrevID(uuid.v4())
+    setAllID(uuid.v4())
   }, [])
 
   const handleNext = () => {
@@ -77,6 +81,38 @@ const AddRelationship = () => {
   const handlePress = async () => {
     if (name && lastName && birthday) {
       setLoading(true)
+      setDoc(doc(db, 'prevEvents', prevID), {
+        name: name,
+        lastName: lastName,
+        fullName: `${name} ${lastName}`,
+        img: profileImage,
+        loveStyleTag: [],
+        datePlace,
+        lastTimeDate,
+        dateRating,
+        relID: docID,
+        createdAt: serverTimestamp(),
+        author: {
+          id: auth.currentUser.uid,
+          email: auth.currentUser.email,
+        },
+      })
+      setDoc(doc(db, 'allEvents', allID), {
+        name: name,
+        lastName: lastName,
+        fullName: `${name} ${lastName}`,
+        img: profileImage,
+        loveStyleTag: [],
+        datePlace,
+        lastTimeDate,
+        dateRating,
+        relID: docID,
+        createdAt: serverTimestamp(),
+        author: {
+          id: auth.currentUser.uid,
+          email: auth.currentUser.email,
+        },
+      })
       setDoc(doc(db, 'relationships', docID), {
         profileImage,
         name,
@@ -98,25 +134,6 @@ const AddRelationship = () => {
           id: auth.currentUser.uid,
           email: auth.currentUser.email,
         },
-        nextEvents: [],
-        prevEvents: arrayUnion({
-          name: name,
-          lastName: lastName,
-          fullName: `${name} ${lastName}`,
-          img: profileImage,
-          loveStyleTag: [],
-          datePlace,
-          dateRating,
-        }),
-        totalEvents: arrayUnion({
-          name: name,
-          lastName: lastName,
-          fullName: `${name} ${lastName}`,
-          img: profileImage,
-          loveStyleTag: [],
-          datePlace,
-          dateRating,
-        }),
       })
         .then(() =>
           navigation.navigate('Relationship', {

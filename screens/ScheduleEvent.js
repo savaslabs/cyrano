@@ -5,15 +5,18 @@ import { styles } from '../styles'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Page from '../shared/Page'
 import { db } from '../config/firebase-config'
-import { updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
+import uuid from 'react-native-uuid'
 
 const ScheduleEvent = () => {
   const [relationshipData, setRelationshipData] = useState('')
   const [eventName, setEventName] = useState('')
-  const [nextDatePlace, setNextDatePlace] = useState('')
-  const [nextDateDate, setNextDateDate] = useState(new Date(Date.now()))
-  const [nextDateTime, setNextDateTime] = useState('')
+  const [datePlace, setNextDatePlace] = useState('')
+  const [dateDate, setNextDateDate] = useState(new Date(Date.now()))
+  const [dateTime, setNextDateTime] = useState('')
+  const [docID, setDocID] = useState('')
+  const [allID, setAllID] = useState('')
   const [additionalComments, setAdditionalComments] = useState('')
   const [openLoveStyleTag, setOpenLoveStyleTag] = useState(false)
   const [loveStyleTagValue, setLoveStyleTagValue] = useState(null)
@@ -48,64 +51,62 @@ const ScheduleEvent = () => {
   }
 
   useEffect(() => {
-    if (nextDatePlace && nextDateDate && nextDateTime) {
+    if (datePlace && dateDate && dateTime) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
     }
     //eslint-disable-next-line
-  }, [nextDateDate, nextDateTime])
+  }, [dateDate, dateTime])
+
+  useEffect(() => {
+    setDocID(uuid.v4())
+    setAllID(uuid.v4())
+  }, [])
 
   const handlePress = async () => {
-    if (nextDatePlace) {
-      await updateDoc(
-        docRef,
-        {
-          nextEvents: arrayUnion({
-            name: relationshipData.name,
-            lastName: relationshipData.lastName,
-            fullName: `${relationshipData.name} ${relationshipData.lastName}`,
-            img: relationshipData.profileImage,
-            loveStyleTag: loveStyleTagValue,
-            eventName,
-            nextDatePlace,
-            nextDateDate,
-            nextDateTime,
-            additionalComments,
-          }),
-          totalEvents: arrayUnion({
-            name: relationshipData.name,
-            lastName: relationshipData.lastName,
-            fullName: `${relationshipData.name} ${relationshipData.lastName}`,
-            img: relationshipData.profileImage,
-            loveStyleTag: loveStyleTagValue,
-            eventName,
-            nextDatePlace,
-            nextDateDate,
-            nextDateTime,
-            additionalComments,
-          }),
-        },
-        {
-          merge: true,
-        }
+    await setDoc(doc(db, 'upcomingEvents', docID), {
+      id: docID,
+      name: relationshipData.name,
+      lastName: relationshipData.lastName,
+      fullName: `${relationshipData.name} ${relationshipData.lastName}`,
+      img: relationshipData.profileImage,
+      loveStyleTag: loveStyleTagValue,
+      eventName,
+      datePlace,
+      dateDate,
+      dateTime,
+      additionalComments,
+      relID: itemId,
+    })
+    await setDoc(doc(db, 'allEvents', allID), {
+      id: docID,
+      name: relationshipData.name,
+      lastName: relationshipData.lastName,
+      fullName: `${relationshipData.name} ${relationshipData.lastName}`,
+      img: relationshipData.profileImage,
+      loveStyleTag: loveStyleTagValue,
+      eventName,
+      datePlace,
+      dateDate,
+      dateTime,
+      additionalComments,
+      relID: itemId,
+      state: 'upcoming'
+    })
+      .then(navigation.navigate('Admin'))
+      .then(
+        Toast.show({
+          type: 'success',
+          text1: 'Event created! ✅',
+          visibilityTime: 2000,
+        })
       )
-        .then(navigation.navigate('Admin'))
-        .then(
-          Toast.show({
-            type: 'success',
-            text1: 'Event created! ✅',
-            visibilityTime: 2000,
-          })
-        )
 
-      // await updateRelationship(itemId, newRelationship)
-
-      setEventName('')
-      setNextDatePlace('')
-      setNextDateDate('')
-      setNextDateTime('')
-    }
+    setEventName('')
+    setNextDatePlace('')
+    setNextDateDate('')
+    setNextDateTime('')
   }
 
   const handleBack = () => {
@@ -117,7 +118,7 @@ const ScheduleEvent = () => {
   const NextDatePicker = () => {
     return createElement('input', {
       type: 'date',
-      value: nextDateDate,
+      value: dateDate,
       onChange: (event) => {
         setNextDateDate(new Date(event.target.value))
       },
@@ -140,7 +141,7 @@ const ScheduleEvent = () => {
   const TimePicker = () => {
     return createElement('input', {
       type: 'time',
-      value: nextDateTime,
+      value: dateTime,
       onChange: (event) => {
         setNextDateTime(event.target.value)
       },
@@ -191,7 +192,7 @@ const ScheduleEvent = () => {
               style={styles.form__input}
               placeholderTextColor="#c7cbd9"
               placeholder="Address of the event"
-              value={nextDatePlace}
+              value={datePlace}
               onChangeText={(newNextDatePlace) =>
                 setNextDatePlace(newNextDatePlace)
               }
