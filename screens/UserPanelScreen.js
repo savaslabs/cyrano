@@ -109,7 +109,7 @@ const UserPanelScreen = () => {
         <Page>
           <View style={[styles.page__content, styles.pageTopPadding]}>
             <View style={styles.page__upper}>
-              <Text style={styles.h1}>Edit Relationship</Text>
+              <Text style={styles.h1}>Edit Your Profile</Text>
             </View>
             <View style={styles.vertCenter}>
               {profileImg ? (
@@ -173,9 +173,11 @@ const UserPanelScreen = () => {
                   ''
                 )}
               </Pressable>
-              <Pressable onPress={handleSave} style={styles.button}>
-                <Text style={styles.button__text}>Save</Text>
-              </Pressable>
+              <View style={styles.page__lower}>
+                <Pressable onPress={handleSave} style={styles.button}>
+                  <Text style={styles.button__text}>Save</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </Page>

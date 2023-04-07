@@ -9,8 +9,8 @@ import {
 } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
-import Card from '../shared/Card'
 import Avatar from '../assets/avatar.png'
+import MobileIcon from '../assets/mobile-device.svg'
 
 const AdminRelItem = ({ user }) => {
   const navigation = useNavigation()
@@ -22,83 +22,102 @@ const AdminRelItem = ({ user }) => {
   }
 
   return (
-    <View style={styles.mb3} key={user?.userId}>
-      <Card>
-        <View style={styles.row}>
+    <View style={styles.userCard} key={user?.userId}>
+        <View style={styles.userCard__top}>
           {user?.profileImg ? (
             <Image
               source={user?.profileImg}
-              style={{ width: 30, height: 30, borderRadius: '100%' }}
+              style={{ width: 64, height: 64, borderRadius: '100%' }}
             />
           ) : (
             <Image
               source={Avatar}
-              style={{ width: 30, height: 30, borderRadius: '100%' }}
+              style={{ width: 64, height: 64, borderRadius: '100%' }}
             />
           )}
-          <Text style={styles.textSM}>
-            Name: {user?.name} {user?.lastName}
-          </Text>
-          <Text style={styles.textSM}>Mobile: {user?.phone}</Text>
-          <Text style={styles.textSM}>Email: {user?.email}</Text>
+          <View>
+            <Text style={styles.userCard__name}>
+              {user?.name} {user?.lastName}
+            </Text>
+            <View style={styles.userCard__phone}>
+              <Image
+                source={MobileIcon}
+                style={{ width: 24, height: 24}}
+              />
+              <Text style={styles.userCard__phoneText}>{user?.phone}</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.userCard__bottom}>
           <Pressable
-            style={styles.button}
+            style={styles.userCard__button}
             onPress={() =>
               navigation.navigate('Relationships Admin', {
                 itemId: user?.userId,
               })
             }
           >
-            <Text style={styles.buttonText}>LOGIN AS USER</Text>
+            Login As User
           </Pressable>
           <Pressable
-            style={styles.button}
+            style={styles.userCard__button}
             onPress={() => handlePress(user?.userId)}
           >
-            <Text style={styles.buttonText}>CREATE EVENT</Text>
+            Create Event
           </Pressable>
         </View>
-      </Card>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  userCard: {
+    backgroundColor: '#F1F2F6',
+    borderRadius: 4,
+    padding: 16,
+  },
+  userCard__top: {
     flex: 1,
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap',
     alignItems: 'center',
-    backgroundColor: 'white',
+    marginBottom: 16 
   },
-  text: {
-    color: '#EF6E62',
-    fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 10,
+  userCard__name: {
+    color: '#33374B',
+    fontWeight: 800,
+    fontSize: 22,
+    marginBottom: 11
   },
-  textSM: {
-    color: '#EF6E62',
-    fontWeight: 'bold',
-    fontSize: 10,
-    paddingRight: 20,
-  },
-  mb3: {
-    marginBottom: 10,
-  },
-  row: {
+  userCard__phone: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 4
   },
-  button: {
-    backgroundColor: '#EF6E62',
-    padding: 5,
-    borderRadius: 20,
+  userCard__phoneText: {
+    fontSize: 17,
+    color: '#33374B',
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
+  userCard__bottom: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap'
   },
+  userCard__button: {
+    padding: 16,
+    fontSize: 15,
+    color: '#33374B',
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#A0A5BD',
+    borderRadius: 60,
+    fontFamily: 'sans-serif',
+    flexGrow: 1,
+    textAlign: 'center'
+  }
 })
 
 export default AdminRelItem

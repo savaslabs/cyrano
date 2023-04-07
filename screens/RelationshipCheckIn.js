@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StyleSheet,
   TextInput,
   Animated,
   Pressable,
@@ -14,6 +13,8 @@ import { db } from '../config/firebase-config'
 import { doc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import Spinner from '../shared/Spinner'
+import { styles } from '../styles'
+
 
 const RelationshipCheckIn = () => {
   const [dateRating, setDateRating] = useState('')
@@ -35,7 +36,7 @@ const RelationshipCheckIn = () => {
 
   useEffect(() => {
     if (rating) {
-      setDateRating(rating)
+      // setDateRating(rating)
       setIsLoading(false)
     }
   }, [rating])
@@ -64,28 +65,38 @@ const RelationshipCheckIn = () => {
       ) : (
         <Page>
           <Animated.View style={{ opacity: fadeAnim }}>
-            <View style={styles.container}>
-              <Text>Relationship Check-in</Text>
-
+            <View style={[styles.page__content, styles.pageTopPadding]}>
+              <View style={styles.page__upper}>
+                <Text style={[styles.h1, styles.alignLeft]}>Relationship Check-in</Text>
+              </View>
               <View>
-                <Text style={styles.label}>
-                  How would you say your relationship with {name} is going?
+                <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
+                  How would you say your relationship with <Text style={styles.superBold}>{name}</Text> is going?
                 </Text>
+                {/* <StarRating
+                  rating="0"
+                  onChange={setDateRating}
+                  color="#7B82A2"
+                  starSize="52"
+                  style={styles.starRating}
+                /> */}
                 <StarRating
                   rating={dateRating}
                   onChange={setDateRating}
                   color="#7B82A2"
+                  starSize="52"
+                  style={styles.starRating}
                 />
               </View>
 
               <View>
-                <Text style={styles.label}>
+                <Text style={[styles.medGap, {fontSize: 19, marginBottom: 16, lineHeight: 22}]}>
                   Are there any details you want to remember about this rating?
                 </Text>
                 <TextInput
                   multiline={true}
                   numberOfLines={4}
-                  style={styles.input}
+                  style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
                   placeholderTextColor="rgba(51,55,75,0.5)"
                   value={ratingComments}
                   onChangeText={(newRatingCom) =>
@@ -94,9 +105,11 @@ const RelationshipCheckIn = () => {
                 />
               </View>
 
-              <Pressable style={styles.button} onPress={handleUpdate}>
-                <Text>SUBMIT</Text>
-              </Pressable>
+              <View style={styles.page__lower}>
+                <Pressable style={styles.button} onPress={handleUpdate}>
+                  <Text style={styles.button__text}>SUBMIT</Text>
+                </Pressable>
+              </View>
             </View>
           </Animated.View>
         </Page>
@@ -104,64 +117,5 @@ const RelationshipCheckIn = () => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    maxWidth: 700,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    backgroundColor: '#FFFFFF',
-  },
-  label: {
-    color: '#33374B',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingLeft: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#33374B',
-    borderRadius: 5,
-    color: '#33374B',
-  },
-  dropdown: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#33374B',
-    borderRadius: 5,
-    color: '#33374B',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  text: {
-    color: '#33374B',
-    paddingTop: 5,
-  },
-  button: {
-    backgroundColor: '#EF6E62',
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 65,
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    opacity: '1',
-    width: '70%',
-    alignSelf: 'center',
-  },
-  disabled: {
-    opacity: '0.5',
-  },
-})
 
 export default RelationshipCheckIn

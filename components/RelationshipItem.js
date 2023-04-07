@@ -1,8 +1,10 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
+import { View, Text, Image, StyleSheet, Pressable, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipCardRating from './RelationshipCardRating'
 import { auth } from '../config/firebase-config'
 import Avatar from '../assets/avatar.png'
+
+const isSmallDevice = Dimensions.get('window').width < 800
 
 const RelationshipItem = ({
   item,
@@ -23,7 +25,7 @@ const RelationshipItem = ({
 
   return (
     <View style={styles.relationshipCard}>
-      <View style={styles.relationshipCard__top}>
+      <View style={[styles.relationshipCard__top, isSmallDevice && styles.relationshipCard__topMobile]}>
         <View style={styles.relationshipCard__profile}>
           {item?.profileImage ? (
             <Image
@@ -44,7 +46,7 @@ const RelationshipItem = ({
             </Text>
           </Pressable>
         </View>
-        <RelationshipCardRating relationshipRating={item?.relationshipRating} />
+        <RelationshipCardRating style={{maxWidth: 118, marginHorizontal: 'auto'}} relationshipRating={item?.relationshipRating} />
       </View>
       {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
         <View style={styles.relationshipCard__admin}>
@@ -100,6 +102,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
+  },
+  relationshipCard__topMobile: {
+    flexDirection: 'column',
+    gap: 16
   },
   relationshipCard__profile: {
     flex: 1,

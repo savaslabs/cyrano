@@ -27,19 +27,19 @@ const TabNavigator = () => {
     <View style={styles.nav}>
       <View style={styles.nav__row}>
         <View style={styles.nav__logo}>
-          <Image source={Logo} style={{ width: 32, height: 23 }} />
+          <Image source={Logo} style={{ maxWidth: 32, minWidth: 32, height: 23 }} />
         </View>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
           <>
             <Pressable
-              style={[styles.nav__link, { maxWidth: 92 }]}
+              style={[styles.nav__link, { minWidth: 92, maxWidth: 92 }]}
               onPress={() => navigation.navigate('Admin')}
             >
               <Image source={HomeIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Home</Text>
             </Pressable>
             <Pressable
-              style={[styles.nav__link, { maxWidth: 121 }]}
+              style={[styles.nav__link, { minWidth: 121, maxWidth: 121 }]}
               onPress={() => navigation.navigate('User Panel')}
             >
               <Image source={SettingsIcon} style={styles.nav__icon} />
@@ -49,21 +49,21 @@ const TabNavigator = () => {
         ) : (
           <>
             <Pressable
-              style={[styles.nav__link, { maxWidth: 92 }]}
+              style={[styles.nav__link, { minWidth: 92, maxWidth: 92 }]}
               onPress={() => navigation.navigate('Relationships')}
             >
               <Image source={HomeIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Home</Text>
             </Pressable>
             <Pressable
-              style={[styles.nav__link, { maxWidth: 106 }]}
+              style={[styles.nav__link, { minWidth: 106, maxWidth: 106 }]}
               onPress={() => navigation.navigate('Event History')}
             >
               <Image source={EventsIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Events</Text>
             </Pressable>
             <Pressable
-              style={[styles.nav__link, { maxWidth: 121 }]}
+              style={[styles.nav__link, { minWidth: 121, maxWidth: 121 }]}
               onPress={() => navigation.navigate('User Panel')}
             >
               <Image source={SettingsIcon} style={styles.nav__icon} />
@@ -72,7 +72,7 @@ const TabNavigator = () => {
           </>
         )}
         <Pressable
-          style={[styles.nav__link, { maxWidth: 121 }]}
+          style={[styles.nav__link, { minWidth: 121, maxWidth: 121 }]}
           onPress={handleSignOut}
         >
           <Image source={SignOutIcon} style={styles.nav__icon} />
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     gap: 8,
     alignItems: 'center',
     flexGrow: 1,
+    flexWrap: 'wrap'
   },
   nav__logo: {
     maxWidth: 48,
