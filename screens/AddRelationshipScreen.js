@@ -26,7 +26,6 @@ const AddRelationship = () => {
   const [loading, setLoading] = useState(false)
   const [docID, setDocID] = useState('')
   const [prevID, setPrevID] = useState('')
-  const [allID, setAllID] = useState('')
 
   // First form states
   const [name, setName] = useState('')
@@ -59,7 +58,7 @@ const AddRelationship = () => {
 
   // Fourth form states
   const [dateRating, setDateRating] = useState('')
-  const [lastTimeDate, setLastTimeDate] = useState(new Date(Date.now()))
+  const [dateDate, setLastTimeDate] = useState(new Date(Date.now()))
   const [datePlace, setDatePlace] = useState('')
 
   const navigation = useNavigation()
@@ -67,7 +66,6 @@ const AddRelationship = () => {
   useEffect(() => {
     setDocID(uuid.v4())
     setPrevID(uuid.v4())
-    setAllID(uuid.v4())
   }, [])
 
   const handleNext = () => {
@@ -88,7 +86,7 @@ const AddRelationship = () => {
         img: profileImage,
         loveStyleTag: [],
         datePlace,
-        lastTimeDate,
+        dateDate,
         dateRating,
         relID: docID,
         createdAt: serverTimestamp(),
@@ -96,22 +94,7 @@ const AddRelationship = () => {
           id: auth.currentUser.uid,
           email: auth.currentUser.email,
         },
-      })
-      setDoc(doc(db, 'allEvents', allID), {
-        name: name,
-        lastName: lastName,
-        fullName: `${name} ${lastName}`,
-        img: profileImage,
-        loveStyleTag: [],
-        datePlace,
-        lastTimeDate,
-        dateRating,
-        relID: docID,
-        createdAt: serverTimestamp(),
-        author: {
-          id: auth.currentUser.uid,
-          email: auth.currentUser.email,
-        },
+        state: 'past',
       })
       setDoc(doc(db, 'relationships', docID), {
         profileImage,
@@ -126,7 +109,7 @@ const AddRelationship = () => {
         email,
         phone,
         dateRating,
-        lastTimeDate,
+        dateDate,
         datePlace,
         otherDetails: [],
         createdAt: serverTimestamp(),
@@ -180,7 +163,7 @@ const AddRelationship = () => {
       lastName &&
       birthday &&
       relationshipValue &&
-      lastTimeDate &&
+      dateDate &&
       datePlace &&
       dateRating
     ) {
@@ -193,7 +176,7 @@ const AddRelationship = () => {
     lastName,
     birthday,
     relationshipValue,
-    lastTimeDate,
+    dateDate,
     datePlace,
     dateRating,
   ])
@@ -313,7 +296,7 @@ const AddRelationship = () => {
               )}
               {pageCounter === 4 && (
                 <Fourth
-                  lastTimeDate={lastTimeDate}
+                  dateDate={dateDate}
                   setLastTimeDate={setLastTimeDate}
                   datePlace={datePlace}
                   setDatePlace={setDatePlace}

@@ -4,6 +4,7 @@ import { styles } from '../styles'
 import { useState, useEffect } from 'react'
 import Page from '../shared/Page'
 import Avatar from '../assets/avatar.png'
+import Back from '../assets/arrow-back.svg'
 
 const EventDetails = () => {
   const [finalDate, setFinalDate] = useState('')
@@ -16,9 +17,7 @@ const EventDetails = () => {
       setFinalDate(
         `${new Date(item?.dateDate.seconds * 1000).getMonth()} - ${new Date(
           item?.dateDate.seconds * 1000
-        ).getDate()} - ${new Date(
-          item?.dateDate.seconds * 1000
-        ).getFullYear()}`
+        ).getDate()} - ${new Date(item?.dateDate.seconds * 1000).getFullYear()}`
       )
     }
   }, [item])
@@ -26,6 +25,17 @@ const EventDetails = () => {
   return (
     <Page>
       <View>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('Event History', {
+              item,
+              imgDisplay,
+              fullNameDisplay,
+            })
+          }
+        >
+          <Image source={Back} style={{ width: 20, height: 20 }} />
+        </Pressable>
         <Text>{item?.eventName}</Text>
         <View>
           {item?.loveStyleTag.map((i, index) => (

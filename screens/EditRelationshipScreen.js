@@ -19,7 +19,7 @@ import * as ImagePicker from 'expo-image-picker'
 import TrashIcon from '../assets/trash-white.svg'
 import CloseIcon from '../assets/close.svg'
 import RelationshipRating from '../components/RelationshipRating'
-import StarRating from 'react-native-star-rating-widget'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const EditRelationshipScreen = () => {
   const route = useRoute()
@@ -36,8 +36,16 @@ const EditRelationshipScreen = () => {
   const [editPronouns, setEditPronouns] = useState('')
   const [editEmail, setEditEmail] = useState('')
   const [editPhone, setEditPhone] = useState('')
+  const [openPronouns, setOpenPronouns] = useState(false)
+  const [pronounsVal, setPronounsValue] = useState(null)
+  const [pronounsItem, setPronounsItem] = useState([
+    { label: 'She/her', value: 'She/her' },
+    { label: 'He/him', value: 'He/him' },
+    { label: 'They/them', value: 'They/them' },
+  ])
   const [showBirthdayPicker, setShowBirthdayPicker] = useState(false)
   const [showAnniversaryPicker, setShowAnniversaryPicker] = useState(false)
+  const [showPronounsDropdown, setShowPronounsDropdown] = useState(false)
   const { savedId } = route.params
   const relRef = doc(db, 'relationships', savedId)
   const navigation = useNavigation()
@@ -208,7 +216,7 @@ const EditRelationshipScreen = () => {
           birthday: editBirthday ? editBirthday : birthday,
           anniversary: editAnniversary ? editAnniversary : anniversary,
           location: editLocation ? editLocation : location,
-          pronounsValue: editPronouns ? editPronouns : pronounsValue,
+          pronounsValue: pronounsVal ? pronounsVal : pronounsValue,
           email: editEmail ? editEmail : email,
           phone: editPhone ? editPhone : phone,
         },
@@ -377,14 +385,61 @@ const EditRelationshipScreen = () => {
                 </View>
                 <View style={styles.form__col}>
                   <Text style={styles.form__label}>Pronouns</Text>
-                  <TextInput
-                    style={styles.form__input}
-                    placeholderTextColor="#c7cbd9"
-                    value={editPronouns}
-                    onChangeText={(newEditPronouns) =>
-                      setEditPronouns(newEditPronouns)
-                    }
-                  />
+                  {showPronounsDropdown ? (
+                    <View style={styles.form__twoCol}>
+                      <DropDownPicker
+                        open={openPronouns}
+                        value={pronounsVal}
+                        items={pronounsItem}
+                        setOpen={setOpenPronouns}
+                        setValue={setPronounsValue}
+                        setItems={setPronounsItem}
+                        style={styles.form__select}
+                        placeholder="Select pronouns"
+                        placeholderStyle={{
+                          color: '#c7cbd9',
+                          paddingLeft: 4,
+                          fontSize: 17,
+                        }}
+                        dropdownStyle={{
+                          paddingLeft: 30,
+                        }}
+                        dropDownContainerStyle={{
+                          margin: 'auto',
+                          color: '#33374B',
+                          zIndex: '10000',
+                          borderColor: 'rgba(199, 203, 217, 1)',
+                          height: 120,
+                          bottom: -95,
+                          paddingLeft: 8,
+                          fontSize: 17,
+                        }}
+                        labelStyle={{
+                          color: '#33374B',
+                        }}
+                        listItemLabelStyle={{
+                          color: '#33374B',
+                        }}
+                        disabledItemLabelStyle={{
+                          color: 'rgba(51,55,75,0.5)',
+                        }}
+                      />
+                      <Pressable onPress={() => setShowPronounsDropdown(false)}>
+                        <Image
+                          source={CloseIcon}
+                          style={{ width: 24, height: 24 }}
+                        />
+                      </Pressable>
+                    </View>
+                  ) : (
+                    <Pressable onPress={() => setShowPronounsDropdown(true)}>
+                      <TextInput
+                        style={styles.form__input}
+                        placeholderTextColor="#c7cbd9"
+                        value={editPronouns}
+                      />
+                    </Pressable>
+                  )}
                 </View>
               </View>
               <Text style={styles.form__label}>Email</Text>

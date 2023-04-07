@@ -20,6 +20,7 @@ import RelationshipsHomeAdminScreen from './screens/RelationshipsHomeAdminScreen
 import EditRelationshipScreen from './screens/EditRelationshipScreen'
 import RelationshipStatusScreen from './screens/RelationshipStatusScreen'
 import EditEventScreen from './screens/EditEventScreen'
+import EditDetailsScreen from './screens/EditDetailsScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -74,6 +75,7 @@ const StackNavigator = () => {
             component={RelationshipStatusScreen}
           />
           <Stack.Screen name="Edit Event" component={EditEventScreen} />
+          <Stack.Screen name="Edit Details" component={EditDetailsScreen} />
         </>
       ) : (
         <>

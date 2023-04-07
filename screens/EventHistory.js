@@ -15,8 +15,10 @@ import Page from '../shared/Page'
 const EventHistory = () => {
   const [loading, setLoading] = useState(true)
   const [relationships, setRelationships] = useState('')
-  const [filteredRel, setFilteredRel] = useState('')
+  const [filteredRel, setFilteredRel] = useState(undefined)
   const [upcomingArr, setUpcomingArr] = useState([])
+  const [prevArr, setPrevArr] = useState([])
+  const [finalArr, setFinalArr] = useState([])
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
   const [relItem, setRelItem] = useState([
@@ -35,11 +37,13 @@ const EventHistory = () => {
     'Intellectual',
     'Practical',
   ])
+  const [showError, setShowError] = useState(false)
   const navigation = useNavigation()
   const route = useRoute()
   const { imgDisplay, fullNameDisplay } = route.params
   const relationshipRef = collection(db, 'relationships')
-  const upcomingEventsRef = collection(db, 'allEvents')
+  const upcomingEventsRef = collection(db, 'upcomingEvents')
+  const prevEventsRef = collection(db, 'prevEvents')
 
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
@@ -50,28 +54,40 @@ const EventHistory = () => {
     setRelationships(finalRel)
   }
 
-  const getAllEvents = async () => {
+  const getUpcomingEvents = async () => {
     const data = await getDocs(upcomingEventsRef)
     const newData = data.docs.map((doc) => doc.data())
-
     setUpcomingArr(newData)
+  }
+
+  const getPrevEvents = async () => {
+    const data = await getDocs(prevEventsRef)
+    const newData = data.docs.map((doc) => doc.data())
+    setPrevArr(newData)
   }
 
   useEffect(() => {
     getRelationships()
-    getAllEvents()
+    getUpcomingEvents()
+    getPrevEvents()
   }, [])
 
   useEffect(() => {
-    if (relationships && upcomingArr) {
+    if (upcomingArr && prevArr) {
+      setFinalArr(upcomingArr.concat(prevArr))
+    }
+  }, [upcomingArr, prevArr])
+
+  useEffect(() => {
+    if (relationships && finalArr) {
       relationships.map((item) => {
-        const newArr = upcomingArr.filter((i) => i.relID === item.id)
+        const newArr = finalArr.filter((i) => i.relID === item.id)
         setRelationshipEvents(newArr)
       })
 
       setLoading(false)
     }
-  }, [relationships, upcomingArr])
+  }, [relationships, finalArr])
 
   useEffect(() => {
     if (relationships) {
@@ -153,6 +169,8 @@ const EventHistory = () => {
                   tag={tag}
                   setFilteredRel={setFilteredRel}
                   relationshipEvents={relationshipEvents}
+                  setShowError={setShowError}
+                  filteredRel={filteredRel}
                 />
               ))}
               <Pressable style={styles.loveStyleTags__tag} onPress={showAll}>
@@ -161,10 +179,20 @@ const EventHistory = () => {
             </View>
             {filteredRel
               ? filteredRel?.map((item, index) => (
-                  <EventItemHistory key={index} item={item} />
+                  <EventItemHistory
+                    key={index}
+                    item={item}
+                    imgDisplay={imgDisplay}
+                    fullNameDisplay={fullNameDisplay}
+                  />
                 ))
               : relationshipEvents?.map((item, index) => (
-                  <EventItemHistory key={index} item={item} />
+                  <EventItemHistory
+                    key={index}
+                    item={item}
+                    imgDisplay={imgDisplay}
+                    fullNameDisplay={fullNameDisplay}
+                  />
                 ))}
 
             {relationshipEvents.length === 0 && (
@@ -172,6 +200,8 @@ const EventHistory = () => {
                 You don’t have any relationships yet. Get started by adding one
               </Text>
             )}
+
+            {showError ? <Text>No events matching this filter</Text> : ''}
           </View>
         </Page>
       )}
