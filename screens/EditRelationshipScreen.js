@@ -418,9 +418,7 @@ const EditRelationshipScreen = () => {
                 onPress={handleDeleteDoc}
                 // disabled={isDisabled}
               >
-                <Text style={styles.button__text}>
-                  <Image source={TrashIcon} style={{ width: 24, height: 24 }} />
-                </Text>
+                <Image source={TrashIcon} style={{ width: 24, height: 24 }} />
               </Pressable>
             </View>
           </View>

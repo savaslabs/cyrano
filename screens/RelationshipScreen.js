@@ -162,7 +162,7 @@ const Relationship = () => {
                         rating: relationshipRating,
                         comments: ratingComments
                           ? ratingComments
-                          : 'This relationship has no comments yet',
+                          : 'N/A',
                       })
                     }
                   >
@@ -263,24 +263,26 @@ const Relationship = () => {
                 ></View>
               </>
             )}
-            <Pressable
-              style={[styles.button, styles.buttonGrey, styles.center]}
-              onPress={() =>
-                navigation.navigate('Edit Relationship', {
-                  savedId,
-                })
-              }
-            >
-              <Text
-                style={[
-                  styles.button__text,
-                  styles.buttonGrey__text,
-                  styles.superBold,
-                ]}
+            <View style={styles.page__lower}>
+              <Pressable
+                style={[styles.button, styles.buttonGrey, styles.center]}
+                onPress={() =>
+                  navigation.navigate('Edit Relationship', {
+                    savedId,
+                  })
+                }
               >
-                EDIT THIS RELATIONSHIP
-              </Text>
-            </Pressable>
+                <Text
+                  style={[
+                    styles.button__text,
+                    styles.buttonGrey__text,
+                    styles.superBold,
+                  ]}
+                >
+                  EDIT THIS RELATIONSHIP
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </Page>
       )}
