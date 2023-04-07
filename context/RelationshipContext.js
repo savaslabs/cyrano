@@ -1,36 +1,59 @@
 import { createContext, useState, useEffect } from 'react'
+import { db, auth } from '../config/firebase-config'
+import { getDocs, collection } from 'firebase/firestore'
 
 const RelationshipContext = createContext()
 
 export const RelationshipProvider = ({ children }) => {
-  const [relationship, setRelationship] = useState([])
+  const [relationships, setRelationships] = useState([])
+  const [upcomingArr, setUpcomingArr] = useState([])
+  const [prevArr, setPrevArr] = useState([])
+  const relationshipRef = collection(db, 'relationships')
+  const upcomingEventsRef = collection(db, 'upcomingEvents')
+  const prevEventsRef = collection(db, 'prevEvents')
 
-  //Add Relationship
-  const addRelationship = (data) => {
-    if (data) {
-      setRelationship([data, ...relationship])
+  // Set Relationships
+  useEffect(() => {
+    const getRelationships = async () => {
+      const data = await getDocs(relationshipRef)
+      const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      const finalRel = newData.filter(
+        (item) => item.author.id === auth.currentUser.uid
+      )
+      setRelationships(finalRel)
     }
-  }
 
-  //Upcoming date update
-  const updateRelationship = (id, upcomingDate) => {
-    setRelationship(
-      relationship.map((item) => {
-        if (item.id === id) {
-          return { ...item, upcomingDate }
-        } else {
-          return item
-        }
-      })
-    )
-  }
+    getRelationships()
+  }, [])
+
+  //Get upcoming events
+  useEffect(() => {
+    const getUpcomingEvents = async () => {
+      const data = await getDocs(upcomingEventsRef)
+      const newData = data.docs.map((doc) => doc.data())
+
+      setUpcomingArr(newData)
+    }
+    getUpcomingEvents()
+  }, [])
+
+  //Get prev events
+  useEffect(() => {
+    const getPrevEvents = async () => {
+      const data = await getDocs(prevEventsRef)
+      const newData = data.docs.map((doc) => doc.data())
+      setPrevArr(newData)
+    }
+
+    getPrevEvents()
+  }, [])
 
   return (
     <RelationshipContext.Provider
       value={{
-        addRelationship,
-        relationship,
-        updateRelationship,
+        relationships,
+        upcomingArr,
+        prevArr,
       }}
     >
       {children}

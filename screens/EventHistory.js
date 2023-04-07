@@ -2,7 +2,6 @@ import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import Card from '../shared/Card'
 import DropDownPicker from 'react-native-dropdown-picker'
 import EventItemHistory from '../components/EventItemHistory'
 import { db, auth } from '../config/firebase-config'
@@ -84,10 +83,20 @@ const EventHistory = () => {
         const newArr = finalArr.filter((i) => i.relID === item.id)
         setRelationshipEvents(newArr)
       })
-
       setLoading(false)
     }
   }, [relationships, finalArr])
+
+  useEffect(() => {
+    if (relationships) {
+      const newArr = relationships.map((item) => ({
+        label: `${item.name} ${item.lastName}`,
+        value: `${item.name} ${item.lastName}`,
+      }))
+
+      setRelItem((prevState) => [...prevState, ...newArr])
+    }
+  }, [relationships])
 
   useEffect(() => {
     if (relationships) {
