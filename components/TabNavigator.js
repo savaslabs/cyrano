@@ -9,10 +9,15 @@ import SignOutIcon from '../assets/sign-out.svg'
 import { auth } from '../config/firebase-config'
 import { signOut } from 'firebase/auth'
 import useAuth from '../hooks/useAuth'
+import { useContext, useState, useEffect } from 'react'
+import RelationshipContext from '../context/RelationshipContext'
 
 const TabNavigator = () => {
+  const [imgDisplay, setImgDisplay] = useState('')
+  const [fullNameDisplay, setFullNameDisplay] = useState('')
   const navigation = useNavigation()
   const { setUser } = useAuth()
+  const { relationships } = useContext(RelationshipContext)
 
   const handleSignOut = () => {
     signOut(auth).then(() =>
@@ -23,11 +28,21 @@ const TabNavigator = () => {
     )
   }
 
+  useEffect(() => {
+    if (relationships) {
+      setImgDisplay(relationships?.profileImage)
+      setFullNameDisplay(`${relationships?.name} ${relationships?.lastName}`)
+    }
+  }, [relationships])
+
   return (
     <View style={styles.nav}>
       <View style={styles.nav__row}>
         <View style={styles.nav__logo}>
-          <Image source={Logo} style={{ maxWidth: 32, minWidth: 32, height: 23 }} />
+          <Image
+            source={Logo}
+            style={{ maxWidth: 32, minWidth: 32, height: 23 }}
+          />
         </View>
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
           <>
@@ -57,7 +72,12 @@ const TabNavigator = () => {
             </Pressable>
             <Pressable
               style={[styles.nav__link, { minWidth: 106, maxWidth: 106 }]}
-              onPress={() => navigation.navigate('Event History')}
+              onPress={() =>
+                navigation.navigate('Event History', {
+                  imgDisplay,
+                  fullNameDisplay,
+                })
+              }
             >
               <Image source={EventsIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Events</Text>
@@ -98,7 +118,7 @@ const styles = StyleSheet.create({
     gap: 8,
     alignItems: 'center',
     flexGrow: 1,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   nav__logo: {
     maxWidth: 48,
