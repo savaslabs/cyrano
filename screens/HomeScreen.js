@@ -219,12 +219,22 @@ const HomeScreen = () => {
                   </Text>
                 </Pressable>
                 <Pressable
-                  // style={isDisabled ? styles.disabled : ''}
-                  style={[styles.button, styles.buttonNext]}
+                  style={[
+                    styles.button,
+                    styles.buttonNext,
+                    isDisabled ? styles.disabled : '',
+                  ]}
                   onPress={handlePress}
                   disabled={isDisabled}
                 >
-                  <Text style={styles.button__text}>CONTINUE</Text>
+                  <Text
+                    style={[
+                      styles.button__text,
+                      isDisabled ? styles.disabled__text : '',
+                    ]}
+                  >
+                    CONTINUE
+                  </Text>
                 </Pressable>
               </View>
             )}
