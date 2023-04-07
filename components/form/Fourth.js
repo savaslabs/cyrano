@@ -11,6 +11,8 @@ const Fourth = ({
   name,
   dateRating,
   setDateRating,
+  additionalComments,
+  setAdditionalComments
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -81,6 +83,18 @@ const Fourth = ({
             style={styles.starRating}
           />
         </View>
+      </View>
+      <View style={{ zIndex: 1 }}>
+        <Text style={styles.form__label}>Additional Comments</Text>
+        <TextInput
+          placeholder="Additional Comments"
+          placeholderTextColor="#c7cbd9"
+          multiline={true}
+          numberOfLines={4}
+          style={styles.form__textArea}
+          value={additionalComments}
+          onChangeText={(newComments) => setAdditionalComments(newComments)}
+        />
       </View>
     </Animated.View>
   )

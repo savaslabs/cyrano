@@ -60,22 +60,19 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
         ) : (
           ''
         )}
-        {state !== 'past' ? (
-          <Pressable
-            style={styles.eventCard__link}
-            onPress={() =>
-              navigation.navigate('Event Details', {
-                item,
-                imgDisplay,
-                fullNameDisplay,
-              })
-            }
-          >
-            <Text>View event details</Text>
-          </Pressable>
-        ) : (
-          ''
-        )}
+
+        <Pressable
+          style={styles.eventCard__link}
+          onPress={() =>
+            navigation.navigate('Event Details', {
+              item,
+              imgDisplay,
+              fullNameDisplay,
+            })
+          }
+        >
+          <Text>View event details</Text>
+        </Pressable>
       </View>
 
       {/* {finalDate && (
