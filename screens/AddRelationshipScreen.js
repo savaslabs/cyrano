@@ -20,6 +20,8 @@ const AddRelationship = () => {
   const [profileImage, setProfileImage] = useState(null)
   const [pageCounter, setPageCounter] = useState(1)
   const [isDisabled, setIsDisabled] = useState(true)
+  const [isDisabledFirst, setIsDisabledFirst] = useState(true)
+  const [isDisabledSecond, setIsDisabledSecond] = useState(true)
   const [loveStyleIsDisabled] = useState(true)
   const [nextIsDisabled] = useState(true)
   const [showMessage, setShowMessage] = useState(false)
@@ -59,8 +61,8 @@ const AddRelationship = () => {
   // Fourth form states
   const [dateRating, setDateRating] = useState('')
   const [dateDate, setLastTimeDate] = useState(new Date(Date.now()))
+  const [eventName, setEventName] = useState('')
   const [datePlace, setDatePlace] = useState('')
-  const [additionalComments, setAdditionalComments] = useState('')
 
   const navigation = useNavigation()
 
@@ -87,10 +89,9 @@ const AddRelationship = () => {
         img: profileImage,
         loveStyleTag: [],
         datePlace,
-        eventName: datePlace,
+        eventName,
         dateDate,
         dateRating,
-        additionalComments,
         relID: docID,
         createdAt: serverTimestamp(),
         author: {
@@ -114,7 +115,7 @@ const AddRelationship = () => {
         dateRating,
         dateDate,
         datePlace,
-        eventName: datePlace,
+        eventName,
         createdAt: serverTimestamp(),
         author: {
           id: auth.currentUser.uid,
@@ -148,7 +149,6 @@ const AddRelationship = () => {
           setDateRating('')
           setLastTimeDate('')
           setDatePlace('')
-          setAdditionalComments('')
         })
         .then(() => setLoading(false))
         .catch((err) =>
@@ -201,6 +201,22 @@ const AddRelationship = () => {
   const sendLoveTest = () => {
     setShowMessage(true)
   }
+
+  useEffect(() => {
+    if (name && lastName && relationshipValue && pronounsValue && location) {
+      setIsDisabledFirst(false)
+    } else {
+      setIsDisabledFirst(true)
+    }
+  }, [name, lastName, relationshipValue, pronounsValue, location])
+
+  useEffect(() => {
+    if (birthday && anniversary && relationshipRating) {
+      setIsDisabledSecond(false)
+    } else {
+      setIsDisabledSecond(true)
+    }
+  }, [birthday, anniversary, relationshipRating])
 
   return (
     <>
@@ -309,8 +325,8 @@ const AddRelationship = () => {
                   name={name}
                   birthday={birthday}
                   anniversary={anniversary}
-                  additionalComments={additionalComments}
-                  setAdditionalComments={setAdditionalComments}
+                  eventName={eventName}
+                  setEventName={setEventName}
                 />
               )}
             </View>
@@ -323,8 +339,22 @@ const AddRelationship = () => {
                   <View style={styles.dots__dot}></View>
                 </View>
                 <View style={styles.page__lower}>
-                  <Pressable style={styles.button} onPress={handleNext}>
-                    <Text style={styles.button__text}>CONTINUE</Text>
+                  <Pressable
+                    style={[
+                      styles.button,
+                      isDisabledFirst ? styles.disabled : '',
+                    ]}
+                    onPress={handleNext}
+                    disabled={isDisabledFirst}
+                  >
+                    <Text
+                      style={[
+                        styles.button__text,
+                        isDisabledFirst ? styles.disabled__text : '',
+                      ]}
+                    >
+                      CONTINUE
+                    </Text>
                   </Pressable>
                 </View>
               </>
@@ -350,10 +380,22 @@ const AddRelationship = () => {
                       </Text>
                     </Pressable>
                     <Pressable
-                      style={[styles.button, styles.buttonNext]}
+                      style={[
+                        styles.button,
+                        styles.buttonNext,
+                        isDisabledSecond ? styles.disabled : '',
+                      ]}
                       onPress={handleNext}
+                      disabled={isDisabledSecond}
                     >
-                      <Text style={styles.button__text}>CONTINUE</Text>
+                      <Text
+                        style={[
+                          styles.button__text,
+                          isDisabledSecond ? styles.disabled__text : '',
+                        ]}
+                      >
+                        CONTINUE
+                      </Text>
                     </Pressable>
                   </View>
                 </View>

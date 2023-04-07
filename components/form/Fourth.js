@@ -11,8 +11,8 @@ const Fourth = ({
   name,
   dateRating,
   setDateRating,
-  additionalComments,
-  setAdditionalComments
+  eventName,
+  setEventName,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -57,14 +57,20 @@ const Fourth = ({
         <DatePicker style={styles.form__date} />
       </View>
       <View>
-        <Text style={[styles.p, styles.alignLeft]}>
-          Where did you go? / What did you do?
-        </Text>
+        <Text style={[styles.p, styles.alignLeft]}>What did you do?</Text>
         <TextInput
-          multiline={true}
-          numberOfLines={4}
-          style={styles.form__textArea}
-          placeholder="Describe where your date took place and what kind of activities you did"
+          style={styles.form__input}
+          placeholder="What did you do?"
+          placeholderTextColor="#c7cbd9"
+          value={eventName}
+          onChangeText={(newEvent) => setEventName(newEvent)}
+        />
+      </View>
+      <View>
+        <Text style={[styles.p, styles.alignLeft]}>Where did you go?</Text>
+        <TextInput
+          style={styles.form__input}
+          placeholder="What did you do?"
           placeholderTextColor="#c7cbd9"
           value={datePlace}
           onChangeText={(newDatePlace) => setDatePlace(newDatePlace)}
@@ -83,18 +89,6 @@ const Fourth = ({
             style={styles.starRating}
           />
         </View>
-      </View>
-      <View style={{ zIndex: 1 }}>
-        <Text style={styles.form__label}>Additional Comments</Text>
-        <TextInput
-          placeholder="Additional Comments"
-          placeholderTextColor="#c7cbd9"
-          multiline={true}
-          numberOfLines={4}
-          style={styles.form__textArea}
-          value={additionalComments}
-          onChangeText={(newComments) => setAdditionalComments(newComments)}
-        />
       </View>
     </Animated.View>
   )

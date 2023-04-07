@@ -1,7 +1,6 @@
 import { View, Text, Pressable, Image } from 'react-native'
 import { styles } from '../styles'
-import React, { useEffect, useState, useContext } from 'react'
-import RelationshipContext from '../context/RelationshipContext'
+import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 import { useNavigation } from '@react-navigation/native'
 import { db, auth } from '../config/firebase-config'
@@ -14,11 +13,35 @@ import Page from '../shared/Page'
 const RelationshipsHomeScreen = () => {
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
+  const [relationships, setRelationships] = useState('')
+  const [upcomingArr, setUpcomingArr] = useState([])
   const [imgDisplay, setImgDisplay] = useState('')
   const [fullNameDisplay, setFullNameDisplay] = useState('')
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [showMessage, setShowMessage] = useState(false)
-  const { relationships, upcomingArr } = useContext(RelationshipContext)
+  const relationshipRef = collection(db, 'relationships')
+  const upcomingEventsRef = collection(db, 'upcomingEvents')
+
+  const getRelationships = async () => {
+    const data = await getDocs(relationshipRef)
+    const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    const finalRel = newData.filter(
+      (item) => item.author.id === auth.currentUser.uid
+    )
+    setRelationships(finalRel)
+  }
+
+  const getUpcomingEvents = async () => {
+    const data = await getDocs(upcomingEventsRef)
+    const newData = data.docs.map((doc) => doc.data())
+
+    setUpcomingArr(newData)
+  }
+
+  useEffect(() => {
+    getRelationships()
+    getUpcomingEvents()
+  }, [])
 
   const handlePress = () => {
     navigation.navigate('Add a Relationship')

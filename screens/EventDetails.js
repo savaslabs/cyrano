@@ -70,7 +70,7 @@ const EventDetails = () => {
         <View>
           <Text>DATE AND TIME</Text>
           <Text>
-            {finalDate} @ {item?.dateTime}
+            {finalDate} {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
           </Text>
         </View>
         <View>
