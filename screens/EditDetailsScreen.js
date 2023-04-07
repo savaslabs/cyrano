@@ -5,13 +5,8 @@ import { styles } from '../styles'
 import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
 import { useNavigation } from '@react-navigation/native'
-import { db } from '../config/firebase-config'
-import {
-  doc,
-  deleteDoc,
-  collection,
-  updateDoc,
-} from 'firebase/firestore'
+import { db, auth } from '../config/firebase-config'
+import { doc, deleteDoc, collection, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import TrashIcon from '../assets/trash-white.svg'
 
@@ -49,7 +44,11 @@ const EditDetailsScreen = () => {
           visibilityTime: 2000,
         })
       )
-      .then(() => navigation.navigate('Relationships'))
+      .then(() =>
+        auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+          ? navigation.navigate('Relationships')
+          : navigation.navigate('Admin')
+      )
   }
 
   const handleDeleteDoc = async () => {

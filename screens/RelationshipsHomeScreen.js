@@ -68,7 +68,7 @@ const RelationshipsHomeScreen = () => {
     if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
       navigation.navigate('Admin')
     }
-  }, [auth.currentUser.uid])
+  }, [auth])
 
   const handleMessagePress = () => {
     setShowMessage(true)

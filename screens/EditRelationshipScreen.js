@@ -2,7 +2,7 @@ import { View, Text, TextInput, Pressable, Image } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { useState, useEffect, createElement } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { db } from '../config/firebase-config'
+import { db, auth } from '../config/firebase-config'
 import {
   doc,
   getDoc,
@@ -79,7 +79,11 @@ const EditRelationshipScreen = () => {
             visibilityTime: 2000,
           })
         )
-        .then(() => navigation.navigate('Relationships'))
+        .then(() =>
+          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+            ? navigation.navigate('Relationships')
+            : navigation.navigate('Admin')
+        )
     } catch (error) {
       Toast.show({
         type: 'error',

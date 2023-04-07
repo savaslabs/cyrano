@@ -77,7 +77,13 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
           <View style={styles.eventCard__buttons}>
             {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
               <Pressable
-                onPress={() => console.log()}
+                onPress={() =>
+                  navigation.navigate('Edit Event', {
+                    item,
+                    imgDisplay,
+                    fullNameDisplay,
+                  })
+                }
                 style={[styles.eventCard__link, styles.eventCard__admin]}
               >
                 <Text>Edit event</Text>

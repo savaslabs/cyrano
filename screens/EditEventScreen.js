@@ -5,7 +5,7 @@ import Spinner from '../shared/Spinner'
 import { useState, useEffect, createElement } from 'react'
 import { styles } from '../styles'
 import CloseIcon from '../assets/close.svg'
-import { db } from '../config/firebase-config'
+import { auth, db } from '../config/firebase-config'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -168,7 +168,11 @@ const EditEventScreen = () => {
             visibilityTime: 2000,
           })
         })
-        .then(() => navigation.navigate('Relationships'))
+        .then(() =>
+          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+            ? navigation.navigate('Relationships')
+            : navigation.navigate('Admin')
+        )
     }
   }
 

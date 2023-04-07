@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import Page from '../shared/Page'
 import Avatar from '../assets/avatar.png'
 import Back from '../assets/arrow-back.svg'
+import { auth } from '../config/firebase-config'
 
 const EventDetails = () => {
   const [finalDate, setFinalDate] = useState('')
@@ -25,17 +26,24 @@ const EventDetails = () => {
   return (
     <Page>
       <View>
-        <Pressable
-          onPress={() =>
-            navigation.navigate('Event History', {
-              item,
-              imgDisplay,
-              fullNameDisplay,
-            })
-          }
-        >
-          <Image source={Back} style={{ width: 20, height: 20 }} />
-        </Pressable>
+        {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Event History', {
+                item,
+                imgDisplay,
+                fullNameDisplay,
+              })
+            }
+          >
+            <Image source={Back} style={{ width: 20, height: 20 }} />
+          </Pressable>
+        ) : (
+          <Pressable onPress={() => navigation.navigate('Admin')}>
+            <Image source={Back} style={{ width: 20, height: 20 }} />
+          </Pressable>
+        )}
+
         <Text>{item?.eventName}</Text>
         <View>
           {item?.loveStyleTag.map((i, index) => (
@@ -83,28 +91,32 @@ const EventDetails = () => {
           <Text>{item?.additionalComments}</Text>
         </View>
 
-        <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
-          <Pressable
-            style={[styles.button, styles.buttonGrey, styles.center]}
-            onPress={() =>
-              navigation.navigate('Edit Event', {
-                item,
-                imgDisplay,
-                fullNameDisplay,
-              })
-            }
-          >
-            <Text
-              style={[
-                styles.button__text,
-                styles.buttonGrey__text,
-                styles.superBold,
-              ]}
+        {item?.state !== 'past' ? (
+          <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
+            <Pressable
+              style={[styles.button, styles.buttonGrey, styles.center]}
+              onPress={() =>
+                navigation.navigate('Edit Event', {
+                  item,
+                  imgDisplay,
+                  fullNameDisplay,
+                })
+              }
             >
-              EDIT EVENT DETAILS
-            </Text>
-          </Pressable>
-        </View>
+              <Text
+                style={[
+                  styles.button__text,
+                  styles.buttonGrey__text,
+                  styles.superBold,
+                ]}
+              >
+                EDIT EVENT DETAILS
+              </Text>
+            </Pressable>
+          </View>
+        ) : (
+          ''
+        )}
       </View>
     </Page>
   )
