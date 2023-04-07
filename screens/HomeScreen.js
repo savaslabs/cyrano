@@ -15,6 +15,7 @@ const HomeScreen = () => {
   const [lastName, setLastName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
+  const [isDisabledFirst, setIsDisabledFirst] = useState(true)
   const [isDisabled, setIsDisabled] = useState(true)
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
@@ -76,7 +77,15 @@ const HomeScreen = () => {
   }, [userCred])
 
   useEffect(() => {
-    if (email && password && repeatPassword && name && lastName && phone) {
+    if (email && password && repeatPassword) {
+      setIsDisabledFirst(false)
+    } else {
+      setIsDisabledFirst(true)
+    }
+  }, [email, password, repeatPassword])
+
+  useEffect(() => {
+    if (name && lastName && phone) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
@@ -182,9 +191,21 @@ const HomeScreen = () => {
             {pageCounter === 1 && (
               <Pressable
                 onPress={handleNext}
-                style={[styles.button, styles.fixedWidth]}
+                style={[
+                  styles.button,
+                  styles.fixedWidth,
+                  isDisabledFirst ? styles.disabled : '',
+                ]}
+                disabled={isDisabledFirst}
               >
-                <Text style={styles.button__text}>CREATE ACCOUNT</Text>
+                <Text
+                  style={[
+                    styles.button__text,
+                    isDisabledFirst ? styles.disabled__text : '',
+                  ]}
+                >
+                  CREATE ACCOUNT
+                </Text>
               </Pressable>
             )}
             {pageCounter === 2 && (

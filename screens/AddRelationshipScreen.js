@@ -60,6 +60,7 @@ const AddRelationship = () => {
   const [dateRating, setDateRating] = useState('')
   const [dateDate, setLastTimeDate] = useState(new Date(Date.now()))
   const [datePlace, setDatePlace] = useState('')
+  const [additionalComments, setAdditionalComments] = useState('')
 
   const navigation = useNavigation()
 
@@ -86,8 +87,10 @@ const AddRelationship = () => {
         img: profileImage,
         loveStyleTag: [],
         datePlace,
+        eventName: datePlace,
         dateDate,
         dateRating,
+        additionalComments,
         relID: docID,
         createdAt: serverTimestamp(),
         author: {
@@ -111,7 +114,7 @@ const AddRelationship = () => {
         dateRating,
         dateDate,
         datePlace,
-        otherDetails: [],
+        eventName: datePlace,
         createdAt: serverTimestamp(),
         author: {
           id: auth.currentUser.uid,
@@ -145,6 +148,7 @@ const AddRelationship = () => {
           setDateRating('')
           setLastTimeDate('')
           setDatePlace('')
+          setAdditionalComments('')
         })
         .then(() => setLoading(false))
         .catch((err) =>
@@ -305,6 +309,8 @@ const AddRelationship = () => {
                   name={name}
                   birthday={birthday}
                   anniversary={anniversary}
+                  additionalComments={additionalComments}
+                  setAdditionalComments={setAdditionalComments}
                 />
               )}
             </View>
