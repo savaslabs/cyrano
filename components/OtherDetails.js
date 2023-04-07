@@ -1,12 +1,19 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import { useNavigation } from '@react-navigation/native'
 
 const OtherDetails = ({ item }) => {
   const { detailHeading, detailText } = item
+  const navigation = useNavigation()
 
   return (
     <View style={styles.details}>
-      <Text style={styles.details__heading}>{detailHeading}</Text>
+      <View style={styles.row}>
+        <Text style={styles.details__heading}>{detailHeading}</Text>{' '}
+        <Text onPress={() => navigation.navigate('Edit Details', { item })}>
+          Edit
+        </Text>
+      </View>
+
       <Text style={styles.details__text}>{detailText}</Text>
     </View>
   )
@@ -21,14 +28,18 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: 900,
     textTransform: 'uppercase',
-    marginBottom: 16
+    marginBottom: 16,
   },
   details__text: {
     paddingLeft: 16,
     paddingVertical: 8,
     borderLeftColor: '#414762',
-    borderLeftWidth: 2
-  }
+    borderLeftWidth: 2,
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+  },
 })
 
 export default OtherDetails

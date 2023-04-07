@@ -80,10 +80,12 @@ const RelationshipItem = ({
                 itemId: item?.id,
                 rating: item?.relationshipRating,
                 name: item?.name,
+                imgDisplay,
+                fullNameDisplay,
               })
             }
           >
-            How is the relationship going?
+            <Text>How is the relationship going?</Text>
           </Pressable>
         </View>
       )}

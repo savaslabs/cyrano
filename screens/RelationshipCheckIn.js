@@ -4,6 +4,7 @@ import {
   TextInput,
   Animated,
   Pressable,
+  Image
 } from 'react-native'
 import { useRef, useEffect, useState } from 'react'
 import StarRating from 'react-native-star-rating-widget'
@@ -13,8 +14,8 @@ import { db } from '../config/firebase-config'
 import { doc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import Spinner from '../shared/Spinner'
+import Back from '../assets/arrow-back.svg'
 import { styles } from '../styles'
-
 
 const RelationshipCheckIn = () => {
   const [dateRating, setDateRating] = useState('')
@@ -65,8 +66,12 @@ const RelationshipCheckIn = () => {
       ) : (
         <Page>
           <Animated.View style={{ opacity: fadeAnim }}>
+
             <View style={[styles.page__content, styles.pageTopPadding]}>
               <View style={styles.page__upper}>
+                <Pressable onPress={() => navigation.navigate('Relationships')}>
+                <Image source={Back} style={{ width: 20, height: 20 }} />
+              </Pressable>
                 <Text style={[styles.h1, styles.alignLeft]}>Relationship Check-in</Text>
               </View>
               <View>

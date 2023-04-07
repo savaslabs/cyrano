@@ -78,20 +78,6 @@ const ScheduleEvent = () => {
       dateTime,
       additionalComments,
       relID: itemId,
-    })
-    await setDoc(doc(db, 'allEvents', allID), {
-      id: docID,
-      name: relationshipData.name,
-      lastName: relationshipData.lastName,
-      fullName: `${relationshipData.name} ${relationshipData.lastName}`,
-      img: relationshipData.profileImage,
-      loveStyleTag: loveStyleTagValue,
-      eventName,
-      datePlace,
-      dateDate,
-      dateTime,
-      additionalComments,
-      relID: itemId,
       state: 'upcoming'
     })
       .then(navigation.navigate('Admin'))

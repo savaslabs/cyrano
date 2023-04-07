@@ -1,36 +1,36 @@
 import { View, Text, TextInput, Pressable } from 'react-native'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRoute } from '@react-navigation/native'
-import { updateDoc, doc, arrayUnion } from 'firebase/firestore'
+import { updateDoc, doc, setDoc } from 'firebase/firestore'
 import { db } from '../config/firebase-config'
 import { useNavigation } from '@react-navigation/native'
 import { styles } from '../styles'
 import Page from '../shared/Page'
 import Toast from 'react-native-toast-message'
+import uuid from 'react-native-uuid'
 
 const OtherDetails = () => {
   const [detailHeading, setDetailHeading] = useState('')
   const [detailText, setDetailText] = useState('')
+  const [detailsID, setDetailsID] = useState('')
   const route = useRoute()
-  const { itemId } = route.params
+  const { itemId, imgDisplay, fullNameDisplay } = route.params
   const relRef = doc(db, 'relationships', itemId)
   const navigation = useNavigation('')
+
+  useEffect(() => {
+    setDetailsID(uuid.v4())
+  }, [])
 
   const handleSave = async () => {
     try {
       if ((detailHeading, detailText)) {
-        await updateDoc(
-          relRef,
-          {
-            otherDetails: arrayUnion({
-              detailHeading,
-              detailText,
-            }),
-          },
-          {
-            merge: true,
-          }
-        )
+        await setDoc(doc(db, 'otherDetails', detailsID), {
+          id: detailsID,
+          detailHeading,
+          detailText,
+          relID: itemId,
+        })
           .then(navigation.navigate('Relationships'))
           .then(() =>
             Toast.show({
@@ -43,6 +43,10 @@ const OtherDetails = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const handleCancel = () => {
+    navigation.navigate('Relationship', itemId, imgDisplay, fullNameDisplay)
   }
 
   return (
@@ -71,10 +75,14 @@ const OtherDetails = () => {
           style={[styles.form__textArea, { height: 250 }]}
         />
         <View style={styles.page__lower}>
-          <Pressable style={styles.button} onPress={handleSave}>
-            <Text style={styles.button__text}>SAVE</Text>
-          </Pressable>
-          `
+          <View style={styles.form__twoCol}>
+            <Pressable style={styles.button} onPress={handleSave}>
+              <Text style={styles.button__text}>SAVE</Text>
+            </Pressable>
+            <Pressable style={styles.button} onPress={handleCancel}>
+              <Text style={styles.button__text}>CANCEL</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Page>

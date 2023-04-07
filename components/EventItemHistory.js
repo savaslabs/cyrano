@@ -4,7 +4,7 @@ import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
 import { useState, useEffect } from 'react'
 
-const EventItemHistory = ({ item }) => {
+const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
   const [finalDate, setFinalDate] = useState('')
   const navigation = useNavigation()
 
@@ -60,7 +60,22 @@ const EventItemHistory = ({ item }) => {
         ) : (
           ''
         )}
-        <Text>View event details</Text>
+        {state !== 'past' ? (
+          <Pressable
+            style={styles.eventCard__link}
+            onPress={() =>
+              navigation.navigate('Event Details', {
+                item,
+                imgDisplay,
+                fullNameDisplay,
+              })
+            }
+          >
+            <Text>View event details</Text>
+          </Pressable>
+        ) : (
+          ''
+        )}
       </View>
 
       {/* {finalDate && (

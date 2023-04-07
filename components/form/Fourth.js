@@ -4,7 +4,7 @@ import { styles } from '../../styles'
 import StarRating from 'react-native-star-rating-widget'
 
 const Fourth = ({
-  lastTimeDate,
+  dateDate,
   setLastTimeDate,
   datePlace,
   setDatePlace,
@@ -25,7 +25,7 @@ const Fourth = ({
   const DatePicker = () => {
     return createElement('input', {
       type: 'date',
-      value: lastTimeDate,
+      value: dateDate,
       onChange: (event) => {
         setLastTimeDate(new Date(event.target.value))
       },

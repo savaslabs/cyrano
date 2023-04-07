@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import RelationshipRating from '../components/RelationshipRating'
 import { db, auth } from '../config/firebase-config'
-import { getDoc, doc } from 'firebase/firestore'
+import { getDoc, doc, collection, getDocs } from 'firebase/firestore'
 import circlePlus from '../assets/circle-plus.svg'
 import Spinner from '../shared/Spinner'
 import ArrowBack from '../assets/arrow-back-white.svg'
@@ -20,14 +20,18 @@ const Relationship = () => {
   const [loading, setLoading] = useState(true)
   const [finalBirthday, setFinalBirthday] = useState('')
   const [finalAnniversary, setFinalAnniversary] = useState('')
+  const [otherDetailsArr, setOtherDetailsArr] = useState('')
+  const [newDetailsArr, setNewDetailsArr] = useState('')
   const [showMessage, setShowMessage] = useState(false)
   const [savedId, setSavedId] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId, upcomingEvents, imgDisplay, fullNameDisplay } = route.params
+  const otherDetailsCol = collection(db, 'otherDetails')
 
   useEffect(() => {
     getSpecificDoc()
+    getOtherDetails()
   }, [])
 
   const getSpecificDoc = async () => {
@@ -42,6 +46,19 @@ const Relationship = () => {
       console.log(error)
     }
   }
+
+  const getOtherDetails = async () => {
+    const data = await getDocs(otherDetailsCol)
+    const newData = data.docs.map((doc) => doc.data())
+    setOtherDetailsArr(newData)
+  }
+
+  useEffect(() => {
+    if(otherDetailsArr) {
+      const newArr = otherDetailsArr.filter(item => item.relID === savedId)
+      setNewDetailsArr(newArr)
+    }
+  }, [otherDetailsArr])
 
   useEffect(() => {
     if (singleRelationship) {
@@ -58,7 +75,6 @@ const Relationship = () => {
     profileImage,
     relationshipRating,
     location,
-    otherDetails,
     ratingComments,
   } = singleRelationship
 
@@ -90,6 +106,8 @@ const Relationship = () => {
   const handlePress = () => {
     navigation.navigate('Other Details', {
       itemId,
+      imgDisplay,
+      fullNameDisplay,
     })
   }
 
@@ -166,7 +184,7 @@ const Relationship = () => {
                       })
                     }
                   >
-                    See relationship rating details
+                    <Text> See relationship rating details</Text>
                   </Pressable>
                 </View>
               </View>
@@ -220,7 +238,7 @@ const Relationship = () => {
             >
               <Text style={styles.textLink}>View full events history</Text>
             </Pressable>
-            {otherDetails.length === 0 ? (
+            {newDetailsArr?.length === 0 ? (
               <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
                 <Text
                   style={[
@@ -255,7 +273,7 @@ const Relationship = () => {
                     <Image source={circlePlus} style={styles.addBtn__icon} />
                   </Pressable>
                 </View>
-                {otherDetails.map((item, i) => (
+                {newDetailsArr?.map((item, i) => (
                   <OtherDetails item={item} key={i} />
                 ))}
                 <View
