@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, Pressable, Dimensions } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipCardRating from './RelationshipCardRating'
 import { auth } from '../config/firebase-config'
@@ -25,7 +32,12 @@ const RelationshipItem = ({
 
   return (
     <View style={styles.relationshipCard}>
-      <View style={[styles.relationshipCard__top, isSmallDevice && styles.relationshipCard__topMobile]}>
+      <View
+        style={[
+          styles.relationshipCard__top,
+          isSmallDevice && styles.relationshipCard__topMobile,
+        ]}
+      >
         <View style={styles.relationshipCard__profile}>
           {item?.profileImage ? (
             <Image
@@ -46,7 +58,10 @@ const RelationshipItem = ({
             </Text>
           </Pressable>
         </View>
-        <RelationshipCardRating style={{maxWidth: 118, marginHorizontal: 'auto'}} relationshipRating={item?.relationshipRating} />
+        <RelationshipCardRating
+          style={{ maxWidth: 118, marginHorizontal: 'auto' }}
+          relationshipRating={item?.relationshipRating}
+        />
       </View>
       {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
         <View style={styles.relationshipCard__admin}>
@@ -58,7 +73,7 @@ const RelationshipItem = ({
             }
             style={styles.relationshipCard__button}
           >
-            Create Event
+            <Text> Create Event</Text>
           </Pressable>
           <Pressable
             onPress={() =>
@@ -68,7 +83,7 @@ const RelationshipItem = ({
             }
             style={styles.relationshipCard__button}
           >
-            Request Check-in
+            <Text> Request Check-in</Text>
           </Pressable>
         </View>
       ) : (
@@ -107,7 +122,7 @@ const styles = StyleSheet.create({
   },
   relationshipCard__topMobile: {
     flexDirection: 'column',
-    gap: 16
+    gap: 16,
   },
   relationshipCard__profile: {
     flex: 1,

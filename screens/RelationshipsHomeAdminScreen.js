@@ -13,9 +13,13 @@ const RelationshipsHomeAdminScreen = () => {
   const [loading, setLoading] = useState(true)
   const navigation = useNavigation()
   const [relationships, setRelationships] = useState('')
+  const [upcomingArr, setUpcomingArr] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [showMessage, setShowMessage] = useState(false)
+  const [imgDisplay, setImgDisplay] = useState('')
+  const [fullNameDisplay, setFullNameDisplay] = useState('')
   const relationshipRef = collection(db, 'relationships')
+  const upcomingEventsRef = collection(db, 'upcomingEvents')
   const route = useRoute()
   const { itemId } = route.params
 
@@ -26,8 +30,16 @@ const RelationshipsHomeAdminScreen = () => {
     setRelationships(finalRel)
   }
 
+  const getUpcomingEvents = async () => {
+    const data = await getDocs(upcomingEventsRef)
+    const newData = data.docs.map((doc) => doc.data())
+
+    setUpcomingArr(newData)
+  }
+
   useEffect(() => {
     getRelationships()
+    getUpcomingEvents()
   }, [])
 
   useEffect(() => {
@@ -37,14 +49,17 @@ const RelationshipsHomeAdminScreen = () => {
   }, [relationships])
 
   useEffect(() => {
-    if (relationships) {
-      const eventList = relationships?.reduce(
-        (acc, item) => [...acc, ...item.nextEvents],
-        []
-      )
-      setUpcomingEvents(eventList)
+    if (relationships && upcomingArr) {
+      relationships.map((item) => {
+        setImgDisplay(item?.profileImage)
+        setFullNameDisplay(`${item?.name} ${item?.lastName}`)
+        const newArr = upcomingArr.filter((i) => i.relID === item.id)
+        setUpcomingEvents(newArr)
+      })
+
+      setLoading(false)
     }
-  }, [relationships])
+  }, [relationships, upcomingArr])
 
   const handlePress = () => {
     setShowMessage(true)
@@ -106,13 +121,20 @@ const RelationshipsHomeAdminScreen = () => {
                       </View>
                     ) : (
                       upcomingEvents.map((item, index) => (
-                        <EventItem item={item} key={index} />
+                        <EventItem
+                          item={item}
+                          key={index}
+                          imgDisplay={imgDisplay}
+                          fullNameDisplay={fullNameDisplay}
+                        />
                       ))
                     )}
                     <Pressable
                       onPress={() =>
                         navigation.navigate('Event History', {
                           itemId: 'ifgjdoigjsdo',
+                          imgDisplay,
+                          fullNameDisplay,
                         })
                       }
                     >
@@ -125,7 +147,13 @@ const RelationshipsHomeAdminScreen = () => {
                       </Text>
                       {relationships.map((item) => (
                         <View key={item.id}>
-                          <RelationshipItem item={item} key={item.id} />
+                          <RelationshipItem
+                            item={item}
+                            key={item.id}
+                            upcomingEvents={upcomingEvents}
+                            imgDisplay={imgDisplay}
+                            fullNameDisplay={fullNameDisplay}
+                          />
                         </View>
                       ))}
                     </View>

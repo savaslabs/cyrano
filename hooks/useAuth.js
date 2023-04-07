@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { auth, provider, db } from '../config/firebase-config'
 import {
   signInWithEmailAndPassword,
@@ -103,6 +103,23 @@ export const AuthProvider = ({ children }) => {
       setSaveId(doc.id)
     })
   }
+
+  // Persist session
+  useEffect(() => {
+    auth.onAuthStateChanged((userCredential) => {
+      if (userCredential) {
+        setUser({
+          user: {
+            id: userCredential?.uid,
+            email: userCredential?.email,
+          },
+          isLoggedIn: true,
+        })
+      } else {
+        return
+      }
+    })
+  }, [auth])
 
   return (
     <AuthContext.Provider
