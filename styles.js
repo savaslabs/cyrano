@@ -327,7 +327,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16
   },
   ratingCard__text: {
     flexGrow: 1,
@@ -411,6 +413,9 @@ const styles = StyleSheet.create({
   },
   vertCenter: {
     alignItems: 'center'
+  },
+  bold: {
+    fontWeight: 600
   },
   superBold: {
     fontWeight: 800
