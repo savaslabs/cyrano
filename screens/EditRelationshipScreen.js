@@ -20,14 +20,13 @@ import TrashIcon from '../assets/trash-white.svg'
 import CloseIcon from '../assets/close.svg'
 import RelationshipRating from '../components/RelationshipRating'
 import DropDownPicker from 'react-native-dropdown-picker'
+import DatePicker from '../components/form/DatePicker'
 
 const EditRelationshipScreen = () => {
   const route = useRoute()
   const [isLoading, setIsLoading] = useState(true)
   const [singleRelationship, setSingleRelationship] = useState('')
   const [newProfileImage, setNewProfileImage] = useState('')
-  const [finalBirthday, setFinalBirthday] = useState('')
-  const [finalAnniversary, setFinalAnniversary] = useState('')
   const [editName, setEditName] = useState('')
   const [editLastName, setEditLastName] = useState('')
   const [editBirthday, setEditBirthday] = useState('')
@@ -112,21 +111,6 @@ const EditRelationshipScreen = () => {
     relationshipRating,
   } = singleRelationship
 
-  useEffect(() => {
-    if (singleRelationship) {
-      setFinalBirthday(
-        `${new Date(birthday.seconds * 1000).getMonth()} - ${new Date(
-          birthday.seconds * 1000
-        ).getDate()} - ${new Date(birthday.seconds * 1000).getFullYear()}`
-      )
-      setFinalAnniversary(
-        `${new Date(anniversary.seconds * 1000).getMonth()} - ${new Date(
-          anniversary.seconds * 1000
-        ).getDate()} - ${new Date(anniversary.seconds * 1000).getFullYear()}`
-      )
-    }
-  }, [singleRelationship])
-
   const handleChangeImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -148,54 +132,6 @@ const EditRelationshipScreen = () => {
     setEditEmail(email)
     setEditPhone(phone)
   }, [name, lastName, location, pronounsValue, email, phone])
-
-  const BirthdayDatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: editBirthday,
-      placeholder: 'Select a date',
-      onChange: (event) => {
-        setEditBirthday(new Date(event.target.value))
-      },
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
-    })
-  }
-
-  const AnniversaryDatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: editAnniversary,
-      placeholder: 'Select a date',
-      onChange: (event) => {
-        setEditAnniversary(new Date(event.target.value))
-      },
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
-    })
-  }
 
   const handleSave = async () => {
     if (
@@ -332,7 +268,12 @@ const EditRelationshipScreen = () => {
                   <Text style={styles.form__label}>Birthday</Text>
                   {showBirthdayPicker ? (
                     <View style={styles.form__twoCol}>
-                      <BirthdayDatePicker style={styles.form__date} />
+                      <DatePicker
+                        style={styles.form__date}
+                        onChange={(e) => setEditBirthday(e.target.value)}
+                        onBlur={(e) => setEditBirthday(e.target.value)}
+                        value={editBirthday}
+                      />
                       <Pressable onPress={() => setShowBirthdayPicker(false)}>
                         <Image
                           source={CloseIcon}
@@ -345,7 +286,7 @@ const EditRelationshipScreen = () => {
                       <TextInput
                         style={styles.form__input}
                         placeholderTextColor="#c7cbd9"
-                        value={finalBirthday}
+                        value={new Date(birthday).toLocaleDateString()}
                       />
                     </Pressable>
                   )}
@@ -354,7 +295,12 @@ const EditRelationshipScreen = () => {
                   <Text style={styles.form__label}>Anniversary</Text>
                   {showAnniversaryPicker ? (
                     <View style={styles.form__twoCol}>
-                      <AnniversaryDatePicker style={styles.form__date} />
+                      <DatePicker
+                        style={styles.form__date}
+                        onChange={(e) => setEditAnniversary(e.target.value)}
+                        onBlur={(e) => setEditAnniversary(e.target.value)}
+                        value={editAnniversary}
+                      />
                       <Pressable
                         onPress={() => setShowAnniversaryPicker(false)}
                       >
@@ -369,7 +315,7 @@ const EditRelationshipScreen = () => {
                       <TextInput
                         style={styles.form__input}
                         placeholderTextColor="#c7cbd9"
-                        value={finalAnniversary}
+                        value={new Date(anniversary).toLocaleDateString()}
                       />
                     </Pressable>
                   )}

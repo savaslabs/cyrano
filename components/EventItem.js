@@ -15,7 +15,6 @@ import Avatar from '../assets/avatar.png'
 const isSmallDevice = Dimensions.get('window').width < 800
 
 const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
-  const [finalDate, setFinalDate] = useState('')
   const navigation = useNavigation()
 
   const handlePress = (e) => {
@@ -34,16 +33,6 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
     eventName,
   } = item
 
-  useEffect(() => {
-    if (item) {
-      setFinalDate(
-        `${new Date(dateDate?.seconds * 1000).getMonth()} - ${new Date(
-          dateDate?.seconds * 1000
-        ).getDate()} - ${new Date(dateDate?.seconds * 1000).getFullYear()}`
-      )
-    }
-  }, [item])
-
   return (
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
@@ -57,7 +46,7 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
         ))}
       </View>
       <Text style={styles.eventCard__dateTime}>
-        {finalDate} @ {dateTime}
+        {new Date(dateDate).toLocaleDateString()} @ {dateTime}
       </Text>
       <View
         style={[

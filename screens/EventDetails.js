@@ -8,20 +8,9 @@ import Back from '../assets/arrow-back.svg'
 import { auth } from '../config/firebase-config'
 
 const EventDetails = () => {
-  const [finalDate, setFinalDate] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
   const { item, imgDisplay, fullNameDisplay } = route.params
-
-  useEffect(() => {
-    if (item) {
-      setFinalDate(
-        `${new Date(item?.dateDate.seconds * 1000).getMonth()} - ${new Date(
-          item?.dateDate.seconds * 1000
-        ).getDate()} - ${new Date(item?.dateDate.seconds * 1000).getFullYear()}`
-      )
-    }
-  }, [item])
 
   return (
     <Page>
@@ -78,7 +67,8 @@ const EventDetails = () => {
         <View>
           <Text>DATE AND TIME</Text>
           <Text>
-            {finalDate} {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
+            {new Date(item?.dateDate).toLocaleDateString()}{' '}
+            {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
           </Text>
         </View>
         <View>

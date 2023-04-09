@@ -18,8 +18,6 @@ import Avatar from '../assets/avatar.png'
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
   const [loading, setLoading] = useState(true)
-  const [finalBirthday, setFinalBirthday] = useState('')
-  const [finalAnniversary, setFinalAnniversary] = useState('')
   const [otherDetailsArr, setOtherDetailsArr] = useState('')
   const [newDetailsArr, setNewDetailsArr] = useState('')
   const [showMessage, setShowMessage] = useState(false)
@@ -54,8 +52,8 @@ const Relationship = () => {
   }
 
   useEffect(() => {
-    if(otherDetailsArr) {
-      const newArr = otherDetailsArr.filter(item => item.relID === savedId)
+    if (otherDetailsArr) {
+      const newArr = otherDetailsArr.filter((item) => item.relID === savedId)
       setNewDetailsArr(newArr)
     }
   }, [otherDetailsArr])
@@ -87,21 +85,6 @@ const Relationship = () => {
   const handleBackAdmin = () => {
     navigation.navigate('Admin')
   }
-
-  useEffect(() => {
-    if (singleRelationship) {
-      setFinalBirthday(
-        `${new Date(birthday.seconds * 1000).getMonth()} - ${new Date(
-          birthday.seconds * 1000
-        ).getDate()} - ${new Date(birthday.seconds * 1000).getFullYear()}`
-      )
-      setFinalAnniversary(
-        `${new Date(anniversary.seconds * 1000).getMonth()} - ${new Date(
-          anniversary.seconds * 1000
-        ).getDate()} - ${new Date(anniversary.seconds * 1000).getFullYear()}`
-      )
-    }
-  }, [singleRelationship])
 
   const handlePress = () => {
     navigation.navigate('Other Details', {
@@ -159,11 +142,16 @@ const Relationship = () => {
             <View style={styles.greybox__pair}>
               <View style={styles.greybox}>
                 <Text style={styles.h5}>{name.toUpperCase()}'S BIRTHDAY</Text>
-                <Text style={[styles.p, styles.mb0]}>{finalBirthday}</Text>
+                <Text style={[styles.p, styles.mb0]}>
+                  {new Date(birthday).toLocaleDateString()}
+                </Text>
               </View>
               <View style={styles.greybox}>
                 <Text style={styles.h5}>YOUR ANNIVERSARY</Text>
-                <Text style={[styles.p, styles.mb0]}>{finalAnniversary}</Text>
+                <Text style={[styles.p, styles.mb0]}>
+                  {' '}
+                  {new Date(anniversary).toLocaleDateString()}
+                </Text>
               </View>
             </View>
             <View style={styles.greybox}>
@@ -178,9 +166,7 @@ const Relationship = () => {
                     onPress={() =>
                       navigation.navigate('Relationship Status', {
                         rating: relationshipRating,
-                        comments: ratingComments
-                          ? ratingComments
-                          : 'N/A',
+                        comments: ratingComments ? ratingComments : 'N/A',
                       })
                     }
                   >

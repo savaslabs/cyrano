@@ -9,6 +9,7 @@ import { auth, db } from '../config/firebase-config'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import DropDownPicker from 'react-native-dropdown-picker'
+import DatePicker from '../components/form/DatePicker'
 
 const EditEventScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -28,7 +29,6 @@ const EditEventScreen = () => {
   const [editTime, setEditTime] = useState('')
   const [editPlace, setEditPlace] = useState('')
   const [editComments, setEditComments] = useState('')
-  const [finalDate, setFinalDate] = useState('')
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [showTimePicker, setShowTimePicker] = useState(false)
   const [showLoveStyles, setShowLoveStyles] = useState(false)
@@ -52,40 +52,6 @@ const EditEventScreen = () => {
     additionalComments,
     id,
   } = item
-
-  useEffect(() => {
-    if (item) {
-      setFinalDate(
-        `${new Date(dateDate.seconds * 1000).getMonth()} - ${new Date(
-          dateDate.seconds * 1000
-        ).getDate()} - ${new Date(dateDate.seconds * 1000).getFullYear()}`
-      )
-    }
-  }, [item])
-
-  const DatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: editDate,
-      placeholder: 'Select a date',
-      onChange: (event) => {
-        setEditDate(new Date(event.target.value))
-      },
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
-    })
-  }
 
   const TimePicker = () => {
     return createElement('input', {
@@ -258,7 +224,12 @@ const EditEventScreen = () => {
               <Text style={styles.form__label}>Date</Text>
               {showDatePicker ? (
                 <View style={styles.form__twoCol}>
-                  <DatePicker style={styles.form__date} />
+                  <DatePicker
+                    style={styles.form__date}
+                    onChange={(e) => setEditDate(e.target.value)}
+                    onBlur={(e) => setEditDate(e.target.value)}
+                    value={editDate}
+                  />
                   <Pressable onPress={() => setShowDatePicker(false)}>
                     <Image
                       source={CloseIcon}
@@ -271,7 +242,7 @@ const EditEventScreen = () => {
                   <TextInput
                     style={styles.form__input}
                     placeholderTextColor="#c7cbd9"
-                    value={finalDate}
+                    value={new Date(dateDate).toLocaleDateString()}
                   />
                 </Pressable>
               )}
