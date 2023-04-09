@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
-import { useRef, useEffect, createElement } from 'react'
+import { View, Text, TextInput, Animated } from 'react-native'
+import { useRef, useEffect } from 'react'
 import { styles } from '../../styles'
 import StarRating from 'react-native-star-rating-widget'
+import DatePicker from './DatePicker'
 
 const Fourth = ({
   dateDate,
@@ -24,37 +25,18 @@ const Fourth = ({
     }).start()
   }, [fadeAnim])
 
-  const DatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: dateDate,
-      onChange: (event) => {
-        setLastTimeDate(new Date(event.target.value))
-      },
-      placeholder: 'Select a date',
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
-    })
-  }
-
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       <View>
         <Text style={[styles.p, styles.alignLeft]}>
           When was the last time you went on a date with {name}?
         </Text>
-        <DatePicker style={styles.form__date} />
+        <DatePicker
+          style={styles.form__date}
+          onChange={(e) => setLastTimeDate(e.target.value)}
+          onBlur={(e) => setLastTimeDate(e.target.value)}
+          value={dateDate}
+        />
       </View>
       <View>
         <Text style={[styles.p, styles.alignLeft]}>What did you do?</Text>

@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@emailjs/browser": "^3.11.0",
     "@expo/webpack-config": "^0.17.2",
     "@react-native-community/datetimepicker": "6.5.2",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -16,6 +17,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "axios": "^1.2.6",
     "eas-cli": "^3.4.1",
+    "emailjs": "^4.0.1",
     "expo": "~47.0.12",
     "expo-image-picker": "~14.0.2",
     "expo-status-bar": "~1.4.2",

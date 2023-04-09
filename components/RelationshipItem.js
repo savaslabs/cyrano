@@ -111,6 +111,7 @@ const RelationshipItem = ({
 const styles = StyleSheet.create({
   relationshipCard: {
     backgroundColor: '#F1F2F6',
+    marginBottom: 16,
     padding: 16,
     borderRadius: 4,
   },

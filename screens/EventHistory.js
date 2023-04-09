@@ -37,6 +37,7 @@ const EventHistory = () => {
     'Practical',
   ])
   const [showError, setShowError] = useState(false)
+  const [resetFilterColor, setResetFilterColor] = useState(false)
   const navigation = useNavigation()
   const route = useRoute()
   const { imgDisplay, fullNameDisplay } = route.params
@@ -118,6 +119,7 @@ const EventHistory = () => {
 
   const showAll = () => {
     setFilteredRel(relationshipEvents)
+    setResetFilterColor(true)
   }
 
   return (
@@ -180,6 +182,8 @@ const EventHistory = () => {
                   relationshipEvents={relationshipEvents}
                   setShowError={setShowError}
                   filteredRel={filteredRel}
+                  resetFilterColor={resetFilterColor}
+                  setResetFilterColor={setResetFilterColor}
                 />
               ))}
               <Pressable style={styles.loveStyleTags__tag} onPress={showAll}>

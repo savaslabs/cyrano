@@ -9,8 +9,9 @@ import First from '../components/form/First'
 import Second from '../components/form/Second'
 import Third from '../components/form/Third'
 import Fourth from '../components/form/Fourth'
+import emailjs from '@emailjs/browser'
 import { auth, db } from '../config/firebase-config'
-import { setDoc, doc, serverTimestamp, arrayUnion } from 'firebase/firestore'
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { styles } from '../styles'
 import Page from '../shared/Page'
 import Toast from 'react-native-toast-message'
@@ -50,8 +51,8 @@ const AddRelationship = () => {
   const [location, setLocation] = useState('')
 
   // Second form states
-  const [birthday, setBirthday] = useState(new Date(Date.now()))
-  const [anniversary, setAnniversary] = useState(new Date(Date.now()))
+  const [birthday, setBirthday] = useState('')
+  const [anniversary, setAnniversary] = useState('')
   const [relationshipRating, setRelationshipRating] = useState('')
 
   // Third form states
@@ -60,7 +61,7 @@ const AddRelationship = () => {
 
   // Fourth form states
   const [dateRating, setDateRating] = useState('')
-  const [dateDate, setLastTimeDate] = useState(new Date(Date.now()))
+  const [dateDate, setLastTimeDate] = useState('')
   const [eventName, setEventName] = useState('')
   const [datePlace, setDatePlace] = useState('')
 
@@ -199,7 +200,25 @@ const AddRelationship = () => {
   }
 
   const sendLoveTest = () => {
-    setShowMessage(true)
+    emailjs
+      .send(
+        'service_mluy78d',
+        'template_dlzx6tm',
+        {
+          from_email: email,
+        },
+        '7RtlMLsc_bIlK-F46'
+      )
+      .then(() => {
+        setShowMessage(true)
+      })
+      .catch((err) =>
+        Toast.show({
+          type: 'error',
+          text1: err.code,
+          visibilityTime: 2000,
+        })
+      )
   }
 
   useEffect(() => {

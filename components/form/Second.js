@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, TextInput, Animated } from 'react-native'
+import { View, Text, Animated } from 'react-native'
 import { useRef, useEffect, useState, createElement } from 'react'
 import StarRating from 'react-native-star-rating-widget'
 import { styles } from '../../styles'
-import Stars from '../../shared/Stars'
+import DatePicker from './DatePicker'
 
 const Second = ({
   birthday,
@@ -24,53 +24,6 @@ const Second = ({
     }).start()
   }, [fadeAnim])
 
-  const BirthdayDatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: birthday.toISOString().split('T')[0],
-      placeholder: 'Select a date',
-      onChange: (event) => {
-        setBirthday(new Date(event.target.value))
-      },
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
-    })
-  }
-
-  const AnniversaryDatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: anniversary.toISOString().split('T')[0],
-      onChange: (event) => {
-        setAnniversary(new Date(event.target.value))
-      },
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
-    })
-  }
-
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
       {relationshipValue === 'Romantic' && (
@@ -78,11 +31,21 @@ const Second = ({
           <View style={styles.form__twoCol}>
             <View style={styles.form__col}>
               <Text style={styles.form__label}>Birthday</Text>
-              <BirthdayDatePicker style={styles.form__date} />
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setBirthday(e.target.value)}
+                onBlur={(e) => setBirthday(e.target.value)}
+                value={birthday}
+              />
             </View>
             <View style={styles.form__col}>
               <Text style={styles.form__label}>Anniversary</Text>
-              <AnniversaryDatePicker style={styles.form__date} />
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setAnniversary(e.target.value)}
+                onBlur={(e) => setAnniversary(e.target.value)}
+                value={anniversary}
+              />
             </View>
           </View>
           <View>

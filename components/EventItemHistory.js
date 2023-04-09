@@ -5,7 +5,6 @@ import { auth } from '../config/firebase-config'
 import { useState, useEffect } from 'react'
 
 const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
-  const [finalDate, setFinalDate] = useState('')
   const navigation = useNavigation()
 
   const handlePress = (e) => {
@@ -15,16 +14,6 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
   }
 
   const { id, eventName, loveStyleTag, dateDate, dateRating, state } = item
-
-  useEffect(() => {
-    if (item) {
-      setFinalDate(
-        `${new Date(dateDate?.seconds * 1000).getMonth()} - ${new Date(
-          dateDate?.seconds * 1000
-        ).getDate()} - ${new Date(dateDate?.seconds * 1000).getFullYear()}`
-      )
-    }
-  }, [item])
 
   return (
     <View style={styles.eventCard}>
@@ -37,7 +26,9 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
         ))}
       </View>
 
-      <Text style={styles.eventCard__dateTime}>{finalDate}</Text>
+      <Text style={styles.eventCard__dateTime}>
+        {new Date(dateDate).toLocaleDateString()}
+      </Text>
       <View style={styles.eventCard__bottom}>
         {!dateRating ? (
           state !== 'upcoming' && (

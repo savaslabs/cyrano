@@ -8,6 +8,7 @@ import { db } from '../config/firebase-config'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import uuid from 'react-native-uuid'
+import DatePicker from '../components/form/DatePicker'
 
 const ScheduleEvent = () => {
   const [relationshipData, setRelationshipData] = useState('')
@@ -78,7 +79,7 @@ const ScheduleEvent = () => {
       dateTime,
       additionalComments,
       relID: itemId,
-      state: 'upcoming'
+      state: 'upcoming',
     })
       .then(navigation.navigate('Admin'))
       .then(
@@ -98,29 +99,6 @@ const ScheduleEvent = () => {
   const handleBack = () => {
     navigation.navigate('AdminRel', {
       itemId,
-    })
-  }
-
-  const NextDatePicker = () => {
-    return createElement('input', {
-      type: 'date',
-      value: dateDate,
-      onChange: (event) => {
-        setNextDateDate(new Date(event.target.value))
-      },
-      style: {
-        height: 56,
-        marginBottom: 16,
-        fontSize: 17,
-        border: '1px solid rgb(199, 203, 217)',
-        paddingLeft: 16,
-        paddingRight: 16,
-        borderRadius: 4,
-        color: 'rgba(51, 55, 75, 1)',
-        marginTop: -8,
-        flexGrow: 1,
-        fontFamily: 'sans-serif',
-      },
     })
   }
 
@@ -166,7 +144,11 @@ const ScheduleEvent = () => {
             <View style={styles.form__twoCol}>
               <View style={styles.form__col}>
                 <Text style={styles.form__label}>Date</Text>
-                <NextDatePicker />
+                <DatePicker
+                  onChange={(e) => setNextDateDate(e.target.value)}
+                  onBlur={(e) => setNextDateDate(e.target.value)}
+                  value={dateDate}
+                />
               </View>
               <View style={styles.form__col}>
                 <Text style={styles.form__label}>Time</Text>
