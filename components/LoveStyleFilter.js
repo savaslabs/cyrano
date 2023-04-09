@@ -24,6 +24,7 @@ const LoveStyleFilter = ({
 
     if (isActive) {
       setIsActive(false)
+      setFilteredRel(relationshipEvents)
     }
   }
 
