@@ -164,7 +164,11 @@ const EditRelationshipScreen = () => {
           merge: true,
         }
       )
-        .then(() => navigation.navigate('Relationships'))
+        .then(() =>
+          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+            ? navigation.navigate('Relationships')
+            : navigation.navigate('Admin')
+        )
         .then(() =>
           Toast.show({
             type: 'success',
