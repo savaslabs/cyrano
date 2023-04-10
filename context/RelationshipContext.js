@@ -13,18 +13,18 @@ export const RelationshipProvider = ({ children }) => {
   const prevEventsRef = collection(db, 'prevEvents')
 
   // Set Relationships
-  useEffect(() => {
-    const getRelationships = async () => {
-      const data = await getDocs(relationshipRef)
-      const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      const finalRel = newData.filter(
-        (item) => item.author.id === auth.currentUser.uid
-      )
-      setRelationships(finalRel)
-    }
+  // useEffect(() => {
+  //   const getRelationships = async () => {
+  //     const data = await getDocs(relationshipRef)
+  //     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  //     const finalRel = newData.filter(
+  //       (item) => item.author.id === auth.currentUser.uid
+  //     )
+  //     setRelationships(finalRel)
+  //   }
 
-    getRelationships()
-  }, [])
+  //   getRelationships()
+  // }, [])
 
   //Get upcoming events
   useEffect(() => {

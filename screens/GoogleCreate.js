@@ -19,14 +19,14 @@ const GoogleCreate = () => {
 
   // Store user data
   useEffect(() => {
-    if (user) {
+    if (user && user?.user?.img !== undefined) {
       addDoc(usersRef, {
         userId: user?.user?.id,
         name: name,
         lastName: lastName,
         email: user?.user?.email,
         phone: phone,
-        profileImg: user?.user?.img ? user?.user?.img : '',
+        profileImg: user?.user?.img,
         fullName: `${name} ${lastName}`,
       }).then(navigation.navigate('Relationships'))
     }
