@@ -2,7 +2,7 @@ import { View, Text, Pressable, Image } from 'react-native'
 import { styles } from '../styles'
 import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { db, auth } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
@@ -21,6 +21,7 @@ const RelationshipsHomeScreen = () => {
   const [showMessage, setShowMessage] = useState(false)
   const relationshipRef = collection(db, 'relationships')
   const upcomingEventsRef = collection(db, 'upcomingEvents')
+  const isFocused = useIsFocused()
 
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
@@ -39,9 +40,13 @@ const RelationshipsHomeScreen = () => {
   }
 
   useEffect(() => {
-    getRelationships()
+    if (isFocused) {
+      getRelationships()
+      console.log('Function running..')
+    }
+
     getUpcomingEvents()
-  }, [])
+  }, [isFocused])
 
   const handlePress = () => {
     navigation.navigate('Add a Relationship')
@@ -59,10 +64,10 @@ const RelationshipsHomeScreen = () => {
   }, [relationships, upcomingArr, imgDisplay, fullNameDisplay])
 
   useEffect(() => {
-    if (relationships) {
+    if (relationships && isFocused) {
       setLoading(false)
     }
-  }, [relationships])
+  }, [relationships, isFocused])
 
   useEffect(() => {
     if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {

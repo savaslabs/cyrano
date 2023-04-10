@@ -102,12 +102,6 @@ const HomeScreen = () => {
     }
   }, [email, password, repeatPassword, name, lastName, phone])
 
-  // const deleteDocu = async () => {
-  //   await deleteDoc(doc(relref, '73695c0a-f17e-47ca-b04f-1f136205442b')).then(
-  //     alert('Documento borrado')
-  //   )
-  // }
-
   return (
     <>
       {isLoading ? (
@@ -273,7 +267,6 @@ const HomeScreen = () => {
                   </Pressable>
                 </Text>
               </View>
-              {/* <Pressable onPress={deleteDocu}>DELETE</Pressable> */}
             </View>
           </View>
         </Page>
