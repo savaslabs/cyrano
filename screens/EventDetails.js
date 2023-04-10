@@ -1,7 +1,6 @@
 import { View, Text, Pressable, Image } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { styles } from '../styles'
-import { useState, useEffect } from 'react'
 import Page from '../shared/Page'
 import Avatar from '../assets/avatar.png'
 import Back from '../assets/arrow-back.svg'
