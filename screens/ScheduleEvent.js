@@ -77,6 +77,7 @@ const ScheduleEvent = () => {
       datePlace,
       dateDate,
       dateTime,
+      dateRating: '',
       additionalComments,
       relID: itemId,
       state: 'upcoming',

@@ -1,20 +1,24 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Animated,
-  Pressable,
-} from 'react-native'
+import { View, Text, TextInput, Animated, Pressable } from 'react-native'
 import { useRef, useEffect, useState } from 'react'
 import Card from '../shared/Card'
 import StarRating from 'react-native-star-rating-widget'
 import Page from '../shared/Page'
+import { useRoute, useNavigation } from '@react-navigation/native'
+import { db } from '../config/firebase-config'
+import { doc, updateDoc } from 'firebase/firestore'
+import { styles } from '../styles'
+import { Toast } from 'react-native-toast-message/lib/src/Toast'
 
 const EventRatingScreen = () => {
   const [dateRating, setDateRating] = useState('')
+  const [highlight, setHighlight] = useState('')
+  const [lowlights, setLowlights] = useState('')
+  const [additionalComments, setAdditionalComments] = useState('')
   const [relationshipRating, setRelationshipRating] = useState('')
   const fadeAnim = useRef(new Animated.Value(0)).current
+  const route = useRoute()
+  const { item } = route.params
+  const navigation = useNavigation()
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -24,25 +28,62 @@ const EventRatingScreen = () => {
     }).start()
   }, [fadeAnim])
 
+  const { id, relID, name, loveStyleTag, eventName, dateDate, dateTime } = item
+
+  const upcomingEventsRef = doc(db, 'prevEvents', id)
+  const relRef = doc(db, 'relationships', relID)
+
+  const handleSave = async () => {
+    await updateDoc(
+      upcomingEventsRef,
+      {
+        dateRating,
+        highlight,
+        lowlights,
+        additionalComments,
+      },
+      {
+        merge: true,
+      }
+    )
+
+    await updateDoc(relRef, {
+      relationshipRating,
+    })
+      .then(() => {
+        navigation.navigate('Relationships')
+      })
+      .then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Event rated!',
+          visibilityTime: 2000,
+        })
+      })
+  }
+
   return (
     <Page>
       <Animated.View style={{ opacity: fadeAnim }}>
         <View style={styles.container}>
           <Text>Event Rating</Text>
           <Card>
-            <Text>Dinner Date with Amber</Text>
-            <Card>
-              <Text>Activity</Text>
-            </Card>
-            <Card>
-              <Text>Financial</Text>
-            </Card>
-            <Text>Friday, Jan 26, 2023 @ 8 pm</Text>
+            <Text>
+              {eventName} with {name}
+            </Text>
+            {loveStyleTag?.map((tag, index) => (
+              <Text style={styles.eventCard__tag} key={index}>
+                {tag}
+              </Text>
+            ))}
+            <Text>
+              {new Date(dateDate).toLocaleDateString()} @ {dateTime}
+            </Text>
           </Card>
 
           <View>
             <Text style={styles.label}>
-              How would you rate your dinner date with Amber?
+              How would you rate your {eventName} date with {name}?
             </Text>
             <View>
               <StarRating
@@ -59,8 +100,10 @@ const EventRatingScreen = () => {
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={styles.input}
+              style={styles.form__textArea}
               placeholderTextColor="rgba(51,55,75,0.5)"
+              value={highlight}
+              onChangeText={(newHighlight) => setHighlight(newHighlight)}
             />
           </View>
 
@@ -72,8 +115,10 @@ const EventRatingScreen = () => {
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={styles.input}
+              style={styles.form__textArea}
               placeholderTextColor="rgba(51,55,75,0.5)"
+              value={lowlights}
+              onChangeText={(newLow) => setLowlights(newLow)}
             />
           </View>
 
@@ -85,15 +130,17 @@ const EventRatingScreen = () => {
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={styles.input}
+              style={styles.form__textArea}
               placeholderTextColor="rgba(51,55,75,0.5)"
+              value={additionalComments}
+              onChangeText={(newNotes) => setAdditionalComments(newNotes)}
             />
           </View>
 
           <View>
             <Text style={styles.label}>
-              How would you rate your overall relationship with Amber after this
-              event?
+              How would you rate your overall relationship with {name} after
+              this event?
             </Text>
             <StarRating
               rating={relationshipRating}
@@ -102,7 +149,7 @@ const EventRatingScreen = () => {
             />
           </View>
 
-          <Pressable style={styles.button}>
+          <Pressable style={styles.button} onPress={handleSave}>
             <Text>SUBMIT</Text>
           </Pressable>
         </View>
@@ -110,64 +157,5 @@ const EventRatingScreen = () => {
     </Page>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    maxWidth: 700,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    backgroundColor: '#FFFFFF',
-  },
-  label: {
-    color: '#33374B',
-    fontWeight: '700',
-    fontSize: 16,
-    paddingLeft: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#33374B',
-    borderRadius: 5,
-    color: '#33374B',
-  },
-  dropdown: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#33374B',
-    borderRadius: 5,
-    color: '#33374B',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  text: {
-    color: '#33374B',
-    paddingTop: 5,
-  },
-  button: {
-    backgroundColor: '#EF6E62',
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 65,
-    textAlign: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-    opacity: '1',
-    width: '70%',
-    alignSelf: 'center',
-  },
-  disabled: {
-    opacity: '0.5',
-  },
-})
 
 export default EventRatingScreen

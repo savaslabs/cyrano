@@ -53,14 +53,16 @@ export const AuthProvider = ({ children }) => {
   // Sign in with Google
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, provider).then((result) => {
-      setUser({
-        user: {
-          id: result.user.uid,
-          email: result.user.email,
-          img: result.user.photoURL,
-        },
-        isLoggedIn: true,
-      })
+      if (result) {
+        setUser({
+          user: {
+            id: result.user.uid,
+            email: result.user.email,
+            img: result.user.photoURL,
+          },
+          isLoggedIn: true,
+        })
+      }
     })
   }
 

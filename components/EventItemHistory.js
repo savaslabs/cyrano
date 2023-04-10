@@ -32,7 +32,9 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
       <View style={styles.eventCard__bottom}>
         {!dateRating ? (
           state !== 'upcoming' && (
-            <Pressable onPress={() => navigation.navigate('Event Rating')}>
+            <Pressable
+              onPress={() => navigation.navigate('Event Rating', { item })}
+            >
               <Text>Complete Event Rating</Text>
             </Pressable>
           )
