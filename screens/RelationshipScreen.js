@@ -95,7 +95,13 @@ const Relationship = () => {
   }
 
   const handleMessagePress = () => {
-    setShowMessage(true)
+    if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
+      navigation.navigate('Schedule Event', {
+        itemId,
+      })
+    } else {
+      setShowMessage(true)
+    }
   }
 
   return (
