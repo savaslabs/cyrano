@@ -179,7 +179,7 @@ const Relationship = () => {
             <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
               Upcoming Events
             </Text>
-            {!upcomingEvents ? (
+            {upcomingEvents?.length === 0 ? (
               <View style={[styles.greybox, styles.greyboxLarge]}>
                 <Text style={[styles.p, styles.center]}>
                   You don't have any upcoming events with {name}.

@@ -13,75 +13,79 @@ const EventDetails = () => {
 
   return (
     <Page>
-      <View>
-        {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
-          <Pressable
-            onPress={() =>
-              navigation.navigate('Event History', {
-                item,
-                imgDisplay,
-                fullNameDisplay,
-              })
-            }
-          >
-            <Image source={Back} style={{ width: 20, height: 20 }} />
-          </Pressable>
-        ) : (
-          <Pressable onPress={() => navigation.navigate('Admin')}>
-            <Image source={Back} style={{ width: 20, height: 20 }} />
-          </Pressable>
-        )}
-
-        <Text>{item?.eventName}</Text>
-        <View>
-          {item?.loveStyleTag.map((i, index) => (
-            <Text key={index}>{i}</Text>
-          ))}
-        </View>
-        <Text>
-          With:
-          {imgDisplay ? (
-            <Image
-              source={imgDisplay}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                marginRight: 10,
-              }}
-            />
+      <View style={[styles.page__content, styles.pageTopPadding]}>
+        <View style={styles.page__upper}>
+          {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+            <Pressable
+              onPress={() =>
+                navigation.navigate('Event History', {
+                  item,
+                  imgDisplay,
+                  fullNameDisplay,
+                })
+              }
+            >
+              <Image source={Back} style={{ width: 20, height: 20, marginBottom: 16 }} />
+            </Pressable>
           ) : (
-            <Image
-              source={Avatar}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                marginRight: 10,
-              }}
-            />
+            <Pressable onPress={() => navigation.navigate('Admin')}>
+              <Image source={Back} style={{ width: 20, height: 20, marginBottom: 16 }} />
+            </Pressable>
           )}
-          {fullNameDisplay}
-        </Text>
-        <View>
-          <Text>DATE AND TIME</Text>
-          <Text>
+          <View style={styles.eventHeading}>
+            <Text style={[styles.h2, styles.alignLeft]}>{item?.eventName}</Text>
+            <View style={[styles.loveStyleTags,{justifyContent: 'flex-end'}]}>
+              {item?.loveStyleTag.map((i, index) => (
+                <Text style={styles.loveStyleTags__tag} key={index}>{i}</Text>
+              ))}
+            </View>
+          </View>
+          <View style={styles.eventRelGraphic}>
+            <Text>With</Text>
+            <View style={styles.eventRelGraphic__pill}>
+              {imgDisplay ? (
+                <Image
+                  source={item?.img}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    marginRight: 10,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={item?.img}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    marginRight: 10,
+                  }}
+                />
+              )}
+            <Text style={styles.eventRelGraphic__text}>{item?.name} {item?.lastName}</Text>
+            </View>
+          </View>
+        </View>
+        <View style={{paddingTop: 16}}>
+          <Text style={styles.h4}>DATE AND TIME</Text>
+          <Text style={[styles.p, styles.alignLeft, {marginBottom: 32}]}>
             {new Date(item?.dateDate).toLocaleDateString()}{' '}
             {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
           </Text>
         </View>
         <View>
-          <Text>LOCATION</Text>
-          <Text>{item?.datePlace}</Text>
-          <Text>Get Directions</Text>
+          <Text style={styles.h4}>LOCATION</Text>
+          <Text style={[styles.p, styles.alignLeft, {marginBottom: 32}]}>{item?.datePlace}</Text>
         </View>
         <View>
-          <Text>ADDITIONAL NOTES</Text>
-          <Text>{item?.additionalComments}</Text>
+          <Text style={styles.h4}>ADDITIONAL NOTES</Text>
+          <Text style={[styles.p, styles.alignLeft, {marginBottom: 32}]}>{item?.additionalComments}</Text>
         </View>
 
         {item?.state !== 'past' ? (
-          <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>
+          <View style={styles.page__lower}>
             <Pressable
               style={[styles.button, styles.buttonGrey, styles.center]}
               onPress={() =>

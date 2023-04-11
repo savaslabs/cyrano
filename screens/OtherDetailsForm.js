@@ -75,12 +75,12 @@ const OtherDetails = () => {
           style={[styles.form__textArea, { height: 250 }]}
         />
         <View style={styles.page__lower}>
-          <View style={styles.form__twoCol}>
-            <Pressable style={styles.button} onPress={handleSave}>
-              <Text style={styles.button__text}>SAVE</Text>
+          <View style={styles.paginationBtns}>
+            <Pressable style={[styles.button, styles.buttonGrey]} onPress={handleCancel}>
+              <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={handleCancel}>
-              <Text style={styles.button__text}>CANCEL</Text>
+            <Pressable style={[styles.button, styles.buttonNext]} onPress={handleSave}>
+              <Text style={styles.button__text}>SAVE</Text>
             </Pressable>
           </View>
         </View>

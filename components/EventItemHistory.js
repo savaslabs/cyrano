@@ -31,8 +31,9 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
       </Text>
       <View style={styles.eventCard__bottom}>
         {!dateRating ? (
-          state !== 'upcoming' && (
+          state != 'upcoming' && (
             <Pressable
+              style={styles.eventCard__button}
               onPress={() => navigation.navigate('Event Rating', { item })}
             >
               <Text>Complete Event Rating</Text>
@@ -141,6 +142,16 @@ const styles = StyleSheet.create({
     gap: 8,
     justifySelf: 'flex-end',
     textAlign: 'right',
+  },
+  eventCard__button: {
+    padding: 16,
+    border: '1px solid #A0A5BD',
+    backgroundColor: '#ffffff',
+    textAlign: 'center',
+    borderRadius: 60,
+    fontSize: 15,
+    fontFamily: 'sans-serif',
+    color: '#33374B',
   },
   eventCard__link: {
     color: 'rgba(51, 55, 75, .75)',

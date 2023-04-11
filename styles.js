@@ -382,6 +382,56 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32
   },
+  delete: {
+    marginTop: 12,
+    textAlign: 'center'
+  },
+  delete__text: {
+    color: '#e5534b',
+    textDecorationLine: 'underline'
+  },
+  eventHeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  eventRelGraphic: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12
+  },
+  eventRelGraphic__pill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  eventRelGraphic__text: {
+    marginLeft: -20,
+    paddingLeft: 24,
+    fontSize: 17,
+    fontWeight: 700,
+    color: '#33374B',
+    paddingVertical: 9,
+    paddingRight: 24,
+    backgroundColor: '#F1F2F6',
+    borderTopEndRadius: 100,
+    borderBottomEndRadius: 100
+  },
+  eventSummary: {
+    backgroundColor: '#F1F2F6',
+    padding: 16,
+    gap: 16,
+    borderRadius: 4,
+    alignItems: 'center'
+  },
+  eventSummary__title: {
+    fontSize: 19,
+    fontWeight: 700,
+    color: '#33374B'
+  },
+  eventSummary__date:  {
+    fontSize: 15,
+    color: '#33374B'
+  },
   loveStyleTags: {
     flex: 1,
     flexDirection: 'row',
@@ -393,6 +443,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#C7CBD9',
     backgroundColor: '#F1F2F6',
+    fontFamily: 'sans-serif',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 56,
+    color: '#33374B',
+    marginBottom: 4,
+  },
+  eventTags: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 4,
+    flexWrap: 'wrap',
+  },
+  eventTags__tag: {
+    borderWidth: 1,
+    borderColor: '#C7CBD9',
+    backgroundColor: '#fff',
     fontFamily: 'sans-serif',
     paddingVertical: 4,
     paddingHorizontal: 12,

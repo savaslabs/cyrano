@@ -42,7 +42,6 @@ const RelationshipsHomeScreen = () => {
   useEffect(() => {
     if (isFocused) {
       getRelationships()
-      console.log('Function running..')
     }
 
     getUpcomingEvents()

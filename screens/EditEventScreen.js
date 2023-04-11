@@ -151,15 +151,15 @@ const EditEventScreen = () => {
           <View style={[styles.page__content, styles.pageTopPadding]}>
             <View style={styles.page__upper}>
               <Text style={styles.h1}>Edit Event</Text>
-              <View>
+              {/* <View>
                 with{' '}
                 <Image
                   source={imgDisplay}
                   style={[styles.profileImage, { width: 24, height: 24 }]}
                 />
                 <Text>{fullNameDisplay}</Text>
-              </View>
-              <Text style={styles.h5}>LOVE STYLE TAGS</Text>
+              </View> */}
+              <Text style={[styles.h5, {marginBottom: 16}]}>LOVE STYLE TAGS</Text>
               {showLoveStyles ? (
                 <View style={styles.form__twoCol}>
                   <DropDownPicker
@@ -212,15 +212,13 @@ const EditEventScreen = () => {
                 </Pressable>
               )}
 
-              <Text style={styles.h5}>EVENT NAME</Text>
-              <Text style={styles.form__label}>Event Name</Text>
+              <Text style={[styles.form__label, {marginTop: 16}]}>Event Name</Text>
               <TextInput
                 style={styles.form__input}
                 placeholderTextColor="#c7cbd9"
                 value={editEventName}
                 onChangeText={(newEventName) => setEditEventName(newEventName)}
               />
-              <Text style={styles.h5}>DATE AND TIME</Text>
               <Text style={styles.form__label}>Date</Text>
               {showDatePicker ? (
                 <View style={styles.form__twoCol}>
@@ -267,7 +265,6 @@ const EditEventScreen = () => {
                   />
                 </Pressable>
               )}
-              <Text style={styles.h5}>LOCATION</Text>
               <Text style={styles.form__label}>Location</Text>
               <TextInput
                 style={styles.form__input}
@@ -275,7 +272,6 @@ const EditEventScreen = () => {
                 value={editPlace}
                 onChangeText={(newPlace) => setEditPlace(newPlace)}
               />
-              <Text style={styles.h5}>ADDITIONAL NOTES</Text>
               <Text style={styles.form__label}>Additional Comments</Text>
               <TextInput
                 style={styles.form__input}
