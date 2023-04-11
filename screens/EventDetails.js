@@ -15,7 +15,8 @@ const EventDetails = () => {
     <Page>
       <View style={[styles.page__content, styles.pageTopPadding]}>
         <View style={styles.page__upper}>
-          {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+          {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+          auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
             <Pressable
               onPress={() =>
                 navigation.navigate('Event History', {
@@ -25,18 +26,28 @@ const EventDetails = () => {
                 })
               }
             >
-              <Image source={Back} style={{ width: 20, height: 20, marginBottom: 16 }} />
+              <Image
+                source={Back}
+                style={{ width: 20, height: 20, marginBottom: 16 }}
+              />
             </Pressable>
           ) : (
             <Pressable onPress={() => navigation.navigate('Admin')}>
-              <Image source={Back} style={{ width: 20, height: 20, marginBottom: 16 }} />
+              <Image
+                source={Back}
+                style={{ width: 20, height: 20, marginBottom: 16 }}
+              />
             </Pressable>
           )}
           <View style={styles.eventHeading}>
             <Text style={[styles.h2, styles.alignLeft]}>{item?.eventName}</Text>
-            <View style={[styles.loveStyleTags,{justifyContent: 'flex-end'}]}>
+            <View
+              style={[styles.loveStyleTags, { justifyContent: 'flex-end' }]}
+            >
               {item?.loveStyleTag.map((i, index) => (
-                <Text style={styles.loveStyleTags__tag} key={index}>{i}</Text>
+                <Text style={styles.loveStyleTags__tag} key={index}>
+                  {i}
+                </Text>
               ))}
             </View>
           </View>
@@ -64,24 +75,30 @@ const EventDetails = () => {
                   }}
                 />
               )}
-            <Text style={styles.eventRelGraphic__text}>{item?.name} {item?.lastName}</Text>
+              <Text style={styles.eventRelGraphic__text}>
+                {item?.name} {item?.lastName}
+              </Text>
             </View>
           </View>
         </View>
-        <View style={{paddingTop: 16}}>
+        <View style={{ paddingTop: 16 }}>
           <Text style={styles.h4}>DATE AND TIME</Text>
-          <Text style={[styles.p, styles.alignLeft, {marginBottom: 32}]}>
+          <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
             {new Date(item?.dateDate).toLocaleDateString()}{' '}
             {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
           </Text>
         </View>
         <View>
           <Text style={styles.h4}>LOCATION</Text>
-          <Text style={[styles.p, styles.alignLeft, {marginBottom: 32}]}>{item?.datePlace}</Text>
+          <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
+            {item?.datePlace}
+          </Text>
         </View>
         <View>
           <Text style={styles.h4}>ADDITIONAL NOTES</Text>
-          <Text style={[styles.p, styles.alignLeft, {marginBottom: 32}]}>{item?.additionalComments}</Text>
+          <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
+            {item?.additionalComments}
+          </Text>
         </View>
 
         {item?.state !== 'past' ? (

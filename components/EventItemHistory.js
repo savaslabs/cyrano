@@ -45,7 +45,8 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
           </View>
         )}
 
-        {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+        {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+        auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
           <Pressable onPress={() => console.log()} style={styles.button}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>
               Edit Event

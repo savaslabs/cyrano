@@ -69,7 +69,10 @@ const RelationshipsHomeScreen = () => {
   }, [relationships, isFocused])
 
   useEffect(() => {
-    if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
+    if (
+      auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+      auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+    ) {
       navigation.navigate('Admin')
     }
   }, [auth])
