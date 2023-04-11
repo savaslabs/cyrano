@@ -43,7 +43,7 @@ const EventDetails = () => {
           <View style={styles.eventRelGraphic}>
             <Text>With</Text>
             <View style={styles.eventRelGraphic__pill}>
-              {imgDisplay ? (
+              {item?.img ? (
                 <Image
                   source={item?.img}
                   style={{

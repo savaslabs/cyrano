@@ -179,7 +179,7 @@ const Relationship = () => {
             <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
               Upcoming Events
             </Text>
-            {upcomingEvents?.length === 0 ? (
+            {upcomingEvents?.length === 0 || !upcomingEvents ? (
               <View style={[styles.greybox, styles.greyboxLarge]}>
                 <Text style={[styles.p, styles.center]}>
                   You don't have any upcoming events with {name}.
@@ -206,7 +206,7 @@ const Relationship = () => {
                 </Pressable>
               </View>
             ) : (
-              upcomingEvents.map((item, index) => (
+              upcomingEvents?.map((item, index) => (
                 <EventItem
                   item={item}
                   key={index}
