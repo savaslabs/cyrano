@@ -62,9 +62,10 @@ const RelationshipsHomeAdminScreen = () => {
   }, [relationships, upcomingArr])
 
   const handlePress = () => {
-    setShowMessage(true)
+    navigation.navigate('Schedule Event', {
+      itemId,
+    })
   }
-
   return (
     <>
       {loading ? (
