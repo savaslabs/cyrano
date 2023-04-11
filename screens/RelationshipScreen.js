@@ -95,7 +95,10 @@ const Relationship = () => {
   }
 
   const handleMessagePress = () => {
-    if (auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03') {
+    if (
+      auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+      auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+    ) {
       navigation.navigate('Schedule Event', {
         itemId,
       })
@@ -111,7 +114,8 @@ const Relationship = () => {
       ) : (
         <Page>
           <View style={[styles.page__content, styles.pageTopPadding]}>
-            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+            auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
               <Pressable
                 style={styles.arrowContainer}
                 onPress={handleBackAdmin}

@@ -135,7 +135,8 @@ const EditEventScreen = () => {
           })
         })
         .then(() =>
-          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+          auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
             ? navigation.navigate('Relationships')
             : navigation.navigate('Admin')
         )
@@ -159,7 +160,9 @@ const EditEventScreen = () => {
                 />
                 <Text>{fullNameDisplay}</Text>
               </View> */}
-              <Text style={[styles.h5, {marginBottom: 16}]}>LOVE STYLE TAGS</Text>
+              <Text style={[styles.h5, { marginBottom: 16 }]}>
+                LOVE STYLE TAGS
+              </Text>
               {showLoveStyles ? (
                 <View style={styles.form__twoCol}>
                   <DropDownPicker
@@ -212,7 +215,9 @@ const EditEventScreen = () => {
                 </Pressable>
               )}
 
-              <Text style={[styles.form__label, {marginTop: 16}]}>Event Name</Text>
+              <Text style={[styles.form__label, { marginTop: 16 }]}>
+                Event Name
+              </Text>
               <TextInput
                 style={styles.form__input}
                 placeholderTextColor="#c7cbd9"

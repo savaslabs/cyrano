@@ -45,7 +45,8 @@ const EditDetailsScreen = () => {
         })
       )
       .then(() =>
-        auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+        auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+        auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
           ? navigation.navigate('Relationships')
           : navigation.navigate('Admin')
       )
@@ -103,19 +104,22 @@ const EditDetailsScreen = () => {
               onChangeText={(newText) => setEditText(newText)}
             />
             <Pressable
-                // style={[styles.button, isDisabled ? styles.disabled : '']}
-                style={styles.delete}
-                onPress={handleDeleteDoc}
-                // disabled={isDisabled}
-              >
-                <Text style={styles.delete__text}>
-                  Delete
-                </Text>
+              // style={[styles.button, isDisabled ? styles.disabled : '']}
+              style={styles.delete}
+              onPress={handleDeleteDoc}
+              // disabled={isDisabled}
+            >
+              <Text style={styles.delete__text}>Delete</Text>
             </Pressable>
             <View style={styles.page__lower}>
               <View style={styles.paginationBtns}>
-                <Pressable style={[styles.button, styles.buttonGrey]} onPress={handleCancel}>
-                  <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonGrey]}
+                  onPress={handleCancel}
+                >
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>
+                    CANCEL
+                  </Text>
                 </Pressable>
                 <Pressable
                   // style={[styles.button, isDisabled ? styles.disabled : '']}

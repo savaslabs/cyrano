@@ -64,7 +64,8 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
           <Text style={styles.eventCard__profileName}>{fullNameDisplay}</Text>
 
           <View style={styles.eventCard__buttons}>
-            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
+            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+            auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
               <Pressable
                 onPress={() =>
                   navigation.navigate('Edit Event', {

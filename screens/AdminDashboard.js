@@ -8,7 +8,6 @@ import Page from '../shared/Page'
 import AdminRelItem from '../components/AdminRelItem'
 import { styles } from '../styles'
 
-
 const AdminDashboard = () => {
   const [users, setUsers] = useState('')
   const [filteredUsers, setFilteredUser] = useState('')
@@ -27,7 +26,9 @@ const AdminDashboard = () => {
       return doc.data()
     })
     const filterUsers = newData.filter(
-      (item) => item.userId !== auth.currentUser.uid
+      (item) =>
+        item.userId !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' &&
+        item.userId !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
     )
     setUsers(filterUsers)
   }
@@ -65,22 +66,21 @@ const AdminDashboard = () => {
               <Text style={[styles.h2, styles.alignLeft]}>Users</Text>
               <Text style={[styles.h4, styles.medGap]}>SEARCH USERS</Text>
               <TextInput
-                style={[styles.form__input, {marginTop: 0}]}
+                style={[styles.form__input, { marginTop: 0 }]}
                 placeholder="Enter first or last name"
                 placeholderTextColor="#c7cbd9"
                 value={searchItem}
                 onChangeText={(newSearchItem) => setSearchItem(newSearchItem)}
               />
             </View>
-            <View style={{gap: 16}}>
+            <View style={{ gap: 16 }}>
               {filteredUsers
                 ? filteredUsers?.map((user, index) => (
-                  <AdminRelItem user={user} key={index} />
-                ))
+                    <AdminRelItem user={user} key={index} />
+                  ))
                 : users?.map((user, index) => (
-                  <AdminRelItem user={user} key={index} />
-                ))
-              }
+                    <AdminRelItem user={user} key={index} />
+                  ))}
             </View>
           </View>
         </Page>
