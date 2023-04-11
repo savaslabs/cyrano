@@ -69,7 +69,7 @@ const AdminRelItem = ({
           style={styles.userCard__button}
           onPress={() => handlePress(user?.userId)}
         >
-          <Text> Create Event</Text>
+          <Text>Manage Relationships</Text>
         </Pressable>
       </View>
     </View>

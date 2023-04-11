@@ -411,23 +411,29 @@ const EditRelationshipScreen = () => {
                 onChangeText={(newEditPhone) => setEditPhone(newEditPhone)}
               />
             </View>
-
-            <View style={[styles.page__lower, styles.form__twoCol]}>
+            {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ? (
               <Pressable
                 // style={[styles.button, isDisabled ? styles.disabled : '']}
-                style={styles.button}
+                style={styles.delete}
+                onPress={handleDeleteDoc}
+                // disabled={isDisabled}
+              >
+                <Text style={styles.delete__text}>Delete Relationship</Text>
+              </Pressable>
+            ) : (
+              ''
+            )}
+            <View style={[styles.page__lower, styles.paginationBtns]}>
+              <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
+                <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+              </Pressable>
+              <Pressable
+                // style={[styles.button, isDisabled ? styles.disabled : '']}
+                style={[styles.button, styles.buttonNext]}
                 onPress={handleSave}
                 // disabled={isDisabled}
               >
                 <Text style={styles.button__text}>SAVE</Text>
-              </Pressable>
-              <Pressable
-                // style={[styles.button, isDisabled ? styles.disabled : '']}
-                style={styles.button}
-                onPress={handleDeleteDoc}
-                // disabled={isDisabled}
-              >
-                <Image source={TrashIcon} style={{ width: 24, height: 24 }} />
               </Pressable>
             </View>
           </View>

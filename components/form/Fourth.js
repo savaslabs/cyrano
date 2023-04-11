@@ -38,25 +38,27 @@ const Fourth = ({
           value={dateDate}
         />
       </View>
-      <View>
-        <Text style={[styles.p, styles.alignLeft]}>What did you do?</Text>
-        <TextInput
-          style={styles.form__input}
-          placeholder="What did you do?"
-          placeholderTextColor="#c7cbd9"
-          value={eventName}
-          onChangeText={(newEvent) => setEventName(newEvent)}
-        />
-      </View>
-      <View>
-        <Text style={[styles.p, styles.alignLeft]}>Where did you go?</Text>
-        <TextInput
-          style={styles.form__input}
-          placeholder="What did you do?"
-          placeholderTextColor="#c7cbd9"
-          value={datePlace}
-          onChangeText={(newDatePlace) => setDatePlace(newDatePlace)}
-        />
+      <View style={styles.form__twoCol}>
+        <View style={styles.form__col}>
+          <Text style={[styles.p, styles.alignLeft]}>What did you do?</Text>
+          <TextInput
+            style={styles.form__input}
+            placeholder="Short event name"
+            placeholderTextColor="#c7cbd9"
+            value={eventName}
+            onChangeText={(newEvent) => setEventName(newEvent)}
+          />
+        </View>
+        <View style={styles.form__col}>
+          <Text style={[styles.p, styles.alignLeft]}>Where did you go?</Text>
+          <TextInput
+            style={styles.form__input}
+            placeholder="Location"
+            placeholderTextColor="#c7cbd9"
+            value={datePlace}
+            onChangeText={(newDatePlace) => setDatePlace(newDatePlace)}
+          />
+        </View>
       </View>
       <View>
         <Text style={[styles.p, styles.alignLeft]}>

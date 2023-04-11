@@ -203,6 +203,7 @@ const HomeScreen = () => {
                       styles.button,
                       styles.fixedWidth,
                       isDisabledFirst ? styles.disabled : '',
+                      {paddingLeft: 16, paddingRight: 16}
                     ]}
                     disabled={isDisabledFirst}
                   >

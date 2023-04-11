@@ -173,7 +173,7 @@ const EventHistory = () => {
               />
             </View>
             <Text style={[styles.h4, styles.medGap]}>Event Breakdown</Text>
-            <View style={styles.loveStyleTags}>
+            <View style={[styles.loveStyleTags, {marginBottom: 16}]}>
               {tagsFilter.map((tag, index) => (
                 <LoveStyleFilter
                   key={index}

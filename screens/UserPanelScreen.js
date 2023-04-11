@@ -174,9 +174,14 @@ const UserPanelScreen = () => {
                 )}
               </Pressable>
               <View style={styles.page__lower}>
-                <Pressable onPress={handleSave} style={styles.button}>
-                  <Text style={styles.button__text}>Save</Text>
-                </Pressable>
+                <View style={styles.paginationBtns}>
+                  <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
+                    <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+                  </Pressable>
+                  <Pressable onPress={handleSave} style={[styles.button, styles.buttonNext]}>
+                    <Text style={styles.button__text}>SAVE</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
           </View>

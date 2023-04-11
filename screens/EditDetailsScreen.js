@@ -51,6 +51,10 @@ const EditDetailsScreen = () => {
       )
   }
 
+  const handleCancel = () => {
+    navigation.navigate('Relationships')
+  }
+
   const handleDeleteDoc = async () => {
     try {
       await deleteDoc(doc(collection(db, 'otherDetails'), id))
@@ -98,25 +102,30 @@ const EditDetailsScreen = () => {
               value={editText}
               onChangeText={(newText) => setEditText(newText)}
             />
-            <View style={[styles.page__lower, styles.form__twoCol]}>
-              <Pressable
+            <Pressable
                 // style={[styles.button, isDisabled ? styles.disabled : '']}
-                style={styles.button}
-                onPress={handleSave}
-                // disabled={isDisabled}
-              >
-                <Text style={styles.button__text}>SAVE</Text>
-              </Pressable>
-              <Pressable
-                // style={[styles.button, isDisabled ? styles.disabled : '']}
-                style={styles.button}
+                style={styles.delete}
                 onPress={handleDeleteDoc}
                 // disabled={isDisabled}
               >
-                <Text style={styles.button__text}>
-                  <Image source={TrashIcon} style={{ width: 24, height: 24 }} />
+                <Text style={styles.delete__text}>
+                  Delete
                 </Text>
-              </Pressable>
+            </Pressable>
+            <View style={styles.page__lower}>
+              <View style={styles.paginationBtns}>
+                <Pressable style={[styles.button, styles.buttonGrey]} onPress={handleCancel}>
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+                </Pressable>
+                <Pressable
+                  // style={[styles.button, isDisabled ? styles.disabled : '']}
+                  style={[styles.button, styles.buttonNext]}
+                  onPress={handleSave}
+                  // disabled={isDisabled}
+                >
+                  <Text style={styles.button__text}>SAVE</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </Page>

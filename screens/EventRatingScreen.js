@@ -65,93 +65,106 @@ const EventRatingScreen = () => {
   return (
     <Page>
       <Animated.View style={{ opacity: fadeAnim }}>
-        <View style={styles.container}>
-          <Text>Event Rating</Text>
-          <Card>
-            <Text>
-              {eventName} with {name}
-            </Text>
-            {loveStyleTag?.map((tag, index) => (
-              <Text style={styles.eventCard__tag} key={index}>
-                {tag}
+        <View style={[styles.page__content, styles.pageTopPadding]}>
+          <View style={styles.page__upper}>
+            <Text style={[styles.h2, styles.alignLeft]}>Event Rating</Text>
+            <View style={styles.eventSummary}>
+              <Text style={styles.eventSummary__title}>
+                {eventName} with {name}
               </Text>
-            ))}
-            <Text>
-              {new Date(dateDate).toLocaleDateString()} @ {dateTime}
-            </Text>
-          </Card>
-
+              <View style={styles.eventTags}>
+                {loveStyleTag?.map((tag, index) => (
+                  <Text style={styles.eventTags__tag} key={index}>
+                    {tag}
+                  </Text>
+                ))}
+              </View>
+              <Text style={styles.eventSummary__date}>
+                {new Date(dateDate).toLocaleDateString()} @ {dateTime}
+              </Text>
+            </View>
+          </View>
           <View>
-            <Text style={styles.label}>
-              How would you rate your {eventName} date with {name}?
+           <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
+              How would you rate your event with <Text style={styles.superBold}>{name}</Text>?
             </Text>
             <View>
               <StarRating
                 rating={dateRating}
                 onChange={setDateRating}
                 color="#7B82A2"
+                starSize="52"
+                style={styles.starRating}
               />
             </View>
           </View>
 
-          <View>
-            <Text style={styles.label}>What was a highlight?</Text>
+          <View style={styles.medGap}>
+          <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>What was a highlight?</Text>
             <TextInput
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={styles.form__textArea}
+              style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
               placeholderTextColor="rgba(51,55,75,0.5)"
               value={highlight}
               onChangeText={(newHighlight) => setHighlight(newHighlight)}
             />
           </View>
 
-          <View>
-            <Text style={styles.label}>
+          <View style={{marginTop: 24}}>
+            <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
               Were there any lowlights or challenges?
             </Text>
             <TextInput
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={styles.form__textArea}
+              style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
               placeholderTextColor="rgba(51,55,75,0.5)"
               value={lowlights}
               onChangeText={(newLow) => setLowlights(newLow)}
             />
           </View>
 
-          <View>
-            <Text style={styles.label}>
+          <View style={{marginTop: 24}}>
+            <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
               Any other notes regarding the recommendation?
             </Text>
             <TextInput
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={styles.form__textArea}
+              style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
               placeholderTextColor="rgba(51,55,75,0.5)"
               value={additionalComments}
               onChangeText={(newNotes) => setAdditionalComments(newNotes)}
             />
           </View>
 
-          <View>
-            <Text style={styles.label}>
-              How would you rate your overall relationship with {name} after
+          <View style={{marginTop: 24}}>
+            <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
+              How would you rate your overall relationship with <Text style={styles.superBold}>{name}</Text> after
               this event?
             </Text>
             <StarRating
               rating={relationshipRating}
               onChange={setRelationshipRating}
               color="#7B82A2"
+              starSize="52"
+              style={styles.starRating}
             />
           </View>
-
-          <Pressable style={styles.button} onPress={handleSave}>
-            <Text>SUBMIT</Text>
-          </Pressable>
+          <View style={styles.page__lower}>
+            <View style={styles.paginationBtns}>
+              <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
+                <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+              </Pressable>
+              <Pressable style={[styles.button, styles.buttonNext]} onPress={handleSave}>
+                <Text style={styles.button__text}>SUBMIT</Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
       </Animated.View>
     </Page>

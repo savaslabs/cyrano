@@ -49,7 +49,7 @@ const Second = ({
             </View>
           </View>
           <View>
-            <Text style={[styles.p, styles.alignLeft]}>
+            <Text style={[styles.p, styles.alignLeft, {marginTop: 16}]}>
               How would you rate your relationship?
             </Text>
             <Text style={[styles.smallerText, styles.alignLeft]}>

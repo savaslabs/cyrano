@@ -14,7 +14,7 @@ import { db } from '../config/firebase-config'
 import { doc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import Spinner from '../shared/Spinner'
-import Back from '../assets/arrow-back.svg'
+import Back from '../assets/caret-left.svg'
 import { styles } from '../styles'
 
 const RelationshipCheckIn = () => {
@@ -69,9 +69,6 @@ const RelationshipCheckIn = () => {
 
             <View style={[styles.page__content, styles.pageTopPadding]}>
               <View style={styles.page__upper}>
-                <Pressable onPress={() => navigation.navigate('Relationships')}>
-                <Image source={Back} style={{ width: 20, height: 20 }} />
-              </Pressable>
                 <Text style={[styles.h1, styles.alignLeft]}>Relationship Check-in</Text>
               </View>
               <View>
@@ -111,9 +108,14 @@ const RelationshipCheckIn = () => {
               </View>
 
               <View style={styles.page__lower}>
-                <Pressable style={styles.button} onPress={handleUpdate}>
-                  <Text style={styles.button__text}>SUBMIT</Text>
-                </Pressable>
+                <View style={styles.paginationBtns}>
+                  <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
+                    <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+                  </Pressable>
+                  <Pressable style={[styles.button, styles.buttonNext]} onPress={handleUpdate}>
+                    <Text style={styles.button__text}>SUBMIT</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
           </Animated.View>
