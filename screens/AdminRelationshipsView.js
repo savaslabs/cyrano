@@ -1,7 +1,6 @@
 import { View, Text, Image, Pressable } from 'react-native'
 import React, { useEffect, useState, useContext } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
-// import Navbar from '../components/Navbar'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { db } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'

@@ -1,6 +1,6 @@
 import { View, Text, TextInput, Pressable, Image } from 'react-native'
 import { useRoute } from '@react-navigation/native'
-import { useState, useEffect, createElement } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { db, auth } from '../config/firebase-config'
 import {

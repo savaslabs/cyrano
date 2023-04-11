@@ -165,6 +165,7 @@ const Relationship = () => {
                     style={styles.ratingCard__button}
                     onPress={() =>
                       navigation.navigate('Relationship Status', {
+                        id,
                         rating: relationshipRating,
                         comments: ratingComments ? ratingComments : 'N/A',
                       })
