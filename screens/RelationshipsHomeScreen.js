@@ -9,6 +9,7 @@ import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
+import useAuth from '../hooks/useAuth'
 
 const RelationshipsHomeScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -22,6 +23,11 @@ const RelationshipsHomeScreen = () => {
   const relationshipRef = collection(db, 'relationships')
   const upcomingEventsRef = collection(db, 'upcomingEvents')
   const isFocused = useIsFocused()
+  const { userData, getUser } = useAuth()
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
@@ -79,6 +85,9 @@ const RelationshipsHomeScreen = () => {
 
   const handleMessagePress = () => {
     setShowMessage(true)
+    console.log('Name: ', relationships[0].name)
+    console.log('LastName: ', relationships[0].lastName)
+    console.log('User Phone: ', userData?.phone)
   }
 
   return (
