@@ -76,16 +76,6 @@ const RelationshipItem = ({
           >
             <Text> Create Event</Text>
           </Pressable>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('Schedule Event', {
-                itemId: item?.id,
-              })
-            }
-            style={styles.relationshipCard__button}
-          >
-            <Text> Request Check-in</Text>
-          </Pressable>
         </View>
       ) : (
         <View style={styles.relationshipCard__bottom}>
