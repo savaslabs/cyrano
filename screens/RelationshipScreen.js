@@ -14,6 +14,7 @@ import Page from '../shared/Page'
 import { styles } from '../styles'
 import OtherDetails from '../components/OtherDetails'
 import Avatar from '../assets/avatar.png'
+import useAuth from '../hooks/useAuth'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -26,10 +27,12 @@ const Relationship = () => {
   const route = useRoute()
   const { itemId, upcomingEvents, imgDisplay, fullNameDisplay } = route.params
   const otherDetailsCol = collection(db, 'otherDetails')
+  const { getUser, userData } = useAuth()
 
   useEffect(() => {
     getSpecificDoc()
     getOtherDetails()
+    getUser()
   }, [])
 
   const getSpecificDoc = async () => {
@@ -106,6 +109,17 @@ const Relationship = () => {
       setShowMessage(true)
     }
   }
+
+  useEffect(() => {
+    if (singleRelationship && userData) {
+      console.log('Name: ', singleRelationship?.name)
+      console.log('Last Name: ', singleRelationship?.lastName)
+      console.log('User Phone: ', userData?.phone)
+      console.log('User name: ', userData?.name)
+      console.log('User Last Name: ', userData?.lastName)
+      console.log('User Full Name: ', userData?.fullName)
+    }
+  }, [singleRelationship, userData])
 
   return (
     <>
