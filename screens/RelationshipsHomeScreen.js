@@ -10,6 +10,8 @@ import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 import useAuth from '../hooks/useAuth'
+import axios from 'axios'
+import {TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN} from '@env'
 
 const RelationshipsHomeScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -83,11 +85,29 @@ const RelationshipsHomeScreen = () => {
     }
   }, [auth])
 
-  const handleMessagePress = () => {
-    setShowMessage(true)
-    console.log('Name: ', relationships[0].name)
-    console.log('LastName: ', relationships[0].lastName)
-    console.log('User Phone: ', userData?.phone)
+  const handleMessagePress = async () => {
+    setShowMessage(true);
+
+    const sid = TWILIO_ACCOUNT_SID;
+    const token = TWILIO_AUTH_TOKEN;
+
+    console.log(sid);
+    console.log(token);
+
+    const qs = require('qs');
+    const messageText = `${userData?.name} ${userData?.lastName} has requested an event with ${relationships[0].name} ${relationships[0].lastName}. Text them back at ${userData?.phone}`;
+
+    await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+      Body: messageText,
+      From: '+19705008871',
+      To: '+12543544848'
+    }),
+    {
+      auth: {
+        username: sid,
+        password: token
+      }
+    }));
   }
 
   return (
