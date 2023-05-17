@@ -15,6 +15,8 @@ import { styles } from '../styles'
 import OtherDetails from '../components/OtherDetails'
 import Avatar from '../assets/avatar.png'
 import useAuth from '../hooks/useAuth'
+import axios from 'axios'
+import {TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN} from '@env'
 
 const Relationship = () => {
   const [singleRelationship, setSingleRelationship] = useState('')
@@ -107,11 +109,7 @@ const Relationship = () => {
       })
     } else {
       setShowMessage(true)
-    }
-  }
 
-  useEffect(() => {
-    if (singleRelationship && userData) {
       console.log('Name: ', singleRelationship?.name)
       console.log('Last Name: ', singleRelationship?.lastName)
       console.log('User Phone: ', userData?.phone)
@@ -119,7 +117,7 @@ const Relationship = () => {
       console.log('User Last Name: ', userData?.lastName)
       console.log('User Full Name: ', userData?.fullName)
     }
-  }, [singleRelationship, userData])
+  }
 
   return (
     <>
