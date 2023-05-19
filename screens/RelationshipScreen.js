@@ -99,7 +99,7 @@ const Relationship = () => {
     })
   }
 
-  const handleMessagePress = () => {
+  const handleMessagePress = async () =>  {
     if (
       auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
       auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
@@ -109,6 +109,37 @@ const Relationship = () => {
       })
     } else {
       setShowMessage(true)
+
+      const sid = TWILIO_ACCOUNT_SID;
+      const token = TWILIO_AUTH_TOKEN;
+
+      const qs = require('qs');
+      const cyranoText = `${userData?.name} ${userData?.lastName} has requested an event with ${singleRelationship?.name} ${singleRelationship?.lastName}. Text them back at ${userData?.phone}`;
+
+      await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+        Body: cyranoText,
+        From: '+19705008871',
+        To: '+12543544848'
+      }),
+      {
+        auth: {
+          username: sid,
+          password: token
+        }
+      }));
+
+      const userText = `A message has been sent to your Cyrano. They will be in touch soon with a recommendation about your event with ${singleRelationship?.name} ${singleRelationship?.lastName}.`
+      await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+        Body: userText,
+        From: '+19705008871',
+        To: userData?.phone
+      }),
+      {
+        auth: {
+          username: sid,
+          password: token
+        }
+      }));
 
       console.log('Name: ', singleRelationship?.name)
       console.log('Last Name: ', singleRelationship?.lastName)
