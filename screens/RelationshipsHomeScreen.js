@@ -106,7 +106,7 @@ const RelationshipsHomeScreen = () => {
       }
     }));
 
-    const userText = `A message has been sent to your Cyrano. They will be in touch soon with a recommendation about your event with ${singleRelationship?.name} ${singleRelationship?.lastName}.`
+    const userText = `A message has been sent to your Cyrano. They will be in touch soon with a recommendation about your event with ${relationships[0].name} ${relationships[0].lastName}.`
     await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
       Body: userText,
       From: '+19705008871',
