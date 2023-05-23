@@ -18,6 +18,7 @@ const RelationshipsHomeAdminScreen = () => {
   const [showMessage, setShowMessage] = useState(false)
   const [imgDisplay, setImgDisplay] = useState('')
   const [fullNameDisplay, setFullNameDisplay] = useState('')
+  const [id, setId] = useState('')
   const relationshipRef = collection(db, 'relationships')
   const upcomingEventsRef = collection(db, 'upcomingEvents')
   const route = useRoute()
@@ -51,6 +52,7 @@ const RelationshipsHomeAdminScreen = () => {
   useEffect(() => {
     if (relationships && upcomingArr) {
       relationships.map((item) => {
+        setId(item?.id)
         setImgDisplay(item?.profileImage)
         setFullNameDisplay(`${item?.name} ${item?.lastName}`)
         const newArr = upcomingArr.filter((i) => i.relID === item.id)
@@ -63,9 +65,10 @@ const RelationshipsHomeAdminScreen = () => {
 
   const handlePress = () => {
     navigation.navigate('Schedule Event', {
-      itemId,
+      itemId: id,
     })
   }
+
   return (
     <>
       {loading ? (

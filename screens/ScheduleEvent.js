@@ -217,8 +217,13 @@ const ScheduleEvent = () => {
 
           <View style={styles.page__lower}>
             <View style={styles.paginationBtns}>
-              <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Admin')}>
-                <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+              <Pressable
+                style={[styles.button, styles.buttonGrey]}
+                onPress={() => navigation.navigate('Admin')}
+              >
+                <Text style={[styles.button__text, styles.buttonGrey__text]}>
+                  CANCEL
+                </Text>
               </Pressable>
               <Pressable
                 // style={[styles.button, isDisabled ? styles.disabled : '']}
