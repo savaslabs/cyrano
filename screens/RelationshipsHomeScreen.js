@@ -4,14 +4,14 @@ import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { db, auth } from '../config/firebase-config'
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, addDoc } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
 import Page from '../shared/Page'
 import useAuth from '../hooks/useAuth'
 import axios from 'axios'
-import {TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN} from '@env'
+import { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } from '@env'
 
 const RelationshipsHomeScreen = () => {
   const [loading, setLoading] = useState(true)
@@ -24,8 +24,9 @@ const RelationshipsHomeScreen = () => {
   const [showMessage, setShowMessage] = useState(false)
   const relationshipRef = collection(db, 'relationships')
   const upcomingEventsRef = collection(db, 'upcomingEvents')
+  const usersRef = collection(db, 'users')
   const isFocused = useIsFocused()
-  const { userData, getUser } = useAuth()
+  const { userData, getUser, user } = useAuth()
 
   useEffect(() => {
     getUser()
@@ -73,6 +74,18 @@ const RelationshipsHomeScreen = () => {
   useEffect(() => {
     if (relationships && isFocused) {
       setLoading(false)
+
+      if (!userData) {
+        addDoc(usersRef, {
+          userId: user?.user?.id,
+          name: user?.user?.fullName,
+          lastName: user?.user?.fullName,
+          email: user?.user?.email,
+          phone: '',
+          profileImg: user?.user?.img,
+          fullName: user?.user?.fullName,
+        }).then(() => navigation.navigate('User Panel'))
+      }
     }
   }, [relationships, isFocused])
 
@@ -86,38 +99,44 @@ const RelationshipsHomeScreen = () => {
   }, [auth])
 
   const handleMessagePress = async () => {
-    setShowMessage(true);
+    setShowMessage(true)
 
-    const sid = TWILIO_ACCOUNT_SID;
-    const token = TWILIO_AUTH_TOKEN;
+    const sid = TWILIO_ACCOUNT_SID
+    const token = TWILIO_AUTH_TOKEN
 
-    const qs = require('qs');
-    const cyranoText = `${userData?.name} ${userData?.lastName} has requested an event with ${relationships[0].name} ${relationships[0].lastName}. Text them back at ${userData?.phone}`;
+    const qs = require('qs')
+    const cyranoText = `${userData?.name} ${userData?.lastName} has requested an event with ${relationships[0].name} ${relationships[0].lastName}. Text them back at ${userData?.phone}`
 
-    await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
-      Body: cyranoText,
-      From: '+19705008871',
-      To: '+12543544848'
-    }),
-    {
-      auth: {
-        username: sid,
-        password: token
+    await axios.post(
+      'https://api.twilio.com/2010-04-01/Accounts/' + sid + '/Messages.json',
+      qs.stringify({
+        Body: cyranoText,
+        From: '+19705008871',
+        To: '+12543544848',
+      }),
+      {
+        auth: {
+          username: sid,
+          password: token,
+        },
       }
-    }));
+    )
 
     const userText = `A message has been sent to your Cyrano. They will be in touch soon with a recommendation about your event with ${relationships[0].name} ${relationships[0].lastName}.`
-    await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
-      Body: userText,
-      From: '+19705008871',
-      To: userData?.phone
-    }),
-    {
-      auth: {
-        username: sid,
-        password: token
+    await axios.post(
+      'https://api.twilio.com/2010-04-01/Accounts/' + sid + '/Messages.json',
+      qs.stringify({
+        Body: userText,
+        From: '+19705008871',
+        To: userData?.phone,
+      }),
+      {
+        auth: {
+          username: sid,
+          password: token,
+        },
       }
-    }));
+    )
   }
 
   return (
