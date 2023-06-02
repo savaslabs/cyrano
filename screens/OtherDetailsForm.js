@@ -13,6 +13,7 @@ const OtherDetails = () => {
   const [detailHeading, setDetailHeading] = useState('')
   const [detailText, setDetailText] = useState('')
   const [detailsID, setDetailsID] = useState('')
+  const [isDisabled, setIsDisabled] = useState(true)
   const route = useRoute()
   const { itemId, imgDisplay, fullNameDisplay } = route.params
   const relRef = doc(db, 'relationships', itemId)
@@ -49,6 +50,14 @@ const OtherDetails = () => {
     navigation.navigate('Relationship', itemId, imgDisplay, fullNameDisplay)
   }
 
+  useEffect(() => {
+    if (detailHeading && detailText) {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
+  }, [detailHeading, detailText])
+
   return (
     <Page>
       <View style={[styles.page__content, styles.pageTopPadding]}>
@@ -76,11 +85,27 @@ const OtherDetails = () => {
         />
         <View style={styles.page__lower}>
           <View style={styles.paginationBtns}>
-            <Pressable style={[styles.button, styles.buttonGrey]} onPress={handleCancel}>
-              <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+            <Pressable
+              style={[styles.button, styles.buttonGrey]}
+              onPress={handleCancel}
+            >
+              <Text style={[styles.button__text, styles.buttonGrey__text]}>
+                CANCEL
+              </Text>
             </Pressable>
-            <Pressable style={[styles.button, styles.buttonNext]} onPress={handleSave}>
-              <Text style={styles.button__text}>SAVE</Text>
+            <Pressable
+              style={[styles.button, isDisabled ? styles.disabled : '']}
+              onPress={handleSave}
+              disabled={isDisabled}
+            >
+              <Text
+                style={[
+                  styles.button__text,
+                  isDisabled ? styles.disabled__text : '',
+                ]}
+              >
+                SAVE
+              </Text>
             </Pressable>
           </View>
         </View>

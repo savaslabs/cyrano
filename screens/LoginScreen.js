@@ -6,13 +6,25 @@ import LogoIMG from '../assets/cyrano-logo.svg'
 import Google from '../assets/google.png'
 import Page from '../shared/Page'
 import useAuth from '../hooks/useAuth'
+import Toast from 'react-native-toast-message'
 
 const LoginScreen = () => {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
+  const [checkEmail, setCheckEmail] = useState(false)
+  const [emailError, setEmailError] = useState(false)
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const { signInWithGoogle, signInWithEmail, user } = useAuth()
+
+  useEffect(() => {
+    const validateEmail = () => {
+      const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+      setCheckEmail(re.test(email))
+    }
+
+    validateEmail()
+  }, [email])
 
   useEffect(() => {
     if (email && password) {
@@ -30,6 +42,23 @@ const LoginScreen = () => {
     }
   }, [user])
 
+  const handlePress = () => {
+    if (!checkEmail) {
+      setEmailError(true)
+      Toast.show({
+        type: 'error',
+        text1: 'Email is not valid',
+        visibilityTime: 3000,
+      })
+
+      setTimeout(() => {
+        setEmailError(false)
+      }, 2500)
+    } else {
+      signInWithEmail(email, password)
+    }
+  }
+
   return (
     <Page>
       <View style={styles.page__logo}>
@@ -42,9 +71,16 @@ const LoginScreen = () => {
         </View>
         <View style={styles.form}>
           <View>
-            <Text style={styles.form__label}>Email</Text>
+            <Text
+              style={[
+                styles.form__label,
+                emailError ? styles.form__label__error : '',
+              ]}
+            >
+              Email
+            </Text>
             <TextInput
-              style={styles.form__input}
+              style={[styles.form__input, emailError ? styles.form__error : '']}
               value={email}
               onChangeText={(newEmail) => setEmail(newEmail)}
               placeholder="Enter email address"
@@ -65,7 +101,7 @@ const LoginScreen = () => {
           <View style={styles.page__lower}>
             <Pressable
               style={[styles.button, isDisabled ? styles.disabled : '']}
-              onPress={() => signInWithEmail(email, password)}
+              onPress={handlePress}
               disabled={isDisabled}
             >
               <Text

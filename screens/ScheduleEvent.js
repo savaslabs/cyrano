@@ -52,13 +52,12 @@ const ScheduleEvent = () => {
   }
 
   useEffect(() => {
-    if (datePlace && dateDate && dateTime) {
+    if (eventName && datePlace && dateDate && dateTime) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
     }
-    //eslint-disable-next-line
-  }, [dateDate, dateTime])
+  }, [eventName, datePlace, dateDate, dateTime])
 
   useEffect(() => {
     setDocID(uuid.v4())
@@ -226,12 +225,18 @@ const ScheduleEvent = () => {
                 </Text>
               </Pressable>
               <Pressable
-                // style={[styles.button, isDisabled ? styles.disabled : '']}
-                style={[styles.button, styles.buttonNext]}
+                style={[styles.button, isDisabled ? styles.disabled : '']}
                 onPress={handlePress}
-                // disabled={isDisabled}
+                disabled={isDisabled}
               >
-                <Text style={styles.button__text}>CREATE EVENT</Text>
+                <Text
+                  style={[
+                    styles.button__text,
+                    isDisabled ? styles.disabled__text : '',
+                  ]}
+                >
+                  CREATE EVENT
+                </Text>
               </Pressable>
             </View>
           </View>

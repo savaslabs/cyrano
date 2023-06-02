@@ -71,7 +71,7 @@ const TabNavigator = () => {
               <Image source={HomeIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Home</Text>
             </Pressable>
-            <Pressable
+            {/* <Pressable
               style={[styles.nav__link, { minWidth: 106, maxWidth: 106 }]}
               onPress={() =>
                 navigation.navigate('Event History', {
@@ -82,7 +82,7 @@ const TabNavigator = () => {
             >
               <Image source={EventsIcon} style={styles.nav__icon} />
               <Text style={styles.nav__text}>Events</Text>
-            </Pressable>
+            </Pressable> */}
             <Pressable
               style={[styles.nav__link, { minWidth: 121, maxWidth: 121 }]}
               onPress={() => navigation.navigate('User Panel')}

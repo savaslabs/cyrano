@@ -22,6 +22,8 @@ const First = ({
   setPronounsItem,
   location,
   setLocation,
+  nameError,
+  lastNameError,
 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -37,9 +39,16 @@ const First = ({
     <Animated.View style={{ opacity: fadeAnim }}>
       <View style={styles.form__twoCol}>
         <View style={styles.form__col}>
-          <Text style={styles.form__label}>First Name</Text>
+          <Text
+            style={[
+              styles.form__label,
+              nameError ? styles.form__label__error : '',
+            ]}
+          >
+            First Name
+          </Text>
           <TextInput
-            style={styles.form__input}
+            style={[styles.form__input, nameError ? styles.form__error : '']}
             placeholder="Their first name"
             placeholderTextColor="#c7cbd9"
             value={name}
@@ -47,9 +56,19 @@ const First = ({
           />
         </View>
         <View style={styles.form__col}>
-          <Text style={styles.form__label}>Last Name</Text>
+          <Text
+            style={[
+              styles.form__label,
+              lastNameError ? styles.form__label__error : '',
+            ]}
+          >
+            Last Name
+          </Text>
           <TextInput
-            style={styles.form__input}
+            style={[
+              styles.form__input,
+              lastNameError ? styles.form__error : '',
+            ]}
             placeholder="Their last name"
             placeholderTextColor="#c7cbd9"
             value={lastName}
@@ -69,7 +88,11 @@ const First = ({
           style={styles.form__select}
           placeholder="Select a relationship type"
           placeholderStyle={{ color: '#c7cbd9', paddingLeft: 4, fontSize: 17 }}
-          selectedTextStyle={{ color: 'rgba(51, 55, 75, 1)', paddingLeft: 4, fontSize: 17 }}
+          selectedTextStyle={{
+            color: 'rgba(51, 55, 75, 1)',
+            paddingLeft: 4,
+            fontSize: 17,
+          }}
           dropDownContainerStyle={{
             margin: 'auto',
             color: '#33374B',
@@ -78,7 +101,7 @@ const First = ({
             bottom: -135,
             borderColor: 'rgba(199, 203, 217, 1)',
             paddingLeft: 4,
-            fontSize: 17
+            fontSize: 17,
           }}
           listItemLabelStyle={{
             color: '#33374B',
@@ -101,7 +124,7 @@ const First = ({
           placeholder="Select pronouns"
           placeholderStyle={{ color: '#c7cbd9', paddingLeft: 4, fontSize: 17 }}
           dropdownStyle={{
-            paddingLeft: 30
+            paddingLeft: 30,
           }}
           dropDownContainerStyle={{
             margin: 'auto',
@@ -111,7 +134,7 @@ const First = ({
             height: 120,
             bottom: -95,
             paddingLeft: 8,
-            fontSize: 17
+            fontSize: 17,
           }}
           labelStyle={{
             color: '#33374B',
