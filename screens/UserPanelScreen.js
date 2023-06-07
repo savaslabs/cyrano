@@ -44,7 +44,9 @@ const UserPanelScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200
     })
 
     if (!result.canceled) {
@@ -79,7 +81,7 @@ const UserPanelScreen = () => {
           .then(navigation.navigate('Relationships'))
       }
     } catch (error) {
-      console.log(error)
+      console.log(error.code)
     }
   }
 
@@ -175,10 +177,20 @@ const UserPanelScreen = () => {
               </Pressable>
               <View style={styles.page__lower}>
                 <View style={styles.paginationBtns}>
-                  <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
-                    <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+                  <Pressable
+                    style={[styles.button, styles.buttonGrey]}
+                    onPress={() => navigation.navigate('Relationships')}
+                  >
+                    <Text
+                      style={[styles.button__text, styles.buttonGrey__text]}
+                    >
+                      CANCEL
+                    </Text>
                   </Pressable>
-                  <Pressable onPress={handleSave} style={[styles.button, styles.buttonNext]}>
+                  <Pressable
+                    onPress={handleSave}
+                    style={[styles.button, styles.buttonNext]}
+                  >
                     <Text style={styles.button__text}>SAVE</Text>
                   </Pressable>
                 </View>
