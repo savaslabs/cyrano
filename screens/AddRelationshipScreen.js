@@ -83,12 +83,11 @@ const AddRelationship = () => {
   const handlePress = async () => {
     if (name && lastName && birthday) {
       setLoading(true)
-      setDoc(doc(db, 'prevEvents', prevID), {
+      setDoc(doc(db, 'events', prevID), {
         name: name,
         lastName: lastName,
         fullName: `${name} ${lastName}`,
         img: profileImage,
-        loveStyleTag: [],
         datePlace,
         eventName,
         dateDate,

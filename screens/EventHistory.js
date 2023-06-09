@@ -6,7 +6,6 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import EventItemHistory from '../components/EventItemHistory'
 import { db, auth } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
-import LoveStyleFilter from '../components/LoveStyleFilter'
 import { styles } from '../styles'
 import Spinner from '../shared/Spinner'
 import Page from '../shared/Page'
@@ -15,9 +14,7 @@ const EventHistory = () => {
   const [loading, setLoading] = useState(true)
   const [relationships, setRelationships] = useState('')
   const [filteredRel, setFilteredRel] = useState(undefined)
-  const [upcomingArr, setUpcomingArr] = useState([])
-  const [prevArr, setPrevArr] = useState([])
-  const [finalArr, setFinalArr] = useState([])
+  const [eventArr, setEventArr] = useState([])
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
   const [relItem, setRelItem] = useState([
@@ -40,53 +37,40 @@ const EventHistory = () => {
   const [resetFilterColor, setResetFilterColor] = useState(false)
   const navigation = useNavigation()
   const route = useRoute()
-  const { imgDisplay, fullNameDisplay } = route.params
+  const { imgDisplay, fullNameDisplay, itemId } = route.params
   const relationshipRef = collection(db, 'relationships')
-  const upcomingEventsRef = collection(db, 'upcomingEvents')
-  const prevEventsRef = collection(db, 'prevEvents')
+  const eventsRef = collection(db, 'events')
 
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     const finalRel = newData.filter(
-      (item) => item.author.id === auth.currentUser.uid
+      (item) => item.author.id === itemId
     )
     setRelationships(finalRel)
   }
 
-  const getUpcomingEvents = async () => {
-    const data = await getDocs(upcomingEventsRef)
+  const getEvents = async () => {
+    const data = await getDocs(eventsRef)
     const newData = data.docs.map((doc) => doc.data())
-    setUpcomingArr(newData)
-  }
 
-  const getPrevEvents = async () => {
-    const data = await getDocs(prevEventsRef)
-    const newData = data.docs.map((doc) => doc.data())
-    setPrevArr(newData)
+    setEventArr(newData)
   }
 
   useEffect(() => {
     getRelationships()
-    getUpcomingEvents()
-    getPrevEvents()
+    getEvents()
   }, [])
 
   useEffect(() => {
-    if (upcomingArr && prevArr) {
-      setFinalArr(upcomingArr.concat(prevArr))
-    }
-  }, [upcomingArr, prevArr])
-
-  useEffect(() => {
-    if (relationships && finalArr) {
+    if (relationships) {
       relationships.map((item) => {
-        const newArr = finalArr.filter((i) => i.relID === item.id)
+        const newArr = eventArr.filter((i) => i.relID === item.id)
         setRelationshipEvents(newArr)
       })
       setLoading(false)
     }
-  }, [relationships, finalArr])
+  }, [relationships, eventArr])
 
   useEffect(() => {
     if (relationships) {
@@ -173,23 +157,6 @@ const EventHistory = () => {
               />
             </View>
             <Text style={[styles.h4, styles.medGap]}>Event Breakdown</Text>
-            <View style={[styles.loveStyleTags, {marginBottom: 16}]}>
-              {tagsFilter.map((tag, index) => (
-                <LoveStyleFilter
-                  key={index}
-                  tag={tag}
-                  setFilteredRel={setFilteredRel}
-                  relationshipEvents={relationshipEvents}
-                  setShowError={setShowError}
-                  filteredRel={filteredRel}
-                  resetFilterColor={resetFilterColor}
-                  setResetFilterColor={setResetFilterColor}
-                />
-              ))}
-              <Pressable style={styles.loveStyleTags__tag} onPress={showAll}>
-                <Text>All</Text>
-              </Pressable>
-            </View>
             {filteredRel
               ? filteredRel?.map((item, index) => (
                   <EventItemHistory

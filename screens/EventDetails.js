@@ -19,7 +19,7 @@ const EventDetails = () => {
           auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
             <Pressable
               onPress={() =>
-                navigation.navigate('Event History', {
+                navigation.navigate('Relationships', {
                   item,
                   imgDisplay,
                   fullNameDisplay,
@@ -41,15 +41,6 @@ const EventDetails = () => {
           )}
           <View style={styles.eventHeading}>
             <Text style={[styles.h2, styles.alignLeft]}>{item?.eventName}</Text>
-            <View
-              style={[styles.loveStyleTags, { justifyContent: 'flex-end' }]}
-            >
-              {item?.loveStyleTag.map((i, index) => (
-                <Text style={styles.loveStyleTags__tag} key={index}>
-                  {i}
-                </Text>
-              ))}
-            </View>
           </View>
           <View style={styles.eventRelGraphic}>
             <Text>With</Text>

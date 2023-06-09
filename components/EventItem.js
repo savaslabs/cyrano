@@ -24,7 +24,6 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
   }
 
   const {
-    loveStyleTag,
     dateDate,
     dateTime,
     pickRestaurantValue,
@@ -39,11 +38,6 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
         <Text style={styles.eventCard__heading}>
           {datePlace !== '' ? datePlace : pickRestaurantValue}
         </Text>
-        {loveStyleTag.map((tag, index) => (
-          <Text style={styles.eventCard__tag} key={index}>
-            {tag}
-          </Text>
-        ))}
       </View>
       <Text style={styles.eventCard__dateTime}>
         {new Date(dateDate).toLocaleDateString()} @ {dateTime}

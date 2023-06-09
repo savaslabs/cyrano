@@ -11,7 +11,8 @@ import Back from '../assets/arrow-back.svg'
 const RelationshipStatusScreen = () => {
   const route = useRoute()
   const navigation = useNavigation()
-  const { rating, comments, id } = route.params
+  const { rating, comments, id, upcomingEvents, imgDisplay, fullNameDisplay } =
+    route.params
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -31,7 +32,10 @@ const RelationshipStatusScreen = () => {
               <Pressable
                 onPress={() =>
                   navigation.navigate('Relationship', {
-                    id
+                    id,
+                    upcomingEvents,
+                    imgDisplay,
+                    fullNameDisplay,
                   })
                 }
               >

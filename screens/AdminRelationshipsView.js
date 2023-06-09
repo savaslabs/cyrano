@@ -51,7 +51,7 @@ const AdminRelationshipsView = () => {
               <Text style={[styles.h4, styles.medGap]}>Relationships</Text>
               {relationships.length !== 0 ? (
                 relationships.map((item) => (
-                  <RelationshipItem item={item} key={item.id} />
+                  <RelationshipItem item={item} key={item.id} userId={itemId} />
                 ))
               ) : (
                 <Text style={styles.p}>
@@ -61,7 +61,10 @@ const AdminRelationshipsView = () => {
             </View>
             <View style={[styles.page__lower, styles.center]}>
               <Pressable style={[styles.button, styles.buttonGrey]}>
-                <Text style={[styles.button__text, styles.buttonGrey__text]} onPress={handlePress}>
+                <Text
+                  style={[styles.button__text, styles.buttonGrey__text]}
+                  onPress={handlePress}
+                >
                   BACK
                 </Text>
               </Pressable>

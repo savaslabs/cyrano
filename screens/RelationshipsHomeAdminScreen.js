@@ -19,8 +19,9 @@ const RelationshipsHomeAdminScreen = () => {
   const [imgDisplay, setImgDisplay] = useState('')
   const [fullNameDisplay, setFullNameDisplay] = useState('')
   const [id, setId] = useState('')
+  const [authorId, setAuthorId] = useState('')
   const relationshipRef = collection(db, 'relationships')
-  const upcomingEventsRef = collection(db, 'upcomingEvents')
+  const upcomingEventsRef = collection(db, 'events')
   const route = useRoute()
   const { itemId } = route.params
 
@@ -34,8 +35,9 @@ const RelationshipsHomeAdminScreen = () => {
   const getUpcomingEvents = async () => {
     const data = await getDocs(upcomingEventsRef)
     const newData = data.docs.map((doc) => doc.data())
+    const filterUpcoming = newData.filter((item) => item.state === 'upcoming')
 
-    setUpcomingArr(newData)
+    setUpcomingArr(filterUpcoming)
   }
 
   useEffect(() => {
@@ -53,6 +55,7 @@ const RelationshipsHomeAdminScreen = () => {
     if (relationships && upcomingArr) {
       relationships.map((item) => {
         setId(item?.id)
+        setAuthorId(item?.author.id)
         setImgDisplay(item?.profileImage)
         setFullNameDisplay(`${item?.name} ${item?.lastName}`)
         const newArr = upcomingArr.filter((i) => i.relID === item.id)
@@ -136,7 +139,7 @@ const RelationshipsHomeAdminScreen = () => {
                     <Pressable
                       onPress={() =>
                         navigation.navigate('Event History', {
-                          itemId: 'ifgjdoigjsdo',
+                          itemId: authorId,
                           imgDisplay,
                           fullNameDisplay,
                         })
@@ -157,6 +160,7 @@ const RelationshipsHomeAdminScreen = () => {
                             upcomingEvents={upcomingEvents}
                             imgDisplay={imgDisplay}
                             fullNameDisplay={fullNameDisplay}
+                            userId={itemId}
                           />
                         </View>
                       ))}
