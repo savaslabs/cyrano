@@ -44,7 +44,9 @@ const UserPanelScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200
     })
 
     if (!result.canceled) {
@@ -79,7 +81,7 @@ const UserPanelScreen = () => {
           .then(navigation.navigate('Relationships'))
       }
     } catch (error) {
-      console.log(error)
+      console.log(error.code)
     }
   }
 

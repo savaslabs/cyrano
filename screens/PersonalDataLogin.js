@@ -1,14 +1,10 @@
 import { View, Text, Pressable, TextInput } from 'react-native'
 import { useEffect, useState } from 'react'
 import Page from '../shared/Page'
-import Spinner from '../shared/Spinner'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
-import { auth, db } from '../config/firebase-config'
+import { db } from '../config/firebase-config'
 import { collection, addDoc } from 'firebase/firestore'
-import { sendPasswordResetEmail } from 'firebase/auth'
-import * as ImagePicker from 'expo-image-picker'
-import Toast from 'react-native-toast-message'
 import { styles } from '../styles'
 
 const PersonalDataLogin = () => {

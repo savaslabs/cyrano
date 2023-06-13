@@ -117,7 +117,9 @@ const EditRelationshipScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200,
     })
 
     if (!result.canceled) {
