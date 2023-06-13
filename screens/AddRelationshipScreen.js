@@ -65,7 +65,44 @@ const AddRelationship = () => {
   const [eventName, setEventName] = useState('')
   const [datePlace, setDatePlace] = useState('')
 
+  // Validations
+  const [checkName, setCheckName] = useState(false)
+  const [nameError, setNameError] = useState(false)
+  const [checkLastName, setCheckLastName] = useState(false)
+  const [lastNameError, setLastNameError] = useState(false)
+  const [checkPhone, setCheckPhone] = useState(false)
+  const [phoneError, setPhoneError] = useState(false)
+  const [checkEmail, setCheckEmail] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+
   const navigation = useNavigation()
+
+  useEffect(() => {
+    const validateName = () => {
+      const re = /[^a-zA-Z ]+/g
+      setCheckName(re.test(name))
+    }
+
+    const validateLastName = () => {
+      const re = /[^a-zA-Z ]+/g
+      setCheckLastName(re.test(lastName))
+    }
+
+    const validatePhone = () => {
+      const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g
+      setCheckPhone(re.test(phone))
+    }
+
+    const validateEmail = () => {
+      const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+      setCheckEmail(re.test(email))
+    }
+
+    validateName()
+    validateLastName()
+    validatePhone()
+    validateEmail()
+  }, [name, lastName, phone, email])
 
   useEffect(() => {
     setDocID(uuid.v4())
@@ -73,7 +110,72 @@ const AddRelationship = () => {
   }, [])
 
   const handleNext = () => {
-    setPageCounter((count) => count + 1)
+    if (!email || !phone) {
+      if (checkName && checkLastName) {
+        setNameError(true)
+        setLastNameError(true)
+        Toast.show({
+          type: 'error',
+          text1: 'Name and last name are invalids',
+        })
+
+        setTimeout(() => {
+          setNameError(false)
+          setLastNameError(false)
+        }, 2500)
+      } else if (checkName) {
+        setNameError(true)
+        Toast.show({
+          type: 'error',
+          text1: 'Name is invalid',
+          visibilityTime: 3000,
+        })
+
+        setTimeout(() => {
+          setNameError(false)
+        }, 2500)
+      } else if (checkLastName) {
+        setLastNameError(true)
+        Toast.show({
+          type: 'error',
+          text1: 'Last name is invalid',
+          visibilityTime: 3000,
+        })
+
+        setTimeout(() => {
+          setLastNameError(false)
+        }, 2500)
+      } else {
+        setPageCounter((count) => count + 1)
+      }
+    }
+
+    if (phone && email) {
+      if (!checkPhone) {
+        setPhoneError(true)
+        Toast.show({
+          type: 'error',
+          text1: 'The phone is incorrect',
+          visibilityTime: 3000,
+        })
+        setTimeout(() => {
+          setPhoneError(false)
+        }, 2500)
+      } else if (!checkEmail) {
+        setEmailError(true)
+        Toast.show({
+          type: 'error',
+          text1: 'The email is not valid',
+          visibilityTime: 3000,
+        })
+
+        setTimeout(() => {
+          setEmailError(false)
+        }, 2500)
+      } else {
+        setPageCounter((count) => count + 1)
+      }
+    }
   }
 
   const handleBack = () => {
@@ -190,7 +292,9 @@ const AddRelationship = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200,
     })
 
     if (!result.canceled) {
@@ -310,6 +414,8 @@ const AddRelationship = () => {
                   setPronounsItem={setPronounsItem}
                   location={location}
                   setLocation={setLocation}
+                  nameError={nameError}
+                  lastNameError={lastNameError}
                 />
               )}
               {pageCounter === 2 && (
@@ -330,6 +436,8 @@ const AddRelationship = () => {
                   setEmail={setEmail}
                   phone={phone}
                   setPhone={setPhone}
+                  phoneError={phoneError}
+                  emailError={emailError}
                 />
               )}
               {pageCounter === 4 && (

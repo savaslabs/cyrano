@@ -44,7 +44,9 @@ const UserPanelScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200
     })
 
     if (!result.canceled) {
@@ -79,7 +81,7 @@ const UserPanelScreen = () => {
           .then(navigation.navigate('Relationships'))
       }
     } catch (error) {
-      console.log(error)
+      console.log(error.code)
     }
   }
 
@@ -109,7 +111,7 @@ const UserPanelScreen = () => {
         <Page>
           <View style={[styles.page__content, styles.pageTopPadding]}>
             <View style={styles.page__upper}>
-              <Text style={styles.h1}>Edit Your Profile</Text>
+              <Text style={styles.h1}>{!phone ? 'Complete your profile' : 'Edit Your Profile'}</Text>
             </View>
             <View style={styles.vertCenter}>
               {profileImg ? (
@@ -160,6 +162,7 @@ const UserPanelScreen = () => {
               <Text style={styles.form__label}>Phone</Text>
               <TextInput
                 style={styles.form__input}
+                placeholder='Enter your phone'
                 placeholderTextColor="#c7cbd9"
                 value={editPhone}
                 onChangeText={(newEditPhone) => setEditPhone(newEditPhone)}
@@ -175,10 +178,20 @@ const UserPanelScreen = () => {
               </Pressable>
               <View style={styles.page__lower}>
                 <View style={styles.paginationBtns}>
-                  <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
-                    <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+                  <Pressable
+                    style={[styles.button, styles.buttonGrey]}
+                    onPress={() => navigation.navigate('Relationships')}
+                  >
+                    <Text
+                      style={[styles.button__text, styles.buttonGrey__text]}
+                    >
+                      CANCEL
+                    </Text>
                   </Pressable>
-                  <Pressable onPress={handleSave} style={[styles.button, styles.buttonNext]}>
+                  <Pressable
+                    onPress={handleSave}
+                    style={[styles.button, styles.buttonNext]}
+                  >
                     <Text style={styles.button__text}>SAVE</Text>
                   </Pressable>
                 </View>

@@ -22,10 +22,15 @@ const HomeScreen = () => {
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
   const [pageCounter, setPageCounter] = useState(1)
+  const [passwordNotMatch, setPasswordNotMatch] = useState(false)
+  const [checkEmail, setCheckEmail] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [checkPhone, setCheckPhone] = useState(false)
+  const [phoneError, setPhoneError] = useState(false)
   const navigation = useNavigation()
-  const { createUserWithEmail, userCred, user } = useAuth()
+  const { createUserWithEmail, userCred, user, signInWithGoogle } =
+    useAuth()
   const usersRef = collection(db, 'users')
-  // const relref= collection(db, 'relationships')
 
   useEffect(() => {
     if (user?.isLoggedIn) {
@@ -35,15 +40,51 @@ const HomeScreen = () => {
     }
   }, [user])
 
+  useEffect(() => {
+    const validateEmail = () => {
+      const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+      setCheckEmail(re.test(email))
+    }
+
+    const validatePhone = () => {
+      const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g
+      setCheckPhone(re.test(phone))
+    }
+
+    validateEmail()
+    validatePhone()
+  }, [email, phone])
+
   const handleNext = () => {
-    if (password !== repeatPassword) {
+    if (!checkEmail) {
+      setEmailError(true)
       Toast.show({
         type: 'error',
-        text1: "Passwords don't match",
-        visibilityTime: 2000,
+        text1: 'The email is not valid',
+        visibilityTime: 3000,
       })
+
+      setTimeout(() => {
+        setEmailError(false)
+      }, 2500)
     } else {
-      setPageCounter((count) => count + 1)
+      if (password !== repeatPassword) {
+        Toast.show({
+          type: 'error',
+          text1: "Passwords don't match",
+          visibilityTime: 3000,
+        })
+
+        setPasswordNotMatch(true)
+        setPassword('')
+        setRepeatPassword('')
+
+        setTimeout(() => {
+          setPasswordNotMatch(false)
+        }, 2500)
+      } else {
+        setPageCounter((count) => count + 1)
+      }
     }
   }
 
@@ -52,17 +93,29 @@ const HomeScreen = () => {
   }
 
   const handlePress = async () => {
-    try {
-      createUserWithEmail(email, password)
-    } catch (error) {
+    if (!checkPhone) {
+      setPhoneError(true)
       Toast.show({
         type: 'error',
-        text1: error,
-        visibilityTime: 2000,
+        text1: 'The phone is incorrect',
+        visibilityTime: 3000,
       })
-    }
+      setTimeout(() => {
+        setPhoneError(false)
+      }, 2500)
+    } else {
+      try {
+        createUserWithEmail(email, password)
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: error,
+          visibilityTime: 2000,
+        })
+      }
 
-    navigation.navigate('Login')
+      navigation.navigate('Login')
+    }
   }
 
   useEffect(() => {
@@ -122,9 +175,19 @@ const HomeScreen = () => {
               {pageCounter === 1 && (
                 <>
                   <View>
-                    <Text style={styles.form__label}>Email</Text>
+                    <Text
+                      style={[
+                        styles.form__label,
+                        emailError ? styles.form__label__error : '',
+                      ]}
+                    >
+                      Email
+                    </Text>
                     <TextInput
-                      style={styles.form__input}
+                      style={[
+                        styles.form__input,
+                        emailError ? styles.form__error : '',
+                      ]}
                       value={email}
                       onChangeText={(newEmail) => setEmail(newEmail)}
                       keyboardType="email-address"
@@ -134,9 +197,19 @@ const HomeScreen = () => {
                   </View>
                   <View style={styles.form__twoCol}>
                     <View style={styles.form__col}>
-                      <Text style={styles.form__label}>Password</Text>
+                      <Text
+                        style={[
+                          styles.form__label,
+                          passwordNotMatch ? styles.form__label__error : '',
+                        ]}
+                      >
+                        Password
+                      </Text>
                       <TextInput
-                        style={styles.form__input}
+                        style={[
+                          styles.form__input,
+                          passwordNotMatch ? styles.form__error : '',
+                        ]}
                         value={password}
                         onChangeText={(newPassword) => setPassword(newPassword)}
                         placeholder="Enter password"
@@ -145,9 +218,19 @@ const HomeScreen = () => {
                       />
                     </View>
                     <View style={styles.form__col}>
-                      <Text style={styles.form__label}>Verify Password</Text>
+                      <Text
+                        style={[
+                          styles.form__label,
+                          passwordNotMatch ? styles.form__label__error : '',
+                        ]}
+                      >
+                        Verify Password
+                      </Text>
                       <TextInput
-                        style={styles.form__input}
+                        style={[
+                          styles.form__input,
+                          passwordNotMatch ? styles.form__error : '',
+                        ]}
                         value={repeatPassword}
                         onChangeText={(newRepeatPassword) =>
                           setRepeatPassword(newRepeatPassword)
@@ -184,9 +267,19 @@ const HomeScreen = () => {
                       />
                     </View>
                   </View>
-                  <Text style={styles.form__label}>Phone Number</Text>
+                  <Text
+                    style={[
+                      styles.form__label,
+                      phoneError ? styles.form__label__error : '',
+                    ]}
+                  >
+                    Phone Number
+                  </Text>
                   <TextInput
-                    style={styles.form__input}
+                    style={[
+                      styles.form__input,
+                      phoneError ? styles.form__error : '',
+                    ]}
                     placeholder="(555) 123-4567"
                     value={phone}
                     onChangeText={(newPhone) => setPhone(newPhone)}
@@ -203,7 +296,7 @@ const HomeScreen = () => {
                       styles.button,
                       styles.fixedWidth,
                       isDisabledFirst ? styles.disabled : '',
-                      {paddingLeft: 16, paddingRight: 16}
+                      { paddingLeft: 16, paddingRight: 16 },
                     ]}
                     disabled={isDisabledFirst}
                   >
@@ -250,7 +343,8 @@ const HomeScreen = () => {
                   </View>
                 )}
                 <Pressable
-                  onPress={() => navigation.navigate('Google')}
+                  // onPress={() => navigation.navigate('Google')}
+                  onPress={signInWithGoogle}
                   style={[styles.googleButton, styles.fixedWidth]}
                 >
                   <Image source={Google} style={styles.googleButton__logo} />

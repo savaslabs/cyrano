@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { db, auth } from '../config/firebase-config'
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, addDoc } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
 import EventItem from '../components/EventItem'
@@ -24,8 +24,9 @@ const RelationshipsHomeScreen = () => {
   const [showMessage, setShowMessage] = useState(false)
   const relationshipRef = collection(db, 'relationships')
   const upcomingEventsRef = collection(db, 'events')
+  const usersRef = collection(db, 'users')
   const isFocused = useIsFocused()
-  const { userData, getUser } = useAuth()
+  const { userData, getUser, user } = useAuth()
 
   useEffect(() => {
     getUser()
@@ -74,6 +75,18 @@ const RelationshipsHomeScreen = () => {
   useEffect(() => {
     if (relationships && isFocused) {
       setLoading(false)
+
+      if (!userData) {
+        addDoc(usersRef, {
+          userId: user?.user?.id,
+          name: user?.user?.fullName,
+          lastName: user?.user?.fullName,
+          email: user?.user?.email,
+          phone: '',
+          profileImg: user?.user?.img,
+          fullName: user?.user?.fullName,
+        }).then(() => navigation.navigate('User Panel'))
+      }
     }
   }, [relationships, isFocused])
 

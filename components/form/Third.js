@@ -1,10 +1,25 @@
-import { View, Text, StyleSheet, TextInput, Animated, Image } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Animated,
+  Image,
+} from 'react-native'
 import { useRef, useEffect } from 'react'
 import PhoneIcon from '../../assets/phone.png'
 import EmailIcon from '../../assets/email.png'
 import { styles } from '../../styles'
 
-const Third = ({ name, phone, setPhone, email, setEmail }) => {
+const Third = ({
+  name,
+  phone,
+  setPhone,
+  email,
+  setEmail,
+  phoneError,
+  emailError,
+}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -18,10 +33,17 @@ const Third = ({ name, phone, setPhone, email, setEmail }) => {
   return (
     <Animated.View style={{ opacity: fadeAnim, marginBottom: 16 }}>
       <View>
-        <Text style={styles.form__label}>Phone</Text>
+        <Text
+          style={[
+            styles.form__label,
+            phoneError ? styles.form__label__error : '',
+          ]}
+        >
+          Phone
+        </Text>
         {/* <Image source={PhoneIcon} width={30} height={30} /> */}
         <TextInput
-          style={styles.form__input}
+          style={[styles.form__input, phoneError ? styles.form__error : '']}
           placeholderTextColor="#c7cbd9"
           placeholder="(555) 123-4567"
           value={phone}
@@ -29,10 +51,17 @@ const Third = ({ name, phone, setPhone, email, setEmail }) => {
         />
       </View>
       <View>
-        <Text style={styles.form__label}>Email</Text>
+        <Text
+          style={[
+            styles.form__label,
+            emailError ? styles.form__label__error : '',
+          ]}
+        >
+          Email
+        </Text>
         {/* <Image source={EmailIcon} width={30} height={30} /> */}
         <TextInput
-          style={styles.form__input}
+          style={[styles.form__input, emailError ? styles.form__error : '']}
           placeholderTextColor="#c7cbd9"
           placeholder="Enter email address"
           value={email}
