@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
         setUser({
           user: {
             id: result.user.uid,
+            fullName: result.user.displayName,
             email: result.user.email,
             img: result.user.photoURL,
           },

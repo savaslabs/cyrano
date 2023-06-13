@@ -39,7 +39,7 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
         <Text style={styles.eventCard__heading}>
           {datePlace !== '' ? datePlace : pickRestaurantValue}
         </Text>
-        {loveStyleTag.map((tag, index) => (
+        {loveStyleTag?.map((tag, index) => (
           <Text style={styles.eventCard__tag} key={index}>
             {tag}
           </Text>

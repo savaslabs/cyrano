@@ -27,21 +27,25 @@ const PersonalDataLogin = () => {
 
   const handleSave = async () => {
     try {
-      setIsLoading(true)
-      useEffect(() => {
-        if (user && user?.user?.img !== undefined) {
-          console.log(user)
-          addDoc(usersRef, {
-            userId: user?.user?.id,
-            name: name,
-            lastName: lastName,
-            email: user?.user?.email,
-            phone: phone,
-            profileImg: user?.user?.img,
-            fullName: `${name} ${lastName}`,
-          }).then(navigation.navigate('Relationships'))
-        }
-      }, [user])
+      if (user && user?.user?.img !== undefined) {
+        addDoc(usersRef, {
+          userId: user?.user?.id,
+          name: name,
+          lastName: lastName,
+          email: user?.user?.email,
+          phone: phone,
+          profileImg: user?.user?.img,
+          fullName: `${name} ${lastName}`,
+        })
+          .then(navigation.navigate('Relationships'))
+          .then(
+            Toast.show({
+              type: 'success',
+              text1: 'Profile updated! 🚀',
+              visibilityTime: 2000,
+            })
+          )
+      }
     } catch (error) {
       console.log(error)
     }
@@ -51,13 +55,14 @@ const PersonalDataLogin = () => {
     <Page>
       <View style={[styles.page__content, styles.pageTopPadding]}>
         <View style={styles.page__upper}>
-          <Text style={styles.h1}>We need some more information</Text>
+          <Text style={styles.h2}>We need some more information</Text>
         </View>
 
         <View style={styles.form}>
           <Text style={styles.form__label}>Name</Text>
           <TextInput
             style={styles.form__input}
+            placeholder="Your name"
             placeholderTextColor="#c7cbd9"
             value={name}
             onChangeText={(newEditName) => setName(newEditName)}
@@ -65,6 +70,7 @@ const PersonalDataLogin = () => {
           <Text style={styles.form__label}>Last Name</Text>
           <TextInput
             style={styles.form__input}
+            placeholder="Your last name"
             placeholderTextColor="#c7cbd9"
             value={lastName}
             onChangeText={(newLastName) => setLastName(newLastName)}
@@ -72,6 +78,7 @@ const PersonalDataLogin = () => {
           <Text style={styles.form__label}>Phone</Text>
           <TextInput
             style={styles.form__input}
+            placeholder="Your phone"
             placeholderTextColor="#c7cbd9"
             value={phone}
             onChangeText={(newEditPhone) => setPhone(newEditPhone)}

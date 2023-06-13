@@ -46,7 +46,7 @@ const AdminRelItem = ({
         )}
         <View>
           <Text style={styles.userCard__name}>
-            {user?.name} {user?.lastName}
+            {user?.fullName}
           </Text>
           <View style={styles.userCard__phone}>
             <Image source={MobileIcon} style={{ width: 24, height: 24 }} />

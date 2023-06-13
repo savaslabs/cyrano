@@ -23,7 +23,8 @@ const HomeScreen = () => {
   const [repeatPassword, setRepeatPassword] = useState('')
   const [pageCounter, setPageCounter] = useState(1)
   const navigation = useNavigation()
-  const { createUserWithEmail, userCred, user } = useAuth()
+  const { createUserWithEmail, userCred, user, signInWithGoogle } =
+    useAuth()
   const usersRef = collection(db, 'users')
   // const relref= collection(db, 'relationships')
 
@@ -203,7 +204,7 @@ const HomeScreen = () => {
                       styles.button,
                       styles.fixedWidth,
                       isDisabledFirst ? styles.disabled : '',
-                      {paddingLeft: 16, paddingRight: 16}
+                      { paddingLeft: 16, paddingRight: 16 },
                     ]}
                     disabled={isDisabledFirst}
                   >
@@ -250,7 +251,8 @@ const HomeScreen = () => {
                   </View>
                 )}
                 <Pressable
-                  onPress={() => navigation.navigate('Google')}
+                  // onPress={() => navigation.navigate('Google')}
+                  onPress={signInWithGoogle}
                   style={[styles.googleButton, styles.fixedWidth]}
                 >
                   <Image source={Google} style={styles.googleButton__logo} />
