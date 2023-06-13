@@ -15,34 +15,32 @@ const EventDetails = () => {
     <Page>
       <View style={[styles.page__content, styles.pageTopPadding]}>
         <View style={styles.page__upper}>
-          <Pressable
-            onPress={() =>
-              auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
-                ? navigation.navigate('Event History', {
-                    item,
-                    imgDisplay,
-                    fullNameDisplay,
-                  })
-                : navigation.navigate('Admin')
-            }
-          >
-            <Image
-              source={Back}
-              style={{ width: 20, height: 20, marginBottom: 16 }}
-            />
-          </Pressable>
-
+          {auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+          auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
+            <Pressable
+              onPress={() =>
+                navigation.navigate('Relationships', {
+                  item,
+                  imgDisplay,
+                  fullNameDisplay,
+                })
+              }
+            >
+              <Image
+                source={Back}
+                style={{ width: 20, height: 20, marginBottom: 16 }}
+              />
+            </Pressable>
+          ) : (
+            <Pressable onPress={() => navigation.navigate('Admin')}>
+              <Image
+                source={Back}
+                style={{ width: 20, height: 20, marginBottom: 16 }}
+              />
+            </Pressable>
+          )}
           <View style={styles.eventHeading}>
             <Text style={[styles.h2, styles.alignLeft]}>{item?.eventName}</Text>
-            <View
-              style={[styles.loveStyleTags, { justifyContent: 'flex-end' }]}
-            >
-              {item?.loveStyleTag?.map((i, index) => (
-                <Text style={styles.loveStyleTags__tag} key={index}>
-                  {i}
-                </Text>
-              ))}
-            </View>
           </View>
           <View style={styles.eventRelGraphic}>
             <Text>With</Text>

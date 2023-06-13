@@ -18,6 +18,7 @@ const RelationshipItem = ({
   upcomingEvents,
   imgDisplay,
   fullNameDisplay,
+  userId,
 }) => {
   const navigation = useNavigation()
 
@@ -52,6 +53,7 @@ const RelationshipItem = ({
               nativeID={item?.id}
             />
           )}
+
           <Pressable onPress={(e) => handlePress(e.target.id)}>
             <Text style={styles.relationshipCard__name} nativeID={item?.id}>
               {item?.name} {item?.lastName}

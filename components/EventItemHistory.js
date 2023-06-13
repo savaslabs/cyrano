@@ -13,17 +13,17 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
     })
   }
 
-  const { id, eventName, loveStyleTag, dateDate, dateRating, state } = item
+  const { id, eventName, dateDate, dateRating, state } = item
 
   return (
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>{eventName}</Text>
-        {loveStyleTag?.map((tag, index) => (
-          <Text style={styles.eventCard__tag} key={index}>
-            {tag}
-          </Text>
-        ))}
+
+        <Text style={styles.eventCard__tag}>
+          {state?.charAt(0).toUpperCase()}
+          {state?.slice(1)}
+        </Text>
       </View>
 
       <Text style={styles.eventCard__dateTime}>
@@ -47,10 +47,11 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
 
         {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
         auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
-          <Pressable onPress={() => console.log()} style={styles.button}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              Edit Event
-            </Text>
+          <Pressable
+            onPress={() => console.log()}
+            style={styles.eventCard__link}
+          >
+            <Text>Edit Event</Text>
           </Pressable>
         ) : (
           ''

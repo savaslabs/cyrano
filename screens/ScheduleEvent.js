@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { styles } from '../styles'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Page from '../shared/Page'
-import { db } from '../config/firebase-config'
+import { db, auth } from '../config/firebase-config'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import uuid from 'react-native-uuid'
@@ -19,17 +19,7 @@ const ScheduleEvent = () => {
   const [docID, setDocID] = useState('')
   const [allID, setAllID] = useState('')
   const [additionalComments, setAdditionalComments] = useState('')
-  const [openLoveStyleTag, setOpenLoveStyleTag] = useState(false)
-  const [loveStyleTagValue, setLoveStyleTagValue] = useState(null)
-  const [loveStyleTagItems, setLoveStyleTagItems] = useState([
-    { label: 'Activity', value: 'Activity' },
-    { label: 'Financial', value: 'Financial' },
-    { label: 'Physical', value: 'Physical' },
-    { label: 'Appreciation', value: 'Appreciation' },
-    { label: 'Emotional', value: 'Emotional' },
-    { label: 'Intellectual', value: 'Intellectual' },
-    { label: 'Practical', value: 'Practical' },
-  ])
+  const [eventState, setEventState] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
   const navigation = useNavigation()
   const route = useRoute()
@@ -64,14 +54,24 @@ const ScheduleEvent = () => {
     setAllID(uuid.v4())
   }, [])
 
+  useEffect(() => {
+    const today = Date.parse(new Date())
+    const event = Date.parse(new Date(dateDate))
+
+    if (today > event) {
+      setEventState(true)
+    } else {
+      setEventState(false)
+    }
+  }, [dateDate])
+
   const handlePress = async () => {
-    await setDoc(doc(db, 'upcomingEvents', docID), {
+    await setDoc(doc(db, 'events', docID), {
       id: docID,
       name: relationshipData.name,
       lastName: relationshipData.lastName,
       fullName: `${relationshipData.name} ${relationshipData.lastName}`,
       img: relationshipData.profileImage,
-      loveStyleTag: loveStyleTagValue,
       eventName,
       datePlace,
       dateDate,
@@ -79,9 +79,14 @@ const ScheduleEvent = () => {
       dateRating: '',
       additionalComments,
       relID: itemId,
-      state: 'upcoming',
+      state: eventState ? 'past' : 'upcoming',
     })
-      .then(navigation.navigate('Admin'))
+      .then(
+        auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+          auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+          ? navigation.navigate('Admin')
+          : navigation.navigate('Relationships')
+      )
       .then(
         Toast.show({
           type: 'success',
@@ -164,40 +169,6 @@ const ScheduleEvent = () => {
               onChangeText={(newNextDatePlace) =>
                 setNextDatePlace(newNextDatePlace)
               }
-            />
-            <Text style={styles.form__label}>Select the love styles</Text>
-            <DropDownPicker
-              open={openLoveStyleTag}
-              value={loveStyleTagValue}
-              items={loveStyleTagItems}
-              setOpen={setOpenLoveStyleTag}
-              setValue={setLoveStyleTagValue}
-              setItems={setLoveStyleTagItems}
-              style={styles.form__select}
-              placeholder="Select Love Styles"
-              placeholderStyle={{ color: 'rgba(51,55,75,0.5)' }}
-              dropDownContainerStyle={{
-                margin: 'auto',
-                color: '#33374B',
-                zIndex: '20000',
-                height: 160,
-                bottom: -135,
-                borderColor: 'rgba(199, 203, 217, 1)',
-                paddingLeft: 4,
-                fontSize: 17,
-              }}
-              listItemLabelStyle={{
-                color: '#33374B',
-              }}
-              disabledItemLabelStyle={{
-                color: 'rgba(51,55,75,0.5)',
-              }}
-              labelStyle={{
-                color: '#33374B',
-              }}
-              multiple={true}
-              mode="BADGE"
-              badgeDotColors={['#586187']}
             />
             <View style={{ zIndex: 1 }}>
               <Text style={styles.form__label}>Additional Comments</Text>

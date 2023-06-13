@@ -23,7 +23,7 @@ const RelationshipsHomeScreen = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [showMessage, setShowMessage] = useState(false)
   const relationshipRef = collection(db, 'relationships')
-  const upcomingEventsRef = collection(db, 'upcomingEvents')
+  const upcomingEventsRef = collection(db, 'events')
   const usersRef = collection(db, 'users')
   const isFocused = useIsFocused()
   const { userData, getUser, user } = useAuth()
@@ -44,8 +44,9 @@ const RelationshipsHomeScreen = () => {
   const getUpcomingEvents = async () => {
     const data = await getDocs(upcomingEventsRef)
     const newData = data.docs.map((doc) => doc.data())
+    const filterUpcoming = newData.filter((item) => item.state === 'upcoming')
 
-    setUpcomingArr(newData)
+    setUpcomingArr(filterUpcoming)
   }
 
   useEffect(() => {
@@ -99,44 +100,37 @@ const RelationshipsHomeScreen = () => {
   }, [auth])
 
   const handleMessagePress = async () => {
-    setShowMessage(true)
-
-    const sid = TWILIO_ACCOUNT_SID
-    const token = TWILIO_AUTH_TOKEN
-
-    const qs = require('qs')
-    const cyranoText = `${userData?.name} ${userData?.lastName} has requested an event with ${relationships[0].name} ${relationships[0].lastName}. Text them back at ${userData?.phone}`
-
-    await axios.post(
-      'https://api.twilio.com/2010-04-01/Accounts/' + sid + '/Messages.json',
-      qs.stringify({
-        Body: cyranoText,
-        From: '+19705008871',
-        To: '+12543544848',
-      }),
-      {
-        auth: {
-          username: sid,
-          password: token,
-        },
-      }
-    )
-
-    const userText = `A message has been sent to your Cyrano. They will be in touch soon with a recommendation about your event with ${relationships[0].name} ${relationships[0].lastName}.`
-    await axios.post(
-      'https://api.twilio.com/2010-04-01/Accounts/' + sid + '/Messages.json',
-      qs.stringify({
-        Body: userText,
-        From: '+19705008871',
-        To: userData?.phone,
-      }),
-      {
-        auth: {
-          username: sid,
-          password: token,
-        },
-      }
-    )
+    navigation.navigate('Schedule Event', {
+      itemId: relationships[0].id,
+    })
+    // setShowMessage(true);
+    // const sid = TWILIO_ACCOUNT_SID;
+    // const token = TWILIO_AUTH_TOKEN;
+    // const qs = require('qs');
+    // const cyranoText = `${userData?.name} ${userData?.lastName} has requested an event with ${relationships[0].name} ${relationships[0].lastName}. Text them back at ${userData?.phone}`;
+    // await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+    //   Body: cyranoText,
+    //   From: '+19705008871',
+    //   To: '+12543544848'
+    // }),
+    // {
+    //   auth: {
+    //     username: sid,
+    //     password: token
+    //   }
+    // }));
+    // const userText = `A message has been sent to your Cyrano. They will be in touch soon with a recommendation about your event with ${relationships[0].name} ${relationships[0].lastName}.`
+    // await(axios.post("https://api.twilio.com/2010-04-01/Accounts/" + sid + "/Messages.json", qs.stringify({
+    //   Body: userText,
+    //   From: '+19705008871',
+    //   To: userData?.phone
+    // }),
+    // {
+    //   auth: {
+    //     username: sid,
+    //     password: token
+    //   }
+    // }));
   }
 
   return (
@@ -187,22 +181,21 @@ const RelationshipsHomeScreen = () => {
                           ]}
                           onPress={handleMessagePress}
                         >
-                          {showMessage ? (
+                          {/* {showMessage ? (
                             <Text>
                               A message has been sent. A cyrano will contact you
                               soon
                             </Text>
-                          ) : (
-                            <Text
-                              style={[
-                                styles.button__text,
-                                styles.buttonGrey__text,
-                                styles.superBold,
-                              ]}
-                            >
-                              SCHEDULE AN EVENT
-                            </Text>
-                          )}
+                          ) : ( */}
+                          <Text
+                            style={[
+                              styles.button__text,
+                              styles.buttonGrey__text,
+                              styles.superBold,
+                            ]}
+                          >
+                            SCHEDULE AN EVENT
+                          </Text>
                         </Pressable>
                       </View>
                     ) : (
@@ -218,7 +211,7 @@ const RelationshipsHomeScreen = () => {
                     <Pressable
                       onPress={() =>
                         navigation.navigate('Event History', {
-                          itemId: 'ifgjdoigjsdo',
+                          itemId: relationships[0].author.id,
                           imgDisplay,
                           fullNameDisplay,
                         })

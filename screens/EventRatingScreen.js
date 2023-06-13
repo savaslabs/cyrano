@@ -28,14 +28,14 @@ const EventRatingScreen = () => {
     }).start()
   }, [fadeAnim])
 
-  const { id, relID, name, loveStyleTag, eventName, dateDate, dateTime } = item
+  const { id, relID, name, eventName, dateDate, dateTime } = item
 
-  const upcomingEventsRef = doc(db, 'prevEvents', id)
+  const eventsRef = doc(db, 'events', id)
   const relRef = doc(db, 'relationships', relID)
 
   const handleSave = async () => {
     await updateDoc(
-      upcomingEventsRef,
+      eventsRef,
       {
         dateRating,
         highlight,
@@ -72,13 +72,6 @@ const EventRatingScreen = () => {
               <Text style={styles.eventSummary__title}>
                 {eventName} with {name}
               </Text>
-              <View style={styles.eventTags}>
-                {loveStyleTag?.map((tag, index) => (
-                  <Text style={styles.eventTags__tag} key={index}>
-                    {tag}
-                  </Text>
-                ))}
-              </View>
               <Text style={styles.eventSummary__date}>
                 {new Date(dateDate).toLocaleDateString()} @ {dateTime}
               </Text>
