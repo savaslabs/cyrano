@@ -1,14 +1,15 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import EventItemHistory from '../components/EventItemHistory'
-import { db, auth } from '../config/firebase-config'
+import { db } from '../config/firebase-config'
 import { getDocs, collection } from 'firebase/firestore'
 import { styles } from '../styles'
 import Spinner from '../shared/Spinner'
 import Page from '../shared/Page'
+import Filters from '../components/Filters'
 
 const EventHistory = () => {
   const [loading, setLoading] = useState(true)
@@ -24,6 +25,10 @@ const EventHistory = () => {
     },
   ])
   const [relationshipEvents, setRelationshipEvents] = useState([])
+  const [upcomingEvents, setUpcomingEvents] = useState([])
+  const [pastEvents, setPastEvents] = useState([])
+  const [filterPast, setFilterPast] = useState(undefined)
+  const [filterUpcoming, setFilterUpcoming] = useState(undefined)
   const [tagsFilter] = useState([
     'Activity',
     'Financial',
@@ -35,6 +40,7 @@ const EventHistory = () => {
   ])
   const [showError, setShowError] = useState(false)
   const [resetFilterColor, setResetFilterColor] = useState(false)
+  const [filterEventsArr, setFilterEventsArr] = useState(['Upcoming', 'Past'])
   const navigation = useNavigation()
   const route = useRoute()
   const { imgDisplay, fullNameDisplay, itemId } = route.params
@@ -44,9 +50,7 @@ const EventHistory = () => {
   const getRelationships = async () => {
     const data = await getDocs(relationshipRef)
     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    const finalRel = newData.filter(
-      (item) => item.author.id === itemId
-    )
+    const finalRel = newData.filter((item) => item.author.id === itemId)
     setRelationships(finalRel)
   }
 
@@ -101,6 +105,17 @@ const EventHistory = () => {
     }
   }, [relValue])
 
+  useEffect(() => {
+    if (relationshipEvents) {
+      const past = relationshipEvents.filter((item) => item.state === 'past')
+      const upcoming = relationshipEvents.filter(
+        (item) => item.state === 'upcoming'
+      )
+      setPastEvents(past)
+      setUpcomingEvents(upcoming)
+    }
+  }, [relationshipEvents])
+
   const showAll = () => {
     setFilteredRel(relationshipEvents)
     setResetFilterColor(true)
@@ -114,7 +129,7 @@ const EventHistory = () => {
         <Page>
           <View style={styles.page__content}>
             <View style={[styles.page__upper, styles.pageTopPadding]}>
-              <Text style={[styles.h2, styles.alignLeft]}>Event History</Text>
+              <Text style={[styles.h2, styles.alignLeft]}>All Events</Text>
             </View>
             <View style={{ zIndex: 2 }}>
               <Text style={styles.h4}>Relationships</Text>
@@ -156,9 +171,29 @@ const EventHistory = () => {
                 }}
               />
             </View>
-            <Text style={[styles.h4, styles.medGap]}>Event Breakdown</Text>
-            {filteredRel
-              ? filteredRel?.map((item, index) => (
+
+            {/* <Text style={[styles.h3, styles.mb16]}>Filter By: </Text>
+            <View style={styles.paginationBtns}>
+              {filterEventsArr?.map((item, index) => (
+                <Filters
+                  tag={item}
+                  key={index}
+                  setFilterPast={setFilterPast}
+                  setFilterUpcoming={setFilterUpcoming}
+                />
+              ))}
+            </View> */}
+
+            <View
+              style={
+                filterUpcoming || filterUpcoming === undefined
+                  ? { display: 'flex' }
+                  : { display: 'none' }
+              }
+            >
+              <Text style={[styles.h4, styles.medGap]}>Upcoming Events</Text>
+              {filteredRel ? (
+                filteredRel?.map((item, index) => (
                   <EventItemHistory
                     key={index}
                     item={item}
@@ -166,16 +201,46 @@ const EventHistory = () => {
                     fullNameDisplay={fullNameDisplay}
                   />
                 ))
-              : relationshipEvents?.map((item, index) => (
+              ) : upcomingEvents.length !== 0 ? (
+                upcomingEvents?.map((item, index) => (
                   <EventItemHistory
                     key={index}
                     item={item}
                     imgDisplay={imgDisplay}
                     fullNameDisplay={fullNameDisplay}
                   />
-                ))}
-
-            {relationshipEvents.length === 0 && (
+                ))
+              ) : (
+                <Text style={styles.h3}>There are no upcoming events.</Text>
+              )}
+            </View>
+            <View
+              style={
+                filterPast || filterPast === undefined
+                  ? { display: 'flex' }
+                  : { display: 'none' }
+              }
+            >
+              <Text style={[styles.h4, styles.medGap]}>Past Events</Text>
+              {filteredRel
+                ? filteredRel?.map((item, index) => (
+                    <EventItemHistory
+                      key={index}
+                      item={item}
+                      imgDisplay={imgDisplay}
+                      fullNameDisplay={fullNameDisplay}
+                    />
+                  ))
+                : pastEvents?.map((item, index) => (
+                    <EventItemHistory
+                      key={index}
+                      item={item}
+                      imgDisplay={imgDisplay}
+                      fullNameDisplay={fullNameDisplay}
+                    />
+                  ))}
+            </View>
+            {!pastEvents && !upcomingEvents && (
               <Text>
                 You don’t have any relationships yet. Get started by adding one
               </Text>

@@ -130,6 +130,17 @@ const ScheduleEvent = () => {
     })
   }
 
+  const handleCancel = () => {
+    if (
+      auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+      auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+    ) {
+      navigation.navigate('Admin')
+    } else {
+      navigation.navigate('Relationships')
+    }
+  }
+
   return (
     <>
       <Page>
@@ -189,7 +200,7 @@ const ScheduleEvent = () => {
             <View style={styles.paginationBtns}>
               <Pressable
                 style={[styles.button, styles.buttonGrey]}
-                onPress={() => navigation.navigate('Admin')}
+                onPress={handleCancel}
               >
                 <Text style={[styles.button__text, styles.buttonGrey__text]}>
                   CANCEL

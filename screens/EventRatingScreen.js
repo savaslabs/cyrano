@@ -15,6 +15,7 @@ const EventRatingScreen = () => {
   const [lowlights, setLowlights] = useState('')
   const [additionalComments, setAdditionalComments] = useState('')
   const [relationshipRating, setRelationshipRating] = useState('')
+  const [isDisabled, setIsDisabled] = useState(true)
   const fadeAnim = useRef(new Animated.Value(0)).current
   const route = useRoute()
   const { item } = route.params
@@ -62,6 +63,14 @@ const EventRatingScreen = () => {
       })
   }
 
+  useEffect(() => {
+    if (dateRating && relationshipRating) {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
+  }, [dateRating, relationshipRating])
+
   return (
     <Page>
       <Animated.View style={{ opacity: fadeAnim }}>
@@ -78,8 +87,9 @@ const EventRatingScreen = () => {
             </View>
           </View>
           <View>
-           <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
-              How would you rate your event with <Text style={styles.superBold}>{name}</Text>?
+            <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
+              How would you rate your event with{' '}
+              <Text style={styles.superBold}>{name}</Text>?
             </Text>
             <View>
               <StarRating
@@ -93,52 +103,63 @@ const EventRatingScreen = () => {
           </View>
 
           <View style={styles.medGap}>
-          <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>What was a highlight?</Text>
+            <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
+              What was a highlight?
+            </Text>
             <TextInput
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
+              style={[
+                styles.form__textArea,
+                { marginTop: 0, marginBottom: 0, height: 112 },
+              ]}
               placeholderTextColor="rgba(51,55,75,0.5)"
               value={highlight}
               onChangeText={(newHighlight) => setHighlight(newHighlight)}
             />
           </View>
 
-          <View style={{marginTop: 24}}>
-            <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
+          <View style={{ marginTop: 24 }}>
+            <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
               Were there any lowlights or challenges?
             </Text>
             <TextInput
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
+              style={[
+                styles.form__textArea,
+                { marginTop: 0, marginBottom: 0, height: 112 },
+              ]}
               placeholderTextColor="rgba(51,55,75,0.5)"
               value={lowlights}
               onChangeText={(newLow) => setLowlights(newLow)}
             />
           </View>
 
-          <View style={{marginTop: 24}}>
-            <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
+          <View style={{ marginTop: 24 }}>
+            <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
               Any other notes regarding the recommendation?
             </Text>
             <TextInput
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
-              style={[styles.form__textArea, {marginTop: 0, marginBottom: 0, height: 112}]}
+              style={[
+                styles.form__textArea,
+                { marginTop: 0, marginBottom: 0, height: 112 },
+              ]}
               placeholderTextColor="rgba(51,55,75,0.5)"
               value={additionalComments}
               onChangeText={(newNotes) => setAdditionalComments(newNotes)}
             />
           </View>
 
-          <View style={{marginTop: 24}}>
-            <Text style={{fontSize: 19, marginBottom: 8, lineHeight: 22}}>
-              How would you rate your overall relationship with <Text style={styles.superBold}>{name}</Text> after
-              this event?
+          <View style={{ marginTop: 24 }}>
+            <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
+              How would you rate your overall relationship with{' '}
+              <Text style={styles.superBold}>{name}</Text> after this event?
             </Text>
             <StarRating
               rating={relationshipRating}
@@ -150,11 +171,31 @@ const EventRatingScreen = () => {
           </View>
           <View style={styles.page__lower}>
             <View style={styles.paginationBtns}>
-              <Pressable style={[styles.button, styles.buttonGrey]} onPress={() => navigation.navigate('Relationships')}>
-                <Text style={[styles.button__text, styles.buttonGrey__text]}>CANCEL</Text>
+              <Pressable
+                style={[styles.button, styles.buttonGrey]}
+                onPress={() => navigation.navigate('Relationships')}
+              >
+                <Text style={[styles.button__text, styles.buttonGrey__text]}>
+                  CANCEL
+                </Text>
               </Pressable>
-              <Pressable style={[styles.button, styles.buttonNext]} onPress={handleSave}>
-                <Text style={styles.button__text}>SUBMIT</Text>
+              <Pressable
+                style={[
+                  styles.button,
+                  styles.buttonNext,
+                  isDisabled ? styles.disabled : '',
+                ]}
+                onPress={handleSave}
+                disabled={isDisabled}
+              >
+                <Text
+                  style={[
+                    styles.button__text,
+                    isDisabled ? styles.disabled__text : '',
+                  ]}
+                >
+                  SUBMIT
+                </Text>
               </Pressable>
             </View>
           </View>
