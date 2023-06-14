@@ -172,7 +172,7 @@ const EventHistory = () => {
               />
             </View>
 
-            <Text style={[styles.h3, styles.mb16]}>Filter By: </Text>
+            {/* <Text style={[styles.h3, styles.mb16]}>Filter By: </Text>
             <View style={styles.paginationBtns}>
               {filterEventsArr?.map((item, index) => (
                 <Filters
@@ -182,7 +182,7 @@ const EventHistory = () => {
                   setFilterUpcoming={setFilterUpcoming}
                 />
               ))}
-            </View>
+            </View> */}
 
             <View
               style={
