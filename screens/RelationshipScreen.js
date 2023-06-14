@@ -236,7 +236,7 @@ const Relationship = () => {
                 })
               }
             >
-              <Text style={styles.textLink}>View full events history</Text>
+              <Text style={styles.textLink}>View all events</Text>
             </Pressable>
             {newDetailsArr?.length === 0 ? (
               <View style={[styles.headingPlusBtn, styles.h1Gap, styles.mb16]}>

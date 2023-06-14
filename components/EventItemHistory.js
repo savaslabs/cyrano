@@ -19,11 +19,6 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>{eventName}</Text>
-
-        <Text style={styles.eventCard__tag}>
-          {state?.charAt(0).toUpperCase()}
-          {state?.slice(1)}
-        </Text>
       </View>
 
       <Text style={styles.eventCard__dateTime}>

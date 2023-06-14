@@ -1,42 +1,38 @@
 import { Pressable, Text } from 'react-native'
 import { styles } from '../styles'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const LoveStyleFilter = ({
   tag,
-  setFilteredRel,
-  relationshipEvents,
-  setShowError,
-  filteredRel,
   resetFilterColor,
-  setResetFilterColor
+  setFilterPast,
+  setFilterUpcoming,
 }) => {
   const [isActive, setIsActive] = useState(false)
 
   const handleFilter = (tag) => {
-    const newData = relationshipEvents.filter((item) => {
-      return item.loveStyleTag.some((i) => i === tag)
-    })
+    if (tag === 'Past') {
+      setFilterPast(tag)
+      setFilterUpcoming('')
+      setIsActive(true)
 
-    setFilteredRel(newData)
-    setIsActive(true)
-    setResetFilterColor(false)
+      if (isActive) {
+        setIsActive(false)
+        setFilterPast(undefined)
+        setFilterUpcoming(undefined)
+      }
+    } else if (tag === 'Upcoming') {
+      setFilterUpcoming(tag)
+      setFilterPast('')
+      setIsActive(true)
 
-    if (isActive) {
-      setIsActive(false)
-      setFilteredRel(relationshipEvents)
+      if (isActive) {
+        setIsActive(false)
+        setFilterUpcoming(undefined)
+        setFilterPast(undefined)
+      }
     }
   }
-
-  useEffect(() => {
-    if (filteredRel === undefined) {
-      setShowError(false)
-    } else if (filteredRel.length > 0) {
-      setShowError(false)
-    } else if (filteredRel.length === 0) {
-      setShowError(true)
-    }
-  }, [filteredRel])
 
   return (
     <Pressable
@@ -44,6 +40,7 @@ const LoveStyleFilter = ({
         styles.loveStyleTags__tag,
         isActive ? { backgroundColor: '#33374B' } : '',
         resetFilterColor && { backgroundColor: '' },
+        { marginRight: '10px' },
       ]}
       onPress={() => handleFilter(tag)}
     >

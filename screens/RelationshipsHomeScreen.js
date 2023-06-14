@@ -217,7 +217,7 @@ const RelationshipsHomeScreen = () => {
                         })
                       }
                     >
-                      <Text style={styles.textLink}>View events history</Text>
+                      <Text style={styles.textLink}>View all events</Text>
                     </Pressable>
 
                     <View>

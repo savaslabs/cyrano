@@ -45,9 +45,9 @@ const EventDetails = () => {
           <View style={styles.eventRelGraphic}>
             <Text>With</Text>
             <View style={styles.eventRelGraphic__pill}>
-              {item?.img ? (
+              {imgDisplay ? (
                 <Image
-                  source={item?.img}
+                  source={imgDisplay}
                   style={{
                     width: 40,
                     height: 40,
@@ -57,7 +57,7 @@ const EventDetails = () => {
                 />
               ) : (
                 <Image
-                  source={item?.img}
+                  source={Avatar}
                   style={{
                     width: 40,
                     height: 40,
