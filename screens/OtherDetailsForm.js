@@ -47,7 +47,7 @@ const OtherDetails = () => {
   }
 
   const handleCancel = () => {
-    navigation.navigate('Relationship', itemId, imgDisplay, fullNameDisplay)
+    navigation.navigate('Relationship', { itemId, imgDisplay, fullNameDisplay })
   }
 
   useEffect(() => {
