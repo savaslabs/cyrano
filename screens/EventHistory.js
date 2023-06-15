@@ -267,8 +267,10 @@ const EventHistory = () => {
                   fullNameDisplay={fullNameDisplay}
                 />
               ))
-            ) : (
+            ) : searchEvent ? (
               <Text>No events match your search.</Text>
+            ) : (
+              ''
             )}
 
             {!pastEvents && !upcomingEvents && (
