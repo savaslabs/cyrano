@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -14,7 +14,7 @@ import Filters from '../components/Filters'
 const EventHistory = () => {
   const [loading, setLoading] = useState(true)
   const [relationships, setRelationships] = useState('')
-  const [filteredRel, setFilteredRel] = useState(undefined)
+  const [filteredRel, setFilteredRel] = useState([])
   const [eventArr, setEventArr] = useState([])
   const [openRel, setOpenRel] = useState(false)
   const [relValue, setRelValue] = useState(null)
@@ -29,6 +29,7 @@ const EventHistory = () => {
   const [pastEvents, setPastEvents] = useState([])
   const [filterPast, setFilterPast] = useState(undefined)
   const [filterUpcoming, setFilterUpcoming] = useState(undefined)
+  const [searchEvent, setSearchEvent] = useState('')
   const [tagsFilter] = useState([
     'Activity',
     'Financial',
@@ -121,6 +122,21 @@ const EventHistory = () => {
     setResetFilterColor(true)
   }
 
+  useEffect(() => {
+    if (relationshipEvents) {
+      if (searchEvent) {
+        const newData = relationshipEvents.filter((item) => {
+          return item.eventName
+            .toLowerCase()
+            .includes(searchEvent.toLowerCase())
+        })
+        setFilteredRel(newData)
+      } else {
+        setFilteredRel([])
+      }
+    }
+  }, [searchEvent])
+
   return (
     <>
       {loading ? (
@@ -170,6 +186,16 @@ const EventHistory = () => {
                   color: 'rgba(51,55,75,0.5)',
                 }}
               />
+              <Text style={[styles.h4, styles.medGap]}>Search events</Text>
+              <TextInput
+                style={[styles.form__input, { marginTop: 0 }]}
+                placeholder="Search for an event"
+                placeholderTextColor="#c7cbd9"
+                value={searchEvent}
+                onChangeText={(newSearchEvent) =>
+                  setSearchEvent(newSearchEvent)
+                }
+              />
             </View>
 
             {/* <Text style={[styles.h3, styles.mb16]}>Filter By: </Text>
@@ -184,46 +210,17 @@ const EventHistory = () => {
               ))}
             </View> */}
 
-            <View
-              style={
-                filterUpcoming || filterUpcoming === undefined
-                  ? { display: 'flex' }
-                  : { display: 'none' }
-              }
-            >
-              <Text style={[styles.h4, styles.medGap]}>Upcoming Events</Text>
-              {filteredRel ? (
-                filteredRel?.map((item, index) => (
-                  <EventItemHistory
-                    key={index}
-                    item={item}
-                    imgDisplay={imgDisplay}
-                    fullNameDisplay={fullNameDisplay}
-                  />
-                ))
-              ) : upcomingEvents.length !== 0 ? (
-                upcomingEvents?.map((item, index) => (
-                  <EventItemHistory
-                    key={index}
-                    item={item}
-                    imgDisplay={imgDisplay}
-                    fullNameDisplay={fullNameDisplay}
-                  />
-                ))
-              ) : (
-                <Text style={styles.h3}>There are no upcoming events.</Text>
-              )}
-            </View>
-            <View
-              style={
-                filterPast || filterPast === undefined
-                  ? { display: 'flex' }
-                  : { display: 'none' }
-              }
-            >
-              <Text style={[styles.h4, styles.medGap]}>Past Events</Text>
-              {filteredRel
-                ? filteredRel?.map((item, index) => (
+            {filteredRel?.length === 0 && !searchEvent ? (
+              <View
+                style={
+                  filterUpcoming || filterUpcoming === undefined
+                    ? { display: 'flex' }
+                    : { display: 'none' }
+                }
+              >
+                <Text style={[styles.h4, styles.medGap]}>Upcoming Events</Text>
+                {upcomingEvents.length !== 0 ? (
+                  upcomingEvents?.map((item, index) => (
                     <EventItemHistory
                       key={index}
                       item={item}
@@ -231,15 +228,51 @@ const EventHistory = () => {
                       fullNameDisplay={fullNameDisplay}
                     />
                   ))
-                : pastEvents?.map((item, index) => (
-                    <EventItemHistory
-                      key={index}
-                      item={item}
-                      imgDisplay={imgDisplay}
-                      fullNameDisplay={fullNameDisplay}
-                    />
-                  ))}
-            </View>
+                ) : (
+                  <Text style={styles.h3}>There are no upcoming events.</Text>
+                )}
+              </View>
+            ) : (
+              ''
+            )}
+
+            {filteredRel?.length === 0 && !searchEvent ? (
+              <View
+                style={
+                  filterPast || filterPast === undefined
+                    ? { display: 'flex' }
+                    : { display: 'none' }
+                }
+              >
+                <Text style={[styles.h4, styles.medGap]}>Past Events</Text>
+                {pastEvents?.map((item, index) => (
+                  <EventItemHistory
+                    key={index}
+                    item={item}
+                    imgDisplay={imgDisplay}
+                    fullNameDisplay={fullNameDisplay}
+                  />
+                ))}
+              </View>
+            ) : (
+              ''
+            )}
+
+            {filteredRel?.length > 0 ? (
+              filteredRel?.map((item, index) => (
+                <EventItemHistory
+                  key={index}
+                  item={item}
+                  imgDisplay={imgDisplay}
+                  fullNameDisplay={fullNameDisplay}
+                />
+              ))
+            ) : searchEvent ? (
+              <Text>No events match your search.</Text>
+            ) : (
+              ''
+            )}
+
             {!pastEvents && !upcomingEvents && (
               <Text>
                 You don’t have any relationships yet. Get started by adding one
