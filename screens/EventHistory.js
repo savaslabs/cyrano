@@ -265,6 +265,7 @@ const EventHistory = () => {
                   item={item}
                   imgDisplay={imgDisplay}
                   fullNameDisplay={fullNameDisplay}
+                  searchEvent={searchEvent}
                 />
               ))
             ) : searchEvent ? (
