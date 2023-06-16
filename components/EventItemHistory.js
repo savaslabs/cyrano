@@ -4,7 +4,12 @@ import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
 import { useState, useEffect } from 'react'
 
-const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
+const EventItemHistory = ({
+  item,
+  imgDisplay,
+  fullNameDisplay,
+  searchEvent,
+}) => {
   const navigation = useNavigation()
 
   const handlePress = (e) => {
@@ -19,6 +24,15 @@ const EventItemHistory = ({ item, imgDisplay, fullNameDisplay }) => {
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>{eventName}</Text>
+
+        {searchEvent ? (
+          <Text style={styles.eventCard__tag}>
+            {state?.charAt(0).toUpperCase()}
+            {state?.slice(1)}
+          </Text>
+        ) : (
+          ''
+        )}
       </View>
 
       <Text style={styles.eventCard__dateTime}>
