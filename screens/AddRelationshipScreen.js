@@ -89,7 +89,7 @@ const AddRelationship = () => {
     }
 
     const validatePhone = () => {
-      const re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g
+      const re = /^[0-9]{10,10}$/g
       setCheckPhone(re.test(phone))
     }
 
