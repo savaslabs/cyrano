@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import RelationshipItem from '../components/RelationshipItem'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { db, auth } from '../config/firebase-config'
+import { signOut } from 'firebase/auth'
 import { getDocs, collection, addDoc } from 'firebase/firestore'
 import Spinner from '../shared/Spinner'
 import placeholderSkeleton from '../assets/skeleton.png'
@@ -36,7 +37,7 @@ const RelationshipsHomeScreen = () => {
     const data = await getDocs(relationshipRef)
     const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     const finalRel = newData.filter(
-      (item) => item.author.id === auth.currentUser.uid
+      (item) => item.author.id === auth?.currentUser?.uid
     )
     setRelationships(finalRel)
   }
@@ -92,8 +93,8 @@ const RelationshipsHomeScreen = () => {
 
   useEffect(() => {
     if (
-      auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
-      auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+      auth?.currentUser?.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+      auth?.currentUser?.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
     ) {
       navigation.navigate('Admin')
     }

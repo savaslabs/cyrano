@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { auth, provider, db } from '../config/firebase-config'
+import { signOut } from 'firebase/auth'
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -22,7 +23,20 @@ export const AuthProvider = ({ children }) => {
   const createUserWithEmail = async (email, password) => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setUserCred(userCredential)
+        if (!auth.currentUser.emailVerified) {
+          signOut(auth)
+            .then(() =>
+              setUser({
+                user: null,
+                isLoggedIn: false,
+              })
+            )
+            .then(() => {
+              setUserCred(userCredential)
+            })
+        } else {
+          setUserCred(userCredential)
+        }
       })
       .catch((error) => {
         const errorCode = error.code
@@ -71,21 +85,22 @@ export const AuthProvider = ({ children }) => {
   const signInWithEmail = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // if (auth.currentUser.emailVerified) {
-        setUser({
-          user: {
-            id: userCredential.user.uid,
-            email: userCredential.user.email,
-          },
-          isLoggedIn: true,
-        })
-        // } else {
-        //   Toast.show({
-        //     type: 'error',
-        //     text1: 'The email is not verified. Check your inbox',
-        //     visibilityTime: 2000
-        //   })
-        // }
+        if (auth.currentUser.emailVerified) {
+          setUser({
+            user: {
+              id: userCredential.user.uid,
+              email: userCredential.user.email,
+            },
+            isLoggedIn: true,
+          })
+        } else {
+          handleSignOut()
+          Toast.show({
+            type: 'error',
+            text1: 'The email is not verified. Check your inbox',
+            visibilityTime: 2000,
+          })
+        }
       })
       .catch((error) => {
         const errorCode = error.code
@@ -99,7 +114,7 @@ export const AuthProvider = ({ children }) => {
 
   // Get user from Firebase
   const getUser = async () => {
-    const q = query(userRef, where('userId', '==', auth.currentUser.uid))
+    const q = query(userRef, where('userId', '==', auth?.currentUser?.uid))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       setUserData(doc.data())
@@ -123,6 +138,15 @@ export const AuthProvider = ({ children }) => {
       }
     })
   }, [auth])
+
+  const handleSignOut = () => {
+    signOut(auth).then(() =>
+      setUser({
+        user: null,
+        isLoggedIn: false,
+      })
+    )
+  }
 
   return (
     <AuthContext.Provider

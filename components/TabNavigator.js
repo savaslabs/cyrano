@@ -22,7 +22,7 @@ const TabNavigator = () => {
   const handleSignOut = () => {
     signOut(auth).then(() =>
       setUser({
-        user: auth.currentUser,
+        user: null,
         isLoggedIn: false,
       })
     )
@@ -44,8 +44,8 @@ const TabNavigator = () => {
             style={{ maxWidth: 32, minWidth: 32, height: 23 }}
           />
         </View>
-        {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
-        auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
+        {auth?.currentUser?.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+        auth?.currentUser?.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
           <>
             <Pressable
               style={[styles.nav__link, { minWidth: 92, maxWidth: 92 }]}
