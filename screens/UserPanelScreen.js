@@ -46,7 +46,7 @@ const UserPanelScreen = () => {
       aspect: [4, 3],
       quality: 0.5,
       maxWidth: 200,
-      maxHeight: 200
+      maxHeight: 200,
     })
 
     if (!result.canceled) {
@@ -111,7 +111,14 @@ const UserPanelScreen = () => {
         <Page>
           <View style={[styles.page__content, styles.pageTopPadding]}>
             <View style={styles.page__upper}>
-              <Text style={styles.h1}>{!phone ? 'Complete your profile' : 'Edit Your Profile'}</Text>
+              {!phone ? (
+                <View>
+                  <Text style={styles.h1}>Welcome!</Text>
+                  <Text style={styles.h2}>Please, complete your profile</Text>
+                </View>
+              ) : (
+                <Text style={styles.h1}>Edit your profile</Text>
+              )}
             </View>
             <View style={styles.vertCenter}>
               {profileImg ? (
@@ -162,7 +169,7 @@ const UserPanelScreen = () => {
               <Text style={styles.form__label}>Phone</Text>
               <TextInput
                 style={styles.form__input}
-                placeholder='Enter your phone'
+                placeholder="Enter your phone"
                 placeholderTextColor="#c7cbd9"
                 value={editPhone}
                 onChangeText={(newEditPhone) => setEditPhone(newEditPhone)}
