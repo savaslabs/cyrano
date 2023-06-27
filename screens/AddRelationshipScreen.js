@@ -303,25 +303,38 @@ const AddRelationship = () => {
   }
 
   const sendLoveTest = () => {
-    emailjs
-      .send(
-        'service_mluy78d',
-        'template_dlzx6tm',
-        {
-          from_email: email,
-        },
-        '7RtlMLsc_bIlK-F46'
-      )
-      .then(() => {
-        setShowMessage(true)
+    if (!checkEmail) {
+      setEmailError(true)
+      Toast.show({
+        type: 'error',
+        text1: 'The email is not valid',
+        visibilityTime: 3000,
       })
-      .catch((err) =>
-        Toast.show({
-          type: 'error',
-          text1: err.code,
-          visibilityTime: 2000,
+
+      setTimeout(() => {
+        setEmailError(false)
+      }, 2500)
+    } else {
+      emailjs
+        .send(
+          'service_mluy78d',
+          'template_dlzx6tm',
+          {
+            from_email: email,
+          },
+          '7RtlMLsc_bIlK-F46'
+        )
+        .then(() => {
+          setShowMessage(true)
         })
-      )
+        .catch((err) =>
+          Toast.show({
+            type: 'error',
+            text1: err.code,
+            visibilityTime: 2000,
+          })
+        )
+    }
   }
 
   useEffect(() => {
