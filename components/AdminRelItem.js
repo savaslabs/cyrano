@@ -7,7 +7,7 @@ import {
   Button,
   Image,
 } from 'react-native'
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import Avatar from '../assets/avatar.png'
 import MobileIcon from '../assets/mobile-device.svg'
@@ -19,6 +19,7 @@ const AdminRelItem = ({
   imgDisplay,
   fullNameDisplay,
 }) => {
+  const [hyphenPhone, setHyphenPhone] = useState('')
   const navigation = useNavigation()
 
   const handlePress = (id) => {
@@ -29,6 +30,10 @@ const AdminRelItem = ({
       fullNameDisplay,
     })
   }
+
+  useEffect(() => {
+    setHyphenPhone(user?.phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'))
+  }, [user])
 
   return (
     <View style={styles.userCard} key={user?.userId}>
@@ -45,12 +50,10 @@ const AdminRelItem = ({
           />
         )}
         <View>
-          <Text style={styles.userCard__name}>
-            {user?.fullName}
-          </Text>
+          <Text style={styles.userCard__name}>{user?.fullName}</Text>
           <View style={styles.userCard__phone}>
             <Image source={MobileIcon} style={{ width: 24, height: 24 }} />
-            <Text style={styles.userCard__phoneText}>{user?.phone}</Text>
+            <Text style={styles.userCard__phoneText}>{hyphenPhone}</Text>
           </View>
         </View>
       </View>
