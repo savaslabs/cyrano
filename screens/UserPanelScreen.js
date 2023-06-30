@@ -113,7 +113,7 @@ const UserPanelScreen = () => {
             <View style={styles.page__upper}>
               {!phone ? (
                 <View>
-                  <Text style={styles.h1}>Welcome Welcome!</Text>
+                  <Text style={styles.h1}>Welcome!</Text>
                   <Text style={styles.h2}>Please complete your profile</Text>
                 </View>
               ) : (
