@@ -21,6 +21,7 @@ const AddRelationship = () => {
   const [profileImage, setProfileImage] = useState(null)
   const [pageCounter, setPageCounter] = useState(1)
   const [isDisabled, setIsDisabled] = useState(true)
+  const [skip, setSkip] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [docID, setDocID] = useState('')
@@ -183,6 +184,7 @@ const AddRelationship = () => {
       )
       .then(() => {
         setShowMessage(true)
+        setSkip(true)
       })
       .catch((err) =>
         Toast.show({
@@ -442,7 +444,7 @@ const AddRelationship = () => {
                       onPress={handleNext}
                     >
                       <Text style={[styles.button__text]}>
-                        {phone || email ? 'CONTINUE' : 'SKIP'}
+                        {skip ? 'CONTINUE' : 'SKIP'}
                       </Text>
                     </Pressable>
                   </View>
