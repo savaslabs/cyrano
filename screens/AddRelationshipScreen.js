@@ -21,10 +21,6 @@ const AddRelationship = () => {
   const [profileImage, setProfileImage] = useState(null)
   const [pageCounter, setPageCounter] = useState(1)
   const [isDisabled, setIsDisabled] = useState(true)
-  const [isDisabledFirst, setIsDisabledFirst] = useState(true)
-  const [isDisabledSecond, setIsDisabledSecond] = useState(true)
-  const [loveStyleIsDisabled] = useState(true)
-  const [nextIsDisabled] = useState(true)
   const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [docID, setDocID] = useState('')
@@ -81,7 +77,7 @@ const AddRelationship = () => {
   }
 
   const handlePress = async () => {
-    if (name && lastName && birthday) {
+    if (name && lastName) {
       setLoading(true)
       setDoc(doc(db, 'prevEvents', prevID), {
         name: name,
@@ -162,30 +158,6 @@ const AddRelationship = () => {
     }
   }
 
-  useEffect(() => {
-    if (
-      name &&
-      lastName &&
-      birthday &&
-      relationshipValue &&
-      dateDate &&
-      datePlace &&
-      dateRating
-    ) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
-    }
-  }, [
-    name,
-    lastName,
-    birthday,
-    relationshipValue,
-    dateDate,
-    datePlace,
-    dateRating,
-  ])
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -223,19 +195,11 @@ const AddRelationship = () => {
 
   useEffect(() => {
     if (name && lastName && relationshipValue && pronounsValue && location) {
-      setIsDisabledFirst(false)
+      setIsDisabled(false)
     } else {
-      setIsDisabledFirst(true)
+      setIsDisabled(true)
     }
   }, [name, lastName, relationshipValue, pronounsValue, location])
-
-  useEffect(() => {
-    if (birthday && anniversary && relationshipRating) {
-      setIsDisabledSecond(false)
-    } else {
-      setIsDisabledSecond(true)
-    }
-  }, [birthday, anniversary, relationshipRating])
 
   return (
     <>
@@ -360,17 +324,14 @@ const AddRelationship = () => {
                 </View>
                 <View style={styles.page__lower}>
                   <Pressable
-                    style={[
-                      styles.button,
-                      isDisabledFirst ? styles.disabled : '',
-                    ]}
+                    style={[styles.button, isDisabled ? styles.disabled : '']}
                     onPress={handleNext}
-                    disabled={isDisabledFirst}
+                    disabled={isDisabled}
                   >
                     <Text
                       style={[
                         styles.button__text,
-                        isDisabledFirst ? styles.disabled__text : '',
+                        isDisabled ? styles.disabled__text : '',
                       ]}
                     >
                       CONTINUE
@@ -399,152 +360,30 @@ const AddRelationship = () => {
                         BACK
                       </Text>
                     </Pressable>
-                    <Pressable
-                      style={[
-                        styles.button,
-                        styles.buttonNext,
-                        isDisabledSecond ? styles.disabled : '',
-                      ]}
-                      onPress={handleNext}
-                      disabled={isDisabledSecond}
-                    >
-                      <Text
-                        style={[
-                          styles.button__text,
-                          isDisabledSecond ? styles.disabled__text : '',
-                        ]}
-                      >
-                        CONTINUE
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </>
-            )}
-            {pageCounter === 3 && !email && !phone && (
-              <>
-                <Pressable
-                  style={[
-                    styles.button,
-                    loveStyleIsDisabled ? styles.disabled : '',
-                  ]}
-                  onPress={sendLoveTest}
-                  disabled={loveStyleIsDisabled}
-                >
-                  <Text
-                    style={[
-                      styles.button__text,
-                      loveStyleIsDisabled ? styles.disabled__text : '',
-                    ]}
-                  >
-                    SEND LOVE STYLES TEST
-                  </Text>
-                </Pressable>
-                <View style={styles.dots}>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={[styles.dots__dot, styles.dots__active]}></View>
-                  <View style={styles.dots__dot}></View>
-                </View>
-                <View style={styles.page__lower}>
-                  <View style={styles.paginationBtns}>
-                    <Pressable
-                      onPress={handleBack}
-                      style={[styles.button, styles.buttonGrey]}
-                    >
-                      <Text
-                        style={[styles.button__text, styles.buttonGrey__text]}
-                      >
-                        BACK
-                      </Text>
-                    </Pressable>
-                    <Pressable
-                      style={[
-                        styles.button,
-                        styles.buttonNext,
-                        nextIsDisabled ? styles.disabled : '',
-                      ]}
-                      onPress={handleNext}
-                      disabled={nextIsDisabled}
-                    >
-                      <Text
-                        style={[
-                          styles.button__text,
-                          nextIsDisabled ? styles.disabled__text : '',
-                        ]}
-                      >
-                        CONTINUE
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </>
-            )}
-
-            {(pageCounter === 3 && email && !phone) ||
-              (pageCounter === 3 && !email && phone && (
-                <>
-                  <Pressable
-                    style={[
-                      styles.button,
-                      loveStyleIsDisabled ? styles.disabled : '',
-                    ]}
-                    onPress={sendLoveTest}
-                    disabled={loveStyleIsDisabled}
-                  >
-                    <Text
-                      style={[
-                        styles.button__text,
-                        loveStyleIsDisabled ? styles.disabled__text : '',
-                      ]}
-                    >
-                      SEND LOVE STYLES TEST
-                    </Text>
-                  </Pressable>
-                  <View style={styles.dots}>
-                    <View style={styles.dots__dot}></View>
-                    <View style={styles.dots__dot}></View>
-                    <View
-                      style={[styles.dots__dot, styles.dots__active]}
-                    ></View>
-                    <View style={styles.dots__dot}></View>
-                  </View>
-                  <View style={styles.page__lower}>
-                    <View style={styles.paginationBtns}>
+                    {relationshipValue === 'Romantic' ? (
                       <Pressable
-                        onPress={handleBack}
-                        style={[styles.button, styles.buttonGrey]}
-                      >
-                        <Text
-                          style={[styles.button__text, styles.buttonGrey__text]}
-                        >
-                          BACK
-                        </Text>
-                      </Pressable>
-                      <Pressable
-                        style={[
-                          styles.button,
-                          styles.buttonNext,
-                          nextIsDisabled ? styles.disabled : '',
-                        ]}
+                        style={[styles.button, styles.buttonNext]}
                         onPress={handleNext}
-                        disabled={nextIsDisabled}
                       >
-                        <Text
-                          style={[
-                            styles.button__text,
-                            nextIsDisabled ? styles.disabled__text : '',
-                          ]}
-                        >
-                          CONTINUE
+                        <Text style={[styles.button__text]}>
+                          {birthday || anniversary || relationshipRating
+                            ? 'CONTINUE'
+                            : 'SKIP'}
                         </Text>
                       </Pressable>
-                    </View>
+                    ) : (
+                      <Pressable
+                        style={[styles.button, styles.buttonNext]}
+                        onPress={handlePress}
+                      >
+                        <Text style={[styles.button__text]}>SAVE</Text>
+                      </Pressable>
+                    )}
                   </View>
-                </>
-              ))}
-
-            {pageCounter === 3 && email && phone && (
+                </View>
+              </>
+            )}
+            {pageCounter === 3 && (
               <>
                 {showMessage ? (
                   <View style={styles.confirmation}>
@@ -565,15 +404,21 @@ const AddRelationship = () => {
                   </View>
                 ) : (
                   <Pressable
-                    style={styles.button}
+                    style={[styles.button, !email ? styles.disabled : '']}
                     onPress={sendLoveTest}
-                    disabled={!loveStyleIsDisabled}
+                    disabled={email ? false : true}
                   >
-                    <Text style={styles.button__text}>
+                    <Text
+                      style={[
+                        styles.button__text,
+                        !email ? styles.disabled__text : '',
+                      ]}
+                    >
                       SEND LOVE STYLES TEST
                     </Text>
                   </Pressable>
                 )}
+
                 <View style={styles.dots}>
                   <View style={styles.dots__dot}></View>
                   <View style={styles.dots__dot}></View>
@@ -595,9 +440,10 @@ const AddRelationship = () => {
                     <Pressable
                       style={[styles.button, styles.buttonNext]}
                       onPress={handleNext}
-                      disabled={!nextIsDisabled}
                     >
-                      <Text style={styles.button__text}>CONTINUE</Text>
+                      <Text style={[styles.button__text]}>
+                        {phone || email ? 'CONTINUE' : 'SKIP'}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -625,22 +471,10 @@ const AddRelationship = () => {
                       </Text>
                     </Pressable>
                     <Pressable
-                      style={[
-                        styles.button,
-                        styles.buttonNext,
-                        isDisabled ? styles.disabled : '',
-                      ]}
+                      style={[styles.button, styles.buttonNext]}
                       onPress={handlePress}
-                      disabled={isDisabled}
                     >
-                      <Text
-                        style={[
-                          styles.button__text,
-                          isDisabled ? styles.disabled__text : '',
-                        ]}
-                      >
-                        Save
-                      </Text>
+                      <Text style={[styles.button__text]}>SAVE</Text>
                     </Pressable>
                   </View>
                 </View>

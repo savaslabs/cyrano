@@ -110,6 +110,7 @@ const EditRelationshipScreen = () => {
     pronounsValue,
     location,
     relationshipRating,
+    relationshipValue,
   } = singleRelationship
 
   const handleChangeImage = async () => {
@@ -238,16 +239,26 @@ const EditRelationshipScreen = () => {
                   })
                 }
               >
-                <View style={[styles.greybox, styles.mb16]}>
-                  <View style={styles.ratingCard}>
-                    <View style={styles.ratingCard__text}>
-                      <Text style={styles.h5}>RELATIONSHIP RATING</Text>
-                      <RelationshipRating
-                        relationshipRating={relationshipRating}
-                      />
+                {relationshipRating ? (
+                  <View style={[styles.greybox, styles.mb16]}>
+                    <View style={styles.ratingCard}>
+                      <View style={styles.ratingCard__text}>
+                        <Text style={styles.h5}>RELATIONSHIP RATING</Text>
+                        <RelationshipRating
+                          relationshipRating={relationshipRating}
+                        />
+                      </View>
                     </View>
                   </View>
-                </View>
+                ) : (
+                  <View style={[styles.greybox, styles.mb16]}>
+                    <View style={styles.ratingCard}>
+                      <View style={styles.ratingCard__text}>
+                        <Text style={styles.h5}>RATE THIS RELATIONSHIP</Text>
+                      </View>
+                    </View>
+                  </View>
+                )}
               </Pressable>
               <View style={styles.form__twoCol}>
                 <View style={styles.form__col}>
@@ -294,40 +305,56 @@ const EditRelationshipScreen = () => {
                       <TextInput
                         style={styles.form__input}
                         placeholderTextColor="#c7cbd9"
-                        value={new Date(birthday).toLocaleDateString()}
+                        placeholder={birthday ? '' : 'Edit their birthday'}
+                        value={
+                          birthday
+                            ? new Date(birthday).toLocaleDateString()
+                            : ''
+                        }
                       />
                     </Pressable>
                   )}
                 </View>
-                <View style={styles.form__col}>
-                  <Text style={styles.form__label}>Anniversary</Text>
-                  {showAnniversaryPicker ? (
-                    <View style={styles.form__twoCol}>
-                      <DatePicker
-                        style={styles.form__date}
-                        onChange={(e) => setEditAnniversary(e.target.value)}
-                        onBlur={(e) => setEditAnniversary(e.target.value)}
-                        value={editAnniversary}
-                      />
-                      <Pressable
-                        onPress={() => setShowAnniversaryPicker(false)}
-                      >
-                        <Image
-                          source={CloseIcon}
-                          style={{ width: 24, height: 24 }}
+                {relationshipValue === 'Romantic' ? (
+                  <View style={styles.form__col}>
+                    <Text style={styles.form__label}>Anniversary</Text>
+                    {showAnniversaryPicker ? (
+                      <View style={styles.form__twoCol}>
+                        <DatePicker
+                          style={styles.form__date}
+                          onChange={(e) => setEditAnniversary(e.target.value)}
+                          onBlur={(e) => setEditAnniversary(e.target.value)}
+                          value={editAnniversary}
+                        />
+                        <Pressable
+                          onPress={() => setShowAnniversaryPicker(false)}
+                        >
+                          <Image
+                            source={CloseIcon}
+                            style={{ width: 24, height: 24 }}
+                          />
+                        </Pressable>
+                      </View>
+                    ) : (
+                      <Pressable onPress={() => setShowAnniversaryPicker(true)}>
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder={
+                            anniversary ? '' : 'Edit their anniversary'
+                          }
+                          value={
+                            anniversary
+                              ? new Date(anniversary).toLocaleDateString()
+                              : ''
+                          }
                         />
                       </Pressable>
-                    </View>
-                  ) : (
-                    <Pressable onPress={() => setShowAnniversaryPicker(true)}>
-                      <TextInput
-                        style={styles.form__input}
-                        placeholderTextColor="#c7cbd9"
-                        value={new Date(anniversary).toLocaleDateString()}
-                      />
-                    </Pressable>
-                  )}
-                </View>
+                    )}
+                  </View>
+                ) : (
+                  ''
+                )}
               </View>
               <View style={styles.form__twoCol}>
                 <View style={styles.form__col}>
@@ -404,6 +431,7 @@ const EditRelationshipScreen = () => {
               <TextInput
                 style={styles.form__input}
                 placeholderTextColor="#c7cbd9"
+                placeholder={editEmail ? '' : 'Add their email'}
                 value={editEmail}
                 onChangeText={(newEditEmail) => setEditEmail(newEditEmail)}
               />
@@ -411,6 +439,7 @@ const EditRelationshipScreen = () => {
               <TextInput
                 style={styles.form__input}
                 placeholderTextColor="#c7cbd9"
+                placeholder={editPhone ? '' : 'Add their phone'}
                 value={editPhone}
                 onChangeText={(newEditPhone) => setEditPhone(newEditPhone)}
               />

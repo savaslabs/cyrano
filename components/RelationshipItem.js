@@ -60,10 +60,14 @@ const RelationshipItem = ({
             </Text>
           </Pressable>
         </View>
-        <RelationshipCardRating
-          style={{ maxWidth: 118, marginHorizontal: 'auto' }}
-          relationshipRating={item?.relationshipRating}
-        />
+        {item?.relationshipRating ? (
+          <RelationshipCardRating
+            style={{ maxWidth: 118, marginHorizontal: 'auto' }}
+            relationshipRating={item?.relationshipRating}
+          />
+        ) : (
+          ''
+        )}
       </View>
       {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
       auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
