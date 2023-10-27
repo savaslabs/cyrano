@@ -318,12 +318,25 @@ const AddRelationship = () => {
             </View>
             {pageCounter === 1 && (
               <>
-                <View style={styles.dots}>
-                  <View style={[styles.dots__dot, styles.dots__active]}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
-                </View>
+                {relationshipValue ? (
+                  <View style={styles.dots}>
+                    <View
+                      style={[styles.dots__dot, styles.dots__active]}
+                    ></View>
+                    <View style={styles.dots__dot}></View>
+                    {relationshipValue && relationshipValue === 'Romantic' ? (
+                      <>
+                        <View style={styles.dots__dot}></View>
+                        <View style={styles.dots__dot}></View>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </View>
+                ) : (
+                  ''
+                )}
+
                 <View style={styles.page__lower}>
                   <Pressable
                     style={[styles.button, isDisabled ? styles.disabled : '']}
@@ -347,8 +360,14 @@ const AddRelationship = () => {
                 <View style={styles.dots}>
                   <View style={styles.dots__dot}></View>
                   <View style={[styles.dots__dot, styles.dots__active]}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
+                  {relationshipValue === 'Romantic' ? (
+                    <>
+                      <View style={styles.dots__dot}></View>
+                      <View style={styles.dots__dot}></View>
+                    </>
+                  ) : (
+                    ''
+                  )}
                 </View>
                 <View style={styles.page__lower}>
                   <View style={styles.paginationBtns}>
