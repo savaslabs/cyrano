@@ -37,8 +37,8 @@ const AddRelationship = () => {
   const [relationshipValue, setRelationshipValue] = useState(null)
   const [relationshipItems, setRelationshipItems] = useState([
     { label: 'Romantic', value: 'Romantic' },
-    { label: 'Friend', value: 'Friend'},
-    { label: 'Family', value: 'Family'},
+    { label: 'Friend', value: 'Friend' },
+    { label: 'Family', value: 'Family' },
     { label: 'Business', value: 'Business' },
   ])
   const [openPronouns, setOpenPronouns] = useState(false)
@@ -251,7 +251,8 @@ const AddRelationship = () => {
                 </Text>
                 {pageCounter === 1 && (
                   <Text style={[styles.p, styles.alignLeft]}>
-                    Tell us about who you'd like to work on your relationship with.
+                    Tell us about who you'd like to work on your relationship
+                    with.
                   </Text>
                 )}
                 {pageCounter === 2 && (

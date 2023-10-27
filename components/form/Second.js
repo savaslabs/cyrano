@@ -49,7 +49,130 @@ const Second = ({
             </View>
           </View>
           <View>
-            <Text style={[styles.p, styles.alignLeft, {marginTop: 16}]}>
+            <Text style={[styles.p, styles.alignLeft, { marginTop: 16 }]}>
+              How would you rate your relationship?
+            </Text>
+            <Text style={[styles.smallerText, styles.alignLeft]}>
+              On a scale of 1-5, where 1 is bad and 5 is perfect.
+            </Text>
+            <View>
+              <StarRating
+                rating={relationshipRating}
+                onChange={setRelationshipRating}
+                starSize="52"
+                color="#7B82A2"
+                style={styles.starRating}
+              />
+            </View>
+          </View>
+        </>
+      )}
+      {relationshipValue === 'Friend' && (
+        <>
+          <View style={styles.form__twoCol}>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Birthday</Text>
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setBirthday(e.target.value)}
+                onBlur={(e) => setBirthday(e.target.value)}
+                value={birthday}
+              />
+            </View>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Anniversary</Text>
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setAnniversary(e.target.value)}
+                onBlur={(e) => setAnniversary(e.target.value)}
+                value={anniversary}
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={[styles.p, styles.alignLeft, { marginTop: 16 }]}>
+              How would you rate your relationship?
+            </Text>
+            <Text style={[styles.smallerText, styles.alignLeft]}>
+              On a scale of 1-5, where 1 is bad and 5 is perfect.
+            </Text>
+            <View>
+              <StarRating
+                rating={relationshipRating}
+                onChange={setRelationshipRating}
+                starSize="52"
+                color="#7B82A2"
+                style={styles.starRating}
+              />
+            </View>
+          </View>
+        </>
+      )}
+      {relationshipValue === 'Family' && (
+        <>
+          <View style={styles.form__twoCol}>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Birthday</Text>
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setBirthday(e.target.value)}
+                onBlur={(e) => setBirthday(e.target.value)}
+                value={birthday}
+              />
+            </View>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Anniversary</Text>
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setAnniversary(e.target.value)}
+                onBlur={(e) => setAnniversary(e.target.value)}
+                value={anniversary}
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={[styles.p, styles.alignLeft, { marginTop: 16 }]}>
+              How would you rate your relationship?
+            </Text>
+            <Text style={[styles.smallerText, styles.alignLeft]}>
+              On a scale of 1-5, where 1 is bad and 5 is perfect.
+            </Text>
+            <View>
+              <StarRating
+                rating={relationshipRating}
+                onChange={setRelationshipRating}
+                starSize="52"
+                color="#7B82A2"
+                style={styles.starRating}
+              />
+            </View>
+          </View>
+        </>
+      )}
+      {relationshipValue === 'Business' && (
+        <>
+          <View style={styles.form__twoCol}>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Birthday</Text>
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setBirthday(e.target.value)}
+                onBlur={(e) => setBirthday(e.target.value)}
+                value={birthday}
+              />
+            </View>
+            <View style={styles.form__col}>
+              <Text style={styles.form__label}>Anniversary</Text>
+              <DatePicker
+                style={styles.form__date}
+                onChange={(e) => setAnniversary(e.target.value)}
+                onBlur={(e) => setAnniversary(e.target.value)}
+                value={anniversary}
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={[styles.p, styles.alignLeft, { marginTop: 16 }]}>
               How would you rate your relationship?
             </Text>
             <Text style={[styles.smallerText, styles.alignLeft]}>
