@@ -148,45 +148,61 @@ const Relationship = () => {
               </View>
             </View>
             <View style={styles.greybox__pair}>
-              <View style={styles.greybox}>
-                <Text style={styles.h5}>{name.toUpperCase()}'S BIRTHDAY</Text>
-                <Text style={[styles.p, styles.mb0]}>
-                  {new Date(birthday).toLocaleDateString()}
-                </Text>
-              </View>
-              <View style={styles.greybox}>
-                <Text style={styles.h5}>YOUR ANNIVERSARY</Text>
-                <Text style={[styles.p, styles.mb0]}>
-                  {' '}
-                  {new Date(anniversary).toLocaleDateString()}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.greybox}>
-              <View style={styles.ratingCard}>
-                <View style={styles.ratingCard__text}>
-                  <Text style={styles.h5}>RELATIONSHIP RATING</Text>
-                  <RelationshipRating relationshipRating={relationshipRating} />
+              {birthday ? (
+                <View style={styles.greybox}>
+                  <Text style={styles.h5}>{name.toUpperCase()}'S BIRTHDAY</Text>
+                  <Text style={[styles.p, styles.mb0]}>
+                    {new Date(birthday).toLocaleDateString()}
+                  </Text>
                 </View>
-                <View>
-                  <Pressable
-                    style={styles.ratingCard__button}
-                    onPress={() =>
-                      navigation.navigate('Relationship Status', {
-                        id,
-                        rating: relationshipRating,
-                        comments: ratingComments ? ratingComments : 'N/A',
-                        upcomingEvents,
-                        imgDisplay,
-                        fullNameDisplay
-                      })
-                    }
-                  >
-                    <Text> See relationship rating details</Text>
-                  </Pressable>
+              ) : (
+                ''
+              )}
+
+              {anniversary ? (
+                <View style={styles.greybox}>
+                  <Text style={styles.h5}>YOUR ANNIVERSARY</Text>
+                  <Text style={[styles.p, styles.mb0]}>
+                    {' '}
+                    {new Date(anniversary).toLocaleDateString()}
+                  </Text>
+                </View>
+              ) : (
+                ''
+              )}
+            </View>
+            {relationshipRating ? (
+              <View style={styles.greybox}>
+                <View style={styles.ratingCard}>
+                  <View style={styles.ratingCard__text}>
+                    <Text style={styles.h5}>RELATIONSHIP RATING</Text>
+                    <RelationshipRating
+                      relationshipRating={relationshipRating}
+                    />
+                  </View>
+                  <View>
+                    <Pressable
+                      style={styles.ratingCard__button}
+                      onPress={() =>
+                        navigation.navigate('Relationship Status', {
+                          id,
+                          rating: relationshipRating,
+                          comments: ratingComments ? ratingComments : 'N/A',
+                          upcomingEvents,
+                          imgDisplay,
+                          fullNameDisplay,
+                        })
+                      }
+                    >
+                      <Text> See relationship rating details</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              ''
+            )}
+
             <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
               Upcoming Events
             </Text>
@@ -232,7 +248,7 @@ const Relationship = () => {
                 navigation.navigate('Event History', {
                   itemId: singleRelationship?.author.id,
                   imgDisplay,
-                  fullNameDisplay
+                  fullNameDisplay,
                 })
               }
             >

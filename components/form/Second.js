@@ -79,15 +79,6 @@ const Second = ({
                 value={birthday}
               />
             </View>
-            <View style={styles.form__col}>
-              <Text style={styles.form__label}>Anniversary</Text>
-              <DatePicker
-                style={styles.form__date}
-                onChange={(e) => setAnniversary(e.target.value)}
-                onBlur={(e) => setAnniversary(e.target.value)}
-                value={anniversary}
-              />
-            </View>
           </View>
           <View>
             <Text style={[styles.p, styles.alignLeft, { marginTop: 16 }]}>
@@ -120,15 +111,6 @@ const Second = ({
                 value={birthday}
               />
             </View>
-            <View style={styles.form__col}>
-              <Text style={styles.form__label}>Anniversary</Text>
-              <DatePicker
-                style={styles.form__date}
-                onChange={(e) => setAnniversary(e.target.value)}
-                onBlur={(e) => setAnniversary(e.target.value)}
-                value={anniversary}
-              />
-            </View>
           </View>
           <View>
             <Text style={[styles.p, styles.alignLeft, { marginTop: 16 }]}>
@@ -159,15 +141,6 @@ const Second = ({
                 onChange={(e) => setBirthday(e.target.value)}
                 onBlur={(e) => setBirthday(e.target.value)}
                 value={birthday}
-              />
-            </View>
-            <View style={styles.form__col}>
-              <Text style={styles.form__label}>Anniversary</Text>
-              <DatePicker
-                style={styles.form__date}
-                onChange={(e) => setAnniversary(e.target.value)}
-                onBlur={(e) => setAnniversary(e.target.value)}
-                value={anniversary}
               />
             </View>
           </View>
