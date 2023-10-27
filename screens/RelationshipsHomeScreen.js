@@ -236,6 +236,16 @@ const RelationshipsHomeScreen = () => {
                           />
                         </View>
                       ))}
+                      <View style={styles.page__lower}>
+                        <Pressable style={styles.button}>
+                          <Text
+                            style={styles.button__text}
+                            onPress={handlePress}
+                          >
+                            ADD RELATIONSHIP
+                          </Text>
+                        </Pressable>
+                      </View>
                     </View>
                   </View>
                 )}
