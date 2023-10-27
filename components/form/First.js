@@ -112,7 +112,7 @@ const First = ({
         />
       </View>
       <View style={{ zIndex: 1 }}>
-        <Text style={styles.form__label}>Partner Pronouns</Text>
+        <Text style={styles.form__label}>Pronouns</Text>
         <DropDownPicker
           open={openPronouns}
           value={pronounsValue}
@@ -151,7 +151,7 @@ const First = ({
         <Text style={styles.form__label}>Location</Text>
         <TextInput
           style={styles.form__input}
-          placeholder="Where does your partner live?"
+          placeholder="Where do they live?"
           placeholderTextColor="#c7cbd9"
           value={location}
           onChangeText={(newLocation) => setLocation(newLocation)}

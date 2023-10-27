@@ -37,9 +37,9 @@ const AddRelationship = () => {
   const [relationshipValue, setRelationshipValue] = useState(null)
   const [relationshipItems, setRelationshipItems] = useState([
     { label: 'Romantic', value: 'Romantic' },
-    { label: 'Friend', value: 'Friend', disabled: true },
-    { label: 'Family', value: 'Family', disabled: true },
-    { label: 'Business', value: 'Business', disabled: true },
+    { label: 'Friend', value: 'Friend'},
+    { label: 'Family', value: 'Family'},
+    { label: 'Business', value: 'Business' },
   ])
   const [openPronouns, setOpenPronouns] = useState(false)
   const [pronounsValue, setPronounsValue] = useState(null)
@@ -65,44 +65,7 @@ const AddRelationship = () => {
   const [eventName, setEventName] = useState('')
   const [datePlace, setDatePlace] = useState('')
 
-  // Validations
-  const [checkName, setCheckName] = useState(false)
-  const [nameError, setNameError] = useState(false)
-  const [checkLastName, setCheckLastName] = useState(false)
-  const [lastNameError, setLastNameError] = useState(false)
-  const [checkPhone, setCheckPhone] = useState(false)
-  const [phoneError, setPhoneError] = useState(false)
-  const [checkEmail, setCheckEmail] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-
   const navigation = useNavigation()
-
-  useEffect(() => {
-    const validateName = () => {
-      const re = /[^a-zA-Z ]+/g
-      setCheckName(re.test(name))
-    }
-
-    const validateLastName = () => {
-      const re = /[^a-zA-Z ]+/g
-      setCheckLastName(re.test(lastName))
-    }
-
-    const validatePhone = () => {
-      const re = /^[0-9]{10,10}$/g
-      setCheckPhone(re.test(phone))
-    }
-
-    const validateEmail = () => {
-      const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-      setCheckEmail(re.test(email))
-    }
-
-    validateName()
-    validateLastName()
-    validatePhone()
-    validateEmail()
-  }, [name, lastName, phone, email])
 
   useEffect(() => {
     setDocID(uuid.v4())
@@ -110,72 +73,7 @@ const AddRelationship = () => {
   }, [])
 
   const handleNext = () => {
-    if (!email || !phone) {
-      if (checkName && checkLastName) {
-        setNameError(true)
-        setLastNameError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'Name and last name are invalids',
-        })
-
-        setTimeout(() => {
-          setNameError(false)
-          setLastNameError(false)
-        }, 2500)
-      } else if (checkName) {
-        setNameError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'Name is invalid',
-          visibilityTime: 3000,
-        })
-
-        setTimeout(() => {
-          setNameError(false)
-        }, 2500)
-      } else if (checkLastName) {
-        setLastNameError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'Last name is invalid',
-          visibilityTime: 3000,
-        })
-
-        setTimeout(() => {
-          setLastNameError(false)
-        }, 2500)
-      } else {
-        setPageCounter((count) => count + 1)
-      }
-    }
-
-    if (phone && email) {
-      if (!checkPhone) {
-        setPhoneError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'The phone is incorrect',
-          visibilityTime: 3000,
-        })
-        setTimeout(() => {
-          setPhoneError(false)
-        }, 2500)
-      } else if (!checkEmail) {
-        setEmailError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'The email is not valid',
-          visibilityTime: 3000,
-        })
-
-        setTimeout(() => {
-          setEmailError(false)
-        }, 2500)
-      } else {
-        setPageCounter((count) => count + 1)
-      }
-    }
+    setPageCounter((count) => count + 1)
   }
 
   const handleBack = () => {
@@ -185,11 +83,12 @@ const AddRelationship = () => {
   const handlePress = async () => {
     if (name && lastName && birthday) {
       setLoading(true)
-      setDoc(doc(db, 'events', prevID), {
+      setDoc(doc(db, 'prevEvents', prevID), {
         name: name,
         lastName: lastName,
         fullName: `${name} ${lastName}`,
         img: profileImage,
+        loveStyleTag: [],
         datePlace,
         eventName,
         dateDate,
@@ -292,9 +191,7 @@ const AddRelationship = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5,
-      maxWidth: 200,
-      maxHeight: 200,
+      quality: 1,
     })
 
     if (!result.canceled) {
@@ -303,38 +200,25 @@ const AddRelationship = () => {
   }
 
   const sendLoveTest = () => {
-    if (!checkEmail) {
-      setEmailError(true)
-      Toast.show({
-        type: 'error',
-        text1: 'The email is not valid',
-        visibilityTime: 3000,
+    emailjs
+      .send(
+        'service_mluy78d',
+        'template_dlzx6tm',
+        {
+          from_email: email,
+        },
+        '7RtlMLsc_bIlK-F46'
+      )
+      .then(() => {
+        setShowMessage(true)
       })
-
-      setTimeout(() => {
-        setEmailError(false)
-      }, 2500)
-    } else {
-      emailjs
-        .send(
-          'service_mluy78d',
-          'template_dlzx6tm',
-          {
-            from_email: email,
-          },
-          '7RtlMLsc_bIlK-F46'
-        )
-        .then(() => {
-          setShowMessage(true)
+      .catch((err) =>
+        Toast.show({
+          type: 'error',
+          text1: err.code,
+          visibilityTime: 2000,
         })
-        .catch((err) =>
-          Toast.show({
-            type: 'error',
-            text1: err.code,
-            visibilityTime: 2000,
-          })
-        )
-    }
+      )
   }
 
   useEffect(() => {
@@ -367,7 +251,7 @@ const AddRelationship = () => {
                 </Text>
                 {pageCounter === 1 && (
                   <Text style={[styles.p, styles.alignLeft]}>
-                    Tell us about your partner.
+                    Tell us about who you'd like to work on your relationship with.
                   </Text>
                 )}
                 {pageCounter === 2 && (
@@ -389,7 +273,7 @@ const AddRelationship = () => {
                   </Text>
                 )}
               </View>
-              <Pressable onPress={pickImage}>
+              {/* <Pressable onPress={pickImage}>
                 <View
                   style={
                     profileImage ? styles.cameraRemoveBorder : styles.camera
@@ -404,7 +288,7 @@ const AddRelationship = () => {
                     <Image source={CameraSVG} style={styles.camera__img} />
                   )}
                 </View>
-              </Pressable>
+              </Pressable> */}
             </View>
             <View style={styles.form}>
               {pageCounter === 1 && (
@@ -427,8 +311,6 @@ const AddRelationship = () => {
                   setPronounsItem={setPronounsItem}
                   location={location}
                   setLocation={setLocation}
-                  nameError={nameError}
-                  lastNameError={lastNameError}
                 />
               )}
               {pageCounter === 2 && (
@@ -449,8 +331,6 @@ const AddRelationship = () => {
                   setEmail={setEmail}
                   phone={phone}
                   setPhone={setPhone}
-                  phoneError={phoneError}
-                  emailError={emailError}
                 />
               )}
               {pageCounter === 4 && (
