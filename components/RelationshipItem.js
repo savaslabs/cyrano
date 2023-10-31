@@ -31,6 +31,15 @@ const RelationshipItem = ({
     })
   }
 
+  const {
+    name,
+    lastName,
+    relationshipValue,
+    profileImage,
+    id,
+    relationshipRating,
+  } = item
+
   return (
     <View style={styles.relationshipCard}>
       <View
@@ -40,30 +49,32 @@ const RelationshipItem = ({
         ]}
       >
         <View style={styles.relationshipCard__profile}>
-          {item?.profileImage ? (
+          {profileImage ? (
             <Image
-              source={item?.profileImage}
+              source={profileImage}
               style={styles.relationshipCard__img}
-              nativeID={item?.id}
+              nativeID={id}
             />
           ) : (
             <Image
               source={Avatar}
               style={styles.relationshipCard__img}
-              nativeID={item?.id}
+              nativeID={id}
             />
           )}
 
           <Pressable onPress={(e) => handlePress(e.target.id)}>
-            <Text style={styles.relationshipCard__name} nativeID={item?.id}>
-              {item?.name} {item?.lastName}
+            <Text style={styles.relationshipCard__name} nativeID={id}>
+              {name} {lastName}
             </Text>
+            {/* THIS NEEDS TO BE STYLED BY TIM*/}
+            <Text>{relationshipValue}</Text>
           </Pressable>
         </View>
-        {item?.relationshipRating ? (
+        {relationshipRating ? (
           <RelationshipCardRating
             style={{ maxWidth: 118, marginHorizontal: 'auto' }}
-            relationshipRating={item?.relationshipRating}
+            relationshipRating={relationshipRating}
           />
         ) : (
           ''
@@ -75,7 +86,7 @@ const RelationshipItem = ({
           <Pressable
             onPress={() =>
               navigation.navigate('Schedule Event', {
-                itemId: item?.id,
+                itemId: id,
               })
             }
             style={styles.relationshipCard__button}
@@ -89,9 +100,9 @@ const RelationshipItem = ({
             style={styles.relationshipCard__button}
             onPress={() =>
               navigation.navigate('Relationship Check-In', {
-                itemId: item?.id,
-                rating: item?.relationshipRating,
-                name: item?.name,
+                itemId: id,
+                rating: relationshipRating,
+                name: name,
                 imgDisplay,
                 fullNameDisplay,
               })
