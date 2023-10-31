@@ -31,7 +31,7 @@ const Page = ({ children }) => {
           </View>
           <View style={[styles.footer, isSmallDevice && styles.mobileFooter]}>
             <Text style={styles.footer__text}>
-              ©2023 Cyrano App LLC. All rights reserved.
+              ©{new Date().getFullYear()} Cyrano App LLC. All rights reserved.
             </Text>
             <View
               style={[
