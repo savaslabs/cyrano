@@ -202,14 +202,34 @@ const RelationshipsHomeScreen = () => {
                         </Pressable>
                       </View>
                     ) : (
-                      upcomingEvents.map((item, index) => (
-                        <EventItem
-                          item={item}
-                          key={index}
-                          imgDisplay={imgDisplay}
-                          fullNameDisplay={fullNameDisplay}
-                        />
-                      ))
+                      <>
+                        {upcomingEvents.map((item, index) => (
+                          <EventItem
+                            item={item}
+                            key={index}
+                            imgDisplay={imgDisplay}
+                            fullNameDisplay={fullNameDisplay}
+                          />
+                        ))}
+                        <Pressable
+                          style={[
+                            styles.button,
+                            styles.buttonGrey,
+                            styles.center,
+                          ]}
+                          onPress={handleMessagePress}
+                        >
+                          <Text
+                            style={[
+                              styles.button__text,
+                              styles.buttonGrey__text,
+                              styles.superBold,
+                            ]}
+                          >
+                            SCHEDULE AN EVENT
+                          </Text>
+                        </Pressable>
+                      </>
                     )}
                     <Pressable
                       onPress={() =>
