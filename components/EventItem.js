@@ -30,6 +30,7 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
     datePlace,
     additionalComments,
     eventName,
+    fullName,
   } = item
 
   return (
@@ -55,7 +56,9 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
             <Image source={Avatar} style={styles.eventCard__profileImg} />
           )}
 
-          <Text style={styles.eventCard__profileName}>{fullNameDisplay}</Text>
+          <Text style={styles.eventCard__profileName}>
+            {fullName ? fullName : fullNameDisplay}
+          </Text>
 
           <View style={styles.eventCard__buttons}>
             {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||

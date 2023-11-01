@@ -67,7 +67,9 @@ const RelationshipsHomeScreen = () => {
       relationships.map((item) => {
         setImgDisplay(item.profileImage)
         setFullNameDisplay(`${item.name} ${item.lastName}`)
-        const newArr = upcomingArr.filter((i) => i.relID === item.id)
+        const newArr = upcomingArr.filter(
+          (item) => item.author.id === auth.currentUser.uid
+        )
         setUpcomingEvents(newArr)
       })
     }
@@ -102,7 +104,7 @@ const RelationshipsHomeScreen = () => {
 
   const handleMessagePress = async () => {
     navigation.navigate('Schedule Event', {
-      itemId: relationships[0].id,
+      itemId: 'unset',
     })
     // setShowMessage(true);
     // const sid = TWILIO_ACCOUNT_SID;
