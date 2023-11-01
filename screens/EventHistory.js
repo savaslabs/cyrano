@@ -39,7 +39,6 @@ const EventHistory = () => {
     'Intellectual',
     'Practical',
   ])
-  const [showError, setShowError] = useState(false)
   const [resetFilterColor, setResetFilterColor] = useState(false)
   const [filterEventsArr, setFilterEventsArr] = useState(['Upcoming', 'Past'])
   const navigation = useNavigation()
@@ -289,8 +288,6 @@ const EventHistory = () => {
                 You don’t have any relationships yet. Get started by adding one
               </Text>
             )}
-
-            {showError ? <Text>No events matching this filter</Text> : ''}
           </View>
         </Page>
       )}
