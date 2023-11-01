@@ -25,6 +25,7 @@ const Relationship = () => {
   const [newDetailsArr, setNewDetailsArr] = useState('')
   const [showMessage, setShowMessage] = useState(false)
   const [savedId, setSavedId] = useState('')
+  const [userEvents, setUserEvents] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId, upcomingEvents, imgDisplay, fullNameDisplay } = route.params
@@ -104,6 +105,12 @@ const Relationship = () => {
       itemId,
     })
   }
+
+  useEffect(() => {
+    if (savedId) {
+      setUserEvents(upcomingEvents?.filter((item) => item.relID === savedId))
+    }
+  }, [upcomingEvents, savedId])
 
   return (
     <>
@@ -206,7 +213,7 @@ const Relationship = () => {
             <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
               Upcoming Events
             </Text>
-            {upcomingEvents?.length === 0 || !upcomingEvents ? (
+            {userEvents?.length === 0 || !userEvents ? (
               <View style={[styles.greybox, styles.greyboxLarge]}>
                 <Text style={[styles.p, styles.center]}>
                   You don't have any upcoming events with {name}.
@@ -233,7 +240,7 @@ const Relationship = () => {
                 </Pressable>
               </View>
             ) : (
-              upcomingEvents?.map((item, index) => (
+              userEvents?.map((item, index) => (
                 <EventItem
                   item={item}
                   key={index}

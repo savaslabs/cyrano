@@ -2,13 +2,13 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import RelationshipRating from './RelationshipRating'
 import { auth } from '../config/firebase-config'
-import { useState, useEffect } from 'react'
 
 const EventItemHistory = ({
   item,
   imgDisplay,
   fullNameDisplay,
   searchEvent,
+  relValue,
 }) => {
   const navigation = useNavigation()
 
@@ -18,14 +18,15 @@ const EventItemHistory = ({
     })
   }
 
-  const { id, eventName, dateDate, dateRating, state } = item
+  const { id, eventName, dateDate, dateRating, state, fullName } = item
 
   return (
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>{eventName}</Text>
+        <Text>{fullName}</Text>
 
-        {searchEvent ? (
+        {searchEvent || relValue !== null ? (
           <Text style={styles.eventCard__tag}>
             {state?.charAt(0).toUpperCase()}
             {state?.slice(1)}

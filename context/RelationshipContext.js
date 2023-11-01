@@ -7,7 +7,6 @@ const RelationshipContext = createContext()
 export const RelationshipProvider = ({ children }) => {
   const [relationships, setRelationships] = useState([])
   const [upcomingArr, setUpcomingArr] = useState([])
-  const [prevArr, setPrevArr] = useState([])
   const relationshipRef = collection(db, 'relationships')
   const upcomingEventsRef = collection(db, 'upcomingEvents')
   const prevEventsRef = collection(db, 'prevEvents')
@@ -37,23 +36,11 @@ export const RelationshipProvider = ({ children }) => {
     getUpcomingEvents()
   }, [])
 
-  //Get prev events
-  useEffect(() => {
-    const getPrevEvents = async () => {
-      const data = await getDocs(prevEventsRef)
-      const newData = data.docs.map((doc) => doc.data())
-      setPrevArr(newData)
-    }
-
-    getPrevEvents()
-  }, [])
-
   return (
     <RelationshipContext.Provider
       value={{
         relationships,
         upcomingArr,
-        prevArr,
       }}
     >
       {children}

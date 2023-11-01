@@ -80,28 +80,38 @@ const AddRelationship = () => {
   const handlePress = async () => {
     if (name && lastName) {
       setLoading(true)
-      setDoc(doc(db, 'prevEvents', prevID), {
-        name: name,
-        lastName: lastName,
-        fullName: `${name} ${lastName}`,
-        img: profileImage,
-        loveStyleTag: [],
-        datePlace,
-        eventName,
-        dateDate,
-        dateRating,
-        relID: docID,
-        createdAt: serverTimestamp(),
-        author: {
-          id: auth.currentUser.uid,
-          email: auth.currentUser.email,
-        },
-        state: 'past',
-      })
+      if (
+        (relationshipValue === 'Romantic' && dateDate) ||
+        datePlace ||
+        eventName ||
+        dateRating
+      ) {
+        setDoc(doc(db, 'events', prevID), {
+          id: prevID,
+          name: name,
+          lastName: lastName,
+          fullName: `${name} ${lastName}`,
+          img: profileImage,
+          loveStyleTag: [],
+          datePlace,
+          eventName,
+          dateDate,
+          dateRating,
+          relID: docID,
+          createdAt: serverTimestamp(),
+          author: {
+            id: auth.currentUser.uid,
+            email: auth.currentUser.email,
+          },
+          state: 'past',
+        })
+      }
+
       setDoc(doc(db, 'relationships', docID), {
         profileImage,
         name,
         lastName,
+        fullName: `${name} ${lastName}`,
         relationshipValue,
         pronounsValue,
         location,
