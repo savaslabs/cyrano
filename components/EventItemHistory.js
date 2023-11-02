@@ -36,9 +36,14 @@ const EventItemHistory = ({
         )}
       </View>
 
-      <Text style={styles.eventCard__dateTime}>
-        {new Date(dateDate).toLocaleDateString()}
-      </Text>
+      {dateDate ? (
+        <Text style={styles.eventCard__dateTime}>
+          {new Date(dateDate).toLocaleDateString()}
+        </Text>
+      ) : (
+        ''
+      )}
+
       <View style={styles.eventCard__bottom}>
         {!dateRating ? (
           state != 'upcoming' && (

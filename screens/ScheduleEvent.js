@@ -15,7 +15,7 @@ const ScheduleEvent = () => {
   const [relationships, setRelationships] = useState('')
   const [eventName, setEventName] = useState('')
   const [datePlace, setNextDatePlace] = useState('')
-  const [dateDate, setNextDateDate] = useState(new Date(Date.now()))
+  const [dateDate, setNextDateDate] = useState('')
   const [dateTime, setNextDateTime] = useState('')
   const [docID, setDocID] = useState('')
   const [allID, setAllID] = useState('')

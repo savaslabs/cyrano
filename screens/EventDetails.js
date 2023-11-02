@@ -72,24 +72,39 @@ const EventDetails = () => {
             </View>
           </View>
         </View>
+
         <View style={{ paddingTop: 16 }}>
           <Text style={styles.h4}>DATE AND TIME</Text>
           <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
-            {new Date(item?.dateDate).toLocaleDateString()}{' '}
-            {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
+            {item?.dateTime ? (
+              <>
+                {new Date(item?.dateDate).toLocaleDateString()}{' '}
+                {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
+              </>
+            ) : (
+              <Text>Not set </Text>
+            )}
           </Text>
         </View>
         <View>
           <Text style={styles.h4}>LOCATION</Text>
-          <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
-            {item?.datePlace}
-          </Text>
+          {item?.datePlace ? (
+            <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
+              {item?.datePlace}
+            </Text>
+          ) : (
+            <Text>Not set </Text>
+          )}
         </View>
         <View>
           <Text style={styles.h4}>ADDITIONAL NOTES</Text>
-          <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
-            {item?.additionalComments}
-          </Text>
+          {item?.additionalComments ? (
+            <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
+              {item?.additionalComments}
+            </Text>
+          ) : (
+            <Text>Not set </Text>
+          )}
         </View>
 
         {item?.state !== 'past' ? (
