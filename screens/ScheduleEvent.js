@@ -76,12 +76,20 @@ const ScheduleEvent = () => {
   }, [relationships])
 
   useEffect(() => {
-    if (eventName && datePlace && dateDate && dateTime) {
-      setIsDisabled(false)
+    if (itemId === 'unset') {
+      if (eventName && relValue) {
+        setIsDisabled(false)
+      } else {
+        setIsDisabled(true)
+      }
     } else {
-      setIsDisabled(true)
+      if (eventName) {
+        setIsDisabled(false)
+      } else {
+        setIsDisabled(true)
+      }
     }
-  }, [eventName, datePlace, dateDate, dateTime])
+  }, [eventName, relValue])
 
   useEffect(() => {
     setDocID(uuid.v4())
