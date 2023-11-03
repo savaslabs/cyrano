@@ -362,6 +362,7 @@ const EditRelationshipScreen = () => {
                   <TextInput
                     style={styles.form__input}
                     placeholderTextColor="#c7cbd9"
+                    placeholder={editLocation ? '' : 'Edit their location'}
                     value={editLocation}
                     onChangeText={(newEditLocation) =>
                       setEditLocation(newEditLocation)
@@ -380,7 +381,7 @@ const EditRelationshipScreen = () => {
                         setValue={setPronounsValue}
                         setItems={setPronounsItem}
                         style={styles.form__select}
-                        placeholder="Select pronouns"
+                        placeholder={pronounsVal ? '' : 'Edit their pronouns'}
                         placeholderStyle={{
                           color: '#c7cbd9',
                           paddingLeft: 4,
@@ -421,6 +422,7 @@ const EditRelationshipScreen = () => {
                       <TextInput
                         style={styles.form__input}
                         placeholderTextColor="#c7cbd9"
+                        placeholder='Edit their pronouns'
                         value={editPronouns}
                       />
                     </Pressable>
