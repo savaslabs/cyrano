@@ -206,7 +206,7 @@ const AddRelationship = () => {
   }
 
   useEffect(() => {
-    if (name && lastName && relationshipValue && pronounsValue && location) {
+    if (name && lastName && relationshipValue) {
       setIsDisabled(false)
     } else {
       setIsDisabled(true)
