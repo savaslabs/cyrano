@@ -40,13 +40,17 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
           {datePlace !== '' ? datePlace : pickRestaurantValue}
         </Text>
       </View>
-      {dateTime ? (
+      {dateTime && dateDate && (
         <Text style={styles.eventCard__dateTime}>
           {new Date(dateDate).toLocaleDateString()} @ {dateTime}
         </Text>
-      ) : (
-        ''
       )}
+      {dateDate && !dateTime && (
+        <Text style={styles.eventCard__dateTime}>
+          {new Date(dateDate).toLocaleDateString()}
+        </Text>
+      )}
+      {!dateDate && !dateTime && ''}
 
       <View
         style={[

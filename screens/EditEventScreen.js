@@ -32,14 +32,8 @@ const EditEventScreen = () => {
     }
   }, [])
 
-  const {
-    eventName,
-    dateDate,
-    datePlace,
-    dateTime,
-    additionalComments,
-    id,
-  } = item
+  const { eventName, dateDate, datePlace, dateTime, additionalComments, id } =
+    item
 
   const TimePicker = () => {
     return createElement('input', {
@@ -70,13 +64,7 @@ const EditEventScreen = () => {
     setEditTime(dateTime)
     setEditPlace(datePlace)
     setEditComments(additionalComments)
-  }, [
-    dateDate,
-    dateTime,
-    datePlace,
-    additionalComments,
-    eventName,
-  ])
+  }, [dateDate, dateTime, datePlace, additionalComments, eventName])
 
   const docRef = doc(db, 'events', id)
 
@@ -188,8 +176,11 @@ const EditEventScreen = () => {
                 <Pressable onPress={() => setShowDatePicker(true)}>
                   <TextInput
                     style={styles.form__input}
+                    placeholder={dateDate ? '' : 'Edit the event date'}
                     placeholderTextColor="#c7cbd9"
-                    value={new Date(dateDate).toLocaleDateString()}
+                    value={
+                      dateDate ? new Date(dateDate).toLocaleDateString() : ''
+                    }
                   />
                 </Pressable>
               )}
@@ -209,6 +200,7 @@ const EditEventScreen = () => {
                 <Pressable onPress={() => setShowTimePicker(true)}>
                   <TextInput
                     style={styles.form__input}
+                    placeholder="Edit the time of the event"
                     placeholderTextColor="#c7cbd9"
                     value={editTime}
                   />
@@ -217,6 +209,7 @@ const EditEventScreen = () => {
               <Text style={styles.form__label}>Location</Text>
               <TextInput
                 style={styles.form__input}
+                placeholder="Edit their location"
                 placeholderTextColor="#c7cbd9"
                 value={editPlace}
                 onChangeText={(newPlace) => setEditPlace(newPlace)}
@@ -224,6 +217,7 @@ const EditEventScreen = () => {
               <Text style={styles.form__label}>Additional Comments</Text>
               <TextInput
                 style={styles.form__input}
+                placeholder="Add any comments"
                 placeholderTextColor="#c7cbd9"
                 value={editComments}
                 onChangeText={(newComments) => setEditComments(newComments)}
