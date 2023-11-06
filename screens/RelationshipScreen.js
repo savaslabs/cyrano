@@ -80,6 +80,7 @@ const Relationship = () => {
     relationshipRating,
     location,
     ratingComments,
+    ratingCommentsTwo
   } = singleRelationship
 
   const fullName = `${name} ${lastName}`
@@ -195,6 +196,7 @@ const Relationship = () => {
                           id,
                           rating: relationshipRating,
                           comments: ratingComments ? ratingComments : 'N/A',
+                          commentsTwo: ratingCommentsTwo ? ratingCommentsTwo: 'N/A',
                           upcomingEvents,
                           imgDisplay,
                           fullNameDisplay,

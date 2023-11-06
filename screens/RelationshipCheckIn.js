@@ -10,6 +10,7 @@ import { styles } from '../styles'
 
 const RelationshipCheckIn = () => {
   const [dateRating, setDateRating] = useState('')
+  const [ratingCommentsTwo, setRatingCommentsTwo] = useState('')
   const [ratingComments, setRatingComments] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -30,6 +31,7 @@ const RelationshipCheckIn = () => {
     await updateDoc(relRef, {
       relationshipRating: dateRating,
       ratingComments,
+      ratingCommentsTwo,
     })
       .then(() =>
         Toast.show({
@@ -81,7 +83,7 @@ const RelationshipCheckIn = () => {
                   { fontSize: 19, marginBottom: 16, lineHeight: 22 },
                 ]}
               >
-                Are there any details you want to remember about this rating?
+                What is going well in the relationship?
               </Text>
               <TextInput
                 multiline={true}
@@ -93,6 +95,30 @@ const RelationshipCheckIn = () => {
                 placeholderTextColor="rgba(51,55,75,0.5)"
                 value={ratingComments}
                 onChangeText={(newRatingCom) => setRatingComments(newRatingCom)}
+              />
+            </View>
+
+            <View>
+              <Text
+                style={[
+                  styles.medGap,
+                  { fontSize: 19, marginBottom: 16, lineHeight: 22 },
+                ]}
+              >
+                What do you want to focus on?
+              </Text>
+              <TextInput
+                multiline={true}
+                numberOfLines={4}
+                style={[
+                  styles.form__textArea,
+                  { marginTop: 0, marginBottom: 0, height: 112 },
+                ]}
+                placeholderTextColor="rgba(51,55,75,0.5)"
+                value={ratingCommentsTwo}
+                onChangeText={(newRatingComTwo) =>
+                  setRatingCommentsTwo(newRatingComTwo)
+                }
               />
             </View>
 
