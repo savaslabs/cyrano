@@ -76,14 +76,16 @@ const EventDetails = () => {
         <View style={{ paddingTop: 16 }}>
           <Text style={styles.h4}>DATE AND TIME</Text>
           <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>
-            {item?.dateTime ? (
+            {item?.dateDate &&
+              !item?.dateTime &&
+              new Date(item?.dateDate).toLocaleDateString()}
+            {item?.dateTime && (
               <>
                 {new Date(item?.dateDate).toLocaleDateString()}{' '}
                 {item?.state !== 'past' ? `@ ${item?.dateTime}` : ''}
               </>
-            ) : (
-              <Text>Not set </Text>
             )}
+            {!item?.dateDate && !item?.dateTime && <Text>Not set </Text>}
           </Text>
         </View>
         <View>
