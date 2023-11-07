@@ -80,7 +80,9 @@ const Relationship = () => {
     relationshipRating,
     location,
     ratingComments,
-    ratingCommentsTwo
+    ratingCommentsTwo,
+    pronounsValue,
+    relationshipValue,
   } = singleRelationship
 
   const fullName = `${name} ${lastName}`
@@ -147,7 +149,23 @@ const Relationship = () => {
                     <Image source={mapMarker} style={styles.location__icon} />
                     <Text style={styles.location__text}>{location}</Text>
                   </View>
-                 ) : (
+                ) : (
+                  ''
+                )}
+                {pronounsValue ? (
+                  <View style={styles.location}>
+                    <Text style={styles.location__text}>{pronounsValue}</Text>
+                  </View>
+                ) : (
+                  ''
+                )}
+                {relationshipValue ? (
+                  <View style={styles.location}>
+                    <Text style={styles.location__text}>
+                      {relationshipValue}
+                    </Text>
+                  </View>
+                ) : (
                   ''
                 )}
               </View>
@@ -200,7 +218,9 @@ const Relationship = () => {
                           id,
                           rating: relationshipRating,
                           comments: ratingComments ? ratingComments : 'N/A',
-                          commentsTwo: ratingCommentsTwo ? ratingCommentsTwo: 'N/A',
+                          commentsTwo: ratingCommentsTwo
+                            ? ratingCommentsTwo
+                            : 'N/A',
                           upcomingEvents,
                           imgDisplay,
                           fullNameDisplay,
