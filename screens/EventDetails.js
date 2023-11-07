@@ -95,7 +95,7 @@ const EventDetails = () => {
               {item?.datePlace}
             </Text>
           ) : (
-            <Text>Not set </Text>
+            <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>Not set </Text>
           )}
         </View>
         <View>
@@ -105,7 +105,7 @@ const EventDetails = () => {
               {item?.additionalComments}
             </Text>
           ) : (
-            <Text>Not set </Text>
+            <Text style={[styles.p, styles.alignLeft, { marginBottom: 32 }]}>Not set </Text>
           )}
         </View>
 

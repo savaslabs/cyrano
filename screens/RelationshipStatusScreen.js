@@ -45,6 +45,8 @@ const RelationshipStatusScreen = () => {
                     fullNameDisplay,
                   })
                 }
+
+                style={{marginBottom: 16}}
               >
                 <Image source={Back} style={{ width: 20, height: 20 }} />
               </Pressable>
@@ -66,13 +68,13 @@ const RelationshipStatusScreen = () => {
               <Text style={[styles.h4, { fontSize: 17 }]}>
                 What is going well in the relationship
               </Text>
-              <Text style={{ fontSize: 17 }}>{comments}</Text>
+              <Text style={{ fontSize: 17, marginBottom: 34 }}>{comments}</Text>
             </View>
             <View>
               <Text style={[styles.h4, { fontSize: 17 }]}>
                 What do you want to focus on{' '}
               </Text>
-              <Text style={{ fontSize: 17 }}>{commentsTwo}</Text>
+              <Text style={{ fontSize: 17, marginBottom: 17 }}>{commentsTwo}</Text>
             </View>
           </View>
         </Page>

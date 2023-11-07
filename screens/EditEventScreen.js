@@ -147,7 +147,7 @@ const EditEventScreen = () => {
                 <Text>{fullNameDisplay}</Text>
               </View> */}
 
-              <Text style={[styles.form__label, { marginTop: 16 }]}>
+              <Text style={[styles.form__label, { marginTop: 16, zIndex: 99 }]}>
                 Event Name
               </Text>
               <TextInput

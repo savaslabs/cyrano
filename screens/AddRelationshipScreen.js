@@ -227,8 +227,7 @@ const AddRelationship = () => {
                 </Text>
                 {pageCounter === 1 && (
                   <Text style={[styles.p, styles.alignLeft]}>
-                    Tell us about who you'd like to work on your relationship
-                    with.
+                    Tell us about your relationship.
                   </Text>
                 )}
                 {pageCounter === 2 && (
@@ -347,7 +346,7 @@ const AddRelationship = () => {
                   ''
                 )}
 
-                <View style={styles.page__lower}>
+                <View style={[styles.page__lower, {zIndex: -1}]}>
                   <Pressable
                     style={[styles.button, isDisabled ? styles.disabled : '']}
                     onPress={handleNext}

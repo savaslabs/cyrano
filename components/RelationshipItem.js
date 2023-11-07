@@ -63,13 +63,14 @@ const RelationshipItem = ({
             />
           )}
 
-          <Pressable onPress={(e) => handlePress(e.target.id)}>
-            <Text style={styles.relationshipCard__name} nativeID={id}>
-              {name} {lastName}
-            </Text>
-            {/* THIS NEEDS TO BE STYLED BY TIM*/}
-            <Text>{relationshipValue}</Text>
-          </Pressable>
+          <View style={{ alignItems: 'flex-start', gap: 8}}>
+            <Pressable onPress={(e) => handlePress(e.target.id)}>
+              <Text style={styles.relationshipCard__name} nativeID={id}>
+                {name} {lastName}
+              </Text>
+            </Pressable>
+            <Text style={styles.relationshipCard__type}>{relationshipValue}</Text>
+          </View>
         </View>
         {relationshipRating ? (
           <RelationshipCardRating
@@ -147,6 +148,14 @@ const styles = StyleSheet.create({
   relationshipCard__name: {
     fontSize: 17,
     fontWeight: 700,
+  },
+  relationshipCard__type: {
+    fontSize: 11,
+    paddingVertical: 6,
+    paddingHorizontal: 9,
+    backgroundColor: '#586187',
+    color: '#ffffff',
+    borderRadius: 16
   },
   relationshipCard__bottom: {
     paddingTop: 16,

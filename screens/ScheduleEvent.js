@@ -250,7 +250,7 @@ const ScheduleEvent = () => {
               ''
             )}
 
-            <Text style={styles.form__label}>Event Name</Text>
+            <Text style={[styles.form__label, {zIndex:99}]}>Event Name</Text>
             <TextInput
               style={styles.form__input}
               placeholderTextColor="#c7cbd9"
