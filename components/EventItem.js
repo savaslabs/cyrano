@@ -37,9 +37,14 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>
-          {datePlace !== '' ? datePlace : pickRestaurantValue}
+          {eventName ? eventName : ''}
         </Text>
       </View>
+      {datePlace ? (
+        <Text style={styles.eventCard__dateTime}>{datePlace}</Text>
+      ) : (
+        ''
+      )}
       {dateTime && dateDate && (
         <Text style={styles.eventCard__dateTime}>
           {new Date(dateDate).toLocaleDateString()} @ {dateTime}
