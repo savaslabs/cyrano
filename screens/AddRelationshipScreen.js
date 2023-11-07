@@ -189,6 +189,13 @@ const AddRelationship = () => {
         'template_dlzx6tm',
         {
           from_email: email,
+          from_name: name,
+          message: `
+            Cyrano User: ${auth.currentUser.displayName}
+            ${auth.currentUser.displayName}’s Email: ${auth.currentUser.email}
+            Relationship Name: ${name}
+            Relationship Email: ${email}
+          `,
         },
         '7RtlMLsc_bIlK-F46'
       )
@@ -346,7 +353,7 @@ const AddRelationship = () => {
                   ''
                 )}
 
-                <View style={[styles.page__lower, {zIndex: -1}]}>
+                <View style={[styles.page__lower, { zIndex: -1 }]}>
                   <Pressable
                     style={[styles.button, isDisabled ? styles.disabled : '']}
                     onPress={handleNext}
@@ -428,8 +435,8 @@ const AddRelationship = () => {
                         styles.confirmation__text,
                       ]}
                     >
-                      The test has been sent to {name}. We'll alert you once we
-                      have uploaded their results
+                      {name} will receive her Truity Love Styles test via email
+                      soon!
                     </Text>
                   </View>
                 ) : (
