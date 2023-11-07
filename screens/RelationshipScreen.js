@@ -144,6 +144,25 @@ const Relationship = () => {
             >
               <View style={styles.relationshipHeading__text}>
                 <Text style={styles.xl}>{fullName}</Text>
+                <View style={[styles.location, {marginBottom: 8, gap: 0}]}>
+                  {pronounsValue ? (
+                    <Text style={styles.location__text}>{pronounsValue}</Text>
+                  ) : (
+                    ''
+                  )}
+                  {pronounsValue && relationshipValue ? (
+                    <Text style={styles.location__text}>, </Text>
+                  ) : (
+                    ''
+                  )}
+                  {relationshipValue ? (
+                    <Text style={styles.location__text}>
+                      {relationshipValue}
+                    </Text>
+                  ) : (
+                    ''
+                  )}
+                </View>
                 {location ? (
                   <View style={styles.location}>
                     <Image source={mapMarker} style={styles.location__icon} />
@@ -152,22 +171,7 @@ const Relationship = () => {
                 ) : (
                   ''
                 )}
-                {pronounsValue ? (
-                  <View style={styles.location}>
-                    <Text style={styles.location__text}>{pronounsValue}</Text>
-                  </View>
-                ) : (
-                  ''
-                )}
-                {relationshipValue ? (
-                  <View style={styles.location}>
-                    <Text style={styles.location__text}>
-                      {relationshipValue}
-                    </Text>
-                  </View>
-                ) : (
-                  ''
-                )}
+              
               </View>
               <View>
                 {profileImage ? (

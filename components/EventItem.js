@@ -40,23 +40,29 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
           {eventName ? eventName : ''}
         </Text>
       </View>
-      {datePlace ? (
-        <Text style={styles.eventCard__dateTime}>{datePlace}</Text>
-      ) : (
-        ''
-      )}
-      {dateTime && dateDate && (
-        <Text style={styles.eventCard__dateTime}>
-          {new Date(dateDate).toLocaleDateString()} @ {dateTime}
-        </Text>
-      )}
-      {dateDate && !dateTime && (
-        <Text style={styles.eventCard__dateTime}>
-          {new Date(dateDate).toLocaleDateString()}
-        </Text>
-      )}
-      {!dateDate && !dateTime && ''}
-
+      <View style={styles.eventCard__data}>
+        {datePlace ? (
+          <Text style={styles.eventCard__dateTime}>{datePlace}</Text>
+        ) : (
+          ''
+        )}
+        {datePlace && dateDate ? (
+          <Text style={styles.eventCard__dateTime}>, </Text>
+        ) : (
+          ''
+        )}
+        {dateTime && dateDate && (
+          <Text style={styles.eventCard__dateTime}>
+            {new Date(dateDate).toLocaleDateString()} @ {dateTime}
+          </Text>
+        )}
+        {dateDate && !dateTime && (
+          <Text style={styles.eventCard__dateTime}>
+            {new Date(dateDate).toLocaleDateString()}
+          </Text>
+        )}
+        {!dateDate && !dateTime && ''}
+      </View>
       <View
         style={[
           styles.eventCard__bottom,
@@ -171,6 +177,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 700,
     color: '#33374B',
+  },
+  eventCard__data: {
+    flex: 1,
+    flexDirection: 'row'
   },
   eventCard__buttons: {
     flex: 1,

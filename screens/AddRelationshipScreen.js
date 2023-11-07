@@ -435,7 +435,7 @@ const AddRelationship = () => {
                         styles.confirmation__text,
                       ]}
                     >
-                      {name} will receive her Truity Love Styles test via email
+                      {name} will receive the Truity Love Styles test via email
                       soon!
                     </Text>
                   </View>
