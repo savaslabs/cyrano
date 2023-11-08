@@ -77,7 +77,7 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
           )}
 
           <Text style={styles.eventCard__profileName}>
-            {fullNameDisplay}
+            {fullName ? fullName : fullNameDisplay}
           </Text>
 
           <View style={styles.eventCard__buttons}>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   },
   eventCard__data: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   eventCard__buttons: {
     flex: 1,
