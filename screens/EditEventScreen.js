@@ -100,32 +100,52 @@ const EditEventScreen = () => {
 
   const handleSave = async () => {
     if (singleRelationship) {
-      await updateDoc(
-        docRef,
-        {
-          eventName: editEventName ? editEventName : eventName,
-          additionalComments: editComments ? editComments : additionalComments,
-          dateDate: editDate ? editDate : dateDate,
-          datePlace: editPlace ? editPlace : datePlace,
-          dateTime: editTime ? editTime : dateTime,
-          state: editDate ? (eventState ? 'past' : 'upcoming') : item?.state,
-        },
-        { merge: true }
-      )
-        .then(() => {
-          Toast.show({
-            type: 'success',
-            text1: 'Event updated!',
-            visibilityTime: 2000,
-          })
-        })
-        .then(() =>
-          // auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
-          // auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
-          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
-            ? navigation.navigate('Relationships')
-            : navigation.navigate('Admin')
+      if (editEventName !== '') {
+        await updateDoc(
+          docRef,
+          {
+            eventName: editEventName
+              ? editEventName
+              : editEventName === ''
+              ? ''
+              : eventName,
+            additionalComments: editComments
+              ? editComments
+              : editComments === ''
+              ? ''
+              : additionalComments,
+            dateDate: editDate ? editDate : editPlace === '' ? '' : dateDate,
+            datePlace: editPlace
+              ? editPlace
+              : editPlace === ''
+              ? ''
+              : datePlace,
+            dateTime: editTime ? editTime : editTime === '' ? '' : dateTime,
+            state: editDate ? (eventState ? 'past' : 'upcoming') : item?.state,
+          },
+          { merge: true }
         )
+          .then(() => {
+            Toast.show({
+              type: 'success',
+              text1: 'Event updated!',
+              visibilityTime: 2000,
+            })
+          })
+          .then(() =>
+            // auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+            // auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+            auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+              ? navigation.navigate('Relationships')
+              : navigation.navigate('Admin')
+          )
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'The event name is required',
+          visibilityTime: 2000,
+        })
+      }
     }
   }
 
@@ -165,7 +185,11 @@ const EditEventScreen = () => {
                     onBlur={(e) => setEditDate(e.target.value)}
                     value={editDate}
                   />
-                  <Pressable onPress={() => setShowDatePicker(false)}>
+                  <Pressable
+                    onPress={() => {
+                      setShowDatePicker(false), setEditDate('')
+                    }}
+                  >
                     <Image
                       source={CloseIcon}
                       style={{ width: 24, height: 24 }}
@@ -189,7 +213,11 @@ const EditEventScreen = () => {
               {showTimePicker ? (
                 <View style={styles.form__twoCol}>
                   <TimePicker style={styles.form__date} />
-                  <Pressable onPress={() => setShowTimePicker(false)}>
+                  <Pressable
+                    onPress={() => {
+                      setShowTimePicker(false), setEditTime('')
+                    }}
+                  >
                     <Image
                       source={CloseIcon}
                       style={{ width: 24, height: 24 }}
