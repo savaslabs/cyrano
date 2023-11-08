@@ -77,7 +77,7 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
           )}
 
           <Text style={styles.eventCard__profileName}>
-            {fullName ? fullName : fullNameDisplay}
+            {fullNameDisplay}
           </Text>
 
           <View style={styles.eventCard__buttons}>

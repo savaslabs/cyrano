@@ -67,7 +67,7 @@ const EventDetails = () => {
                 />
               )}
               <Text style={styles.eventRelGraphic__text}>
-                {item?.name} {item?.lastName}
+                {fullNameDisplay}
               </Text>
             </View>
           </View>

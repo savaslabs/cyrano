@@ -149,44 +149,53 @@ const EditRelationshipScreen = () => {
       editEmail ||
       editPhone
     ) {
-      setIsLoading(true)
-
-      await updateDoc(
-        relRef,
-        {
-          profileImage: newProfileImage ? newProfileImage : profileImage,
-          name: editName ? editName : name,
-          lastName: editLastName ? editLastName : lastName,
-          birthday: editBirthday ? editBirthday : birthday,
-          anniversary: editAnniversary ? editAnniversary : anniversary,
-          location: editLocation ? editLocation : location,
-          pronounsValue: pronounsVal ? pronounsVal : pronounsValue,
-          email: editEmail ? editEmail : email,
-          phone: editPhone ? editPhone : phone,
-        },
-        {
-          merge: true,
-        }
-      )
-        .then(() =>
-          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
-          auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
-            ? navigation.navigate('Relationships')
-            : navigation.navigate('Admin')
+      if (editName === '' || editLastName === '') {
+        Toast.show({
+          type: 'error',
+          text1: 'Name and last name are required',
+          visibilityTime: 2000,
+        })
+      } else {
+        setIsLoading(true)
+        await updateDoc(
+          relRef,
+          {
+            profileImage: newProfileImage
+              ? newProfileImage
+              : newProfileImage === ''
+              ? ''
+              : profileImage,
+            name: editName ? editName : name,
+            lastName: editLastName ? editLastName : lastName,
+            birthday: editBirthday ? editBirthday : birthday,
+            anniversary: editAnniversary ? editAnniversary : anniversary,
+            location: editLocation
+              ? editLocation
+              : editLocation === ''
+              ? ''
+              : location,
+            pronounsValue: pronounsVal ? pronounsVal : pronounsValue,
+            email: editEmail ? editEmail : email,
+            phone: editPhone ? editPhone : phone,
+          },
+          {
+            merge: true,
+          }
         )
-        .then(() =>
-          Toast.show({
-            type: 'success',
-            text1: 'Relationship updated ✅',
-            visibilityTime: 2000,
-          })
-        )
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'You need to update some value first',
-        visibilityTime: 2000,
-      })
+          .then(() =>
+            auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+            auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+              ? navigation.navigate('Relationships')
+              : navigation.navigate('Admin')
+          )
+          .then(() =>
+            Toast.show({
+              type: 'success',
+              text1: 'Relationship updated ✅',
+              visibilityTime: 2000,
+            })
+          )
+      }
     }
   }
 
@@ -422,7 +431,7 @@ const EditRelationshipScreen = () => {
                       <TextInput
                         style={styles.form__input}
                         placeholderTextColor="#c7cbd9"
-                        placeholder='Edit their pronouns'
+                        placeholder="Edit their pronouns"
                         value={editPronouns}
                       />
                     </Pressable>

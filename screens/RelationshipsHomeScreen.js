@@ -63,7 +63,7 @@ const RelationshipsHomeScreen = () => {
   }
 
   useEffect(() => {
-    if (relationships && upcomingArr) {
+    if (relationships && upcomingArr && isFocused) {
       relationships.map((item) => {
         setImgDisplay(item.profileImage)
         setFullNameDisplay(`${item.name} ${item.lastName}`)
@@ -73,7 +73,7 @@ const RelationshipsHomeScreen = () => {
         setUpcomingEvents(newArr)
       })
     }
-  }, [relationships, upcomingArr, imgDisplay, fullNameDisplay])
+  }, [relationships, upcomingArr, imgDisplay, fullNameDisplay, isFocused])
 
   useEffect(() => {
     if (relationships && isFocused) {
