@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   pageTopPadding: {
-    paddingTop: 56,
-  },
+    paddingTop: 56
+  },  
   page__logo: {
     width: 128,
     minHeight: 128,
@@ -14,16 +14,16 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     border: '1px solid rgba(245, 151, 132, 1)',
     borderRadius: 4,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#ffffff'
   },
   page__content: {
     width: '100%',
     maxWidth: 440,
     marginLeft: 'auto',
-    marginRight: 'auto',
+    marginRight: 'auto'
   },
   page__upper: {
-    paddingBottom: 26,
+    paddingBottom: 26
   },
   page__lower: {
     flex: 1,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     flexWrap: 'wrap',
-    marginBottom: 6,
+    marginBottom: 6
   },
   h1: {
     color: '#33374B',
@@ -53,13 +53,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignSelf: 'center',
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   h1Gap: {
-    marginTop: 64,
+    marginTop: 64
   },
   medGap: {
-    marginTop: 32,
+    marginTop: 32
   },
   h2: {
     color: '#33374B',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     alignSelf: 'center',
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   h4: {
     color: '#33374B',
@@ -77,13 +77,13 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 16,
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   h5: {
     color: '#586187',
     fontSize: 11,
     fontWeight: 900,
-    marginBottom: 4,
+    marginBottom: 4
   },
   p: {
     color: '#33374B',
@@ -93,18 +93,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     flexWrap: 'wrap',
-    marginBottom: 17,
+    marginBottom: 17
   },
   smallerText: {
     color: 'rgba(51, 55, 75, .75)',
     fontSize: 15,
     flex: 1,
     flexWrap: 'wrap',
-    marginBottom: 15,
+    marginBottom: 15
   },
   starRating: {
     marginHorizontal: 'auto',
-    paddingVertical: 8,
+    paddingVertical: 8
   },
   form__twoCol: {
     flex: 1,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   form__col: {
-    flex: 1,
+    flex: 1
   },
   form__label: {
     color: 'rgba(88, 97, 135, 1)',
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     paddingLeft: 4,
     paddingRight: 4,
-    marginLeft: 12,
+    marginLeft: 12
   },
   form__input: {
     height: 56,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     color: 'rgba(51, 55, 75, 1)',
     marginTop: -8,
     flexGrow: 1,
-    fontSize: 17,
+    fontSize: 17
   },
   form__textArea: {
     height: 76,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     color: 'rgba(51, 55, 75, 1)',
     marginTop: -8,
     flexGrow: 1,
-    fontSize: 17,
+    fontSize: 17
   },
   form__select: {
     height: 56,
@@ -158,13 +158,7 @@ const styles = StyleSheet.create({
     color: 'rgba(51, 55, 75, 1)',
     marginTop: -8,
     flexGrow: 1,
-    fontSize: 17,
-  },
-  form__error: {
-    border: '1px solid rgb(245, 151, 132)',
-  },
-  form__label__error: {
-    color: 'rgb(245, 151, 132)'
+    fontSize: 17
   },
   imgContainer: {
     paddingBottom: 10,
@@ -188,34 +182,34 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: 700,
     fontSize: 18,
-    lineHeight: 24.5,
+    lineHeight: 24.5
   },
   buttonGrey: {
     backgroundColor: 'rgba(241, 242, 246, 1)',
-    marginLeft: 0,
+    marginLeft: 0
   },
   buttonGrey__text: {
-    color: 'rgba(51, 55, 75, 1)',
+    color: 'rgba(51, 55, 75, 1)'
   },
   textLink: {
     fontSize: 15,
     color: 'rgba(51,55,75,0.75)',
     textAlign: 'center',
     paddingTop: 16,
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
   buttonNext: {
-    marginRight: 0,
+    marginRight: 0
   },
   disabled: {
     backgroundColor: '#ffffff',
     border: '1px solid rgba(199, 203, 217, 1)',
   },
   disabled__text: {
-    color: 'rgba(199, 203, 217, 1)',
+    color: 'rgba(199, 203, 217, 1)'
   },
   fixedWidth: {
-    width: 235,
+    width: 235
   },
   googleButton: {
     textAlign: 'center',
@@ -228,11 +222,11 @@ const styles = StyleSheet.create({
     boxShadow: '0 1px 2px rgba(0, 0, 0, 0.25)',
     padding: 10,
     paddingLeft: 16,
-    paddingRight: 16,
+    paddingRight: 16
   },
   googleButton__logo: {
     height: 18,
-    width: 18,
+    width: 18
   },
   googleButton__text: {
     fontSize: 14,
@@ -240,16 +234,16 @@ const styles = StyleSheet.create({
     maxWidth: 145,
     margin: 'auto',
     paddingLeft: 16,
-    fontWeight: 500,
+    fontWeight: 500
   },
-  relationshipHeading: {
+  relationshipHeading:  {
     flex: 1,
     flexDirection: 'row',
     gap: 24,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   relationshipHeading__text: {
-    maxWidth: 'calc(100% - 128px)',
+    maxWidth: '100%'
   },
   camera: {
     width: 104,
@@ -284,7 +278,7 @@ const styles = StyleSheet.create({
     paddingTop: 36,
     paddingBottom: 18,
     zIndex: -1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   dots__dot: {
     borderWidth: 1,
@@ -300,14 +294,14 @@ const styles = StyleSheet.create({
   confirmation: {
     flex: 1,
     flexDirection: 'row',
-    gap: 12,
+    gap: 12
   },
   confirmation__icon: {
     width: 32,
-    height: 32,
+    height: 32
   },
   confirmation__text: {
-    color: 'rgba(88, 97, 135, 1)',
+    color: 'rgba(88, 97, 135, 1)'
   },
   greybox: {
     borderColor: '#C7CBD9',
@@ -315,18 +309,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     flex: 1,
     alignItems: 'center',
-    padding: 16,
+    padding: 16
   },
   greyboxLarge: {
     paddingVertical: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: 16
   },
   greybox__pair: {
     flex: 1,
     flexDirection: 'row',
     gap: 8,
     marginBottom: 8,
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   ratingCard: {
     flex: 1,
@@ -335,11 +329,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 16,
+    gap: 16
   },
   ratingCard__text: {
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   ratingCard__button: {
     padding: 16,
@@ -351,29 +345,29 @@ const styles = StyleSheet.create({
     color: '#33374B',
     maxWidth: 214,
     textAlign: 'center',
-    borderRadius: 60,
+    borderRadius: 60
   },
   location: {
     flexGrow: 1,
     flex: 1,
     flexDirection: 'row',
     gap: 6,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   location__icon: {
     width: 15,
-    height: 22,
+    height: 22
   },
   location__text: {
     color: 'rgba(51,55,75,0.75)',
-    fontSize: 13,
+    fontSize: 13
   },
   headingPlusBtn: {
     flex: 1,
     flexDirection: 'row',
     gap: 16,
     flexWrap: 'wrap',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   addBtn: {
     backgroundColor: '#F1F2F6',
@@ -382,19 +376,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: '100%',
+    borderRadius: '100%'
   },
   addBtn__icon: {
     width: 32,
-    height: 32,
+    height: 32
   },
   delete: {
     marginTop: 12,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   delete__text: {
     color: '#e5534b',
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
   eventHeading: {
     flexDirection: 'row',
@@ -404,7 +398,7 @@ const styles = StyleSheet.create({
   eventRelGraphic: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 12
   },
   eventRelGraphic__pill: {
     flexDirection: 'row',
@@ -420,30 +414,30 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     backgroundColor: '#F1F2F6',
     borderTopEndRadius: 100,
-    borderBottomEndRadius: 100,
+    borderBottomEndRadius: 100
   },
   eventSummary: {
     backgroundColor: '#F1F2F6',
     padding: 16,
     gap: 16,
     borderRadius: 4,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   eventSummary__title: {
     fontSize: 19,
     fontWeight: 700,
-    color: '#33374B',
+    color: '#33374B'
   },
-  eventSummary__date: {
+  eventSummary__date:  {
     fontSize: 15,
-    color: '#33374B',
+    color: '#33374B'
   },
   loveStyleTags: {
     flex: 1,
     flexDirection: 'row',
     gap: 4,
     flexWrap: 'wrap',
-    marginBottom: 8,
+    marginBottom: 8
   },
   loveStyleTags__tag: {
     borderWidth: 1,
@@ -474,31 +468,31 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   underline: {
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
   center: {
     marginLeft: 'auto',
-    marginRight: 'auto',
+    marginRight: 'auto'
   },
   alignLeft: {
     alignSelf: 'flex-start',
-    textAlign: 'left',
+    textAlign: 'left'
   },
   vertCenter: {
-    alignItems: 'center',
+    alignItems: 'center'
   },
   bold: {
-    fontWeight: 600,
+    fontWeight: 600
   },
   superBold: {
-    fontWeight: 800,
+    fontWeight: 800
   },
   mb0: {
-    marginBottom: 0,
+    marginBottom: 0
   },
   mb16: {
-    marginBottom: 16,
-  },
+    marginBottom: 16
+  }
 })
 
 export { styles }

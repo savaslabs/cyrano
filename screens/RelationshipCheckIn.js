@@ -6,19 +6,17 @@ import { useRoute, useNavigation } from '@react-navigation/native'
 import { db } from '../config/firebase-config'
 import { doc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
-import Spinner from '../shared/Spinner'
-import Back from '../assets/caret-left.svg'
 import { styles } from '../styles'
 
 const RelationshipCheckIn = () => {
   const [dateRating, setDateRating] = useState('')
+  const [ratingCommentsTwo, setRatingCommentsTwo] = useState('')
   const [ratingComments, setRatingComments] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
   const [isDisabled, setIsDisabled] = useState(true)
   const fadeAnim = useRef(new Animated.Value(0)).current
   const route = useRoute()
   const navigation = useNavigation()
-  const { itemId, rating, name } = route.params
+  const { itemId, name } = route.params
   const relRef = doc(db, 'relationships', itemId)
 
   useEffect(() => {
@@ -29,18 +27,11 @@ const RelationshipCheckIn = () => {
     }).start()
   }, [fadeAnim])
 
-  useEffect(() => {
-    if (rating) {
-      // setDateRating(rating)
-      setIsLoading(false)
-    }
-  }, [rating])
-
   const handleUpdate = async () => {
-    setIsLoading(true)
     await updateDoc(relRef, {
       relationshipRating: dateRating,
       ratingComments,
+      ratingCommentsTwo,
     })
       .then(() =>
         Toast.show({
@@ -63,87 +54,103 @@ const RelationshipCheckIn = () => {
 
   return (
     <>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <Page>
-          <Animated.View style={{ opacity: fadeAnim }}>
-            <View style={[styles.page__content, styles.pageTopPadding]}>
-              <View style={styles.page__upper}>
-                <Text style={[styles.h1, styles.alignLeft]}>
-                  Relationship Check-in
-                </Text>
-              </View>
-              <View>
-                <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
-                  How would you say your relationship with{' '}
-                  <Text style={styles.superBold}>{name}</Text> is going?
-                </Text>
-                <StarRating
-                  rating={dateRating}
-                  onChange={setDateRating}
-                  color="#7B82A2"
-                  starSize="52"
-                  style={styles.starRating}
-                />
-              </View>
+      <Page>
+        <Animated.View style={{ opacity: fadeAnim }}>
+          <View style={[styles.page__content, styles.pageTopPadding]}>
+            <View style={styles.page__upper}>
+              <Text style={[styles.h1, styles.alignLeft]}>
+                Relationship Check-in
+              </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 19, marginBottom: 8, lineHeight: 22 }}>
+                How would you say your relationship with{' '}
+                <Text style={styles.superBold}>{name}</Text> is going?
+              </Text>
+              <StarRating
+                rating={dateRating}
+                onChange={setDateRating}
+                color="#7B82A2"
+                starSize="52"
+                style={styles.starRating}
+              />
+            </View>
 
-              <View>
-                <Text
-                  style={[
-                    styles.medGap,
-                    { fontSize: 19, marginBottom: 16, lineHeight: 22 },
-                  ]}
+            <View>
+              <Text
+                style={[
+                  styles.medGap,
+                  { fontSize: 19, marginBottom: 16, lineHeight: 22 },
+                ]}
+              >
+                What is going well in the relationship?
+              </Text>
+              <TextInput
+                multiline={true}
+                numberOfLines={4}
+                style={[
+                  styles.form__textArea,
+                  { marginTop: 0, marginBottom: 0, height: 112 },
+                ]}
+                placeholderTextColor="rgba(51,55,75,0.5)"
+                value={ratingComments}
+                onChangeText={(newRatingCom) => setRatingComments(newRatingCom)}
+              />
+            </View>
+
+            <View>
+              <Text
+                style={[
+                  styles.medGap,
+                  { fontSize: 19, marginBottom: 16, lineHeight: 22 },
+                ]}
+              >
+                What do you want to focus on?
+              </Text>
+              <TextInput
+                multiline={true}
+                numberOfLines={4}
+                style={[
+                  styles.form__textArea,
+                  { marginTop: 0, marginBottom: 0, height: 112 },
+                ]}
+                placeholderTextColor="rgba(51,55,75,0.5)"
+                value={ratingCommentsTwo}
+                onChangeText={(newRatingComTwo) =>
+                  setRatingCommentsTwo(newRatingComTwo)
+                }
+              />
+            </View>
+
+            <View style={styles.page__lower}>
+              <View style={styles.paginationBtns}>
+                <Pressable
+                  style={[styles.button, styles.buttonGrey]}
+                  onPress={() => navigation.navigate('Relationships')}
                 >
-                  Are there any details you want to remember about this rating?
-                </Text>
-                <TextInput
-                  multiline={true}
-                  numberOfLines={4}
-                  style={[
-                    styles.form__textArea,
-                    { marginTop: 0, marginBottom: 0, height: 112 },
-                  ]}
-                  placeholderTextColor="rgba(51,55,75,0.5)"
-                  value={ratingComments}
-                  onChangeText={(newRatingCom) =>
-                    setRatingComments(newRatingCom)
-                  }
-                />
-              </View>
-
-              <View style={styles.page__lower}>
-                <View style={styles.paginationBtns}>
-                  <Pressable
-                    style={[styles.button, styles.buttonGrey]}
-                    onPress={() => navigation.navigate('Relationships')}
+                  <Text style={[styles.button__text, styles.buttonGrey__text]}>
+                    CANCEL
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, isDisabled ? styles.disabled : '']}
+                  onPress={handleUpdate}
+                  disabled={isDisabled}
+                >
+                  <Text
+                    style={[
+                      styles.button__text,
+                      isDisabled ? styles.disabled__text : '',
+                    ]}
                   >
-                    <Text
-                      style={[styles.button__text, styles.buttonGrey__text]}
-                    >
-                      CANCEL
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    style={[styles.button, isDisabled ? styles.disabled : '']}
-                    onPress={handleUpdate}
-                    disabled={isDisabled}
-                  >
-                    <Text
-                      style={[
-                        styles.button__text,
-                        isDisabled ? styles.disabled__text : '',
-                      ]}
-                    >
-                      SUBMIT
-                    </Text>
-                  </Pressable>
-                </View>
+                    SUBMIT
+                  </Text>
+                </Pressable>
               </View>
             </View>
-          </Animated.View>
-        </Page>
-      )}
+          </View>
+        </Animated.View>
+      </Page>
     </>
   )
 }

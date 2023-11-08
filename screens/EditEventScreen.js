@@ -5,6 +5,7 @@ import Spinner from '../shared/Spinner'
 import { useState, useEffect, createElement } from 'react'
 import { styles } from '../styles'
 import CloseIcon from '../assets/close.svg'
+import TrashIcon from '../assets/trash-bold.svg'
 import { auth, db } from '../config/firebase-config'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
@@ -15,7 +16,9 @@ const EditEventScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [editEventName, setEditEventName] = useState('')
   const [editDate, setEditDate] = useState('')
+  const [blankDate, setBlankDate] = useState(false)
   const [editTime, setEditTime] = useState('')
+  const [blankTime, setBlankTime] = useState(false)
   const [editPlace, setEditPlace] = useState('')
   const [editComments, setEditComments] = useState('')
   const [showDatePicker, setShowDatePicker] = useState(false)
@@ -32,14 +35,8 @@ const EditEventScreen = () => {
     }
   }, [])
 
-  const {
-    eventName,
-    dateDate,
-    datePlace,
-    dateTime,
-    additionalComments,
-    id,
-  } = item
+  const { eventName, dateDate, datePlace, dateTime, additionalComments, id } =
+    item
 
   const TimePicker = () => {
     return createElement('input', {
@@ -70,13 +67,7 @@ const EditEventScreen = () => {
     setEditTime(dateTime)
     setEditPlace(datePlace)
     setEditComments(additionalComments)
-  }, [
-    dateDate,
-    dateTime,
-    datePlace,
-    additionalComments,
-    eventName,
-  ])
+  }, [dateDate, dateTime, datePlace, additionalComments, eventName])
 
   const docRef = doc(db, 'events', id)
 
@@ -112,32 +103,52 @@ const EditEventScreen = () => {
 
   const handleSave = async () => {
     if (singleRelationship) {
-      await updateDoc(
-        docRef,
-        {
-          eventName: editEventName ? editEventName : eventName,
-          additionalComments: editComments ? editComments : additionalComments,
-          dateDate: editDate ? editDate : dateDate,
-          datePlace: editPlace ? editPlace : datePlace,
-          dateTime: editTime ? editTime : dateTime,
-          state: editDate ? (eventState ? 'past' : 'upcoming') : item?.state,
-        },
-        { merge: true }
-      )
-        .then(() => {
-          Toast.show({
-            type: 'success',
-            text1: 'Event updated!',
-            visibilityTime: 2000,
-          })
-        })
-        .then(() =>
-          // auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
-          // auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
-          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
-            ? navigation.navigate('Relationships')
-            : navigation.navigate('Admin')
+      if (editEventName !== '') {
+        await updateDoc(
+          docRef,
+          {
+            eventName: editEventName
+              ? editEventName
+              : editEventName === ''
+              ? ''
+              : eventName,
+            additionalComments: editComments
+              ? editComments
+              : editComments === ''
+              ? ''
+              : additionalComments,
+            dateDate: editDate ? editDate : editDate === '' ? '' : dateDate,
+            datePlace: editPlace
+              ? editPlace
+              : editPlace === ''
+              ? ''
+              : datePlace,
+            dateTime: editTime ? editTime : editTime === '' ? '' : dateTime,
+            state: editDate ? (eventState ? 'past' : 'upcoming') : item?.state,
+          },
+          { merge: true }
         )
+          .then(() => {
+            Toast.show({
+              type: 'success',
+              text1: 'Event updated!',
+              visibilityTime: 2000,
+            })
+          })
+          .then(() =>
+            // auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+            // auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+            auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03'
+              ? navigation.navigate('Relationships')
+              : navigation.navigate('Admin')
+          )
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'The event name is required',
+          visibilityTime: 2000,
+        })
+      }
     }
   }
 
@@ -159,7 +170,7 @@ const EditEventScreen = () => {
                 <Text>{fullNameDisplay}</Text>
               </View> */}
 
-              <Text style={[styles.form__label, { marginTop: 16 }]}>
+              <Text style={[styles.form__label, { marginTop: 16, zIndex: 99 }]}>
                 Event Name
               </Text>
               <TextInput
@@ -183,14 +194,39 @@ const EditEventScreen = () => {
                       style={{ width: 24, height: 24 }}
                     />
                   </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setShowDatePicker(false),
+                        setBlankDate(true),
+                        setEditDate('')
+                    }}
+                  >
+                    <Image
+                      source={TrashIcon}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </Pressable>
                 </View>
               ) : (
                 <Pressable onPress={() => setShowDatePicker(true)}>
-                  <TextInput
-                    style={styles.form__input}
-                    placeholderTextColor="#c7cbd9"
-                    value={new Date(dateDate).toLocaleDateString()}
-                  />
+                  {!blankDate && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder={dateDate ? '' : 'Edit the event date'}
+                      placeholderTextColor="#c7cbd9"
+                      value={
+                        dateDate ? new Date(dateDate).toLocaleDateString() : ''
+                      }
+                    />
+                  )}
+                  {blankDate && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder={'Edit the event date'}
+                      placeholderTextColor="#c7cbd9"
+                      value={''}
+                    />
+                  )}
                 </Pressable>
               )}
 
@@ -204,19 +240,43 @@ const EditEventScreen = () => {
                       style={{ width: 24, height: 24 }}
                     />
                   </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setShowTimePicker(false),
+                        setBlankTime(true),
+                        setEditTime('')
+                    }}
+                  >
+                    <Image
+                      source={TrashIcon}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </Pressable>
                 </View>
               ) : (
                 <Pressable onPress={() => setShowTimePicker(true)}>
-                  <TextInput
-                    style={styles.form__input}
-                    placeholderTextColor="#c7cbd9"
-                    value={editTime}
-                  />
+                  {!blankTime && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder="Edit the time of the event"
+                      placeholderTextColor="#c7cbd9"
+                      value={editTime}
+                    />
+                  )}
+                  {blankTime && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder="Edit the time of the event"
+                      placeholderTextColor="#c7cbd9"
+                      value=""
+                    />
+                  )}
                 </Pressable>
               )}
               <Text style={styles.form__label}>Location</Text>
               <TextInput
                 style={styles.form__input}
+                placeholder="Edit their location"
                 placeholderTextColor="#c7cbd9"
                 value={editPlace}
                 onChangeText={(newPlace) => setEditPlace(newPlace)}
@@ -224,6 +284,7 @@ const EditEventScreen = () => {
               <Text style={styles.form__label}>Additional Comments</Text>
               <TextInput
                 style={styles.form__input}
+                placeholder="Add any comments"
                 placeholderTextColor="#c7cbd9"
                 value={editComments}
                 onChangeText={(newComments) => setEditComments(newComments)}

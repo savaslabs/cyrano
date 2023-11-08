@@ -16,8 +16,8 @@ import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
 import Avatar from '../assets/avatar.png'
 import * as ImagePicker from 'expo-image-picker'
-import TrashIcon from '../assets/trash-white.svg'
 import CloseIcon from '../assets/close.svg'
+import TrashIcon from '../assets/trash-bold.svg'
 import RelationshipRating from '../components/RelationshipRating'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DatePicker from '../components/form/DatePicker'
@@ -30,9 +30,12 @@ const EditRelationshipScreen = () => {
   const [editName, setEditName] = useState('')
   const [editLastName, setEditLastName] = useState('')
   const [editBirthday, setEditBirthday] = useState('')
+  const [blankBirthday, setBlankBirthday] = useState(false)
   const [editAnniversary, setEditAnniversary] = useState('')
+  const [blankAnniversary, setBlankAnniversary] = useState(false)
   const [editLocation, setEditLocation] = useState('')
   const [editPronouns, setEditPronouns] = useState('')
+  const [blankPronouns, setBlankPronouns] = useState(false)
   const [editEmail, setEditEmail] = useState('')
   const [editPhone, setEditPhone] = useState('')
   const [openPronouns, setOpenPronouns] = useState(false)
@@ -110,6 +113,7 @@ const EditRelationshipScreen = () => {
     pronounsValue,
     location,
     relationshipRating,
+    relationshipValue,
   } = singleRelationship
 
   const handleChangeImage = async () => {
@@ -134,7 +138,18 @@ const EditRelationshipScreen = () => {
     setEditPronouns(pronounsValue)
     setEditEmail(email)
     setEditPhone(phone)
-  }, [name, lastName, location, pronounsValue, email, phone])
+    setEditBirthday(birthday)
+    setEditAnniversary(anniversary)
+  }, [
+    name,
+    lastName,
+    location,
+    pronounsValue,
+    email,
+    phone,
+    birthday,
+    anniversary,
+  ])
 
   const handleSave = async () => {
     if (
@@ -148,44 +163,69 @@ const EditRelationshipScreen = () => {
       editEmail ||
       editPhone
     ) {
-      setIsLoading(true)
-
-      await updateDoc(
-        relRef,
-        {
-          profileImage: newProfileImage ? newProfileImage : profileImage,
-          name: editName ? editName : name,
-          lastName: editLastName ? editLastName : lastName,
-          birthday: editBirthday ? editBirthday : birthday,
-          anniversary: editAnniversary ? editAnniversary : anniversary,
-          location: editLocation ? editLocation : location,
-          pronounsValue: pronounsVal ? pronounsVal : pronounsValue,
-          email: editEmail ? editEmail : email,
-          phone: editPhone ? editPhone : phone,
-        },
-        {
-          merge: true,
-        }
-      )
-        .then(() =>
-          auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
-          auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
-            ? navigation.navigate('Relationships')
-            : navigation.navigate('Admin')
+      if (editName === '' || editLastName === '') {
+        Toast.show({
+          type: 'error',
+          text1: 'Name and last name are required',
+          visibilityTime: 2000,
+        })
+      } else {
+        setIsLoading(true)
+        await updateDoc(
+          relRef,
+          {
+            profileImage: newProfileImage
+              ? newProfileImage
+              : newProfileImage === ''
+              ? ''
+              : profileImage,
+            name: editName ? editName : editName === '' ? '' : name,
+            lastName: editLastName
+              ? editLastName
+              : editLastName === ''
+              ? ''
+              : lastName,
+            birthday: editBirthday
+              ? editBirthday
+              : editBirthday === ''
+              ? ''
+              : birthday,
+            anniversary: editAnniversary
+              ? editAnniversary
+              : editAnniversary === ''
+              ? ''
+              : anniversary,
+            location: editLocation
+              ? editLocation
+              : editLocation === ''
+              ? ''
+              : location,
+            pronounsValue: pronounsVal
+              ? pronounsVal
+              : pronounsVal === ''
+              ? ''
+              : pronounsValue,
+            email: editEmail ? editEmail : editEmail === '' ? '' : email,
+            phone: editPhone ? editPhone : editPhone === '' ? '' : phone,
+          },
+          {
+            merge: true,
+          }
         )
-        .then(() =>
-          Toast.show({
-            type: 'success',
-            text1: 'Relationship updated ✅',
-            visibilityTime: 2000,
-          })
-        )
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'You need to update some value first',
-        visibilityTime: 2000,
-      })
+          .then(() =>
+            auth.currentUser.uid !== 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
+            auth.currentUser.uid !== 'LkdoS9fnSDNwhH22mfrmzh7DLG83'
+              ? navigation.navigate('Relationships')
+              : navigation.navigate('Admin')
+          )
+          .then(() =>
+            Toast.show({
+              type: 'success',
+              text1: 'Relationship updated ✅',
+              visibilityTime: 2000,
+            })
+          )
+      }
     }
   }
 
@@ -199,7 +239,7 @@ const EditRelationshipScreen = () => {
             <View style={styles.page__upper}>
               <Text style={styles.h1}>Edit Relationship</Text>
             </View>
-            <View style={styles.vertCenter}>
+            {/* <View style={styles.vertCenter}>
               {profileImage ? (
                 <Image
                   source={profileImage}
@@ -227,7 +267,7 @@ const EditRelationshipScreen = () => {
               <Pressable onPress={handleChangeImage}>
                 <Text style={[styles.textLink, styles.mb16]}>Change photo</Text>
               </Pressable>
-            </View>
+            </View> */}
             <View style={styles.form}>
               <Pressable
                 onPress={() =>
@@ -238,16 +278,26 @@ const EditRelationshipScreen = () => {
                   })
                 }
               >
-                <View style={[styles.greybox, styles.mb16]}>
-                  <View style={styles.ratingCard}>
-                    <View style={styles.ratingCard__text}>
-                      <Text style={styles.h5}>RELATIONSHIP RATING</Text>
-                      <RelationshipRating
-                        relationshipRating={relationshipRating}
-                      />
+                {relationshipRating ? (
+                  <View style={[styles.greybox, styles.mb16]}>
+                    <View style={styles.ratingCard}>
+                      <View style={styles.ratingCard__text}>
+                        <Text style={styles.h5}>RELATIONSHIP RATING</Text>
+                        <RelationshipRating
+                          relationshipRating={relationshipRating}
+                        />
+                      </View>
                     </View>
                   </View>
-                </View>
+                ) : (
+                  <View style={[styles.greybox, styles.mb16]}>
+                    <View style={styles.ratingCard}>
+                      <View style={styles.ratingCard__text}>
+                        <Text style={styles.h5}>RATE THIS RELATIONSHIP</Text>
+                      </View>
+                    </View>
+                  </View>
+                )}
               </Pressable>
               <View style={styles.form__twoCol}>
                 <View style={styles.form__col}>
@@ -288,46 +338,106 @@ const EditRelationshipScreen = () => {
                           style={{ width: 24, height: 24 }}
                         />
                       </Pressable>
-                    </View>
-                  ) : (
-                    <Pressable onPress={() => setShowBirthdayPicker(true)}>
-                      <TextInput
-                        style={styles.form__input}
-                        placeholderTextColor="#c7cbd9"
-                        value={new Date(birthday).toLocaleDateString()}
-                      />
-                    </Pressable>
-                  )}
-                </View>
-                <View style={styles.form__col}>
-                  <Text style={styles.form__label}>Anniversary</Text>
-                  {showAnniversaryPicker ? (
-                    <View style={styles.form__twoCol}>
-                      <DatePicker
-                        style={styles.form__date}
-                        onChange={(e) => setEditAnniversary(e.target.value)}
-                        onBlur={(e) => setEditAnniversary(e.target.value)}
-                        value={editAnniversary}
-                      />
                       <Pressable
-                        onPress={() => setShowAnniversaryPicker(false)}
+                        onPress={() => {
+                          setShowBirthdayPicker(false),
+                            setBlankBirthday(true),
+                            setEditBirthday('')
+                        }}
                       >
                         <Image
-                          source={CloseIcon}
-                          style={{ width: 24, height: 24 }}
+                          source={TrashIcon}
+                          style={{ width: 20, height: 20 }}
                         />
                       </Pressable>
                     </View>
                   ) : (
-                    <Pressable onPress={() => setShowAnniversaryPicker(true)}>
-                      <TextInput
-                        style={styles.form__input}
-                        placeholderTextColor="#c7cbd9"
-                        value={new Date(anniversary).toLocaleDateString()}
-                      />
+                    <Pressable onPress={() => setShowBirthdayPicker(true)}>
+                      {!blankBirthday && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder={birthday ? '' : 'Edit their birthday'}
+                          value={
+                            birthday
+                              ? new Date(birthday).toLocaleDateString()
+                              : ''
+                          }
+                        />
+                      )}
+                      {blankBirthday && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder="Edit their birthday"
+                          value=""
+                        />
+                      )}
                     </Pressable>
                   )}
                 </View>
+                {relationshipValue === 'Romantic' ? (
+                  <View style={styles.form__col}>
+                    <Text style={styles.form__label}>Anniversary</Text>
+                    {showAnniversaryPicker ? (
+                      <View style={styles.form__twoCol}>
+                        <DatePicker
+                          style={styles.form__date}
+                          onChange={(e) => setEditAnniversary(e.target.value)}
+                          onBlur={(e) => setEditAnniversary(e.target.value)}
+                          value={editAnniversary}
+                        />
+                        <Pressable
+                          onPress={() => setShowAnniversaryPicker(false)}
+                        >
+                          <Image
+                            source={CloseIcon}
+                            style={{ width: 24, height: 24 }}
+                          />
+                        </Pressable>
+                        <Pressable
+                          onPress={() => {
+                            setShowAnniversaryPicker(false),
+                              setBlankAnniversary(true),
+                              setEditAnniversary('')
+                          }}
+                        >
+                          <Image
+                            source={TrashIcon}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        </Pressable>
+                      </View>
+                    ) : (
+                      <Pressable onPress={() => setShowAnniversaryPicker(true)}>
+                        {!blankAnniversary && (
+                          <TextInput
+                            style={styles.form__input}
+                            placeholderTextColor="#c7cbd9"
+                            placeholder={
+                              anniversary ? '' : 'Edit their anniversary'
+                            }
+                            value={
+                              anniversary
+                                ? new Date(anniversary).toLocaleDateString()
+                                : ''
+                            }
+                          />
+                        )}
+                        {blankAnniversary && (
+                          <TextInput
+                            style={styles.form__input}
+                            placeholderTextColor="#c7cbd9"
+                            placeholder="Edit their anniversary"
+                            value=""
+                          />
+                        )}
+                      </Pressable>
+                    )}
+                  </View>
+                ) : (
+                  ''
+                )}
               </View>
               <View style={styles.form__twoCol}>
                 <View style={styles.form__col}>
@@ -335,6 +445,7 @@ const EditRelationshipScreen = () => {
                   <TextInput
                     style={styles.form__input}
                     placeholderTextColor="#c7cbd9"
+                    placeholder={editLocation ? '' : 'Edit their location'}
                     value={editLocation}
                     onChangeText={(newEditLocation) =>
                       setEditLocation(newEditLocation)
@@ -353,7 +464,7 @@ const EditRelationshipScreen = () => {
                         setValue={setPronounsValue}
                         setItems={setPronounsItem}
                         style={styles.form__select}
-                        placeholder="Select pronouns"
+                        placeholder={pronounsVal ? '' : 'Edit their pronouns'}
                         placeholderStyle={{
                           color: '#c7cbd9',
                           paddingLeft: 4,
@@ -388,14 +499,37 @@ const EditRelationshipScreen = () => {
                           style={{ width: 24, height: 24 }}
                         />
                       </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          setShowPronounsDropdown(false),
+                            setBlankPronouns(true),
+                            setPronounsValue('')
+                        }}
+                      >
+                        <Image
+                          source={TrashIcon}
+                          style={{ width: 20, height: 20 }}
+                        />
+                      </Pressable>
                     </View>
                   ) : (
                     <Pressable onPress={() => setShowPronounsDropdown(true)}>
-                      <TextInput
-                        style={styles.form__input}
-                        placeholderTextColor="#c7cbd9"
-                        value={editPronouns}
-                      />
+                      {!blankPronouns && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder="Edit their pronouns"
+                          value={editPronouns}
+                        />
+                      )}
+                      {blankPronouns && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder="Edit their pronouns"
+                          value=""
+                        />
+                      )}
                     </Pressable>
                   )}
                 </View>
@@ -404,6 +538,7 @@ const EditRelationshipScreen = () => {
               <TextInput
                 style={styles.form__input}
                 placeholderTextColor="#c7cbd9"
+                placeholder={editEmail ? '' : 'Add their email'}
                 value={editEmail}
                 onChangeText={(newEditEmail) => setEditEmail(newEditEmail)}
               />
@@ -411,6 +546,7 @@ const EditRelationshipScreen = () => {
               <TextInput
                 style={styles.form__input}
                 placeholderTextColor="#c7cbd9"
+                placeholder={editPhone ? '' : 'Add their phone'}
                 value={editPhone}
                 onChangeText={(newEditPhone) => setEditPhone(newEditPhone)}
               />

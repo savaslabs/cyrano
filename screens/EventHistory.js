@@ -39,7 +39,6 @@ const EventHistory = () => {
     'Intellectual',
     'Practical',
   ])
-  const [showError, setShowError] = useState(false)
   const [resetFilterColor, setResetFilterColor] = useState(false)
   const [filterEventsArr, setFilterEventsArr] = useState(['Upcoming', 'Past'])
   const navigation = useNavigation()
@@ -70,10 +69,10 @@ const EventHistory = () => {
   useEffect(() => {
     if (relationships) {
       relationships.map((item) => {
-        const newArr = eventArr.filter((i) => i.relID === item.id)
+        const newArr = eventArr.filter((i) => i.author.id === item.author.id)
         setRelationshipEvents(newArr)
+        setLoading(false)
       })
-      setLoading(false)
     }
   }, [relationships, eventArr])
 
@@ -96,8 +95,6 @@ const EventHistory = () => {
           return fullName.toLowerCase().includes(relValue.toLowerCase())
         })
         setFilteredRel(newData)
-      } else {
-        setFilteredRel(relationshipEvents)
       }
 
       if (relValue === 'All') {
@@ -218,19 +215,20 @@ const EventHistory = () => {
                     : { display: 'none' }
                 }
               >
-                <Text style={[styles.h4, styles.medGap]}>Upcoming Events</Text>
-                {upcomingEvents.length !== 0 ? (
+                <Text style={[styles.h4, styles.medGap]}>
+                  {relValue === null ? 'Upcoming Events' : ''}
+                </Text>
+                {relValue === null &&
+                  upcomingEvents.length !== 0 &&
                   upcomingEvents?.map((item, index) => (
                     <EventItemHistory
                       key={index}
                       item={item}
                       imgDisplay={imgDisplay}
                       fullNameDisplay={fullNameDisplay}
+                      relValue={relValue}
                     />
-                  ))
-                ) : (
-                  <Text style={styles.h3}>There are no upcoming events.</Text>
-                )}
+                  ))}
               </View>
             ) : (
               ''
@@ -244,15 +242,19 @@ const EventHistory = () => {
                     : { display: 'none' }
                 }
               >
-                <Text style={[styles.h4, styles.medGap]}>Past Events</Text>
-                {pastEvents?.map((item, index) => (
-                  <EventItemHistory
-                    key={index}
-                    item={item}
-                    imgDisplay={imgDisplay}
-                    fullNameDisplay={fullNameDisplay}
-                  />
-                ))}
+                <Text style={[styles.h4, styles.medGap]}>
+                  {relValue === null ? 'Past Events' : ''}
+                </Text>
+                {relValue === null &&
+                  pastEvents?.map((item, index) => (
+                    <EventItemHistory
+                      key={index}
+                      item={item}
+                      imgDisplay={imgDisplay}
+                      fullNameDisplay={fullNameDisplay}
+                      relValue={relValue}
+                    />
+                  ))}
               </View>
             ) : (
               ''
@@ -266,10 +268,17 @@ const EventHistory = () => {
                   imgDisplay={imgDisplay}
                   fullNameDisplay={fullNameDisplay}
                   searchEvent={searchEvent}
+                  relValue={relValue}
                 />
               ))
             ) : searchEvent ? (
               <Text>No events match your search.</Text>
+            ) : (
+              ''
+            )}
+
+            {relValue !== null && filteredRel.length === 0 ? (
+              <Text>No events matching this filter</Text>
             ) : (
               ''
             )}
@@ -279,8 +288,6 @@ const EventHistory = () => {
                 You don’t have any relationships yet. Get started by adding one
               </Text>
             )}
-
-            {showError ? <Text>No events matching this filter</Text> : ''}
           </View>
         </Page>
       )}

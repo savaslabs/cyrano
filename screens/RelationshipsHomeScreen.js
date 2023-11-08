@@ -63,15 +63,17 @@ const RelationshipsHomeScreen = () => {
   }
 
   useEffect(() => {
-    if (relationships && upcomingArr) {
+    if (relationships && upcomingArr && isFocused) {
       relationships.map((item) => {
         setImgDisplay(item.profileImage)
         setFullNameDisplay(`${item.name} ${item.lastName}`)
-        const newArr = upcomingArr.filter((i) => i.relID === item.id)
+        const newArr = upcomingArr.filter(
+          (item) => item.author.id === auth.currentUser.uid
+        )
         setUpcomingEvents(newArr)
       })
     }
-  }, [relationships, upcomingArr, imgDisplay, fullNameDisplay])
+  }, [relationships, upcomingArr, imgDisplay, fullNameDisplay, isFocused])
 
   useEffect(() => {
     if (relationships && isFocused) {
@@ -102,7 +104,7 @@ const RelationshipsHomeScreen = () => {
 
   const handleMessagePress = async () => {
     navigation.navigate('Schedule Event', {
-      itemId: relationships[0].id,
+      itemId: 'unset',
     })
     // setShowMessage(true);
     // const sid = TWILIO_ACCOUNT_SID;
@@ -200,14 +202,34 @@ const RelationshipsHomeScreen = () => {
                         </Pressable>
                       </View>
                     ) : (
-                      upcomingEvents.map((item, index) => (
-                        <EventItem
-                          item={item}
-                          key={index}
-                          imgDisplay={imgDisplay}
-                          fullNameDisplay={fullNameDisplay}
-                        />
-                      ))
+                      <>
+                        {upcomingEvents.map((item, index) => (
+                          <EventItem
+                            item={item}
+                            key={index}
+                            imgDisplay={imgDisplay}
+                            fullNameDisplay={fullNameDisplay}
+                          />
+                        ))}
+                        <Pressable
+                          style={[
+                            styles.button,
+                            styles.buttonGrey,
+                            styles.center,
+                          ]}
+                          onPress={handleMessagePress}
+                        >
+                          <Text
+                            style={[
+                              styles.button__text,
+                              styles.buttonGrey__text,
+                              styles.superBold,
+                            ]}
+                          >
+                            SCHEDULE AN EVENT
+                          </Text>
+                        </Pressable>
+                      </>
                     )}
                     <Pressable
                       onPress={() =>
@@ -236,6 +258,16 @@ const RelationshipsHomeScreen = () => {
                           />
                         </View>
                       ))}
+                      <View style={styles.page__lower}>
+                        <Pressable style={styles.button}>
+                          <Text
+                            style={styles.button__text}
+                            onPress={handlePress}
+                          >
+                            ADD RELATIONSHIP
+                          </Text>
+                        </Pressable>
+                      </View>
                     </View>
                   </View>
                 )}

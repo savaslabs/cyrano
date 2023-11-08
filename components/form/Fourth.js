@@ -60,20 +60,24 @@ const Fourth = ({
           />
         </View>
       </View>
-      <View>
-        <Text style={[styles.p, styles.alignLeft]}>
-          How would you rate the date?
-        </Text>
+      {dateDate ? (
         <View>
-          <StarRating
-            rating={dateRating}
-            onChange={setDateRating}
-            color="#7B82A2"
-            starSize="52"
-            style={styles.starRating}
-          />
+          <Text style={[styles.p, styles.alignLeft]}>
+            How would you rate the date?
+          </Text>
+          <View>
+            <StarRating
+              rating={dateRating}
+              onChange={setDateRating}
+              color="#7B82A2"
+              starSize="52"
+              style={styles.starRating}
+            />
+          </View>
         </View>
-      </View>
+      ) : (
+        ''
+      )}
     </Animated.View>
   )
 }

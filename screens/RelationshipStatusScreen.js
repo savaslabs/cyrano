@@ -11,15 +11,22 @@ import Back from '../assets/arrow-back.svg'
 const RelationshipStatusScreen = () => {
   const route = useRoute()
   const navigation = useNavigation()
-  const { rating, comments, id, upcomingEvents, imgDisplay, fullNameDisplay } =
-    route.params
+  const {
+    rating,
+    comments,
+    commentsTwo,
+    id,
+    upcomingEvents,
+    imgDisplay,
+    fullNameDisplay,
+  } = route.params
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (rating || comments) {
+    if (rating || comments || commentsTwo) {
       setIsLoading(false)
     }
-  }, [rating, comments])
+  }, [rating, comments, commentsTwo])
 
   return (
     <>
@@ -38,6 +45,8 @@ const RelationshipStatusScreen = () => {
                     fullNameDisplay,
                   })
                 }
+
+                style={{marginBottom: 16}}
               >
                 <Image source={Back} style={{ width: 20, height: 20 }} />
               </Pressable>
@@ -56,8 +65,16 @@ const RelationshipStatusScreen = () => {
               />
             </View>
             <View>
-              <Text style={[styles.h4, { fontSize: 17 }]}>Comments: </Text>
-              <Text style={{ fontSize: 17 }}>{comments}</Text>
+              <Text style={[styles.h4, { fontSize: 17 }]}>
+                What is going well in the relationship
+              </Text>
+              <Text style={{ fontSize: 17, marginBottom: 34 }}>{comments}</Text>
+            </View>
+            <View>
+              <Text style={[styles.h4, { fontSize: 17 }]}>
+                What do you want to focus on{' '}
+              </Text>
+              <Text style={{ fontSize: 17, marginBottom: 17 }}>{commentsTwo}</Text>
             </View>
           </View>
         </Page>

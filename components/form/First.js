@@ -76,7 +76,7 @@ const First = ({
           />
         </View>
       </View>
-      <View style={{ zIndex: 2 }}>
+      <View style={{ zIndex: 4 }}>
         <Text style={styles.form__label}>Relationship Type</Text>
         <DropDownPicker
           open={openRelationship}
@@ -111,8 +111,8 @@ const First = ({
           }}
         />
       </View>
-      <View style={{ zIndex: 1 }}>
-        <Text style={styles.form__label}>Partner Pronouns</Text>
+      {/* <View style={{ zIndex: 1 }}>
+        <Text style={styles.form__label}>Pronouns</Text>
         <DropDownPicker
           open={openPronouns}
           value={pronounsValue}
@@ -146,17 +146,17 @@ const First = ({
             color: 'rgba(51,55,75,0.5)',
           }}
         />
-      </View>
-      <View>
+      </View> */}
+      {/* <View>
         <Text style={styles.form__label}>Location</Text>
         <TextInput
           style={styles.form__input}
-          placeholder="Where does your partner live?"
+          placeholder="Where do they live?"
           placeholderTextColor="#c7cbd9"
           value={location}
           onChangeText={(newLocation) => setLocation(newLocation)}
         />
-      </View>
+      </View> */}
     </Animated.View>
   )
 }

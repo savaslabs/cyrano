@@ -5,30 +5,44 @@ import { styles } from '../styles'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Page from '../shared/Page'
 import { db, auth } from '../config/firebase-config'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
 import uuid from 'react-native-uuid'
 import DatePicker from '../components/form/DatePicker'
 
 const ScheduleEvent = () => {
   const [relationshipData, setRelationshipData] = useState('')
+  const [relationships, setRelationships] = useState('')
   const [eventName, setEventName] = useState('')
   const [datePlace, setNextDatePlace] = useState('')
-  const [dateDate, setNextDateDate] = useState(new Date(Date.now()))
+  const [dateDate, setNextDateDate] = useState('')
   const [dateTime, setNextDateTime] = useState('')
   const [docID, setDocID] = useState('')
   const [allID, setAllID] = useState('')
   const [additionalComments, setAdditionalComments] = useState('')
   const [eventState, setEventState] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
+  const [openRel, setOpenRel] = useState(false)
+  const [relValue, setRelValue] = useState(null)
+  const [relItem, setRelItem] = useState([])
+  const [idToSave, setIdToSave] = useState('')
+  const [nameToSave, setNameToSave] = useState()
+  const [lastNameToSave, setLastNameToSave] = useState('')
+  const [fullNameToSave, setFullNameToSave] = useState('')
+  const [imgToSave, setImgToSave] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId } = route.params
   const docRef = doc(db, 'relationships', itemId)
+  const relationshipRef = collection(db, 'relationships')
 
   useEffect(() => {
     getSpecificDoc()
-  }, [])
+
+    if (itemId === 'unset') {
+      getRelationships()
+    }
+  }, [itemId])
 
   const getSpecificDoc = async () => {
     try {
@@ -41,13 +55,41 @@ const ScheduleEvent = () => {
     }
   }
 
+  const getRelationships = async () => {
+    const data = await getDocs(relationshipRef)
+    const newData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    const finalRel = newData.filter(
+      (item) => item.author.id === auth.currentUser.uid
+    )
+    setRelationships(finalRel)
+  }
+
   useEffect(() => {
-    if (eventName && datePlace && dateDate && dateTime) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
+    if (relationships) {
+      const newArr = relationships.map((item) => ({
+        label: `${item.name} ${item.lastName}`,
+        value: `${item.name} ${item.lastName}`,
+      }))
+
+      setRelItem((prevState) => [...prevState, ...newArr])
     }
-  }, [eventName, datePlace, dateDate, dateTime])
+  }, [relationships])
+
+  useEffect(() => {
+    if (itemId === 'unset') {
+      if (eventName && relValue) {
+        setIsDisabled(false)
+      } else {
+        setIsDisabled(true)
+      }
+    } else {
+      if (eventName) {
+        setIsDisabled(false)
+      } else {
+        setIsDisabled(true)
+      }
+    }
+  }, [eventName, relValue])
 
   useEffect(() => {
     setDocID(uuid.v4())
@@ -68,17 +110,23 @@ const ScheduleEvent = () => {
   const handlePress = async () => {
     await setDoc(doc(db, 'events', docID), {
       id: docID,
-      name: relationshipData.name,
-      lastName: relationshipData.lastName,
-      fullName: `${relationshipData.name} ${relationshipData.lastName}`,
-      img: relationshipData.profileImage,
+      name: relationshipData ? relationshipData.name : nameToSave,
+      author: {
+        id: auth.currentUser.uid,
+        email: auth.currentUser.email,
+      },
+      lastName: relationshipData ? relationshipData.lastName : lastNameToSave,
+      fullName: relationshipData
+        ? `${relationshipData.name} ${relationshipData.lastName}`
+        : fullNameToSave,
+      img: relationshipData ? relationshipData.profileImage : imgToSave,
       eventName,
       datePlace,
       dateDate,
       dateTime,
       dateRating: '',
       additionalComments,
-      relID: itemId,
+      relID: itemId === 'unset' ? idToSave : itemId,
       state: eventState ? 'past' : 'upcoming',
     })
       .then(
@@ -141,6 +189,19 @@ const ScheduleEvent = () => {
     }
   }
 
+  useEffect(() => {
+    if (relValue !== null) {
+      const getData = relationships.find(
+        (item) => `${item.name} ${item.lastName}` === relValue
+      )
+      setIdToSave(getData.id)
+      setNameToSave(getData.name)
+      setLastNameToSave(getData.lastName)
+      setFullNameToSave(getData.fullName)
+      setImgToSave(getData.profileImage)
+    }
+  }, [relValue])
+
   return (
     <>
       <Page>
@@ -149,7 +210,49 @@ const ScheduleEvent = () => {
             <Text style={styles.h1}>Create Event</Text>
           </View>
           <View style={styles.form}>
-            <Text style={styles.form__label}>Event Name</Text>
+            {itemId === 'unset' ? (
+              <DropDownPicker
+                open={openRel}
+                value={relValue}
+                items={relItem}
+                setOpen={setOpenRel}
+                setValue={setRelValue}
+                setItems={setRelItem}
+                style={[styles.form__select, { marginTop: 0 }]}
+                placeholder="Select a relationship"
+                placeholderStyle={{
+                  color: '#c7cbd9',
+                  paddingLeft: 4,
+                  fontSize: 17,
+                }}
+                dropdownStyle={{
+                  paddingLeft: 30,
+                }}
+                dropDownContainerStyle={{
+                  margin: 'auto',
+                  color: '#33374B',
+                  zIndex: '10000',
+                  borderColor: 'rgba(199, 203, 217, 1)',
+                  height: 120,
+                  bottom: -95,
+                  paddingLeft: 8,
+                  fontSize: 17,
+                }}
+                labelStyle={{
+                  color: '#33374B',
+                }}
+                listItemLabelStyle={{
+                  color: '#33374B',
+                }}
+                disabledItemLabelStyle={{
+                  color: 'rgba(51,55,75,0.5)',
+                }}
+              />
+            ) : (
+              ''
+            )}
+
+            <Text style={[styles.form__label, { zIndex: 99 }]}>Event Name</Text>
             <TextInput
               style={styles.form__input}
               placeholderTextColor="#c7cbd9"

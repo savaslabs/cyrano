@@ -25,6 +25,7 @@ const Relationship = () => {
   const [newDetailsArr, setNewDetailsArr] = useState('')
   const [showMessage, setShowMessage] = useState(false)
   const [savedId, setSavedId] = useState('')
+  const [userEvents, setUserEvents] = useState('')
   const navigation = useNavigation()
   const route = useRoute()
   const { itemId, upcomingEvents, imgDisplay, fullNameDisplay } = route.params
@@ -79,6 +80,9 @@ const Relationship = () => {
     relationshipRating,
     location,
     ratingComments,
+    ratingCommentsTwo,
+    pronounsValue,
+    relationshipValue,
   } = singleRelationship
 
   const fullName = `${name} ${lastName}`
@@ -104,6 +108,12 @@ const Relationship = () => {
       itemId,
     })
   }
+
+  useEffect(() => {
+    if (savedId) {
+      setUserEvents(upcomingEvents?.filter((item) => item.relID === savedId))
+    }
+  }, [upcomingEvents, savedId])
 
   return (
     <>
@@ -134,10 +144,34 @@ const Relationship = () => {
             >
               <View style={styles.relationshipHeading__text}>
                 <Text style={styles.xl}>{fullName}</Text>
-                <View style={styles.location}>
-                  <Image source={mapMarker} style={styles.location__icon} />
-                  <Text style={styles.location__text}>{location}</Text>
+                <View style={[styles.location, {marginBottom: 8, gap: 0}]}>
+                  {pronounsValue ? (
+                    <Text style={styles.location__text}>{pronounsValue}</Text>
+                  ) : (
+                    ''
+                  )}
+                  {pronounsValue && relationshipValue ? (
+                    <Text style={styles.location__text}>, </Text>
+                  ) : (
+                    ''
+                  )}
+                  {relationshipValue ? (
+                    <Text style={styles.location__text}>
+                      {relationshipValue}
+                    </Text>
+                  ) : (
+                    ''
+                  )}
                 </View>
+                {location ? (
+                  <View style={styles.location}>
+                    <Image source={mapMarker} style={styles.location__icon} />
+                    <Text style={styles.location__text}>{location}</Text>
+                  </View>
+                ) : (
+                  ''
+                )}
+              
               </View>
               <View>
                 {profileImage ? (
@@ -148,49 +182,68 @@ const Relationship = () => {
               </View>
             </View>
             <View style={styles.greybox__pair}>
-              <View style={styles.greybox}>
-                <Text style={styles.h5}>{name.toUpperCase()}'S BIRTHDAY</Text>
-                <Text style={[styles.p, styles.mb0]}>
-                  {new Date(birthday).toLocaleDateString()}
-                </Text>
-              </View>
-              <View style={styles.greybox}>
-                <Text style={styles.h5}>YOUR ANNIVERSARY</Text>
-                <Text style={[styles.p, styles.mb0]}>
-                  {' '}
-                  {new Date(anniversary).toLocaleDateString()}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.greybox}>
-              <View style={styles.ratingCard}>
-                <View style={styles.ratingCard__text}>
-                  <Text style={styles.h5}>RELATIONSHIP RATING</Text>
-                  <RelationshipRating relationshipRating={relationshipRating} />
+              {birthday ? (
+                <View style={styles.greybox}>
+                  <Text style={styles.h5}>{name.toUpperCase()}'S BIRTHDAY</Text>
+                  <Text style={[styles.p, styles.mb0]}>
+                    {new Date(birthday).toLocaleDateString()}
+                  </Text>
                 </View>
-                <View>
-                  <Pressable
-                    style={styles.ratingCard__button}
-                    onPress={() =>
-                      navigation.navigate('Relationship Status', {
-                        id,
-                        rating: relationshipRating,
-                        comments: ratingComments ? ratingComments : 'N/A',
-                        upcomingEvents,
-                        imgDisplay,
-                        fullNameDisplay
-                      })
-                    }
-                  >
-                    <Text> See relationship rating details</Text>
-                  </Pressable>
+              ) : (
+                ''
+              )}
+
+              {anniversary ? (
+                <View style={styles.greybox}>
+                  <Text style={styles.h5}>YOUR ANNIVERSARY</Text>
+                  <Text style={[styles.p, styles.mb0]}>
+                    {' '}
+                    {new Date(anniversary).toLocaleDateString()}
+                  </Text>
+                </View>
+              ) : (
+                ''
+              )}
+            </View>
+            {relationshipRating ? (
+              <View style={styles.greybox}>
+                <View style={styles.ratingCard}>
+                  <View style={styles.ratingCard__text}>
+                    <Text style={styles.h5}>RELATIONSHIP RATING</Text>
+                    <RelationshipRating
+                      relationshipRating={relationshipRating}
+                    />
+                  </View>
+                  <View>
+                    <Pressable
+                      style={styles.ratingCard__button}
+                      onPress={() =>
+                        navigation.navigate('Relationship Status', {
+                          id,
+                          rating: relationshipRating,
+                          comments: ratingComments ? ratingComments : 'N/A',
+                          commentsTwo: ratingCommentsTwo
+                            ? ratingCommentsTwo
+                            : 'N/A',
+                          upcomingEvents,
+                          imgDisplay,
+                          fullNameDisplay,
+                        })
+                      }
+                    >
+                      <Text> See relationship rating details</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              ''
+            )}
+
             <Text style={[styles.h2, styles.h1Gap, styles.alignLeft]}>
               Upcoming Events
             </Text>
-            {upcomingEvents?.length === 0 || !upcomingEvents ? (
+            {userEvents?.length === 0 || !userEvents ? (
               <View style={[styles.greybox, styles.greyboxLarge]}>
                 <Text style={[styles.p, styles.center]}>
                   You don't have any upcoming events with {name}.
@@ -217,7 +270,7 @@ const Relationship = () => {
                 </Pressable>
               </View>
             ) : (
-              upcomingEvents?.map((item, index) => (
+              userEvents?.map((item, index) => (
                 <EventItem
                   item={item}
                   key={index}
@@ -232,7 +285,7 @@ const Relationship = () => {
                 navigation.navigate('Event History', {
                   itemId: singleRelationship?.author.id,
                   imgDisplay,
-                  fullNameDisplay
+                  fullNameDisplay,
                 })
               }
             >

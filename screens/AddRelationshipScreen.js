@@ -21,10 +21,7 @@ const AddRelationship = () => {
   const [profileImage, setProfileImage] = useState(null)
   const [pageCounter, setPageCounter] = useState(1)
   const [isDisabled, setIsDisabled] = useState(true)
-  const [isDisabledFirst, setIsDisabledFirst] = useState(true)
-  const [isDisabledSecond, setIsDisabledSecond] = useState(true)
-  const [loveStyleIsDisabled] = useState(true)
-  const [nextIsDisabled] = useState(true)
+  const [skip, setSkip] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [docID, setDocID] = useState('')
@@ -37,9 +34,9 @@ const AddRelationship = () => {
   const [relationshipValue, setRelationshipValue] = useState(null)
   const [relationshipItems, setRelationshipItems] = useState([
     { label: 'Romantic', value: 'Romantic' },
-    { label: 'Friend', value: 'Friend', disabled: true },
-    { label: 'Family', value: 'Family', disabled: true },
-    { label: 'Business', value: 'Business', disabled: true },
+    { label: 'Friend', value: 'Friend' },
+    { label: 'Family', value: 'Family' },
+    { label: 'Business', value: 'Business' },
   ])
   const [openPronouns, setOpenPronouns] = useState(false)
   const [pronounsValue, setPronounsValue] = useState(null)
@@ -65,44 +62,7 @@ const AddRelationship = () => {
   const [eventName, setEventName] = useState('')
   const [datePlace, setDatePlace] = useState('')
 
-  // Validations
-  const [checkName, setCheckName] = useState(false)
-  const [nameError, setNameError] = useState(false)
-  const [checkLastName, setCheckLastName] = useState(false)
-  const [lastNameError, setLastNameError] = useState(false)
-  const [checkPhone, setCheckPhone] = useState(false)
-  const [phoneError, setPhoneError] = useState(false)
-  const [checkEmail, setCheckEmail] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-
   const navigation = useNavigation()
-
-  useEffect(() => {
-    const validateName = () => {
-      const re = /[^a-zA-Z ]+/g
-      setCheckName(re.test(name))
-    }
-
-    const validateLastName = () => {
-      const re = /[^a-zA-Z ]+/g
-      setCheckLastName(re.test(lastName))
-    }
-
-    const validatePhone = () => {
-      const re = /^[0-9]{10,10}$/g
-      setCheckPhone(re.test(phone))
-    }
-
-    const validateEmail = () => {
-      const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-      setCheckEmail(re.test(email))
-    }
-
-    validateName()
-    validateLastName()
-    validatePhone()
-    validateEmail()
-  }, [name, lastName, phone, email])
 
   useEffect(() => {
     setDocID(uuid.v4())
@@ -110,72 +70,7 @@ const AddRelationship = () => {
   }, [])
 
   const handleNext = () => {
-    if (!email || !phone) {
-      if (checkName && checkLastName) {
-        setNameError(true)
-        setLastNameError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'Name and last name are invalids',
-        })
-
-        setTimeout(() => {
-          setNameError(false)
-          setLastNameError(false)
-        }, 2500)
-      } else if (checkName) {
-        setNameError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'Name is invalid',
-          visibilityTime: 3000,
-        })
-
-        setTimeout(() => {
-          setNameError(false)
-        }, 2500)
-      } else if (checkLastName) {
-        setLastNameError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'Last name is invalid',
-          visibilityTime: 3000,
-        })
-
-        setTimeout(() => {
-          setLastNameError(false)
-        }, 2500)
-      } else {
-        setPageCounter((count) => count + 1)
-      }
-    }
-
-    if (phone && email) {
-      if (!checkPhone) {
-        setPhoneError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'The phone is incorrect',
-          visibilityTime: 3000,
-        })
-        setTimeout(() => {
-          setPhoneError(false)
-        }, 2500)
-      } else if (!checkEmail) {
-        setEmailError(true)
-        Toast.show({
-          type: 'error',
-          text1: 'The email is not valid',
-          visibilityTime: 3000,
-        })
-
-        setTimeout(() => {
-          setEmailError(false)
-        }, 2500)
-      } else {
-        setPageCounter((count) => count + 1)
-      }
-    }
+    setPageCounter((count) => count + 1)
   }
 
   const handleBack = () => {
@@ -183,29 +78,40 @@ const AddRelationship = () => {
   }
 
   const handlePress = async () => {
-    if (name && lastName && birthday) {
+    if (name && lastName) {
       setLoading(true)
-      setDoc(doc(db, 'events', prevID), {
-        name: name,
-        lastName: lastName,
-        fullName: `${name} ${lastName}`,
-        img: profileImage,
-        datePlace,
-        eventName,
-        dateDate,
-        dateRating,
-        relID: docID,
-        createdAt: serverTimestamp(),
-        author: {
-          id: auth.currentUser.uid,
-          email: auth.currentUser.email,
-        },
-        state: 'past',
-      })
+      if (
+        (relationshipValue === 'Romantic' && dateDate) ||
+        datePlace ||
+        eventName ||
+        dateRating
+      ) {
+        setDoc(doc(db, 'events', prevID), {
+          id: prevID,
+          name: name,
+          lastName: lastName,
+          fullName: `${name} ${lastName}`,
+          img: profileImage,
+          loveStyleTag: [],
+          datePlace,
+          eventName,
+          dateDate,
+          dateRating,
+          relID: docID,
+          createdAt: serverTimestamp(),
+          author: {
+            id: auth.currentUser.uid,
+            email: auth.currentUser.email,
+          },
+          state: 'past',
+        })
+      }
+
       setDoc(doc(db, 'relationships', docID), {
         profileImage,
         name,
         lastName,
+        fullName: `${name} ${lastName}`,
         relationshipValue,
         pronounsValue,
         location,
@@ -263,38 +169,12 @@ const AddRelationship = () => {
     }
   }
 
-  useEffect(() => {
-    if (
-      name &&
-      lastName &&
-      birthday &&
-      relationshipValue &&
-      dateDate &&
-      datePlace &&
-      dateRating
-    ) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
-    }
-  }, [
-    name,
-    lastName,
-    birthday,
-    relationshipValue,
-    dateDate,
-    datePlace,
-    dateRating,
-  ])
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5,
-      maxWidth: 200,
-      maxHeight: 200,
+      quality: 1,
     })
 
     if (!result.canceled) {
@@ -303,55 +183,42 @@ const AddRelationship = () => {
   }
 
   const sendLoveTest = () => {
-    if (!checkEmail) {
-      setEmailError(true)
-      Toast.show({
-        type: 'error',
-        text1: 'The email is not valid',
-        visibilityTime: 3000,
+    emailjs
+      .send(
+        'service_mluy78d',
+        'template_dlzx6tm',
+        {
+          from_email: email,
+          from_name: name,
+          message: `
+            Cyrano User: ${auth.currentUser.displayName}
+            ${auth.currentUser.displayName}’s Email: ${auth.currentUser.email}
+            Relationship Name: ${name}
+            Relationship Email: ${email}
+          `,
+        },
+        '7RtlMLsc_bIlK-F46'
+      )
+      .then(() => {
+        setShowMessage(true)
+        setSkip(true)
       })
-
-      setTimeout(() => {
-        setEmailError(false)
-      }, 2500)
-    } else {
-      emailjs
-        .send(
-          'service_mluy78d',
-          'template_dlzx6tm',
-          {
-            from_email: email,
-          },
-          '7RtlMLsc_bIlK-F46'
-        )
-        .then(() => {
-          setShowMessage(true)
+      .catch((err) =>
+        Toast.show({
+          type: 'error',
+          text1: err.code,
+          visibilityTime: 2000,
         })
-        .catch((err) =>
-          Toast.show({
-            type: 'error',
-            text1: err.code,
-            visibilityTime: 2000,
-          })
-        )
-    }
+      )
   }
 
   useEffect(() => {
-    if (name && lastName && relationshipValue && pronounsValue && location) {
-      setIsDisabledFirst(false)
+    if (name && lastName && relationshipValue) {
+      setIsDisabled(false)
     } else {
-      setIsDisabledFirst(true)
+      setIsDisabled(true)
     }
   }, [name, lastName, relationshipValue, pronounsValue, location])
-
-  useEffect(() => {
-    if (birthday && anniversary && relationshipRating) {
-      setIsDisabledSecond(false)
-    } else {
-      setIsDisabledSecond(true)
-    }
-  }, [birthday, anniversary, relationshipRating])
 
   return (
     <>
@@ -367,7 +234,7 @@ const AddRelationship = () => {
                 </Text>
                 {pageCounter === 1 && (
                   <Text style={[styles.p, styles.alignLeft]}>
-                    Tell us about your partner.
+                    Tell us about your relationship.
                   </Text>
                 )}
                 {pageCounter === 2 && (
@@ -389,7 +256,7 @@ const AddRelationship = () => {
                   </Text>
                 )}
               </View>
-              <Pressable onPress={pickImage}>
+              {/* <Pressable onPress={pickImage}>
                 <View
                   style={
                     profileImage ? styles.cameraRemoveBorder : styles.camera
@@ -404,7 +271,7 @@ const AddRelationship = () => {
                     <Image source={CameraSVG} style={styles.camera__img} />
                   )}
                 </View>
-              </Pressable>
+              </Pressable> */}
             </View>
             <View style={styles.form}>
               {pageCounter === 1 && (
@@ -427,8 +294,6 @@ const AddRelationship = () => {
                   setPronounsItem={setPronounsItem}
                   location={location}
                   setLocation={setLocation}
-                  nameError={nameError}
-                  lastNameError={lastNameError}
                 />
               )}
               {pageCounter === 2 && (
@@ -449,8 +314,6 @@ const AddRelationship = () => {
                   setEmail={setEmail}
                   phone={phone}
                   setPhone={setPhone}
-                  phoneError={phoneError}
-                  emailError={emailError}
                 />
               )}
               {pageCounter === 4 && (
@@ -471,25 +334,35 @@ const AddRelationship = () => {
             </View>
             {pageCounter === 1 && (
               <>
-                <View style={styles.dots}>
-                  <View style={[styles.dots__dot, styles.dots__active]}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
-                </View>
-                <View style={styles.page__lower}>
+                {relationshipValue ? (
+                  <View style={styles.dots}>
+                    <View
+                      style={[styles.dots__dot, styles.dots__active]}
+                    ></View>
+                    <View style={styles.dots__dot}></View>
+                    {relationshipValue && relationshipValue === 'Romantic' ? (
+                      <>
+                        <View style={styles.dots__dot}></View>
+                        <View style={styles.dots__dot}></View>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </View>
+                ) : (
+                  ''
+                )}
+
+                <View style={[styles.page__lower, { zIndex: -1 }]}>
                   <Pressable
-                    style={[
-                      styles.button,
-                      isDisabledFirst ? styles.disabled : '',
-                    ]}
+                    style={[styles.button, isDisabled ? styles.disabled : '']}
                     onPress={handleNext}
-                    disabled={isDisabledFirst}
+                    disabled={isDisabled}
                   >
                     <Text
                       style={[
                         styles.button__text,
-                        isDisabledFirst ? styles.disabled__text : '',
+                        isDisabled ? styles.disabled__text : '',
                       ]}
                     >
                       CONTINUE
@@ -503,8 +376,14 @@ const AddRelationship = () => {
                 <View style={styles.dots}>
                   <View style={styles.dots__dot}></View>
                   <View style={[styles.dots__dot, styles.dots__active]}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
+                  {relationshipValue === 'Romantic' ? (
+                    <>
+                      <View style={styles.dots__dot}></View>
+                      <View style={styles.dots__dot}></View>
+                    </>
+                  ) : (
+                    ''
+                  )}
                 </View>
                 <View style={styles.page__lower}>
                   <View style={styles.paginationBtns}>
@@ -518,152 +397,30 @@ const AddRelationship = () => {
                         BACK
                       </Text>
                     </Pressable>
-                    <Pressable
-                      style={[
-                        styles.button,
-                        styles.buttonNext,
-                        isDisabledSecond ? styles.disabled : '',
-                      ]}
-                      onPress={handleNext}
-                      disabled={isDisabledSecond}
-                    >
-                      <Text
-                        style={[
-                          styles.button__text,
-                          isDisabledSecond ? styles.disabled__text : '',
-                        ]}
-                      >
-                        CONTINUE
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </>
-            )}
-            {pageCounter === 3 && !email && !phone && (
-              <>
-                <Pressable
-                  style={[
-                    styles.button,
-                    loveStyleIsDisabled ? styles.disabled : '',
-                  ]}
-                  onPress={sendLoveTest}
-                  disabled={loveStyleIsDisabled}
-                >
-                  <Text
-                    style={[
-                      styles.button__text,
-                      loveStyleIsDisabled ? styles.disabled__text : '',
-                    ]}
-                  >
-                    SEND LOVE STYLES TEST
-                  </Text>
-                </Pressable>
-                <View style={styles.dots}>
-                  <View style={styles.dots__dot}></View>
-                  <View style={styles.dots__dot}></View>
-                  <View style={[styles.dots__dot, styles.dots__active]}></View>
-                  <View style={styles.dots__dot}></View>
-                </View>
-                <View style={styles.page__lower}>
-                  <View style={styles.paginationBtns}>
-                    <Pressable
-                      onPress={handleBack}
-                      style={[styles.button, styles.buttonGrey]}
-                    >
-                      <Text
-                        style={[styles.button__text, styles.buttonGrey__text]}
-                      >
-                        BACK
-                      </Text>
-                    </Pressable>
-                    <Pressable
-                      style={[
-                        styles.button,
-                        styles.buttonNext,
-                        nextIsDisabled ? styles.disabled : '',
-                      ]}
-                      onPress={handleNext}
-                      disabled={nextIsDisabled}
-                    >
-                      <Text
-                        style={[
-                          styles.button__text,
-                          nextIsDisabled ? styles.disabled__text : '',
-                        ]}
-                      >
-                        CONTINUE
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </>
-            )}
-
-            {(pageCounter === 3 && email && !phone) ||
-              (pageCounter === 3 && !email && phone && (
-                <>
-                  <Pressable
-                    style={[
-                      styles.button,
-                      loveStyleIsDisabled ? styles.disabled : '',
-                    ]}
-                    onPress={sendLoveTest}
-                    disabled={loveStyleIsDisabled}
-                  >
-                    <Text
-                      style={[
-                        styles.button__text,
-                        loveStyleIsDisabled ? styles.disabled__text : '',
-                      ]}
-                    >
-                      SEND LOVE STYLES TEST
-                    </Text>
-                  </Pressable>
-                  <View style={styles.dots}>
-                    <View style={styles.dots__dot}></View>
-                    <View style={styles.dots__dot}></View>
-                    <View
-                      style={[styles.dots__dot, styles.dots__active]}
-                    ></View>
-                    <View style={styles.dots__dot}></View>
-                  </View>
-                  <View style={styles.page__lower}>
-                    <View style={styles.paginationBtns}>
+                    {relationshipValue === 'Romantic' ? (
                       <Pressable
-                        onPress={handleBack}
-                        style={[styles.button, styles.buttonGrey]}
-                      >
-                        <Text
-                          style={[styles.button__text, styles.buttonGrey__text]}
-                        >
-                          BACK
-                        </Text>
-                      </Pressable>
-                      <Pressable
-                        style={[
-                          styles.button,
-                          styles.buttonNext,
-                          nextIsDisabled ? styles.disabled : '',
-                        ]}
+                        style={[styles.button, styles.buttonNext]}
                         onPress={handleNext}
-                        disabled={nextIsDisabled}
                       >
-                        <Text
-                          style={[
-                            styles.button__text,
-                            nextIsDisabled ? styles.disabled__text : '',
-                          ]}
-                        >
-                          CONTINUE
+                        <Text style={[styles.button__text]}>
+                          {birthday || anniversary || relationshipRating
+                            ? 'CONTINUE'
+                            : 'SKIP'}
                         </Text>
                       </Pressable>
-                    </View>
+                    ) : (
+                      <Pressable
+                        style={[styles.button, styles.buttonNext]}
+                        onPress={handlePress}
+                      >
+                        <Text style={[styles.button__text]}>SAVE</Text>
+                      </Pressable>
+                    )}
                   </View>
-                </>
-              ))}
-
-            {pageCounter === 3 && email && phone && (
+                </View>
+              </>
+            )}
+            {pageCounter === 3 && (
               <>
                 {showMessage ? (
                   <View style={styles.confirmation}>
@@ -678,21 +435,27 @@ const AddRelationship = () => {
                         styles.confirmation__text,
                       ]}
                     >
-                      The test has been sent to {name}. We'll alert you once we
-                      have uploaded their results
+                      {name} will receive the Truity Love Styles test via email
+                      soon!
                     </Text>
                   </View>
                 ) : (
                   <Pressable
-                    style={styles.button}
+                    style={[styles.button, !email ? styles.disabled : '']}
                     onPress={sendLoveTest}
-                    disabled={!loveStyleIsDisabled}
+                    disabled={email ? false : true}
                   >
-                    <Text style={styles.button__text}>
+                    <Text
+                      style={[
+                        styles.button__text,
+                        !email ? styles.disabled__text : '',
+                      ]}
+                    >
                       SEND LOVE STYLES TEST
                     </Text>
                   </Pressable>
                 )}
+
                 <View style={styles.dots}>
                   <View style={styles.dots__dot}></View>
                   <View style={styles.dots__dot}></View>
@@ -714,9 +477,10 @@ const AddRelationship = () => {
                     <Pressable
                       style={[styles.button, styles.buttonNext]}
                       onPress={handleNext}
-                      disabled={!nextIsDisabled}
                     >
-                      <Text style={styles.button__text}>CONTINUE</Text>
+                      <Text style={[styles.button__text]}>
+                        {skip ? 'CONTINUE' : 'SKIP'}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -744,22 +508,10 @@ const AddRelationship = () => {
                       </Text>
                     </Pressable>
                     <Pressable
-                      style={[
-                        styles.button,
-                        styles.buttonNext,
-                        isDisabled ? styles.disabled : '',
-                      ]}
+                      style={[styles.button, styles.buttonNext]}
                       onPress={handlePress}
-                      disabled={isDisabled}
                     >
-                      <Text
-                        style={[
-                          styles.button__text,
-                          isDisabled ? styles.disabled__text : '',
-                        ]}
-                      >
-                        Save
-                      </Text>
+                      <Text style={[styles.button__text]}>SAVE</Text>
                     </Pressable>
                   </View>
                 </View>

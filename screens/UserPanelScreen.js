@@ -120,7 +120,7 @@ const UserPanelScreen = () => {
                 <Text style={styles.h1}>Edit your profile</Text>
               )}
             </View>
-            <View style={styles.vertCenter}>
+            {/* <View style={styles.vertCenter}>
               {profileImg ? (
                 <Image
                   source={profileImg}
@@ -145,11 +145,11 @@ const UserPanelScreen = () => {
               {newProfileImage && (
                 <Image source={newProfileImage} style={styles.profileImage} />
               )}
-            </View>
+            </View> */}
 
-            <Pressable onPress={handleChangeImage}>
+            {/* <Pressable onPress={handleChangeImage}>
               <Text style={[styles.textLink, styles.mb16]}>Change photo</Text>
-            </Pressable>
+            </Pressable> */}
 
             <View style={styles.form}>
               <Text style={styles.form__label}>Name</Text>

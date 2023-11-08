@@ -30,18 +30,39 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
     datePlace,
     additionalComments,
     eventName,
+    fullName,
   } = item
 
   return (
     <View style={styles.eventCard}>
       <View style={styles.eventCard__top}>
         <Text style={styles.eventCard__heading}>
-          {datePlace !== '' ? datePlace : pickRestaurantValue}
+          {eventName ? eventName : ''}
         </Text>
       </View>
-      <Text style={styles.eventCard__dateTime}>
-        {new Date(dateDate).toLocaleDateString()} @ {dateTime}
-      </Text>
+      <View style={styles.eventCard__data}>
+        {datePlace ? (
+          <Text style={styles.eventCard__dateTime}>{datePlace}</Text>
+        ) : (
+          ''
+        )}
+        {datePlace && dateDate ? (
+          <Text style={styles.eventCard__dateTime}>, </Text>
+        ) : (
+          ''
+        )}
+        {dateTime && dateDate && (
+          <Text style={styles.eventCard__dateTime}>
+            {new Date(dateDate).toLocaleDateString()} @ {dateTime}
+          </Text>
+        )}
+        {dateDate && !dateTime && (
+          <Text style={styles.eventCard__dateTime}>
+            {new Date(dateDate).toLocaleDateString()}
+          </Text>
+        )}
+        {!dateDate && !dateTime && ''}
+      </View>
       <View
         style={[
           styles.eventCard__bottom,
@@ -55,7 +76,9 @@ const EventItem = ({ item, imgDisplay, fullNameDisplay }) => {
             <Image source={Avatar} style={styles.eventCard__profileImg} />
           )}
 
-          <Text style={styles.eventCard__profileName}>{fullNameDisplay}</Text>
+          <Text style={styles.eventCard__profileName}>
+            {fullName ? fullName : fullNameDisplay}
+          </Text>
 
           <View style={styles.eventCard__buttons}>
             {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
@@ -154,6 +177,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 700,
     color: '#33374B',
+  },
+  eventCard__data: {
+    flex: 1,
+    flexDirection: 'row',
   },
   eventCard__buttons: {
     flex: 1,

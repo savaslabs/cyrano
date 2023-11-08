@@ -31,6 +31,15 @@ const RelationshipItem = ({
     })
   }
 
+  const {
+    name,
+    lastName,
+    relationshipValue,
+    profileImage,
+    id,
+    relationshipRating,
+  } = item
+
   return (
     <View style={styles.relationshipCard}>
       <View
@@ -40,30 +49,37 @@ const RelationshipItem = ({
         ]}
       >
         <View style={styles.relationshipCard__profile}>
-          {item?.profileImage ? (
+          {profileImage ? (
             <Image
-              source={item?.profileImage}
+              source={profileImage}
               style={styles.relationshipCard__img}
-              nativeID={item?.id}
+              nativeID={id}
             />
           ) : (
             <Image
               source={Avatar}
               style={styles.relationshipCard__img}
-              nativeID={item?.id}
+              nativeID={id}
             />
           )}
 
-          <Pressable onPress={(e) => handlePress(e.target.id)}>
-            <Text style={styles.relationshipCard__name} nativeID={item?.id}>
-              {item?.name} {item?.lastName}
-            </Text>
-          </Pressable>
+          <View style={{ alignItems: 'flex-start', gap: 8}}>
+            <Pressable onPress={(e) => handlePress(e.target.id)}>
+              <Text style={styles.relationshipCard__name} nativeID={id}>
+                {name} {lastName}
+              </Text>
+            </Pressable>
+            <Text style={styles.relationshipCard__type}>{relationshipValue}</Text>
+          </View>
         </View>
-        <RelationshipCardRating
-          style={{ maxWidth: 118, marginHorizontal: 'auto' }}
-          relationshipRating={item?.relationshipRating}
-        />
+        {relationshipRating ? (
+          <RelationshipCardRating
+            style={{ maxWidth: 118, marginHorizontal: 'auto' }}
+            relationshipRating={relationshipRating}
+          />
+        ) : (
+          ''
+        )}
       </View>
       {auth.currentUser.uid === 'KgJLUBI6d9QIpR0tnGKPERyF0S03' ||
       auth.currentUser.uid === 'LkdoS9fnSDNwhH22mfrmzh7DLG83' ? (
@@ -71,7 +87,7 @@ const RelationshipItem = ({
           <Pressable
             onPress={() =>
               navigation.navigate('Schedule Event', {
-                itemId: item?.id,
+                itemId: id,
               })
             }
             style={styles.relationshipCard__button}
@@ -85,9 +101,9 @@ const RelationshipItem = ({
             style={styles.relationshipCard__button}
             onPress={() =>
               navigation.navigate('Relationship Check-In', {
-                itemId: item?.id,
-                rating: item?.relationshipRating,
-                name: item?.name,
+                itemId: id,
+                rating: relationshipRating,
+                name: name,
                 imgDisplay,
                 fullNameDisplay,
               })
@@ -132,6 +148,14 @@ const styles = StyleSheet.create({
   relationshipCard__name: {
     fontSize: 17,
     fontWeight: 700,
+  },
+  relationshipCard__type: {
+    fontSize: 11,
+    paddingVertical: 6,
+    paddingHorizontal: 9,
+    backgroundColor: '#586187',
+    color: '#ffffff',
+    borderRadius: 16
   },
   relationshipCard__bottom: {
     paddingTop: 16,
