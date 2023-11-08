@@ -191,7 +191,9 @@ const ScheduleEvent = () => {
 
   useEffect(() => {
     if (relValue !== null) {
-      const getData = relationships.find((item) => item.fullName === relValue)
+      const getData = relationships.find(
+        (item) => `${item.name} ${item.lastName}` === relValue
+      )
       setIdToSave(getData.id)
       setNameToSave(getData.name)
       setLastNameToSave(getData.lastName)
@@ -250,7 +252,7 @@ const ScheduleEvent = () => {
               ''
             )}
 
-            <Text style={[styles.form__label, {zIndex:99}]}>Event Name</Text>
+            <Text style={[styles.form__label, { zIndex: 99 }]}>Event Name</Text>
             <TextInput
               style={styles.form__input}
               placeholderTextColor="#c7cbd9"
