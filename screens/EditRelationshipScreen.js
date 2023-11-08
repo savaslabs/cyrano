@@ -239,7 +239,7 @@ const EditRelationshipScreen = () => {
             <View style={styles.page__upper}>
               <Text style={styles.h1}>Edit Relationship</Text>
             </View>
-            <View style={styles.vertCenter}>
+            {/* <View style={styles.vertCenter}>
               {profileImage ? (
                 <Image
                   source={profileImage}
@@ -267,7 +267,7 @@ const EditRelationshipScreen = () => {
               <Pressable onPress={handleChangeImage}>
                 <Text style={[styles.textLink, styles.mb16]}>Change photo</Text>
               </Pressable>
-            </View>
+            </View> */}
             <View style={styles.form}>
               <Pressable
                 onPress={() =>
