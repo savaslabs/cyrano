@@ -16,8 +16,8 @@ import Page from '../shared/Page'
 import Spinner from '../shared/Spinner'
 import Avatar from '../assets/avatar.png'
 import * as ImagePicker from 'expo-image-picker'
-import TrashIcon from '../assets/trash-white.svg'
 import CloseIcon from '../assets/close.svg'
+import TrashIcon from '../assets/trash-bold.svg'
 import RelationshipRating from '../components/RelationshipRating'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DatePicker from '../components/form/DatePicker'
@@ -30,9 +30,12 @@ const EditRelationshipScreen = () => {
   const [editName, setEditName] = useState('')
   const [editLastName, setEditLastName] = useState('')
   const [editBirthday, setEditBirthday] = useState('')
+  const [blankBirthday, setBlankBirthday] = useState(false)
   const [editAnniversary, setEditAnniversary] = useState('')
+  const [blankAnniversary, setBlankAnniversary] = useState(false)
   const [editLocation, setEditLocation] = useState('')
   const [editPronouns, setEditPronouns] = useState('')
+  const [blankPronouns, setBlankPronouns] = useState(false)
   const [editEmail, setEditEmail] = useState('')
   const [editPhone, setEditPhone] = useState('')
   const [openPronouns, setOpenPronouns] = useState(false)
@@ -135,7 +138,18 @@ const EditRelationshipScreen = () => {
     setEditPronouns(pronounsValue)
     setEditEmail(email)
     setEditPhone(phone)
-  }, [name, lastName, location, pronounsValue, email, phone])
+    setEditBirthday(birthday)
+    setEditAnniversary(anniversary)
+  }, [
+    name,
+    lastName,
+    location,
+    pronounsValue,
+    email,
+    phone,
+    birthday,
+    anniversary,
+  ])
 
   const handleSave = async () => {
     if (
@@ -165,18 +179,34 @@ const EditRelationshipScreen = () => {
               : newProfileImage === ''
               ? ''
               : profileImage,
-            name: editName ? editName : name,
-            lastName: editLastName ? editLastName : lastName,
-            birthday: editBirthday ? editBirthday : birthday,
-            anniversary: editAnniversary ? editAnniversary : anniversary,
+            name: editName ? editName : editName === '' ? '' : name,
+            lastName: editLastName
+              ? editLastName
+              : editLastName === ''
+              ? ''
+              : lastName,
+            birthday: editBirthday
+              ? editBirthday
+              : editBirthday === ''
+              ? ''
+              : birthday,
+            anniversary: editAnniversary
+              ? editAnniversary
+              : editAnniversary === ''
+              ? ''
+              : anniversary,
             location: editLocation
               ? editLocation
               : editLocation === ''
               ? ''
               : location,
-            pronounsValue: pronounsVal ? pronounsVal : pronounsValue,
-            email: editEmail ? editEmail : email,
-            phone: editPhone ? editPhone : phone,
+            pronounsValue: pronounsVal
+              ? pronounsVal
+              : pronounsVal === ''
+              ? ''
+              : pronounsValue,
+            email: editEmail ? editEmail : editEmail === '' ? '' : email,
+            phone: editPhone ? editPhone : editPhone === '' ? '' : phone,
           },
           {
             merge: true,
@@ -308,19 +338,41 @@ const EditRelationshipScreen = () => {
                           style={{ width: 24, height: 24 }}
                         />
                       </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          setShowBirthdayPicker(false),
+                            setBlankBirthday(true),
+                            setEditBirthday('')
+                        }}
+                      >
+                        <Image
+                          source={TrashIcon}
+                          style={{ width: 20, height: 20 }}
+                        />
+                      </Pressable>
                     </View>
                   ) : (
                     <Pressable onPress={() => setShowBirthdayPicker(true)}>
-                      <TextInput
-                        style={styles.form__input}
-                        placeholderTextColor="#c7cbd9"
-                        placeholder={birthday ? '' : 'Edit their birthday'}
-                        value={
-                          birthday
-                            ? new Date(birthday).toLocaleDateString()
-                            : ''
-                        }
-                      />
+                      {!blankBirthday && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder={birthday ? '' : 'Edit their birthday'}
+                          value={
+                            birthday
+                              ? new Date(birthday).toLocaleDateString()
+                              : ''
+                          }
+                        />
+                      )}
+                      {blankBirthday && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder="Edit their birthday"
+                          value=""
+                        />
+                      )}
                     </Pressable>
                   )}
                 </View>
@@ -343,21 +395,43 @@ const EditRelationshipScreen = () => {
                             style={{ width: 24, height: 24 }}
                           />
                         </Pressable>
+                        <Pressable
+                          onPress={() => {
+                            setShowAnniversaryPicker(false),
+                              setBlankAnniversary(true),
+                              setEditAnniversary('')
+                          }}
+                        >
+                          <Image
+                            source={TrashIcon}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        </Pressable>
                       </View>
                     ) : (
                       <Pressable onPress={() => setShowAnniversaryPicker(true)}>
-                        <TextInput
-                          style={styles.form__input}
-                          placeholderTextColor="#c7cbd9"
-                          placeholder={
-                            anniversary ? '' : 'Edit their anniversary'
-                          }
-                          value={
-                            anniversary
-                              ? new Date(anniversary).toLocaleDateString()
-                              : ''
-                          }
-                        />
+                        {!blankAnniversary && (
+                          <TextInput
+                            style={styles.form__input}
+                            placeholderTextColor="#c7cbd9"
+                            placeholder={
+                              anniversary ? '' : 'Edit their anniversary'
+                            }
+                            value={
+                              anniversary
+                                ? new Date(anniversary).toLocaleDateString()
+                                : ''
+                            }
+                          />
+                        )}
+                        {blankAnniversary && (
+                          <TextInput
+                            style={styles.form__input}
+                            placeholderTextColor="#c7cbd9"
+                            placeholder="Edit their anniversary"
+                            value=""
+                          />
+                        )}
                       </Pressable>
                     )}
                   </View>
@@ -425,15 +499,37 @@ const EditRelationshipScreen = () => {
                           style={{ width: 24, height: 24 }}
                         />
                       </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          setShowPronounsDropdown(false),
+                            setBlankPronouns(true),
+                            setPronounsValue('')
+                        }}
+                      >
+                        <Image
+                          source={TrashIcon}
+                          style={{ width: 20, height: 20 }}
+                        />
+                      </Pressable>
                     </View>
                   ) : (
                     <Pressable onPress={() => setShowPronounsDropdown(true)}>
-                      <TextInput
-                        style={styles.form__input}
-                        placeholderTextColor="#c7cbd9"
-                        placeholder="Edit their pronouns"
-                        value={editPronouns}
-                      />
+                      {!blankPronouns && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder="Edit their pronouns"
+                          value={editPronouns}
+                        />
+                      )}
+                      {blankPronouns && (
+                        <TextInput
+                          style={styles.form__input}
+                          placeholderTextColor="#c7cbd9"
+                          placeholder="Edit their pronouns"
+                          value=""
+                        />
+                      )}
                     </Pressable>
                   )}
                 </View>

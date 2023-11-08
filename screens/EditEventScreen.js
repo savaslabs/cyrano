@@ -114,7 +114,7 @@ const EditEventScreen = () => {
               : editComments === ''
               ? ''
               : additionalComments,
-            dateDate: editDate ? editDate : editPlace === '' ? '' : dateDate,
+            dateDate: editDate ? editDate : editDate === '' ? '' : dateDate,
             datePlace: editPlace
               ? editPlace
               : editPlace === ''
@@ -198,14 +198,32 @@ const EditEventScreen = () => {
                 </View>
               ) : (
                 <Pressable onPress={() => setShowDatePicker(true)}>
-                  <TextInput
-                    style={styles.form__input}
-                    placeholder={dateDate ? '' : 'Edit the event date'}
-                    placeholderTextColor="#c7cbd9"
-                    value={
-                      dateDate ? new Date(dateDate).toLocaleDateString() : ''
-                    }
-                  />
+                  {dateDate && editDate !== '' && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder={dateDate ? '' : 'Edit the event date'}
+                      placeholderTextColor="#c7cbd9"
+                      value={
+                        dateDate ? new Date(dateDate).toLocaleDateString() : ''
+                      }
+                    />
+                  )}
+                  {dateDate && editDate === '' && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder={'Edit the event date'}
+                      placeholderTextColor="#c7cbd9"
+                      value={''}
+                    />
+                  )}
+                  {!dateDate && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder="Edit the event date"
+                      placeholderTextColor="#c7cbd9"
+                      value={''}
+                    />
+                  )}
                 </Pressable>
               )}
 
