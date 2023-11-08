@@ -5,6 +5,7 @@ import Spinner from '../shared/Spinner'
 import { useState, useEffect, createElement } from 'react'
 import { styles } from '../styles'
 import CloseIcon from '../assets/close.svg'
+import TrashIcon from '../assets/trash-bold.svg'
 import { auth, db } from '../config/firebase-config'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import Toast from 'react-native-toast-message'
@@ -15,7 +16,9 @@ const EditEventScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [editEventName, setEditEventName] = useState('')
   const [editDate, setEditDate] = useState('')
+  const [blankDate, setBlankDate] = useState(false)
   const [editTime, setEditTime] = useState('')
+  const [blankTime, setBlankTime] = useState(false)
   const [editPlace, setEditPlace] = useState('')
   const [editComments, setEditComments] = useState('')
   const [showDatePicker, setShowDatePicker] = useState(false)
@@ -185,20 +188,28 @@ const EditEventScreen = () => {
                     onBlur={(e) => setEditDate(e.target.value)}
                     value={editDate}
                   />
-                  <Pressable
-                    onPress={() => {
-                      setShowDatePicker(false), setEditDate('')
-                    }}
-                  >
+                  <Pressable onPress={() => setShowDatePicker(false)}>
                     <Image
                       source={CloseIcon}
                       style={{ width: 24, height: 24 }}
                     />
                   </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setShowDatePicker(false),
+                        setBlankDate(true),
+                        setEditDate('')
+                    }}
+                  >
+                    <Image
+                      source={TrashIcon}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </Pressable>
                 </View>
               ) : (
                 <Pressable onPress={() => setShowDatePicker(true)}>
-                  {dateDate && editDate !== '' && (
+                  {!blankDate && (
                     <TextInput
                       style={styles.form__input}
                       placeholder={dateDate ? '' : 'Edit the event date'}
@@ -208,18 +219,10 @@ const EditEventScreen = () => {
                       }
                     />
                   )}
-                  {dateDate && editDate === '' && (
+                  {blankDate && (
                     <TextInput
                       style={styles.form__input}
                       placeholder={'Edit the event date'}
-                      placeholderTextColor="#c7cbd9"
-                      value={''}
-                    />
-                  )}
-                  {!dateDate && (
-                    <TextInput
-                      style={styles.form__input}
-                      placeholder="Edit the event date"
                       placeholderTextColor="#c7cbd9"
                       value={''}
                     />
@@ -231,25 +234,43 @@ const EditEventScreen = () => {
               {showTimePicker ? (
                 <View style={styles.form__twoCol}>
                   <TimePicker style={styles.form__date} />
-                  <Pressable
-                    onPress={() => {
-                      setShowTimePicker(false), setEditTime('')
-                    }}
-                  >
+                  <Pressable onPress={() => setShowTimePicker(false)}>
                     <Image
                       source={CloseIcon}
                       style={{ width: 24, height: 24 }}
                     />
                   </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setShowTimePicker(false),
+                        setBlankTime(true),
+                        setEditTime('')
+                    }}
+                  >
+                    <Image
+                      source={TrashIcon}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </Pressable>
                 </View>
               ) : (
                 <Pressable onPress={() => setShowTimePicker(true)}>
-                  <TextInput
-                    style={styles.form__input}
-                    placeholder="Edit the time of the event"
-                    placeholderTextColor="#c7cbd9"
-                    value={editTime}
-                  />
+                  {!blankTime && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder="Edit the time of the event"
+                      placeholderTextColor="#c7cbd9"
+                      value={editTime}
+                    />
+                  )}
+                  {blankTime && (
+                    <TextInput
+                      style={styles.form__input}
+                      placeholder="Edit the time of the event"
+                      placeholderTextColor="#c7cbd9"
+                      value=""
+                    />
+                  )}
                 </Pressable>
               )}
               <Text style={styles.form__label}>Location</Text>
